@@ -240,7 +240,6 @@ export const editProjectPromise = (projectToSend, projectId) => dispatch => {
       })
       .catch(error => {
         dispatch(editProject(false, errorCatcher(error)));
-        dispatch(clearAfterTimeByFuncRef(editProject, 5000, null, []));
         reject(error);
       });
   });
@@ -284,8 +283,9 @@ export const editProjectACreator = (
         dispatch(getProject(null, 
           false, errorCatcher(error), [], []));
         dispatch(clearAfterTimeByFuncRef(getProject, 5000, null, null, [], [], []));
-        
       })
+    }).catch(error => {
+      dispatch(clearAfterTimeByFuncRef(editProject, 5000, null, []));
     });
   }
 }

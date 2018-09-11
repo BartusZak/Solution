@@ -27,7 +27,14 @@ class ProjectsList extends Component {
       loading: false
     };
   }
-
+  componentWillReceiveProps(nextProps){
+    if(nextProps.editProjectErrors !== this.props.editProjectErrors && nextProps.editProjectStatus){
+      setTimeout(() => {
+        this.props.pageChange()
+      }, 3000);
+    }
+  }
+  
   handleGetProject = project => {
     this.setState({project: project, showEditProjectModal: true});
   };
