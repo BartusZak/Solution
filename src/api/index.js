@@ -243,7 +243,7 @@ const WebApi = {
     delete: quarterId => {
       return WebAround.delete(`${API_ENDPOINT}/QuarterTalks/${quarterId}`);
     },
-    put: {
+    put: {dasdasdasdasdasdasdasdasdasdasdas
       reactivate: quarterId => {
         return WebAround.put(
           `${API_ENDPOINT}/QuarterTalks/Reactivate/${quarterId}`
