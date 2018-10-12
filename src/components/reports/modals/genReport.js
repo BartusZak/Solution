@@ -28,10 +28,11 @@ const genReport = ({
   handleAvailableUntilToggle,
   handleAvailableUntil,
   availableUntilDate,
-  availableUntilStartDate
+  availableUntilStartDate,
+  hardDrive
 }) => {
   const isUrlDifferentFromFoldersUrl = (currentPath.search("onedrive") === -1 && currentPath.search("gdrive")) === -1;
-  const shouldLetGenerate = (addList.length > 0 && !isUrlDifferentFromFoldersUrl) ? true : false;
+  const shouldLetGenerate = addList.length > 0 && !isUrlDifferentFromFoldersUrl || hardDrive;
   
   return (
     <Modal
@@ -106,7 +107,7 @@ const genReport = ({
                 </article>
               }
             
-              {isUrlDifferentFromFoldersUrl && 
+              {isUrlDifferentFromFoldersUrl && !hardDrive && 
               <article className="gen-report-not-able-to-gen-prompt">
                 Aby wygenerować raport musisz wybrać folder docelowy. Folder docelowy znajdziesz na jednym z dysków
                 umieszczonych w GoogleDrive lub OneDrive.

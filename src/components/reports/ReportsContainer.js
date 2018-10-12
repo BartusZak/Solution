@@ -6,7 +6,9 @@ import {
   generateReportACreator,
   generateReport,
   getRecentAndFavoriteReportsACreator,
-  unfavoriteReportACreator
+  unfavoriteReportACreator,
+  generateReportToHardDriveACreator,
+  downloadReportZipFileACreator
 } from "../../actions/reportsActions";
 import {
   fetchLists,
@@ -40,7 +42,8 @@ class ReportsContainer extends Component {
     extendId: "",
     saveAsFavorite: false,
     availableUntilToggle: false,
-    availableUntilDate: moment()
+    availableUntilDate: moment(),
+    hardDrive: false
   };
 
   componentDidMount() {
@@ -222,11 +225,21 @@ class ReportsContainer extends Component {
       pagesList,
       history,
       generateReport,
-      createSignalRConnection
+      createSignalRConnection,
+      generateReportToHardDrive,
+      downloadReportZipFileACreator
     } = this.props;
     this.setState({ isReportGenerating: true });
     createSignalRConnection().then(response => {
-      generateReport(addList, choosenFolder, pagesList, history, this.state.saveAsFavorite, this.state.availableUntilToggle ? this.state.availableUntilDate : null);
+      if(this.state.hardDrive){
+        generateReportToHardDrive(addList, pagesList, this.state.saveAsFavorite, this.state.availableUntilToggle ? this.state.availableUntilDate : null)
+        .then(response => { 
+          downloadReportZipFileACreator(response.replyBlock.data.dtoObject.filename);
+        }).catch(() => console.log("Error"));
+      }
+      else{
+        generateReport(addList, choosenFolder, pagesList, history, this.state.saveAsFavorite, this.state.availableUntilToggle ? this.state.availableUntilDate : null);
+      }
     });
   };
 
@@ -243,10 +256,17 @@ class ReportsContainer extends Component {
 
   clearDrivesData = endPath => {
     const { history, chooseFolder, getFoldersClear } = this.props;
+    this.setState({hardDrive: false});
     chooseFolder(null);
     getFoldersClear([], null, [], "");
     history.push(startPathname + endPath);
   };
+
+  selectHardDrive = () => {
+    this.setState({hardDrive: true});
+    this.openReportsModals();
+  };
+
   chooseRecentReport = teamSheets => {
     let helpList = [...this.props.helpList];
     let baseList = [...this.props.baseList];
@@ -377,6 +397,7 @@ class ReportsContainer extends Component {
                 goToNonePage={() => push(startPathname)}
                 selectOneDrive={() => this.clearDrivesData("/onedrive")}
                 selectGDrive={() => this.clearDrivesData("/gdrive")}
+                selectHardDrive={() => this.selectHardDrive()}
               />
             );
           }}
@@ -432,6 +453,7 @@ class ReportsContainer extends Component {
             handleAvailableUntil={this.handleAvailableUntil}
             availableUntilStartDate={moment()}
             availableUntilDate={this.state.availableUntilDate}
+            hardDrive={this.state.hardDrive}
           />
         )}
       </div>
@@ -487,13 +509,18 @@ const mapDispatchToProps = dispatch => {
       dispatch(
         generateReportACreator(teamSheets, choosenFolder, pageList, history, saveAsFavorite, availableUntil)
       ),
+    generateReportToHardDrive: (addList,pageList,saveAsFavorite,availableUntil) => 
+      dispatch(
+        generateReportToHardDriveACreator(addList,pageList,saveAsFavorite,availableUntil)
+      ),
     generateReportClearData: (status, errors) =>
       dispatch(generateReport(status, errors)),
     createSignalRConnection: () => dispatch(createSignalRConnection()),
     changeSortBy: (listToSort, sortType, path) =>
       dispatch(changeSortByACreator(listToSort, sortType, path)),
     unfavoriteReport: reportId => 
-      dispatch(unfavoriteReportACreator(reportId))
+      dispatch(unfavoriteReportACreator(reportId)),
+    downloadReportZipFileACreator: fileName => dispatch(downloadReportZipFileACreator(fileName))
   };
 };
 

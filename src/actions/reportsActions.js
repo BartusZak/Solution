@@ -5,7 +5,8 @@ import {
   invalidTokenError,
   GET_FAVORITE_AND_RECENT_REPORTS,
   ASYNC_STARTED,
-  UNFAVORITE_REPORT
+  UNFAVORITE_REPORT,
+  DOWNLOAD_REPORT_ZIP_FILE
 } from "../constants";
 import WebApi from "../api";
 import { errorCatcher } from "../services/errorsHandler";
@@ -139,6 +140,23 @@ export const unfavoriteReportACreator = reportId => {
   }
 }
 
+export const downloadReportZipFile = (downloadReportZipFileStatus, downloadReportZipFileErrors) => {
+  return { type: DOWNLOAD_REPORT_ZIP_FILE, downloadReportZipFileStatus, downloadReportZipFileErrors}
+};
+
+export const downloadReportZipFileACreator = (fileName) => dispatch => {
+  return new Promise((resolve, reject) => {
+    WebApi.reports.get.reportZip(fileName).then(response => {
+      dispatch(downloadReportZipFile(true, []));
+      window.open(response.replyBlock.request.responseURL);
+      resolve();
+    }).catch(errors => {
+      dispatch(downloadReportZipFile(false, errorCatcher(errors)));
+      reject();
+    })
+  })
+}
+
 export const generateReport = (generateReportStatus, generateReportErrors) => {
   return { type: GENERATE_REPORT, generateReportStatus, generateReportErrors };
 };
@@ -226,6 +244,36 @@ export const generateReportACreator = (
       });
   };
 };
+
+export const generateReportToHardDriveACreator = (addList,pageList,saveAsFavorite,availableUntil) => dispatch =>  {
+  return new Promise((resolve, reject) => {
+    const teamsSheets = {};
+    for (let i = 0; i < addList.length; i++) {
+      teamsSheets[addList[i].name] = pageList[i].value;
+    }
+
+    let model = {
+      teamsSheets: teamsSheets,
+      saveAsFavorite: saveAsFavorite,
+      availableUntil: availableUntil
+    };
+
+    dispatch(setIsStarted(true, "Generowanie raportu"));
+      WebApi.reports.post
+        .report(model, false, false)
+        .then(response => {
+          dispatch(setIsStarted(false, ""));
+          dispatch(generateReport(true, []));
+          resolve(response);
+        })
+        .catch(error => {
+          dispatch(setIsStarted(false));
+          dispatch(generateReport(false, errorCatcher(error)));
+          getRecentAndFavoriteReportsACreator(5);
+          reject();
+        });
+  })  
+}
 
 const getOneDriveToken = state => {
   return state.authReducer.oneDriveToken;
