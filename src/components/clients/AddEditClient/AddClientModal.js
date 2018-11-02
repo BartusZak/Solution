@@ -63,14 +63,14 @@ class AddClientModal extends Component {
 
     let error =
       e.target.name === "clientName"
-        ? validateInput(value, false, 3, 50, "name", this.props.t("ClientName"))
+        ? validateInput(value, false, 3, 50, "client", this.props.t("ClientName"))
         : e.target.name === "clientDescription"
           ? validateInput(
               value,
               true,
               3,
               200,
-              "name",
+              "client",
               this.props.t("ClientDescription")
             )
           : null;
