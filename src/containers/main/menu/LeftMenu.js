@@ -3,10 +3,10 @@ import { withRouter } from "react-router-dom";
 import VerticalMenuElement from "./VerticalMenuElement";
 import Icon from "../../../components/common/Icon";
 import PropTypes from "prop-types";
+import { putNotificationIconInSideBar } from "../../../actions/persistHelpActions";
 import { translate } from "react-translate";
 import { connect } from "react-redux";
 import binaryPermissioner from "./../../../api/binaryPermissioner";
-
 class LeftMenu extends React.Component {
   constructor(props) {
     super(props);
@@ -41,7 +41,13 @@ class LeftMenu extends React.Component {
   }
 
   render() {
-    const { match, extended, t } = this.props;
+    const {
+      match,
+      extended,
+      t,
+      isNotificationIconInSideBar,
+      putNotificationIconInSideBar
+    } = this.props;
     return (
       <ul
         ref={this.setMenuRef}
@@ -69,7 +75,7 @@ class LeftMenu extends React.Component {
             title={t("Users")}
           />
         ) : null}
-        {binaryPermissioner(false)(0)(0)(0)(0)(1)(1)(this.props.binPem) ? (
+        {binaryPermissioner(false)(0)(0)(0)(1)(1)(1)(this.props.binPem) ? (
           <VerticalMenuElement
             match={match}
             extended={extended}
@@ -108,7 +114,7 @@ class LeftMenu extends React.Component {
             title={t("Skills")}
           />
         ) : null}
-        {binaryPermissioner(false)(0)(0)(0)(0)(1)(1)(this.props.binPem) ? (
+        {binaryPermissioner(false)(0)(0)(0)(1)(1)(1)(this.props.binPem) ? (
           <VerticalMenuElement
             match={match}
             extended={extended}
@@ -118,7 +124,7 @@ class LeftMenu extends React.Component {
             title={t("Reports")}
           />
         ) : null}
-        {binaryPermissioner(false)(0)(0)(0)(0)(1)(1)(this.props.binPem) ? (
+        {binaryPermissioner(false)(0)(0)(0)(1)(1)(1)(this.props.binPem) ? (
           <VerticalMenuElement
             match={match}
             extended={extended}
@@ -128,6 +134,20 @@ class LeftMenu extends React.Component {
             title={t("ImportCV")}
           />
         ) : null}
+        <VerticalMenuElement
+          match={match}
+          extended={extended}
+          path="/info"
+          icon="info-circle"
+          iconType="fas"
+          title={t("Info")}
+        />
+        {isNotificationIconInSideBar && (
+          <li onClick={() => putNotificationIconInSideBar(false)}>
+            <Icon icon="bell" iconType="fa" iconSize="lg" />
+            <span>Powiadomienia</span>
+          </li>
+        )}
       </ul>
     );
   }
@@ -136,9 +156,17 @@ class LeftMenu extends React.Component {
 function mapStateToProps(state) {
   return {
     pem: state.authReducer.pem,
-    binPem: state.authReducer.binPem
+    binPem: state.authReducer.binPem,
+    isNotificationIconInSideBar:
+      state.persistHelpReducer.isNotificationIconInSideBar
   };
 }
+const mapDispatchToProps = dispatch => {
+  return {
+    putNotificationIconInSideBar: isNotificationIconInSideBar =>
+      dispatch(putNotificationIconInSideBar(isNotificationIconInSideBar))
+  };
+};
 
 LeftMenu.propTypes = {
   match: PropTypes.object,
@@ -147,7 +175,10 @@ LeftMenu.propTypes = {
 };
 
 export default withRouter(
-  connect(mapStateToProps)(translate("LeftMenu")(LeftMenu))
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(translate("LeftMenu")(LeftMenu))
 );
 
 /*

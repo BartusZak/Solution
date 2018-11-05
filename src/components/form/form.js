@@ -26,7 +26,7 @@ class Form extends Component {
 
   componentDidUpdate(prevProps){
     const { shouldChangeFormState, newFormItems } = this.props;
-    if(shouldChangeFormState !== undefined && prevProps.shouldChangeFormState !== shouldChangeFormState){
+    if(shouldChangeFormState === true && prevProps.shouldChangeFormState !== shouldChangeFormState){
       this.setState({formItems: newFormItems, validationResult: true});
     }
   }
@@ -52,6 +52,8 @@ class Form extends Component {
         formItems[index].value.push(typedVal);
       }
     }
+
+    this.validateAllInputs()
 
     this.setState({
       formItems: formItems,
@@ -79,16 +81,23 @@ class Form extends Component {
 
     for (let key in formItems) {
       if (formItems[key].mode !== "date-picker") {
-        formItems[key].error = validateInput(
-          formItems[key].mode === "input-with-add-items"
-            ? formItems[key].typedListVal
-            : formItems[key].value,
-          formItems[key].canBeNull,
-          formItems[key].minLength,
-          formItems[key].maxLength,
-          formItems[key].inputType,
-          formItems[key].title
-        );
+        formItems[key].error = formItems[key].mode === "input-with-add-items" ?
+          validateInput(
+            formItems[key].value.join(),
+            false,
+            1,
+            formItems[key].maxLength,
+            formItems[key].inputType,
+            formItems[key].title
+          ) :
+          validateInput(
+            formItems[key].value,
+            formItems[key].canBeNull,
+            formItems[key].minLength,
+            formItems[key].maxLength,
+            formItems[key].inputType,
+            formItems[key].title
+          )
       }
       if(formItems[key].checkIfDateIsfromPast){
         formItems[key].error = validateDateIsNotFromPast(formItems[key].value);
@@ -135,24 +144,38 @@ class Form extends Component {
     const newFormItems = [...this.state.formItems];
 
     if (newFormItems[id].mode !== "input-with-add-items")
+    {
       newFormItems[id].value = e.target.value;
-    else newFormItems[id].typedListVal = e.target.value;
 
-    newFormItems[id].error = validateInput(
-      e.target.value,
-      newFormItems[id].canBeNull,
-      newFormItems[id].minLength,
-      newFormItems[id].maxLength,
-      newFormItems[id].inputType,
-      newFormItems[id].title
-    );
+      newFormItems[id].error = validateInput(
+        e.target.value,
+        newFormItems[id].canBeNull,
+        newFormItems[id].minLength,
+        newFormItems[id].maxLength,
+        newFormItems[id].inputType,
+        newFormItems[id].title
+      );
+    }
+    else
+    {
+      newFormItems[id].typedListVal = e.target.value;
+
+      newFormItems[id].error = validateInput(
+        e.target.value,
+        newFormItems[id].value.length > 0 ? true : newFormItems[id].canBeNull,
+        newFormItems[id].value.length > 0 ? 0 : newFormItems[id].minLength,
+        newFormItems[id].maxLength,
+        newFormItems[id].inputType,
+        newFormItems[id].title
+      );
+    }
 
     if(type === "client"){
       const indexOfMatchedClient = newFormItems[id].dataToMap.findIndex(i => {
         return i.name === e.target.value
       });
       const { cloudIdInForm } = this.props;
-      
+
       if(indexOfMatchedClient !== -1){
 
         const cloudsInClient = newFormItems[id].dataToMap[indexOfMatchedClient].clouds;
@@ -232,7 +255,7 @@ class Form extends Component {
 
   onSubmit = e => {
     e.preventDefault();
-      
+
     if (this.validateAllInputs() === true && this.props.shouldSubmit) {
       this.props.onSubmit();
     }
@@ -244,19 +267,19 @@ class Form extends Component {
     this.setState({ formItems: formItems });
   };
   render() {
-    const { enableButtonAfterTransactionEnd = false, inputContainerClass } = this.props;
+    const { enableButtonAfterTransactionEnd = false, inputContainerClass, isDisabled} = this.props;
     return (
       <form
         onSubmit={e => this.onSubmit(e)}
         className="universal-form-container"
       >
-      {this.props.placeToUsePropsChildren === "top" && 
+      {this.props.placeToUsePropsChildren === "top" &&
           this.props.children
       }
         {this.state.formItems.map((i, index) => {
           return (
-            <section style={{display: i.disable === true ? 'none' : 'flex'}} className={`input-container ${inputContainerClass}`} key={i.title}>
-              <label>{i.title}</label>
+            <section style={{display: i.disable === true ? 'none' : 'flex'}} className={`input-container ${inputContainerClass}`} key={index}>
+              <label>{i.title} {i.showCount && <b>({i.dataToMap.length})</b>}</label>
               <div className="right-form-container">
                 {!i.mode || i.mode === "text" ? (
                   <input
@@ -266,6 +289,7 @@ class Form extends Component {
                     onChange={e => this.onChangeInput(e, index)}
                     type={i.type}
                     placeholder={i.placeholder}
+                    disabled = {isDisabled}
                   />
                 ) : i.mode === "textarea" ? (
                   <textarea
@@ -286,7 +310,7 @@ class Form extends Component {
                     error={i.error}
                     onBlur={i.inputType === "client" ? this.props.onBlur : null}
                   />
-                  
+
                 ) : i.mode === "date-picker" ? (
                   <DatePicker
                     style={{ width: "100%" }}
@@ -302,7 +326,7 @@ class Form extends Component {
                         ? this.state.endDate
                         : this.state.startDate
                     }
-                    locale="pl"
+                    locale={i.locale ? i.locale : "pl"}
                     onChange={date => this.onDateChange(date, index)}
                     dateFormat="DD/MM/YYYY"
                     peekNextMonth
@@ -389,6 +413,11 @@ class Form extends Component {
                       type="text"
                       placeholer={i.placeholder}
                     />
+                    {this.state.formItems[index].value.length > 0 &&
+                      <i onClick={() => this.setState({showList: !this.state.showList})}
+                         className={this.state.showList ? "fa fa-caret-up" : "fa fa-caret-down"}></i>
+                    }
+
                     <i
                       onClick={() => this.addItemToList(index, i.typedListVal)}
                       className="fa fa-plus"
@@ -434,7 +463,7 @@ class Form extends Component {
                       );
                     })}
                   </select>
-                ) : i.mode === "type-and-select" ? 
+                ) : i.mode === "type-and-select" ?
 
                 <DataList
                     type={i.type}
@@ -456,7 +485,7 @@ class Form extends Component {
             </section>
           );
         })}
-        {this.props.placeToUsePropsChildren === "bottom" && 
+        {this.props.placeToUsePropsChildren === "bottom" &&
           this.props.children
         }
 
@@ -470,6 +499,7 @@ class Form extends Component {
           submitResult={this.props.submitResult}
           enableButtonAfterTransactionEnd={enableButtonAfterTransactionEnd}
           shouldBeDisabledByOtherReason={this.props.shouldBeDisabledByOtherReason}
+          isDisabled = {this.props.submitResult}
         />
       </form>
     );

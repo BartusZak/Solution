@@ -18,7 +18,7 @@ class UsersContainer extends React.Component {
       currentPage: 1,
       limit: 15,
       showModal: false,
-      passedSettings: {}
+      passedSettings: {},
     };
 
     this.handleOpenModal = this.handleOpenModal.bind(this);

@@ -39,14 +39,20 @@ export const getQuestions = (getQuestionsStatus, getQuestionsErrors, questions) 
 
   export const addQuarterTalkACreator = (quarterTalkQuestionItems, employeeId) => dispatch => {
       return new Promise((resolve, reject) => {
-        const model = {employeeId, year: moment(quarterTalkQuestionItems[10].value).year(), quarter: quarterTalkQuestionItems[11].value, quarterTalkQuestionItems: []}
+        const count = quarterTalkQuestionItems.length;
+        const quarterIndex = count - 1;
+        const yearIndex = count - 2;
 
-        quarterTalkQuestionItems.splice(11, 1);
-        quarterTalkQuestionItems.splice(10, 1);
+        const model = {
+            employeeId, year: moment(quarterTalkQuestionItems[yearIndex].value).year(),
+            quarter: quarterTalkQuestionItems[quarterIndex].value, quarterTalkQuestionItems: []
+        }
+        const filteredQuarters = quarterTalkQuestionItems.filter(i => i.mode === "textarea");
 
-        model.quarterTalkQuestionItems = quarterTalkQuestionItems.map(item => {
+        model.quarterTalkQuestionItems = filteredQuarters.map(item => {
             return { quarterTalkQuestionId: item.id, answer: item.value} 
         });
+
         WebApi.quarterTalks.post.createQuarter(model).then(response => {
             dispatch(addQuarterTalk(true, []));
             resolve();
@@ -61,7 +67,7 @@ export const getReservedDates = (reservedDates, getDatesStatus, getDatesErrors) 
     return { type: GET_RESERVED_DATES, reservedDates, getDatesStatus, getDatesErrors }
 }
 
-  export const getReservedDatesACreator = (employeeId, token) => dispatch => {
+  export const getReservedDatesACreator = (employeeId, token, locale) => dispatch => {
       return new Promise((resolve, reject) => {
         const today = moment().format("YYYY-MM-DD HH:mm");
         const model = {
@@ -76,7 +82,7 @@ export const getReservedDates = (reservedDates, getDatesStatus, getDatesErrors) 
 
             const extractedData = [];
             for(let key in cutedResponse){
-                const momentedDate = moment(copiedResponse[key].dateTime).locale("pl");
+                const momentedDate = moment(copiedResponse[key].dateTime).locale(locale);
                 const time = momentedDate.format("HH:mm");
                 const date = momentedDate.format("YYYY-MM-DD");
                 const monthName = momentedDate.format("MMMM");
@@ -125,10 +131,6 @@ export const getReservedDates = (reservedDates, getDatesStatus, getDatesErrors) 
       return { type: GET_QUARTERS_FOR_EMPLOYEE, quartersForEmployee, quartersForEmployeeStatus, quartersForEmployeeErrors }
   }
 
-
-
-
-
   export const getQuartersForEmployeeACreator = employeeId => dispatch => {
       return new Promise((resolve, reject) => {
         WebApi.quarterTalks.get.getQuarterForEmployee(employeeId).then(response => {
@@ -143,7 +145,7 @@ export const getReservedDates = (reservedDates, getDatesStatus, getDatesErrors) 
             dispatch(getQuartersForEmployee(items, true, []));
             dispatch(createLastWatchedPersonsArrayACreator(employeeId));
             
-            resolve();
+            resolve(items);
         }).catch(error => {
             dispatch(getQuartersForEmployee([], false, errorCatcher(error)));
             reject();
@@ -200,7 +202,7 @@ export const getReservedDates = (reservedDates, getDatesStatus, getDatesErrors) 
     return new Promise((resolve, reject) => {
         WebApi.quarterTalks.post.addQuestion({question}).then(response => {
             dispatch(addQuestion(true, []));
-            resolve(response.replyBlock.data.dtoObject);
+            resolve(response.replyBlock.data.dtoObject.id);
         }).catch(errors => {
             dispatch(addQuestion(false, errorCatcher(errors)));
             reject();
@@ -222,4 +224,19 @@ export const deleteQuestionACreator = questionId => dispatch => {
 
   export const deleteQuestion = (status, errors) => {
       return { type: DELETE_QUESTION, status, errors };
+  }
+
+  export const populateQuarterTalkACreator = (formItems, quarterId) => dispatch => {
+      return new Promise((resolve, reject) => {
+        const quarterTalkQuestionItems = formItems.map(item => (
+            { quarterTalkQuestionId: item.id, answer: item.value }
+        ));
+        WebApi.quarterTalks.put.populateQuarter({quarterTalkQuestionItems}, quarterId).then(response => {
+            dispatch(addQuarterTalk(true, []));
+            resolve();
+        }).catch(errors => {
+            dispatch(addQuarterTalk(false, errorCatcher(errors)));
+            reject();
+        })
+      })
   }

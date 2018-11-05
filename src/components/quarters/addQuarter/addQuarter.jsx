@@ -2,9 +2,10 @@ import React, { Component } from 'react'
 import './addQuarter.scss';
 import Form from '../../../components/form/form.js';
 import { connect } from 'react-redux';
-import {deleteQuestion,
+import { populateQuarterTalkACreator,
+    deleteQuestion, 
     deleteQuestionACreator,
-    addQuestionACreator,
+    addQuestionACreator, addQuestion,
     addQuarterTalkACreator,
     addQuarterTalk,
     getQuarterQuestionsACreator, getQuestions
@@ -19,29 +20,8 @@ import SpinnerButton from '../../form/spinner-btn/spinner-btn.js';
 import Button from '../../common/button/button.js';
 import { validateInput } from '../../../services/validation.js';
 import SmallSpinner from '../../common/spinner/small-spinner.js';
-const additionalFormItems = [
-    {
-        title: "Rok", mode: "date-picker", value: moment(), error: "", canBeNull: false
-    },
-    {
-        title: "Kwartał", mode: "type-and-select", value: "", error: "", canBeNull: false,
-        type: "text",
-        inputType: "number",
-        placeholder: "wybierz lub wpisz kwartał...",
-        dataToMap: [
-            {name: "1", id: 1},
-            {name: "2", id: 2},
-            {name: "3", id: 3},
-            {name: "4", id: 4}
-        ]
-    }
-];          
+import {translate} from 'react-translate';
 
-const functionsToUseForQuestions = [
-    {name: "search", searchBy: "question", count: true}, 
-    {name: "sort", sortBy: "question"},
-    {name: "filter", filterBy: "isChecked", posibleValues: [{value: false, description: "Niewybrane"}, {value: true, description: "Wybrane"}]}
-];
 
 class AddQuarter extends Component{
     state = {
@@ -55,9 +35,37 @@ class AddQuarter extends Component{
         isAddingNewQuestion: false, isPostingNewQuestion: false, shouldPutAddedQuestionInForm: false,
         isDeletingQuestion: false
     }
+
+    additionalFormItems = [
+        {
+            title: this.props.t("Date"), mode: "date-picker", value: moment(), error: "", canBeNull: false
+        },
+        {
+            title: this.props.t("Quarter"), mode: "type-and-select", value: "", error: "", canBeNull: false,
+            type: "text",
+            inputType: "number",
+            placeholder: this.props.t("ChooseOrSelectQuarter"),
+            dataToMap: [
+                {name: "1", id: 1},
+                {name: "2", id: 2},
+                {name: "3", id: 3},
+                {name: "4", id: 4}
+            ]
+        }
+    ];          
+    functionsToUseForQuestions = [
+        {name: "search", searchBy: "question", count: true}, 
+        {name: "sort", sortBy: "question"},
+        {name: "filter", filterBy: "isChecked", posibleValues: [{value: true, description: this.props.t("Choosen")}, 
+            {value: false, description: this.props.t("NotChoosen")}]}
+    ];
+
+    quarterToPopulateId = this.props.history.location.state && this.props.history.location.state.quarterToPopulateId;
+
     componentDidMount(){
         this.getQuestions();
     }
+
     getQuestions = () => {
         this.props.getQuarterQuestionsACreator().then(response => {
             this.setState({addQuarterQuestions: this.createStartFormData(response), 
@@ -67,22 +75,26 @@ class AddQuarter extends Component{
 
     componentDidUpdate(prevProps){
         if(prevProps.currentWatchedUser !== this.props.currentWatchedUser && !this.state.showSelectQuestionsModal){
-            this.setState({showSelectQuestionsModal: true});
+            this.openSelectQuestionsModal();
         }
         if(this.state.shouldPutAddedQuestionInForm)
             this.setState({shouldPutAddedQuestionInForm: false});
     }
     createFormItem = (id, title) => {
-        return { id, title, mode: "textarea", value: "", error: "", canBeNull: false, maxLength: 300 };
+        return { id, title, mode: "textarea", value: "", error: "", placeholder: title, canBeNull: false, maxLength: 300 };
     }
 
     createFormItems = () => {
+        const { deleteQuestionClearData } = this.props;
         const { addQuarterQuestions } = this.state;
         const onlyCheckedQuarterQuestions = addQuarterQuestions.filter(i => i.isChecked);
         let addQuarterFormItems = onlyCheckedQuarterQuestions.map(i => {
             return this.createFormItem(i.id, i.question);
         })
-        addQuarterFormItems = addQuarterFormItems.concat(additionalFormItems);
+        if(!this.quarterToPopulateId)
+            addQuarterFormItems = addQuarterFormItems.concat(this.additionalFormItems);
+        
+        deleteQuestionClearData();
         this.setState({addQuarterFormItems, showSelectQuestionsModal: false});
     }
     createQuestion = (id, question, isChecked) => {
@@ -95,11 +107,21 @@ class AddQuarter extends Component{
 
     addQuarter = () => {
         this.setState({isAddingQuarter: true});
-        const { addQuarterTalkACreator, match } = this.props;
-        const addQuarterQuestions = [...this.state.addQuarterQuestions];
-        addQuarterTalkACreator(addQuarterQuestions, match.params.id).then(() => {
-            this.setState({isAddingQuarter: false});
-        }).catch(() => this.setState({isAddingQuarter: false}));
+        const { addQuarterTalkACreator, currentWatchedUser, populateQuarterTalkACreator } = this.props;
+        const addQuarterFormItems = [...this.state.addQuarterFormItems];
+
+        if(this.quarterToPopulateId){
+            populateQuarterTalkACreator(addQuarterFormItems, this.quarterToPopulateId).then(() => {
+                this.setState({isAddingQuarter: false});
+            }).catch(() => this.setState({isAddingQuarter: false}));
+        }
+        else{
+            addQuarterTalkACreator(addQuarterFormItems, currentWatchedUser).then(() => {
+                this.setState({isAddingQuarter: false});
+            }).catch(() => this.setState({isAddingQuarter: false}));
+        }
+            
+        
     }
 
     togleIsCheckedState = item => {
@@ -111,18 +133,15 @@ class AddQuarter extends Component{
 
         this.setState({addQuarterQuestions, addQuarterFormItems, itemsDeletedCount});
     }
-
-    componentWillUnmount(){
-        const { addQuarterTalkClear, clearQuestionResult } = this.props;
-        addQuarterTalkClear(); clearQuestionResult();
-    }
-    
+ 
     closeModal = () => {
         const { itemsDeletedCount } = this.state;
-        const { onCloseModal, deleteQuestionClearData, deleteQuestionStatus } = this.props;
+        const { onCloseModal, deleteQuestionClearData, deleteQuestionStatus, addQuarterTalkStatus, addQuarterTalkClear } = this.props;
         this.setState({showSelectQuestionsModal: false}, () => {
             if(deleteQuestionStatus !== null)
                 deleteQuestionClearData();
+            if(addQuarterTalkStatus !== null)
+                addQuarterTalkClear();
             
             if(itemsDeletedCount === 0)
                 onCloseModal();
@@ -138,7 +157,7 @@ class AddQuarter extends Component{
     onChangeNewQuestion = e => {
         const newQuestionName = {...this.state.newQuestionName};
         newQuestionName.value = e.target.value;
-        newQuestionName.error = validateInput(newQuestionName.value, false, 3, 120);
+        newQuestionName.error = validateInput(newQuestionName.value, false, 3, 120, null, "pytanie");
         this.setState({newQuestionName});
     }
 
@@ -169,28 +188,42 @@ class AddQuarter extends Component{
         let addQuarterFormItems = [...this.state.addQuarterFormItems];
         newQuestionName.error = validateInput(newQuestionName.value, false, 3, 120);
         if(!newQuestionName.error){
-            // dodaj element na strone
             this.setState({isPostingNewQuestion: true});
             this.props.addQuestionACreator(newQuestionName.value)
             .then(questionId => {
-                addQuarterFormItems = additionalFormItems.unshift(this.createFormItem(questionId, newQuestionName.value));
+                addQuarterFormItems.unshift(this.createFormItem(questionId, newQuestionName.value));
                 newQuestionName.value = "";
-                this.setState({isPostingNewQuestion: false, shouldPutAddedQuestionInForm: true, addQuarterFormItems, newQuestionName});
+                newQuestionName.error = "";
+                this.setState({isPostingNewQuestion: false, shouldPutAddedQuestionInForm: true, 
+                    addQuarterFormItems, newQuestionName});
             }).catch(() => this.setState({isPostingNewQuestion: false}));
         }
         else
             this.setState({newQuestionName});
     }
 
+    togleAddingQuestionInput = () => {
+        const { addQuestionClearData } = this.props;
+        const { isAddingNewQuestion } = this.state;
+        const newQuestionName = {...this.state.newQuestionName};
+        if(!isAddingNewQuestion){
+            addQuestionClearData();
+            newQuestionName.value = ""; newQuestionName.error = "";
+            this.setState({newQuestionName});           
+        }
+        this.setState({isAddingNewQuestion: !isAddingNewQuestion});
+    }
 
     componentWillUnmount(){
-        this.props.deleteQuestionClearData();
+        const { addQuarterTalkClear, clearQuestionResult, deleteQuestionClearData } = this.props;
+        addQuarterTalkClear(); clearQuestionResult(); deleteQuestionClearData();
     }
     render(){
-        const {history, addQuarterTalkStatus, addQuarterTalkErrors, getQuestionsStatus, getQuestionsErrors, clearQuestionResult,
-            addQuestionErrors, deleteQuestionStatus, deleteQuestionErrors } = this.props;
+        const { history, addQuarterTalkStatus, addQuarterTalkErrors, getQuestionsStatus, getQuestionsErrors, clearQuestionResult,
+            addQuestionStatus, addQuestionErrors, deleteQuestionStatus, deleteQuestionErrors, t } = this.props;
         const { isDeletingQuestion, isAddingQuarter, addQuarterQuestions, isLoadingQuestions, showSelectQuestionsModal, shouldPutAddedQuestionInForm, 
             itemsDeletedCount, addQuarterFormItems, newQuestionName, isAddingNewQuestion, isPostingNewQuestion } = this.state;
+        
         return (
             <div className="add-quarter-container">
                 <LoadHandlingWrapper errors={getQuestionsErrors} closePrompt={clearQuestionResult}
@@ -199,9 +232,9 @@ class AddQuarter extends Component{
                 {addQuarterFormItems.length > 0 && 
                   <React.Fragment>
                     <div className="form-container">
-                        <h1>Dodaj rozmowę kwartalną</h1>
+                        <h1>{this.quarterToPopulateId ? t("Populate") : t("AddQuarterTalk")}</h1>
                         <Form
-                            btnTitle="Dodaj"
+                            btnTitle={this.quarterToPopulateId ? t("ConfirmQuestions") : t("Add")}
                             newFormItems={addQuarterFormItems}
                             shouldChangeFormState={shouldPutAddedQuestionInForm}
                             shouldSubmit={true}
@@ -213,28 +246,28 @@ class AddQuarter extends Component{
                             enableButtonAfterTransactionEnd={true}
                             submitResult={{
                                 status: addQuarterTalkStatus,
-                                content: addQuarterTalkStatus ? "Pomyślnie utworzono rozmowę kwartalną" :
+                                content: addQuarterTalkStatus ? t("SuccAddedQuarter") :
                                     addQuarterTalkErrors[0]
                             }}
                         >
                             {isAddingNewQuestion && 
                             <section className="input-container column-container">
                                 <label>
-                                    {newQuestionName.value ? newQuestionName.value : "Tu pojawi się pytanie"}
+                                    {newQuestionName.value ? newQuestionName.value : t("QuestionWillBeHere")}
                                 </label>
                                 <div className="right-form-container">
                                     <div>
                                         {isPostingNewQuestion && <SmallSpinner />}
                                         <textarea className={newQuestionName.error !== "" ? "input-error" : ""}
                                         onChange={e => this.onChangeNewQuestion(e)} value={newQuestionName.value} 
-                                            type="text" placeholder="dodaj nowe pytanie..."></textarea>
+                                            type="text" placeholder={t("AddQuarter")+"..."}></textarea>
                                         {isPostingNewQuestion || 
                                             <i onClick={this.addQuestion}
                                             className={`fa fa-plus ${newQuestionName.error !== "" ? "unactive-plus" : "active-plus"}`}></i>
                                         }
                                     </div>
                                     <p className="form-error">
-                                        <span>{addQuestionErrors ? addQuestionErrors : newQuestionName.error}</span>
+                                        <span>{addQuarterTalkStatus === false ? addQuarterTalkErrors[0] : newQuestionName.error}</span>
                                     </p>
                                 </div>
                             </section>
@@ -244,50 +277,45 @@ class AddQuarter extends Component{
                     </div>
 
                     <div className="adding-quarter-settings">
-                        <h1>Opcje</h1>
-                        <Button onClick={() => this.setState({isAddingNewQuestion: !isAddingNewQuestion})} title={isAddingNewQuestion ? "Anuluj" : "Dodaj pytanie"} 
+                        <h1>{t("Options")}</h1>
+                        <Button onClick={this.togleAddingQuestionInput} title={isAddingNewQuestion ? t("Deny") : t("AddQuestion")} 
                         mainClass={`generate-raport-btn ${isAddingNewQuestion ? "btn-grey" : "btn-green"}`}>
                         <i className={`fa fa-${isAddingNewQuestion ? "times" : "plus"}`}/></Button>
 
-                        <Button onClick={this.openSelectQuestionsModal} title="Zarządzaj pytaniami" 
+                        <Button onClick={this.openSelectQuestionsModal} title={t("QuestionMenage")}
                         mainClass="generate-raport-btn btn-green"><i className="fa fa-question-circle"/></Button>
-
-                        
-                
                     </div>
                   </React.Fragment>
                 }
-                   
-                    
-                    <Modal
-                    open={showSelectQuestionsModal}
-                    classNames={{ modal: `Modal select-questions-modal`}}
-                    contentLabel="Select questions modal"
-                    onClose={this.closeModal}
-                    >
-                        <header>
-                            <h3>Wybierz pytania do wypełnienia</h3>
-                        </header>
+                <Modal
+                open={showSelectQuestionsModal}
+                classNames={{ modal: `Modal select-questions-modal`}}
+                contentLabel="Select questions modal"
+                onClose={this.closeModal}
+                >
+                    <header>
+                        <h3>{t("ChooseQuestionHeader")}</h3>
+                    </header>
 
-                        <div className="questions-list">
-                            <List shouldAnimateList functionsToUse={functionsToUseForQuestions}
+                    <div className="questions-list">
+                        <List shouldAnimateList functionsToUse={this.functionsToUseForQuestions}
                             clickItemFunction={this.chooseFunction} items={addQuarterQuestions} component={QuestionToSelect} 
-                            />
-                        </div>
-
-                        <SpinnerButton
-                            validationResult={itemsDeletedCount === 0 ? false : true}
-                            onClickHandler={this.createFormItems}
-                            btnTitle="Rozpocznij"
-                            isLoading={isDeletingQuestion}
-                            submitResult={{
-                                status: deleteQuestionStatus,
-                                content: deleteQuestionStatus ? "Pomyślnie usunięto pytanie" :
-                                    deleteQuestionErrors[0]        
-                            }}
-                            
                         />
-                    </Modal>
+                    </div>
+
+                    <SpinnerButton
+                        validationResult={itemsDeletedCount === 0 ? false : true}
+                        onClickHandler={this.createFormItems}
+                        btnTitle={this.quarterToPopulateId ? t("Populate") : t("Start")}
+                        isLoading={isDeletingQuestion}
+                        submitResult={{
+                            status: deleteQuestionStatus,
+                            content: deleteQuestionStatus ? t("SuccDeleteQuestion") :
+                                deleteQuestionErrors[0]        
+                        }}
+                        
+                    />
+                </Modal>
                 </LoadHandlingWrapper>     
             </div>
         );
@@ -320,13 +348,14 @@ const mapStateToProps = state => {
       clearQuestionResult: () => dispatch(getQuestions(null, [], [])),
 
       addQuestionACreator: (question) => dispatch(addQuestionACreator(question)),
+      addQuestionClearData: () => dispatch(addQuestion(null, [])),
+      
       deleteQuestionACreator: questionId => dispatch(deleteQuestionACreator(questionId)),
-      deleteQuestionClearData: () => dispatch(deleteQuestion(null, []))
+      deleteQuestionClearData: () => dispatch(deleteQuestion(null, [])),
+
+      populateQuarterTalkACreator: (formItems, quarterId) => dispatch(populateQuarterTalkACreator(formItems, quarterId))
     };
   };
   
-  export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(AddQuarter);
+  export default connect(mapStateToProps,mapDispatchToProps)(translate("Quaters")(AddQuarter));
   

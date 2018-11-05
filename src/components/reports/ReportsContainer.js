@@ -29,12 +29,13 @@ import GDriveContent from "./GDriveContent/GDriveContent";
 import { Route } from "react-router-dom";
 import { createSignalRConnection } from "../../actions/progressBarActions";
 import { generateSortFunction } from "../../services/methods";
+import { translate } from 'react-translate';
 const startPathname = "/main/reports";
 import moment from "moment";
 
 class ReportsContainer extends Component {
   state = {
-    spinner: this.props.loadTeamsResult && this.props.reportsStatus ? false : true,
+    spinner: true,
     reportModal: false,
     didPagesHasIncorrectValues: { status: null, error: "" },
     valueToSearch: "",
@@ -47,28 +48,20 @@ class ReportsContainer extends Component {
   };
 
   componentDidMount() {
-    //this.props.fetchLists([], [],[]);
-    //this.props.chooseFolder(null);
-    const {
-      loadTeamsResult,
-      getTeams,
-      getRecentAndFavoriteReports,
-      fetchLists,
-      addList,
-      teams,
-      baseList,
-      helpList,
-    } = this.props;
+    const { getTeams, getRecentAndFavoriteReports, fetchLists, addList, helpList } = this.props;
     getRecentAndFavoriteReports(5);
     if (addList.length === 0) {
       getTeams();
-    } else {
+    } 
+    else {
       fetchLists([...addList], [...helpList], [...helpList]);
     }
   }
+
   componentWillReceiveProps(nextProps) {
-    if (this.props.teams !== nextProps.teams
-      /* || this.props.reports !== nextProps.reports */) {
+    if (
+      this.props.teams !== nextProps.teams
+    ) {
       this.setState({ spinner: false });
       if (nextProps.loadTeamsResult && this.props.teams.length === 0) {
         const sortFunction = generateSortFunction("numberOfMemberInDB");
@@ -100,8 +93,7 @@ class ReportsContainer extends Component {
     const addList = [...this.props.addList];
     const helpList = [...this.props.helpList];
     const baseList = [...this.props.baseList];
-    var pagesList = this.props.pagesList ?
-      [...this.props.pagesList] : [];
+    var pagesList = this.props.pagesList ? [...this.props.pagesList] : [];
     const index = this.props.baseList.findIndex(i => {
       return i.name === name;
     });
@@ -117,6 +109,7 @@ class ReportsContainer extends Component {
     pagesList.push({ value: 1, error: "" }); //przetestować
     this.props.fetchLists(addList, baseList, helpList, pagesList);
   };
+
   deleteTeamFromResultList = index => {
     const addList = [...this.props.addList];
     const helpList = [...this.props.helpList];
@@ -154,15 +147,12 @@ class ReportsContainer extends Component {
   };
 
   openReportsModals = () => {
-    //const pagesList = [];
     const { addList, baseList, helpList, fetchLists } = this.props;
     var pagesList;
     if (this.props.pagesList && this.props.pagesList.length > 0)
       pagesList = [...this.props.pagesList];
-    else pagesList = addList.map(() => ({ value: 1, error: "" }))
+    else pagesList = addList.map(() => ({ value: 1, error: "" }));
 
-    // for (let i = 0; i < this.props.addList.length; i++)
-    //   pagesList[i] = { value: 1, error: "" };
     const didPagesHasIncorrectValues = {
       ...this.state.didPagesHasIncorrectValues
     };
@@ -175,7 +165,6 @@ class ReportsContainer extends Component {
     });
     fetchLists(addList, baseList, helpList, pagesList);
   };
-
 
   onChangeReportPages = e => {
     const index = Number(e.target.id);
@@ -200,12 +189,14 @@ class ReportsContainer extends Component {
       fetchLists(addList, baseList, helpList, pagesList);
     }
   };
+
   searchInTeamList = e => {
     const { helpList, addList, fetchLists } = this.props;
     const searchedItems = this.findFromList(e.target.value, helpList);
     this.setState({ valueToSearch: e.target.value });
     fetchLists(addList, searchedItems, helpList);
   };
+
   findFromList = (value, array) => {
     const searchedItems = [];
     for (let key in array)
@@ -213,11 +204,13 @@ class ReportsContainer extends Component {
         searchedItems.push(array[key]);
     return searchedItems;
   };
+
   chooseFolderHandler = folder => {
     if (this.props.addList.length > 0) this.openReportsModals();
 
     this.props.chooseFolder(folder);
   };
+
   generateReportHandler = () => {
     const {
       addList,
@@ -231,6 +224,7 @@ class ReportsContainer extends Component {
     } = this.props;
     this.setState({ isReportGenerating: true });
     createSignalRConnection().then(response => {
+
       if(this.state.hardDrive){
         generateReportToHardDrive(addList, pagesList, this.state.saveAsFavorite, this.state.availableUntilToggle ? this.state.availableUntilDate : null)
         .then(response => { 
@@ -250,6 +244,7 @@ class ReportsContainer extends Component {
     generateReportClearData(null, []);
     this.setState({ reportModal: false });
   };
+
   extendDetailName = id => {
     this.setState({ extendId: id });
   };
@@ -266,12 +261,18 @@ class ReportsContainer extends Component {
     this.setState({hardDrive: true});
     this.openReportsModals();
   };
-
+  
   chooseRecentReport = teamSheets => {
     let helpList = [...this.props.helpList];
     let baseList = [...this.props.baseList];
-    const pagesList = teamSheets.map(teamsheet => ({ value: teamsheet.sheet, error: "" }));
-    const addList = teamSheets.map(teamsheet => ({ name: teamsheet.team, numberOfMemberInDB: teamsheet.sheet }));
+    const pagesList = teamSheets.map(teamsheet => ({
+      value: teamsheet.sheet,
+      error: ""
+    }));
+    const addList = teamSheets.map(teamsheet => ({
+      name: teamsheet.team,
+      numberOfMemberInDB: teamsheet.sheet
+    }));
     const addedLength = addList.length;
     helpList.push(...this.props.addList);
     baseList.push(...this.props.addList);
@@ -283,51 +284,31 @@ class ReportsContainer extends Component {
     }
 
     this.props.fetchLists(addList, baseList, helpList, pagesList);
-  }
+  };
+
   toggleAddToFavorites = e => {
     this.setState({ saveAsFavorite: e.target.checked });
-  }
+  };
+
   unfavorite = reportId => {
     this.props.unfavoriteReport(reportId);
     this.props.getRecentAndFavoriteReports(5);
-  }
+  };
+
   handleAvailableUntilToggle = e => {
     var newValue = e.target.checked;
-    this.setState({availableUntilToggle: newValue});
-  }
+    this.setState({ availableUntilToggle: newValue });
+  };
+
   handleAvailableUntil = value => {
-    this.setState({availableUntilDate: value});
-  }
+    this.setState({ availableUntilDate: value });
+  };
 
   render() {
-    const {
-      reportModal,
-      spinner,
-      valueToSearch,
-      isReportGenerating,
-      extendId
-    } = this.state;
-    const {
-      addList,
-      baseList,
-      folders,
-      pagesList,
-      choosenFolder,
-      generateReportStatus,
-      generateReportErrors,
-      getFoldersStatus,
-      getFoldersErrors,
-      path,
-      loadTeamsResult,
-      loadTeamsErrors,
-      history,
-      isStarted,
-      driveSortType,
-      changeSortBy,
-      reportsStatus,
-      reports,
-      reportsErrors
-    } = this.props;
+    const { reportModal, spinner, valueToSearch, isReportGenerating, extendId } = this.state;
+    const { addList, baseList, folders, pagesList, choosenFolder, generateReportStatus, generateReportErrors,
+      getFoldersStatus, getFoldersErrors, path, loadTeamsResult, loadTeamsErrors, history, isStarted, driveSortType,
+      changeSortBy, reportsStatus, reports, reportsErrors, t } = this.props;
     const { push } = history;
     const { pathname } = history.location;
     return (
@@ -394,6 +375,7 @@ class ReportsContainer extends Component {
           render={() => {
             return (
               <ChooseDriveView
+                BackTranslation={t("Back")}
                 goToNonePage={() => push(startPathname)}
                 selectOneDrive={() => this.clearDrivesData("/onedrive")}
                 selectGDrive={() => this.clearDrivesData("/gdrive")}
@@ -409,21 +391,33 @@ class ReportsContainer extends Component {
           render={() => {
             return (
               <React.Fragment>
-                <ReportPresets chooseRecentReport={this.chooseRecentReport} reports={reports.favoriteReports}
-                  reportsStatus={reportsStatus} reportsErrors={reportsErrors} onDelete={this.unfavorite}>
-                  <h1>Ulubione raporty</h1>
-                </ReportPresets>
-                <ReportPresets chooseRecentReport={this.chooseRecentReport} reports={reports.recentReports}
-                  reportsStatus={reportsStatus} reportsErrors={reportsErrors}>
-                  <h1>Ostatnie raporty</h1>
-                </ReportPresets>
-                <ReportsContent
-                  spinner={spinner}
-                  loadTeamsResult={loadTeamsResult}
-                  baseList={baseList}
-                  addTeamToResultList={this.addTeamToResultList}
-                  loadTeamsErrors={loadTeamsErrors}
-                />
+                {spinner ? <Spinner fontSize="7px" /> : 
+                <React.Fragment>
+                  <ReportPresets
+                    chooseRecentReport={this.chooseRecentReport}
+                    reports={reports.favoriteReports}
+                    reportsStatus={reportsStatus}
+                    reportsErrors={reportsErrors}
+                    onDelete={this.unfavorite}
+                  >
+                  <h1>{t("FavReports")}</h1>
+                  </ReportPresets>
+                  <ReportPresets
+                    chooseRecentReport={this.chooseRecentReport}
+                    reports={reports.recentReports}
+                    reportsStatus={reportsStatus}
+                    reportsErrors={reportsErrors}
+                  >
+                    <h1>{t("LastReports")}</h1>
+                  </ReportPresets>
+                  <ReportsContent
+                    loadTeamsResult={loadTeamsResult}
+                    baseList={baseList}
+                    addTeamToResultList={this.addTeamToResultList}
+                    loadTeamsErrors={loadTeamsErrors}
+                  />
+                </React.Fragment>
+              }
               </React.Fragment>
             );
           }}
@@ -449,7 +443,7 @@ class ReportsContainer extends Component {
             choosenFolder={choosenFolder}
             isStarted={isStarted}
             addToFavorites={this.toggleAddToFavorites}
-            handleAvailableUntilToggle = {this.handleAvailableUntilToggle}
+            handleAvailableUntilToggle={this.handleAvailableUntilToggle}
             handleAvailableUntil={this.handleAvailableUntil}
             availableUntilStartDate={moment()}
             availableUntilDate={this.state.availableUntilDate}
@@ -505,9 +499,23 @@ const mapDispatchToProps = dispatch => {
       dispatch(fetchLists(addList, baseList, helpList, pagesList)),
     chooseFolder: folderToGenerateReport =>
       dispatch(chooseFolder(folderToGenerateReport)),
-    generateReport: (teamSheets, choosenFolder, pageList, history, saveAsFavorite, availableUntil) =>
+    generateReport: (
+      teamSheets,
+      choosenFolder,
+      pageList,
+      history,
+      saveAsFavorite,
+      availableUntil
+    ) =>
       dispatch(
-        generateReportACreator(teamSheets, choosenFolder, pageList, history, saveAsFavorite, availableUntil)
+        generateReportACreator(
+          teamSheets,
+          choosenFolder,
+          pageList,
+          history,
+          saveAsFavorite,
+          availableUntil
+        )
       ),
     generateReportToHardDrive: (addList,pageList,saveAsFavorite,availableUntil) => 
       dispatch(
@@ -527,4 +535,6 @@ const mapDispatchToProps = dispatch => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withRouter(ReportsContainer));
+)(translate("ReportsContainer")(withRouter(ReportsContainer)));
+
+

@@ -25,7 +25,8 @@ const translations = {
     Stats: "Statystyki",
     Skills: "Umiejętności",
     Reports: "Raporty",
-    ImportCV: "Import CV"
+    ImportCV: "Import CV",
+    Info: "Info"
   },
   PreferedRoles: {
     ChooseRoles: "Wybierz preferowane role w serwisie",
@@ -182,7 +183,8 @@ const translations = {
     AccountActive: "Aktywny",
     AccountInactive: "Nieaktywny",
     SelectStatus: "Wybierz status...",
-    DownloadCV: "Pobierz CV",
+    DownloadEmployeeCVInWordFormat: "Pobierz CV.docx",
+    DownloadEmployeeCVInPdfFormat: "Pobierz CV.pdf",
     Options: "Opcje",
     ActivateEmployee: "Aktywuj pracownika",
     EmployeeHasBeenActivated: "Pracownik został Aktywowany.",
@@ -222,7 +224,17 @@ const translations = {
     Skills: "Umiejętności",
     Missing: "Brak",
     Assignments: "Przypisania",
-    ProfilePhoto: "Zdjęcie profilowe"
+    ProfilePhoto: "Zdjęcie profilowe",
+    EmployeeCV: "CV Pracownika",
+    DownloadEmployeeCVInWordFormat: "Pobierz CV.docx",
+    DownloadEmployeeCVInPdfFormat: "Pobierz CV.pdf"
+  },
+  List: {
+    Search: "wpisz, aby wyszukać...",
+    Sort: "Sortuj",
+    Filters: "Filtr",
+    NoResults: "Brak wyników",
+    Default: "Bez filtrowania"
   },
   Quaters: {
     Add: "Dodaj",
@@ -238,7 +250,67 @@ const translations = {
       "Czy jestes pewny, że chcesz usunąć rozmowę?",
     OperationSuccessful: "Pomyślnie wykonano operację",
     QuarterTalkAdded: "Pomyślnie dodano rozmowę kwartalną",
-    QuarterTalkActivated: "Aktywowano rozmowę kwartalną"
+    QuarterTalkActivated: "Aktywowano rozmowę kwartalną",
+    QuarterTalkHeader: "Panel rozmów kwartalnych",
+    QuarterTalkSubHeader: "aktualnie przeglądany użytkownik",
+    Users: "Pracownicy",
+    PlanQuarter: "Zaplanuj rozmowę",
+    AddQuarter: "Dodaj rozmowę",
+    ClearHistory: "Wyczyść historię",
+    EmptyQuarterTalk: "Ta rozmowa kwartalna nie posiada żadnych odpowiedzi",
+    SuccDeletedQuarter: "Wybrana przez Ciebie rozmowa została usunięta",
+    SpeechState: "Przebieg rozmowy",
+    FindUserModalTitle: "Znajdź użytkownika do przeglądania",
+    Next: "Przejdź",
+    Worker: "Pracownik",
+    WorkerPlaceholder: "wpisz nazwę użytkownika...",
+    Deny: "Anuluj",
+    MakeSureYouWantDeleteQuarter:
+      "Czy jesteś pewny, że chcesz usunąć tą rozmowę kwartalną?",
+    AddQuarterTalk: "Dodaj rozmowę kwartalną",
+    Options: "Opcje",
+    AddQuestion: "Dodaj pytanie",
+    QuestionMenage: "Zarządzaj pytaniami",
+    ChooseQuestionHeader: "Wybierz pytania do wypełnienia",
+    Start: "Rozpocznij",
+    SuccDeleteQuestion: "Pomyślnie usunięto pytanie",
+    Date: "Data",
+    Quarter: "Kwartał",
+    QuestionWillBeHere: "tu pojawi się pytanie",
+    ChooseOrSelectQuarter: "wpisz lub wybierz kwartał...",
+    SuccAddedQuarter: "Pomyślnie utworzono rozmowę kwartalną",
+    QuarterItemSubHeader: "przeprowadził",
+    Reactivate: "Reaktywuj",
+    Conduct: "przeprowadzi",
+    QuarterDeletedPrompt: "Ta rozmowa jest usunięta",
+    Year: "Rok",
+    PlannedDate: "Planowana data",
+    PlannedHour: "Planowana godzina",
+    YearHolder: "wybierz lub wpisz planowany rok...",
+    Language: "pl",
+    Minutes: "minuty",
+    QuarterTalksDetails: "Szczegóły rozmowy kwartalnej",
+    Plan: "Zaplanuj",
+    SuccPlannedQuarter: "Pomyślnie zaplanowano rozmowę kwartalną",
+    SugestedHours: "Proponowane godziny",
+    From: "od",
+    To: "do",
+    OccupiedDates: "Zajęte daty",
+    CallCalendar: "Kalendarz rozmów",
+    Choosen: "Wybrane",
+    NotChoosen: "Nie wybrane",
+    Deleted: "Usunięte",
+    NotDeleted: "Nie usunięte",
+    Empty: "Brak rozmów kwartalnych",
+    startQuarterTranslation: "Wypełnij pytania",
+    NoAnswers: "Ta rozmową się jeszcze nie odbyła",
+    Populate: "Uzupełnij rozmowę",
+    ConfirmQuestions: "Zatwierdź pytania",
+    ForQuarter: "za",
+    In: "w",
+    InYear: "roku",
+    DoneQuarter: "Ta rozmowa została przeprowadzona",
+    IncomingQuarter: "Ta rozmowa dopiero się odbędzie"
   },
   EmployeeSkills: {
     Add: "Dodaj",
@@ -289,6 +361,13 @@ const translations = {
     AddingCertificate: "Dodawanie certyfikatu",
     EditingCertificate: "Edytowanie certyfikatu",
     Edit: "Zapisz"
+  },
+  EmployeeFeedbacks: {
+    Feedbacks: "Opinie",
+    Author: "Autor",
+    Content: "Treść",
+    Project: "Projekt",
+    Client: "Klient"
   },
   ShareEmployeesModal: {
     ShareEmployees: "Udostępnij pracowników",
@@ -341,7 +420,10 @@ const translations = {
     ChooseAnOwner: "Wybierz właściciela projektu.",
     EmployeeNotFound: "Nie znaleziono pracownika.",
     ProjectOwnerHasBeenAdded: "Właściciel został dodany.",
-    Delete: "Usuń"
+    Delete: "Usuń",
+    Cancel: "Anuluj",
+    DeleteYourselfeMessage:
+      "Czy na pewno chcesz się usunąć z listy właścicieli projektu ?"
   },
   AddProjectScreen: {
     AddProject: "Dodaj Projekt",
@@ -365,7 +447,8 @@ const translations = {
     ProjectAddedSuccessfully: "Projekt dodano pomyślnie",
     Add: "Dodaj",
     CloudPlaceHolder: "wpisz własną lub wybierz chmure z listy",
-    ClientPlaceHolder: "wpisz własnego klienta lub wybierz z listy"
+    ClientPlaceHolder: "wpisz własnego klienta lub wybierz z listy",
+    ContactPerson: "Wybierz lub dodaj osobę do kontaktu"
   },
   ProjectDetailsBlock: {
     EditProjectData: "Edycja danych projektu",
@@ -400,9 +483,12 @@ const translations = {
     InsertLastName: "wprowadź nazwisko...",
     PhoneNumber: "Numer telefonu",
     InsertPhoneNumber: "wprowadź numer telefonu...",
-    ResponsiblePerson: "Osoba do kontaktu"
+    ResponsiblePerson: "Osoba do kontaktu",
+    AddContactPerson: "Wybierz lub dodaj osobę do kontaktu",
+    ProjectHasBeenEdited: "Projekt został pomyślnie edytowany"
   },
   ProjectDetails: {
+    LoadingProjectMessage: "Trwa wczytywanie danych projektu",
     GeneralInfo: "Informacje ogólne",
     ResponsiblePerson: "Osoba do kontaktu",
     SkillsRequired: "Umiejętności na potrzeby projektu",
@@ -433,8 +519,11 @@ const translations = {
     ConfirmDeleteProject: "Czy jesteś pewny, że chcesz usunąć ten projekt?",
     Delete: "Usuń",
     AddEmployee: "Dodaj pracownika do projektu",
+    EditEmployee: "Edytuj przypisanie pracownika",
     FTE: "Długość etatu",
     EmployeeAdded: "Pomyślnie dodano pracownika do projektu",
+    AssignmentSaved: "Pomyślnie edytowano przypisanie pracownika",
+    AssignmentDeleted: "Pomyślnie usunięto przypisanie pracownika",
     EditProject: "Edytuj projekt",
     ActivateProject: "Aktywuj projekt",
     Close: "Zamknij",
@@ -447,7 +536,14 @@ const translations = {
     EstimatedEndDate: "Szacowana data zakończenia",
     Description: "Opis",
     Owners: "Właściciele",
-    Add: "Dodaj"
+    ToFill: "Do uzupełnienia",
+    ToFillEmail: "do@uzupełnienia.com",
+    Add: "Dodaj",
+    Save: "Zapisz",
+    Share: "Udostępnij",
+    Cancel: "Anuluj",
+    DeleteEmpAssignment : "Czy napewno chcesz usunąć przypisanie użytkownika \"",
+    FromProject : "\" z projektu ?"
   },
   ResponsiblePersonBlock: {
     NameNoSpecial: "Imię nie może zawierać znaków specjalnych ani cyfr.",
@@ -547,6 +643,7 @@ const translations = {
     ReactivateProjectInfinitive: "Reaktywować projekt",
     ProjectReactivated: "Projekt został reaktywowany"
   },
+
   TeamMember: {
     AssignedCapacity: "Przypisany na etat",
     ProjectRole: "Rola w projekcie",
@@ -589,7 +686,9 @@ const translations = {
     Minutes: "minuty",
     MinutesPl: "minut",
     MarkAllAsRead: "Oznacz wszystkie jako przeczytane",
-    DeleteAll: "Usuń wszystkie"
+    DeleteAll: "Usuń wszystkie",
+    NoNotifications: "Nie masz żadnych powiadomień.",
+    Tack: "Zmień pozycję ikony powiadomień"
   },
   Skills: {
     SaveChanges: "Zapisz zmiany",
@@ -600,7 +699,17 @@ const translations = {
     NoResults: "Brak wyników dla tego ciągu znaków",
     Confirm: "Zatwierdź",
     ThatProjectDoesntHavaAnySkillAssigned:
-      "Ten projekt nie ma żadnych przypisanych umiejętności."
+      "Ten projekt nie ma żadnych przypisanych umiejętności.",
+    AddSkillsToProject: "Dodaj umiejętności do projektu"
+  },
+  Skill: {
+    SkillName: "Nazwa umiejętności",
+    YearsOfExperience: "Lata doświadczenia",
+    PutYear: "Dodaj rok",
+    PopYear: "Zmniejsz o rok",
+    DeleteSkill: "Usuń umiejętność",
+    ChangedThings: "Ta umiejętność jest zmieniona",
+    SkillLevel: "Poziom umiejętności"
   },
   ProjectTeamTable: {
     Add: "Dodaj",
@@ -618,7 +727,126 @@ const translations = {
     FeedbackAdded: "Pomyślnie dodano opinie",
     Author: "Autor",
     DaysAgo: "dni temu",
-    OnDate: "w dniu"
+    OnDate: "w dniu",
+    GoIntoEmployeeDetails: "Przejdź do szczegółów pracownika",
+    DeleteAssignment: "Usuń przypisanie",
+    EditAssignment: "Edytuj przypisanie"
+  },
+  ShareProject: {
+    ShareProject: "Udostępnij projekt",
+    Confirm: "Zatwierdź",
+    ChangesSaved: "Zmiany zostały zapisane",
+    NotFound: "Nie znaleziono",
+    SelectPersons: "Wybierz osoby",
+    Shared: "Udostępnione"
+  },
+  Info: {
+    YourRoleIs: "Twoja rola to",
+    RoleError: "Ups, coś poszło nie tak....",
+    SearchingUsersAccounts: "Wyszukiwanie Kont Użytkowników",
+    EditingUsersRoles: "Edytowanie Roli Użytkowników",
+    SearchAD: "Wyszukiwanie Pracowników w Active Directory",
+    AddUser: "Dodawanie Kont Użytkowników",
+    ReactivateUser: "Reaktywowanie Kont Użytkowników",
+    DeleteUserRequest: "Usuwanie próśb o Konto Użytkowników",
+    DeleteUser: "Usuwanie Kont Użytkowników",
+    SearchingProjects: "Wyszukiwanie Projektów",
+    GettingListOfClients: "Wyświetlanie Listy Klientów",
+    AddingClient: "Dodawanie Klientów",
+    DeletingClient: "Usuwanie Klientów",
+    EditingClient: "Edytowanie Klientów",
+    ReactivatingClient: "Reaktywowanie Klientów"
+  },
+  ReportsCloudView: {
+    LoadingAccountDataPrompt:
+      "Trwa pobieranie zawartości chmury. Proszę czekać...",
+    ActualPath: "Aktualna ścieżka",
+    AddFolder: "Dodaj folder",
+    Create: "Stwórz",
+    WriteFolderName: "wpisz nazwę folderu...",
+    Back: "Cofnij",
+    ThisFolderIsEmpty: "Ten folder jest pusty...",
+    Refresh: "Odśwież",
+    AreYouSureToDelete: "Czy jesteś pewny, że chcesz usunać ten folder",
+    Delete: "Usuń",
+    Deny: "Anuluj",
+    SuccCreatedFolder: "Folder pomyślnie utworzony",
+    SuccEditedFolder: "Folder został pomyślnie edytowany",
+    SuccDeletedFolder: "Folder został usunięty",
+    SuccAddedFile: "Pilk został pomyślnie dodany"
+  },
+  FilePicker: {
+    SelectFileToAdd: "wybierz plik do dodania...",
+    Send: "Prześlij"
+  },
+  Files: {
+    Sort: "Sortuj",
+    Deny: "Anuluj",
+    Confirm: "Potwierdź",
+    OpenFolder: "Przejdź do tego folderu",
+    DeleteFolder: "Usuń ten folder",
+    Edit: "Edytuj",
+    ChooseFolderForLink: "Stwórz link do udostępnienia",
+    Type: "Typ",
+    Size: "Rozmiar",
+    Path: "Ścieżka",
+    Open: "Otwórz",
+    ChooseFolderToGenerate: "Wybierz ten folder, aby wygenerować raport"
+  },
+  ReportsContainer: {
+    FavReports: "Ulubione raporty",
+    LastReports: "Ostatnie raporty",
+    Back: "Wróć"
+  },
+  ReportsNavigation: {
+    FirstPage: "Wybierz drużyny",
+    SecondPage: "Wybierz rodzaj chmury",
+    GDrivePage: "Wybierz folder docelowy z twojego dysku Google Drive",
+    OneDrivePage: "Wybierz folder docelowy z twojego dysku One Drive",
+    SearchTeamPlaceholder: "wpisz nazwę drużyny...",
+    Generate: "Generuj",
+    Teams: "Drużyny",
+    Folders: "Foldery",
+    AddItems: "dodano",
+    FoundItems: "znaleziono",
+    First: "pierwszy",
+    Secondly: "drugi",
+    LastStepName: "ostatni",
+    StepName: "etap generowania raportów"
+  },
+  ReportsContent: {
+    NotFoundResults: "Brak wyników dla podanego ciągu znaków",
+    AllTeams: "Lista drużyn",
+    NumberOfEmployees: "Liczba pracowników"
+  },
+  ReportsPresets: {
+    Page: "Strona",
+    SelectThisTeams: "Wybierz",
+    Delete: "Usuń",
+    Team: "Drużyna"
+  },
+  GenerateReportModal: {
+    GenerateReportModalTitle: "Wybierz ilość stron dla poszczególnych drużyn",
+    Delete: "Delete",
+    Employees: "Liczba pracowników",
+    Identity: "Identyfikator",
+    Size: "Rozmiar",
+    Name: "Nazwa",
+    CreationDate: "Data utworzenia",
+    Path: "Ścieżka",
+    ClickHere: "Kliknij tutaj",
+    FirstInfo:
+      "Aby wygenerować raport musisz wybrać folder docelowy. Folder docelowy znajdziesz na jednym z dysków umieszczonych w GoogleDrive lub OneDrive.",
+    SecondInfo: "aby przejść dalej",
+    EmployeesInDay: "Tylko pracownicy dostępni w dniu",
+    AddFav: "Dodaj ten raport do ulubionych",
+    SuccGenReport: "Raport został pomyślnie wygenerowany",
+    GenReport: "Generuj raport",
+    CurrentCreatedLink: "Link został utworzony",
+    CreatingLink: "Link do udostępnienia jest tworzony",
+    CreatedLink: "Stworzony link do udostępnienia",
+    OpenIn: "Otwórz w",
+    Open: "Otwórz"
   }
 };
 

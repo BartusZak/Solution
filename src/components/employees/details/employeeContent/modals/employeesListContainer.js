@@ -30,12 +30,9 @@ class EmployeesListContainer extends React.Component {
         </div>
 
         <div className="employees-container">
-          {this.props.employees && this.props.employees.map(employee => {
-              // if (this.state.loadingEmployees === true) {
-              //   this.setState({loadingEmployees: false});
-              // }
+          {this.props.employees && this.props.employees.map((employee, index) => {
               return (
-                <div key={employee.id} className="emp-row">
+                <div key={index} className="emp-row">
                   {!employee.employeeShared && this.props.sharedEmployeesForManager.filter(e => e.employeeId === employee.id).length === 0 &&
                     (employee.firstName.toLowerCase() + " " + employee.lastName.toLowerCase()).includes(this.state.employeesFilter) &&
                     (
@@ -61,7 +58,7 @@ class EmployeesListContainer extends React.Component {
                                 <div className="clicked">
                                   <i className="fa fa-share-alt btn-icon"/>
                                   {this.props.employees.filter(e => e.managerId === employee.id).length > 0
-                                    ? t("ShareTeam") + " [" + this.props.generateSubordinates(this.props.employees.filter(e => e.managerId === employee.id)).length +"]"
+                                    ? t("ShareTeam") + " [" + this.props.generateSubordinates(employee.id).length +"]"
                                     : t("Share")}
                                 </div>
                               </div>
@@ -69,7 +66,7 @@ class EmployeesListContainer extends React.Component {
                               <div className="align-center">
                                 <i className="fa fa-share-alt btn-icon"/>
                                 {this.props.employees.filter(e => e.managerId === employee.id).length > 0
-                                  ? t("ShareTeam") +" [" + this.props.generateSubordinates(this.props.employees.filter(e => e.managerId === employee.id)).length +"]"
+                                  ? t("ShareTeam") +" [" + this.props.generateSubordinates(employee.id).length +"]"
                                   : t("Share")}
                               </div>
                             )}
@@ -80,7 +77,7 @@ class EmployeesListContainer extends React.Component {
                           this.props.subordinates.map(subordinate => {
                             return (
                               <div className="col-sm-12" style={{ paddingLeft: "20px" }} key={subordinate.id} >
-                                <i className="fa fa-angle-right" />{subordinate.firstName}{" "}{subordinate.lastName}
+                                <i className="fa fa-angle-right subordinate-right-arrow" />{subordinate.firstName}{" "}{subordinate.lastName}
                               </div>
                             );
                           })}

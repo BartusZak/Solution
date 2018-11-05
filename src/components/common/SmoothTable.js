@@ -152,10 +152,16 @@ class SmoothTable extends Component {
       });
     }
 
-    if(this.props.getSettings)
-    {
-      this.props.getSettings(Object.assign({}, this.state.sortingSettings, mainFilter));
+    if (this.props.getSettings) {
+      this.props.getSettings(
+        Object.assign({}, this.state.sortingSettings, mainFilter)
+      );
     }
+
+    if (this.props.handleChangeSettings) {
+      this.props.handleChangeSettings(Object.assign({}, this.state.sortingSettings, mainFilter));
+    }
+
     return Object.assign({}, this.state.sortingSettings, mainFilter);
   }
 
@@ -240,6 +246,8 @@ class SmoothTable extends Component {
         }, 1000);
       }
     );
+
+
   }
 
   swapKeysForValues(object) {
@@ -310,7 +318,6 @@ class SmoothTable extends Component {
 
   handleRowClick(object, index, event) {
     if (object.hasAccount == false) {
-      alert(this.props.t("EmployeeIsNotActivated"));
     } else {
       const { redirectPath } = this.props.construct;
       if (redirectPath) {
@@ -609,11 +616,19 @@ class SmoothTable extends Component {
   generateCell(column, object) {
     switch (column.type) {
       case "text":
-        if(object.employeeShared && column.field === "firstName")
-        {
-          return <span> {object[column.field]} <i className="fa fa-share-alt" style={{color: "red"}} title={"Udostępniony przez " + object.employeeSharedBy}></i></span>
-        }else
-        {
+        if (object.employeeShared && column.field === "firstName") {
+          return (
+            <span>
+              {" "}
+              {object[column.field]}{" "}
+              <i
+                className="fa fa-share-alt"
+                style={{ color: "red" }}
+                title={"Udostępniony przez " + object.employeeSharedBy}
+              />
+            </span>
+          );
+        } else {
           return object[column.field];
         }
       case "multiState":
@@ -650,7 +665,7 @@ class SmoothTable extends Component {
         className={
           object.hasAccount
             ? classes.join(" ")
-            : (classes.push("unset-pointer"), classes.join(" "))
+            : (classes.push("set-pointer"), classes.join(" "))
         }
         onClick={this.deepenFunction(this.handleRowClick, object, index)}
       >
@@ -753,7 +768,8 @@ class SmoothTable extends Component {
     }
     if (this.state.rowClickedId) {
       return (
-        <Redirect push
+        <Redirect
+          push
           to={this.props.construct.redirectPath + this.state.rowClickedId}
         />
       );

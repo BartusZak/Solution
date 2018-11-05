@@ -19,7 +19,7 @@ import { loginACreator } from "../actions/persistHelpActions";
 import { Certificate } from "crypto";
 const { store } = storeCreator;
 
-const API_ENDPOINT = Config.serverUrl;
+export const API_ENDPOINT = Config.serverUrl;
 
 store.subscribe(listener);
 ``;
@@ -50,30 +50,34 @@ function listener() {
 }
 
 const authValidator = response => {
-  if (response.response) {
-    if (response.response.status === 401 || response.response === undefined) {
-      store.dispatch(logout());
-      store.dispatch(push("/"));
-    } else {
-      if (response.response.config.url.search("onedrive") !== -1) {
-        const oneDriveToken = JSON.parse(response.response.config.data).token;
-        const startPath = "/drive/root:";
-        store
-          .dispatch(refreshToken(oneDriveToken))
-          .then(response => {
-            dispatch(getFolderACreator(response, startPath));
-          })
-          .catch(error => {
-            store.dispatch(authOneDriveACreator());
-          });
-      } else if (response.response.config.url.search("GDrive") !== -1) {
-        dispatch(loginACreator());
-      }
-    }
-  } else {
+  if(response.response.status === 401 || response.response === undefined){
     store.dispatch(logout());
     store.dispatch(push("/"));
   }
+  // if (response.response) {
+  //   if (response.response.status === 401 || response.response === undefined) {
+  //     store.dispatch(logout());
+  //     store.dispatch(push("/"));
+  //   } else {
+  //     if (response.response.config.url.search("onedrive") !== -1) {
+  //       const oneDriveToken = JSON.parse(response.response.config.data).token;
+  //       const startPath = "/drive/root:";
+  //       store
+  //         .dispatch(refreshToken(oneDriveToken))
+  //         .then(response => {
+  //           dispatch(getFolderACreator(response, startPath));
+  //         })
+  //         .catch(error => {
+  //           store.dispatch(authOneDriveACreator());
+  //         });
+  //     } else if (response.response.config.url.search("GDrive") !== -1) {
+  //       dispatch(loginACreator());
+  //     }
+  //   }
+  // } else {
+  //   store.dispatch(logout());
+  //   store.dispatch(push("/"));
+  // }
 
   throw response;
 };
@@ -273,6 +277,11 @@ const WebApi = {
         return WebAround.get(
           `${API_ENDPOINT}/QuarterTalks/ForEmployee/` + employeeId
         );
+      },
+      generateDoc: quarterId => {
+        return WebAround.get(
+          `${API_ENDPOINT}/QuarterTalks/GenerateDocx/${quarterId}`
+        );
       }
     },
     delete: {
@@ -280,20 +289,27 @@ const WebApi = {
         return WebAround.delete(`${API_ENDPOINT}/QuarterTalks/${quarterId}`);
       },
       question: questionId => {
-        return WebAround.delete(`${API_ENDPOINT}/QuarterTalks/Question/${questionId}`);
+        return WebAround.delete(
+          `${API_ENDPOINT}/QuarterTalks/Question/${questionId}`
+        );
       }
-    
     },
     put: {
       reactivate: quarterId => {
         return WebAround.put(
           `${API_ENDPOINT}/QuarterTalks/Reactivate/${quarterId}`
         );
+      },
+      populateQuarter: (model, quarterId) => {
+        return WebAround.put(
+          `${API_ENDPOINT}/QuarterTalks/${quarterId}`,
+          model
+        );
       }
     },
     post: {
       addQuestion: model => {
-        return WebAround.post(`${API_ENDPOINT}/QuarterTalks/Question`, model)
+        return WebAround.post(`${API_ENDPOINT}/QuarterTalks/Question`, model);
       },
       createQuarter: model => {
         return WebAround.post(`${API_ENDPOINT}/QuarterTalks`, model);
@@ -357,7 +373,9 @@ const WebApi = {
         );
       },
       employeesAndManagers: () => {
-        return WebAround.get(`${API_ENDPOINT}/sharedEmployees/getEmployeesAndManagers`);
+        return WebAround.get(
+          `${API_ENDPOINT}/sharedEmployees/getEmployeesAndManagers`
+        );
       },
       emplo: {
         contact: employeeId => {
@@ -421,18 +439,25 @@ const WebApi = {
   },
   sharedEmployees: {
     get: {
-      forManager: (managerId) => {
-        return WebAround.get(`${API_ENDPOINT}/sharedEmployees/forManager/${managerId}`);
+      forManager: managerId => {
+        return WebAround.get(
+          `${API_ENDPOINT}/sharedEmployees/forManager/${managerId}`
+        );
       }
     },
     post: {
-      add: (sharedEmployeeModel) => {
-        return WebAround.post(`${API_ENDPOINT}/sharedEmployees`, sharedEmployeeModel)
+      add: sharedEmployeeModel => {
+        return WebAround.post(
+          `${API_ENDPOINT}/sharedEmployees`,
+          sharedEmployeeModel
+        );
       }
     },
     delete: {
-      deleteById: (sharedEmployeeId) => {
-        return WebAround.delete(`${API_ENDPOINT}/sharedEmployees/${sharedEmployeeId}`)
+      deleteById: sharedEmployeeId => {
+        return WebAround.delete(
+          `${API_ENDPOINT}/sharedEmployees/${sharedEmployeeId}`
+        );
       }
     }
   },
@@ -443,7 +468,7 @@ const WebApi = {
       byAuthor: authorId => {},
       byEmployee: employeeId => {
         return WebAround.get(
-          `${API_ENDPOINT}/feedbacks/employee/${employeeId}`
+          `${API_ENDPOINT}/feedbacks/employee/${employeeId}?isDeleted=false`
         );
       },
       byProject: projectId => {}
@@ -533,20 +558,32 @@ const WebApi = {
       }
     }
   },
-  shareProject:{
-    get:{
-      managers: (projectId) =>{
-        return WebAround.get(`${API_ENDPOINT}/shareProject/DestinationManagers/${projectId}`);
+  shareProject: {
+    get: {
+      managers: projectId => {
+        return WebAround.get(
+          `${API_ENDPOINT}/shareProject/DestinationManagers/${projectId}`
+        );
+      },
+      alreadySharedManagers: projectId => {
+        return WebAround.get(
+          `${API_ENDPOINT}/shareProject/AlreadySharedManagers/${projectId}`
+        );
       }
     },
-    post:{
-      add: (projectId, shareProjectModel)=>{
-        return WebAround.post(`${API_ENDPOINT}/shareProject/${projectId}`, shareProjectModel);
+    post: {
+      add: (projectId, shareProjectModel) => {
+        return WebAround.post(
+          `${API_ENDPOINT}/shareProject/${projectId}`,
+          shareProjectModel
+        );
       }
     },
-    delete:{
-      cancel: (projectId, shareProjectId)=>{
-        return WebAround.delete(`${API_ENDPOINT}/shareProject/${projectId}/${shareProjectId}`);
+    delete: {
+      cancel: (projectId, shareProjectId) => {
+        return WebAround.delete(
+          `${API_ENDPOINT}/shareProject/${projectId}/${shareProjectId}`
+        );
       }
     }
   },
@@ -590,6 +627,9 @@ const WebApi = {
         return WebAround.post(
           `${API_ENDPOINT}/reports/cv/${employeeId}?forceIncompletePDF=true`
         );
+      },
+      wordcv: employeeId => {
+        return WebAround.post(`${API_ENDPOINT}/reports/WordCv/${employeeId}`);
       }
     },
     delete: {

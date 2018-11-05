@@ -21,7 +21,8 @@ const translations = {
     Stats: "Statistics",
     Skills: "Skills",
     Reports: "Reports",
-    ImportCV: "Import CV"
+    ImportCV: "Import CV",
+    Info: "Info"
   },
   PreferedRoles: {
     ChooseRoles: "Choose your prefered roles",
@@ -220,7 +221,17 @@ const translations = {
     Skills: "Skills",
     Missing: "Missing",
     Assignments: "Assignments",
-    ProfilePhoto: "Profile photo"
+    ProfilePhoto: "Profile photo",
+    EmployeeCV: "Employee's CV",
+    DownloadEmployeeCVInWordFormat: "Download CV.docx",
+    DownloadEmployeeCVInPdfFormat: "Download CV.pdf"
+  },
+  List: {
+    Search: "type to search...",
+    Sort: "Sort",
+    Filters: "Filters",
+    NoResults: "No results",
+    Default: "Default"
   },
   Quaters: {
     Add: "Add",
@@ -235,7 +246,67 @@ const translations = {
       "You are about to delete Quarter Talk. Are you sure?",
     OperationSuccessful: "Operation Succes",
     QuarterTalkAdded: "Quarter Talk has been added",
-    QuarterTalkActivated: "Quarter Talk has been activated"
+    QuarterTalkActivated: "Quarter Talk has been activated",
+    QuarterTalkHeader: "Quarter talk panel",
+    QuarterTalkSubHeader: "current watched user",
+    Users: "Employees",
+    PlanQuarter: "Plan quarter",
+    AddQuarter: "Add quarter",
+    ClearHistory: "Clear history",
+    EmptyQuarterTalk: "This quarter talk doesn't have any answers",
+    SuccDeletedQuarter: "This quarter talk has been removed",
+    SpeechState: "The course of the conversation",
+    FindUserModalTitle: "Find user to inspect",
+    Next: "Next",
+    Worker: "Worker",
+    WorkerPlaceholder: "type username...",
+    Deny: "Deny",
+    MakeSureYouWantDeleteQuarter:
+      "You are sure you want to delete this quarter?",
+    AddQuarterTalk: "Add quarter talk",
+    Options: "Options",
+    AddQuestion: "Add question",
+    QuestionMenage: "Question manager",
+    ChooseQuestionHeader: "Choose question to use",
+    Start: "Start",
+    SuccDeleteQuestion: "The question was successfully removed",
+    Date: "Date",
+    Quarter: "Quarter",
+    QuestionWillBeHere: "question will be here",
+    ChooseOrSelectQuarter: "choose or select quarter...",
+    SuccAddedQuarter: "Quarter talk has been added",
+    QuarterItemSubHeader: "carried out",
+    Reactivate: "Reactivate",
+    Conduct: "conduct",
+    QuarterDeletedPrompt: "This quarter is deleted",
+    Year: "Year",
+    PlannedDate: "Planned date",
+    PlannedHour: "Planned hour",
+    YearHolder: "select or type planned year...",
+    Language: "en",
+    Minutes: "minutes",
+    QuarterTalksDetails: "Quarter talk details",
+    Plan: "Plan",
+    SuccPlannedQuarter: "Talks were planned successfully",
+    SugestedHours: "Sugested hours",
+    From: "from",
+    To: "to",
+    OccupiedDates: "Occupied dates",
+    CallCalendar: "Call calendar",
+    Choosen: "Choosen",
+    NotChoosen: "Not choosen",
+    Deleted: "Deleted",
+    NotDeleted: "Not deleted",
+    Empty: "Empty quarter talks",
+    startQuarterTranslation: "Fill answers",
+    NoAnswers: "This conversation has not yet taken",
+    Populate: "Populate quarter",
+    ConfirmQuestions: "Confirm questions",
+    ForQuarter: "for",
+    In: "in",
+    InYear: "year",
+    DoneQuarter: "This conversation was carried out",
+    IncomingQuarter: "This conversation will only take place"
   },
   EmployeeSkills: {
     Add: "Add",
@@ -286,6 +357,13 @@ const translations = {
     AddingCertificate: "Adding certyficate",
     EditingCertificate: "Editing certyficate",
     Edit: "Save"
+  },
+  EmployeeFeedbacks: {
+    Feedbacks: "Feedbacks",
+    Author: "Author",
+    Content: "Content",
+    Project: "Project",
+    Client: "Client"
   },
   ShareEmployeesModal: {
     ShareEmployees: "Share employees",
@@ -338,7 +416,10 @@ const translations = {
     ChooseAnOwner: "Choose project's owner",
     EmployeeNotFound: "Employee Not Found",
     ProjectOwnerHasBeenAdded: "Owner has been added successfully",
-    Delete: "Delete"
+    Delete: "Delete",
+    Cancel: "Cancel",
+    DeleteYourselfeMessage:
+      "Are you sure you want to delete yourself from project owners list ?"
   },
   AddProjectScreen: {
     AddProject: "Add Project",
@@ -399,10 +480,14 @@ const translations = {
     InsertLastName: "insert last name...",
     PhoneNumber: "Phone number",
     InsertPhoneNumber: "insert phone number...",
-    ResponsiblePerson: "Responsible person"
+    ResponsiblePerson: "Responsible person",
+    AddContactPerson: "Add or choose contact person",
+    ContactPerson: "Add or choose contact person",
+    ProjectHasBeenEdited: "Project has been succesfully edited"
   },
   ProjectDetails: {
     GeneralInfo: "Overview",
+    LoadingProjectMessage: "Loading project data",
     ResponsiblePerson: "Responsible person",
     SkillsRequired: "Skills required for this project",
     ShowActiveAssignments: "Show active assignments",
@@ -432,8 +517,11 @@ const translations = {
     ConfirmDeleteProject: "Are you sure you want to delete this project?",
     Delete: "Delete",
     AddEmployee: "Add employee to the project",
+    EditEmployee: "Edit employee assignment",
     FTE: "FTE percentage",
     EmployeeAdded: "Successfully added the employee to the project",
+    AssignmentSaved: "Successfully edited employee assignment",
+    AssignmentDeleted: "Successfully deleted employee assignment",
     EditProject: "Edit project",
     ActivateProject: "Activate project",
     Close: "Close",
@@ -446,7 +534,14 @@ const translations = {
     EstimatedEndDate: "Estimated end date",
     Description: "Description",
     Owners: "Owners",
-    Add: "Add"
+    Add: "Add",
+    Save: "Save",
+    ToFill: "To Fill",
+    ToFillEmail: "to@fill.com",
+    Share: "Share",
+    Cancel: "Cancel",
+    DeleteEmpAssignment : "Are you sure you want to delete employee \"",
+    FromProject : "\" assignment ?"
   },
   ProjectRowUnfurl: {
     OwnersList: "Owners",
@@ -578,7 +673,9 @@ const translations = {
     Minutes: "minutes",
     MinutesPl: "minutes",
     MarkAllAsRead: "Mark all as read",
-    DeleteAll: "Delete all"
+    DeleteAll: "Delete all",
+    NoNotifications: "You don't have any notifications.",
+    Tack: "Change position of notification icon on screen"
   },
   Skills: {
     SaveChanges: "Save changes",
@@ -589,7 +686,17 @@ const translations = {
     NoResults: "No results for this query",
     Confirm: "Confirm",
     ThatProjectDoesntHavaAnySkillAssigned:
-      "That project doesn't have any skills assigned."
+      "That project doesn't have any skills assigned.",
+    AddSkillsToProject: "Add skills to project"
+  },
+  Skill: {
+    SkillName: "Skill name",
+    YearsOfExperience: "Years of experience",
+    PutYear: "Add year",
+    PopYear: "Pop year",
+    DeleteSkill: "Delete skill",
+    ChangedThings: "This row has been changed",
+    SkillLevel: "Skill level"
   },
   ProjectTeamTable: {
     Add: "Add",
@@ -607,7 +714,125 @@ const translations = {
     FeedbackAdded: "Successfully added feedback",
     Author: "Author",
     DaysAgo: "days ago",
-    OnDate: "on"
+    OnDate: "on",
+    GoIntoEmployeeDetails: "Go to employee details",
+    DeleteAssignment: "Delete assignment",
+    EditAssignment: "Edit assignment"
+  },
+  ShareProject: {
+    ShareProject: "Share project",
+    Confirm: "Confirm",
+    ChangesSaved: "Changes has been saved",
+    NotFound: "Not found",
+    SelectPersons: "Select persons",
+    Shared: "Shared"
+  },
+  Info: {
+    YourRoleIs: "Your role is",
+    RoleError: "Ups, something went wrong...",
+    SearchingUsersAccounts: "Searching Users Accounts",
+    EditingUsersRoles: "Editing Users Roles",
+    SearchAD: "Searching Employees in Active Directory",
+    AddUser: "Adding Users Accounts",
+    ReactivateUser: "Reactivating Users Accounts",
+    DeleteUserRequest: "Deleting Users Accounts Requests",
+    DeleteUser: "Deleting Users Accounts",
+    SearchingProjects: "Searching Projects",
+    GettingListOfClients: "Getting List of Clients",
+    AddingClient: "Adding Client",
+    DeletingClient: "Deleting Client",
+    EditingClient: "Editing Client",
+    ReactivatingClient: "Reactivating Client"
+  },
+  ReportsCloudView: {
+    LoadingAccountDataPrompt: "Cloud data is loading right now. Please wait...",
+    ActualPath: "Actual path",
+    AddFolder: "Add folder",
+    Create: "Create",
+    WriteFolderName: "write folder name...",
+    Back: "Back",
+    ThisFolderIsEmpty: "This folder is empty...",
+    Refresh: "Refresh",
+    AreYouSureToDelete: "You are sure you want to delete the folder",
+    Delete: "Delete",
+    Deny: "Deny",
+    SuccCreatedFolder: "Folder succesfully created",
+    SuccEditedFolder: "Folder succesfully edited",
+    SuccDeletedFolder: "Folder succesfully deleted",
+    SuccAddedFile: "File succesfully added"
+  },
+  FilePicker: {
+    SelectFileToAdd: "select file to add...",
+    Send: "Send"
+  },
+  Files: {
+    Sort: "Sort",
+    Confirm: "Confirm",
+    Deny: "Deny",
+    OpenFolder: "Open this folder",
+    DeleteFolder: "Delete this folder",
+    Edit: "Edit",
+    ChooseFolderForLink: "Generate share link",
+    Type: "Type",
+    Size: "Size",
+    Path: "Path",
+    Open: "Open",
+    ChooseFolderToGenerate: "Choose this folder to generate report"
+  },
+  ReportsContainer: {
+    FavReports: "Favorite reports",
+    LastReports: "Last reports",
+    Back: "Back"
+  },
+  ReportsNavigation: {
+    FirstPage: "Choose teams",
+    SecondPage: "Select the cloud in which the report will be generated",
+    GDrivePage: "Select folder on Google Drive cloud to generate report",
+    OneDrivePage: "Select folder on One Drive cloud to generate report",
+    SearchTeamPlaceholder: "type team name...",
+    Generate: "Generate",
+    Teams: "Teams",
+    Folders: "Folders",
+    AddItems: "added",
+    FoundItems: "found",
+    First: "first",
+    Secondly: "second",
+    LastStepName: "last",
+    StepName: "step of generating reports"
+  },
+  ReportsContent: {
+    NotFoundResults: "No result for this keyword",
+    AllTeams: "List of teams",
+    NumberOfEmployees: "Number of employees"
+  },
+  ReportsPresets: {
+    Page: "Page",
+    SelectThisTeams: "Select",
+    Delete: "Delete",
+    Team: "Team"
+  },
+  GenerateReportModal: {
+    GenerateReportModalTitle: "Choose number of pages for every team",
+    Delete: "Delete",
+    Employees: "Number of employees",
+    Identity: "Identity",
+    Name: "Name",
+    CreationDate: "Creation date",
+    Size: "Size",
+    Path: "Path",
+    ClickHere: "Click here",
+    FirstInfo:
+      "For generating report you must firstly select foolder in One Drive cloud or Google Drive cloud",
+    SecondInfo: "if you want continue",
+    EmployeesInDay: "Only employees avaible in",
+    AddFav: "Add this report to favorite",
+    SuccGenReport: "Succesfully generated report",
+    GenReport: "Generate report",
+    CurrentCreatedLink: "The link has been created",
+    CreatingLink: "Link for share is generating",
+    CreatedLink: "Created link for sharing",
+    OpenIn: "Open in",
+    Open: "Open"
   }
 };
 

@@ -3,15 +3,14 @@ import "./employeeContent.scss";
 import FteBar from "../fteBar/fteBar";
 import DegreeBar from "../degreeBar/degreeBar";
 import Button from "../../../common/button/button";
-import Quaters from "../quaters/quaters";
+import QuarterList from "../quarterList/quarterList.jsx";
 import Spinner from "../../../common/spinner/small-spinner";
 import Icon from "../../../common/Icon";
 import { Link } from "react-router-dom";
 import Form from "../../../form/form";
 import CallSkype from "./callSkype";
-import ShareEmployeesModal from './modals/shareEmployeesModal';
-import binaryPermissioner from '../../../../api/binaryPermissioner';
-
+import ShareEmployeesModal from "./modals/shareEmployeesModal";
+import binaryPermissioner from "../../../../api/binaryPermissioner";
 
 const employeeContent = ({
   changeCurrentWatchedUser,
@@ -23,21 +22,17 @@ const employeeContent = ({
   isChangingEmployeeData,
   reactivateEmployee,
   deleteEmployee,
-  deleteQuaterStatus,
-  deleteQuaterErrors,
-  deleteQuaterACreator,
-  reactivateQuaterACreator,
-  reactivateQuaterStatus,
-  reactivateQuaterErrors,
   t,
+  updateSkypeResult,
   editSkypeFormItems,
   editSkypeId,
   skypeIdAddLoading,
   updateSkypeIdResult,
-
+  isInManagerTeam,
   getEmployeePromise,
   isYou,
-  binPem
+  binPem,
+  downloadCVClickHandler
 }) => {
   const status = employee.isDeleted
     ? t("Deleted")
@@ -85,8 +80,11 @@ const employeeContent = ({
                 editSkypeId={editSkypeId}
                 skypeIdAddLoading={skypeIdAddLoading}
                 updateSkypeIdResult={updateSkypeIdResult}
+                updateSkypeResult={updateSkypeResult}
                 t={t}
-                canEditSkypeId={isYou || binPem >= 32}
+                canEditSkypeId={
+                  isYou || binaryPermissioner(false)(0)(0)(0)(0)(0)(1)(binPem)
+                }
               />
             </div>
           </header>
@@ -96,14 +94,10 @@ const employeeContent = ({
           </div>
           <p>{employee.title}</p>
 
-
-          {isYou && binaryPermissioner(false)(0)(0)(0)(1)(1)(1)(binPem) &&
-            <ShareEmployeesModal
-              t={t}
-              employee={employee}
-            />
-          }
-
+          {isYou &&
+            binaryPermissioner(false)(0)(0)(0)(1)(1)(1)(binPem) && (
+              <ShareEmployeesModal t={t} employee={employee} />
+            )}
         </div>
 
         <div className="right-content">
@@ -122,6 +116,23 @@ const employeeContent = ({
             <p>
               {t("Localization")}:<span>{employee.localization}</span>
             </p>
+          )}
+          {(isYou || binaryPermissioner(false)(0)(1)(1)(1)(1)(1)(binPem)) && (
+            <React.Fragment>
+              <h2>{t("EmployeeCV")}</h2>
+              <div className="file-type-icons-container">
+                <i
+                  onClick={() => downloadCVClickHandler("word", employee.id)}
+                  title={t("DownloadEmployeeCVInWordFormat")}
+                  className="far fa-file-word"
+                />
+                <i
+                  onClick={() => downloadCVClickHandler("pdf", employee.id)}
+                  title={t("DownloadEmployeeCVInPdfFormat")}
+                  className="far fa-file-pdf"
+                />
+              </div>
+            </React.Fragment>
           )}
           <div className="managerHierarchy">
             {(employee.manager || employee.managersManager) && (
@@ -152,7 +163,13 @@ const employeeContent = ({
                 capacityLeft={employee.baseCapacity}
                 editCapacity={editCapacity}
                 employeeErrors={employeeErrors}
-                canEditFteBar={binPem > 1}
+                canEditFteBar={
+                  (binaryPermissioner(false)(0)(0)(0)(1)(1)(0)(binPem) &&
+                    isYou) ||
+                  (binaryPermissioner(false)(0)(1)(1)(1)(1)(1)(binPem) &&
+                    isInManagerTeam) ||
+                  binaryPermissioner(false)(0)(1)(0)(0)(0)(1)(binPem)
+                }
               />
 
               <div className="degree-bar-container">
@@ -161,69 +178,63 @@ const employeeContent = ({
                   seniority={employee.seniority}
                   employeeErrors={employeeErrors}
                   range={4}
-                  canEditDegreeBar={binPem > 1}
+                  canEditDegreeBar={
+                    (binaryPermissioner(false)(0)(0)(0)(1)(1)(0)(binPem) &&
+                      isYou) ||
+                    (binaryPermissioner(false)(0)(1)(1)(1)(1)(1)(binPem) &&
+                      isInManagerTeam) ||
+                    binaryPermissioner(false)(0)(1)(0)(0)(0)(1)(binPem)
+                  }
                 />
               </div>
             </React.Fragment>
           )}
-
-        {binPem === 32 && (
-          <React.Fragment>
-            <div className="emp-btns-container">
-              {status === t("Active") ? (
-                <Button
-                  mainClass="option-btn option-very-dang"
-                  title={t("Delete")}
-                  disable={isChangingEmployeeData}
-                  onClick={deleteEmployee}
-                >
-                  {isChangingEmployeeData && <Spinner />}
-                </Button>
-              ) : (
-                <Button
-                  disable={isChangingEmployeeData}
-                  onClick={
-                    status === t("Deleted")
-                      ? reactivateEmployee
-                      : activateEmployee
-                  }
-                  title={t("Activate")}
-                  mainClass="option-btn green-btn"
-                >
-                  {isChangingEmployeeData && <Spinner />}
-                </Button>
-              )}
-            </div>
-
-            {status !== t("Active") && (
-              <div className="information-for-statuses">
-                <p>{t("BeforeYouChangeStatus")}</p>
-                <article>{t("BeforeYouChangeStatusContent")}</article>
+        {binaryPermissioner(false)(0)(0)(0)(1)(1)(1)(binPem) &&
+          isInManagerTeam &&
+          binaryPermissioner(false)(0)(0)(0)(0)(0)(1)(binPem)(
+            <React.Fragment>
+              <div className="emp-btns-container">
+                {status === t("Active") ? (
+                  <Button
+                    mainClass="option-btn option-very-dang"
+                    title={t("Delete")}
+                    disable={isChangingEmployeeData}
+                    onClick={deleteEmployee}
+                  >
+                    {isChangingEmployeeData && <Spinner />}
+                  </Button>
+                ) : (
+                  <Button
+                    disable={isChangingEmployeeData}
+                    onClick={
+                      status === t("Deleted")
+                        ? reactivateEmployee
+                        : activateEmployee
+                    }
+                    title={t("Activate")}
+                    mainClass="option-btn green-btn"
+                  >
+                    {isChangingEmployeeData && <Spinner />}
+                  </Button>
+                )}
               </div>
-            )}
 
-
-          </React.Fragment>
-        )}
-
-
+              {status !== t("Active") && (
+                <div className="information-for-statuses">
+                  <p>{t("BeforeYouChangeStatus")}</p>
+                  <article>{t("BeforeYouChangeStatusContent")}</article>
+                </div>
+              )}
+            </React.Fragment>
+          )}
       </div>
 
-      <Quaters
+      <QuarterList
         changeCurrentWatchedUser={changeCurrentWatchedUser}
         getEmployeePromise={getEmployeePromise}
-        reactivateQuaterACreator={reactivateQuaterACreator}
-        status={status}
-        reactivateQuaterStatus={reactivateQuaterStatus}
-        reactivateQuaterErrors={reactivateQuaterErrors}
-        deleteQuaterStatus={deleteQuaterStatus}
-        deleteQuaterErrors={deleteQuaterErrors}
         employeeId={employee.id}
-        deleteQuaterACreator={deleteQuaterACreator}
-        paginationLimit={5}
         quarterTalks={employee.quarterTalks}
       />
-
     </section>
   );
 };

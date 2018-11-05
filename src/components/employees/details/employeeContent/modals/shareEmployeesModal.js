@@ -141,7 +141,7 @@ class ShareEmployeesModal extends React.Component {
         subordinates: []
       });
     } else {
-      let emp = this.generateSubordinates(this.props.employees.filter(e => e.managerId === employeeId));
+      let emp = this.generateSubordinates(employeeId)
 
       this.setState({
         showSubordinatesId: employeeId,
@@ -150,15 +150,14 @@ class ShareEmployeesModal extends React.Component {
     }
   };
 
-  generateSubordinates = (employeesList) => {
-    let tmpList = [];
-    employeesList.forEach(employee => {
-      let emp = this.props.employees.filter(e => e.managerId === employee.id)
-      tmpList = [...tmpList, ...emp];
-      this.generateSubordinates(tmpList);
+  generateSubordinates = (employeeId) => {
+    var result = [];
+    var employees = this.props.employees.filter(e => e.managerId === employeeId);
+    result = [...result, ...employees];
+    employees.forEach(s => {
+      result =  [...result, ...this.generateSubordinates(s.id)]
     });
-    tmpList = [...employeesList, ...tmpList];
-    return tmpList;
+    return result;
   }
 
   chooseLeader = (e) => {
@@ -217,7 +216,8 @@ class ShareEmployeesModal extends React.Component {
         {this.props.employee.roles && this.props.employee.roles.includes("Team Leader") && (
           <Button
             onClick={this.toogleModal}
-            title={<span><i className="fa fa-share-alt" />{t("ShareEmployees")}</span>}
+            children={<i className="fa fa-share-alt" />}
+            title={t("ShareEmployees")}
             mainClass="generate-raport-btn share-btn"
           />
         )}
@@ -239,9 +239,9 @@ class ShareEmployeesModal extends React.Component {
               defaultValue={t("ChooseLeader")}
             >
               <option disabled>{t("ChooseLeader")}</option>
-              {this.props.teamLeadersAndManagers && this.props.teamLeadersAndManagers.map(leader => {
+              {this.props.teamLeadersAndManagers && this.props.teamLeadersAndManagers.map((leader, index) => {
                 return (
-                  <option key={leader.id} value={leader.id}>{leader.firstName} {leader.lastName}</option>
+                  <option key={index} value={leader.id}>{leader.firstName} {leader.lastName}</option>
                 );
               })}
             </select>

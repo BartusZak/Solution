@@ -48,7 +48,7 @@ import { ADD_QUESTION, DELETE_QUESTION,
             return updateObject(state, { addQuestionStatus: action.addQuestionStatus, addQuestionErrors: action.addQuarterTalkErrors })
         case DELETE_QUESTION:
             return updateObject(state, { deleteQuestionStatus: action.status, 
-                deleteQuestionErrors: action.errors})
+                deleteQuestionErrors: action.errors});
             default:
         return state;
     }

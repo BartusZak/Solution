@@ -14,7 +14,9 @@ import {
   GET_SUGGEST_EMPLOYEES,
   CHANGE_GET_SUGGEST_EMPLOYEES_STATUS,
   GET_CONTACT_PERSON_DATA,
-  ADD_PROJECT_OWNER_TO_PROJECT
+  ADD_PROJECT_OWNER_TO_PROJECT,
+  EDIT_EMPLOYEE_ASSIGNMENT,
+  DELETE_EMPLOYEE_ASSIGNMENT
 } from "../constants";
 import { updateObject } from "../services/methods";
 const initialState = {
@@ -23,6 +25,7 @@ const initialState = {
   totalPageCount: 1,
   editedProjectId: null,
   clients: [],
+  resultBlock: null,
 
   project: null,
   loadProjectStatus: null,
@@ -84,11 +87,12 @@ export const projectsReducer = (state = initialState, action) => {
         getContactPersonDataErrors: action.getContactPersonDataErrors
       });
     case LOAD_PROJECTS_SUCCESS:
-      return {
+      return updateObject(state, {
         projects: action.projects.results,
         currentPage: action.projects.currentPage,
-        totalPageCount: action.projects.totalPageCount
-      };
+        totalPageCount: action.projects.totalPageCount,
+        resultBlock: action.resultBlock
+      });
     case LOGOUT:
       return {
         projects: [],
@@ -112,6 +116,18 @@ export const projectsReducer = (state = initialState, action) => {
         addEmployeeToProjectStatus: action.addEmployeeToProjectStatus,
         addEmployeeToProjectErrors: action.addEmployeeToProjectErrors
       });
+
+    case EDIT_EMPLOYEE_ASSIGNMENT:
+      return updateObject(state, {
+        addEmployeeToProjectStatus: action.addEmployeeToProjectStatus,
+        addEmployeeToProjectErrors: action.addEmployeeToProjectErrors
+      })
+
+    case DELETE_EMPLOYEE_ASSIGNMENT:
+      return updateObject(state, {
+        addEmployeeToProjectStatus: action.addEmployeeToProjectStatus,
+        addEmployeeToProjectErrors: action.addEmployeeToProjectErrors
+      })
 
     case ADD_FEEDBACK:
       return updateObject(state, {

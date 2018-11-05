@@ -33,6 +33,10 @@ $activeShadow: 0 0 10px rgba($teal1, 0.5);
   }
 }
 
+.unset-pointer {
+  cursor: unset !important;
+}
+
 .raport-button {
   width: 150px;
   height: 35px !important;
@@ -64,6 +68,11 @@ $activeShadow: 0 0 10px rgba($teal1, 0.5);
     margin-left: 40px;
     height: 85%;
     line-height: 2;
+
+    button {
+      line-height: 20px !important;
+      margin-right: 10px;
+    }
 
     @media screen and (max-width: 1000px) {
       margin: 0;
@@ -167,6 +176,7 @@ $activeShadow: 0 0 10px rgba($teal1, 0.5);
     text-shadow: 1px 1px 1px black;
     padding: 0 30px;
     float: left;
+    height: 38px;
 
     &:hover {
       background-color: $button-element-hover-background;
@@ -242,11 +252,6 @@ $activeShadow: 0 0 10px rgba($teal1, 0.5);
   position: relative;
   min-height: 78.9vh;
 
-  @media screen and (min-width: 501px) {
-    .smooth-table-search-span {
-      padding-top: 10px;
-    }
-  }
   @media screen and (max-width: 500px) {
     padding: 0px;
     .smooth-operator {

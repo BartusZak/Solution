@@ -6,11 +6,10 @@ import {
   cutNotNeededKeysFromArray,
   populateFormArrayWithValues
 } from "../../../services/methods";
-import Spinner from "../../common/spinner/spinner";
+import SmallSpinner from "../../common/spinner/small-spinner";
 import Modal from "react-responsive-modal";
 import Table from "../../common/table/table";
 import ProjectDetailsBlock from "../modals/ProjectDetailsBlock";
-import OperationLoader from "../../common/operationLoader/operationLoader";
 import moment from "moment";
 import Form from "../../form/form";
 import ProgressPicker from "../../common/progressPicker/progressPicker";
@@ -21,10 +20,14 @@ import OperationStatusPrompt from "../../form/operationStatusPrompt/operationSta
 import { translate } from "react-translate";
 import { connect } from "react-redux";
 import {
+  getProjectDataACreator,
   getContactPersonDataACreator,
   getProjectACreator,
   addEmployeeToProjectACreator,
   addEmployeeToProject,
+  editEmployeeAssignmentACreator,
+  editEmployeeAssignment,
+  deleteEmployeeAssignmentACreator,
   getProject,
   changeProjectSkillsACreator,
   editProjectACreator,
@@ -50,6 +53,8 @@ import specialPermissioner from "./../../../api/specialPermissioner";
 import binaryPermissioner from "./../../../api/binaryPermissioner";
 import Owners from "./Owners/Owners";
 import ShareProject from "./ShareProject";
+import NotFound404 from "../../notFound404/NotFound404";
+import Spinner from '../../common/spinner/spinner';
 
 class ProjectDetails extends Component {
   workerNames = [
@@ -61,11 +66,12 @@ class ProjectDetails extends Component {
     this.props.t("EndDate")
   ];
   state = {
+    isLoadingProject: true,
+    isChangingAssignments: false,
     items: [],
     currentOpenedRow: -1,
     matches: false,
     isDeleted: false,
-    isLoadingProject: true,
     editModal: false,
     deleteProjectModal: false,
     addEmployeModal: false,
@@ -138,45 +144,69 @@ class ProjectDetails extends Component {
       }
     ],
     lteVal: 1,
+    lteWidth: 10,
+    editingEmployeeAssignment: false,
+    deletingEmployeeAssignment: false,
+    deleteEmpAssignmentModalOpen: false,
+    deletingAssignment: null,
+    editingAssignmentId: null,
     addEmployeSpinner: false,
     projectStatus: [],
-    onlyActiveAssignments: true
+    onlyActiveAssignments: true,
   };
   componentDidMount() {
-    this.props.getProject(
-      this.props.match.params.id,
-      this.state.onlyActiveAssignments
-    );
+    this.loadProjectData("isLoadingProject");
     const { getSuggest } = this.props;
     getSuggest(this.props.match.params.id);
   }
 
+  togleActiveAssignments = () => {
+    const { onlyActiveAssignments } = this.state;
+    this.setState({ onlyActiveAssignments: !onlyActiveAssignments }, () => this.loadProjectData("isChangingAssignments"));
+  };
+
+  loadProjectData = operationName => {
+    this.setState({[operationName]: true});
+    const { getProjectDataACreator, match } = this.props;
+    const { onlyActiveAssignments } = this.state;
+    getProjectDataACreator(match.params.id, onlyActiveAssignments).then(() => {
+      this.setState({[operationName]: false});
+    }).catch(() => this.setState({[operationName]: false}));
+  }
+
+
   changeOnlyActiveAssignments = () => {
     const { onlyActiveAssignments } = this.state;
-    const { id } = this.props.match.params;
-    this.setState({ onlyActiveAssignments: !onlyActiveAssignments });
-    this.props.getProject(id, !onlyActiveAssignments);
+    this.setState({ onlyActiveAssignments: !onlyActiveAssignments }, () => this.loadProjectData());
   };
+
   fillDates = (startDate, endDate, estimatedEndDate) => {
     const addEmployeToProjectFormItems = [
       ...this.state.addEmployeToProjectFormItems
     ];
-    addEmployeToProjectFormItems[0].value = moment(startDate);
-    addEmployeToProjectFormItems[1].value = moment(
-      endDate ? endDate : estimatedEndDate
-    );
+
+    if(moment(startDate).format("YYYY-MM-DD") === '0001-01-01')
+    {
+      addEmployeToProjectFormItems[0].value = moment();
+      addEmployeToProjectFormItems[1].value = moment().add(1, 'days');
+    }else{
+      addEmployeToProjectFormItems[0].value = moment(startDate)._i;
+      addEmployeToProjectFormItems[1].value = moment(
+        endDate ? endDate : estimatedEndDate
+      )._i;
+    }
+
     return addEmployeToProjectFormItems;
   };
+
   componentWillReceiveProps(nextProps) {
     if (
       this.props.project === null ||
       this.props.project !== nextProps.project
     ) {
       const { project } = nextProps;
-
       if (project !== null) {
         this.setState({
-          isLoadingProject: false,
           deleteProjectModal: false,
           addEmployeToProjectFormItems: this.fillDates(
             project.startDate,
@@ -184,14 +214,20 @@ class ProjectDetails extends Component {
             project.estimatedEndDate
           ),
           projectStatus: this.calculateProjectStatus(
-            project.startDate,
-            project.endDate,
             project.status,
-            project.estimatedEndDate,
             project.isDeleted
           )
         });
-      } else this.setState({ isLoadingProject: false });
+
+        if (
+          this.props.project &&
+          (this.props.project.team !== project.team || project.team === null)
+        ) {
+          this.setState({
+            isChangingAssignments: false
+          });
+        }
+      }
     } else if (
       this.props.addEmployeeToProjectErrors !==
       nextProps.addEmployeeToProjectErrors
@@ -232,28 +268,36 @@ class ProjectDetails extends Component {
     const {
       addEmployeToProjectFormItems,
       lteVal,
-      onlyActiveAssignments
+      onlyActiveAssignments,
+      editingEmployeeAssignment
     } = this.state;
-    const { project, addEmployeeToProject } = this.props;
-    addEmployeeToProject(
-      addEmployeToProjectFormItems[3].value,
-      project.id,
-      addEmployeToProjectFormItems[0].value,
-      addEmployeToProjectFormItems[1].value,
-      addEmployeToProjectFormItems[4].value,
-      lteVal,
-      addEmployeToProjectFormItems[2].value,
-      onlyActiveAssignments
+    const { project, addEmployeeToProject, editEmployeeAssignment } = this.props;
+
+    if(editingEmployeeAssignment ?
+      editEmployeeAssignment(
+        addEmployeToProjectFormItems[0].value,
+        addEmployeToProjectFormItems[1].value,
+        addEmployeToProjectFormItems[4].value,
+        lteVal,
+        addEmployeToProjectFormItems[2].value,
+        this.state.editingAssignmentId,
+        onlyActiveAssignments,
+        project.id
+      ) :
+      addEmployeeToProject(
+        addEmployeToProjectFormItems[3].value,
+        project.id,
+        addEmployeToProjectFormItems[0].value,
+        addEmployeToProjectFormItems[1].value,
+        addEmployeToProjectFormItems[4].value,
+        lteVal,
+        addEmployeToProjectFormItems[2].value,
+        onlyActiveAssignments
+      )
     );
   };
 
-  calculateProjectStatus = (
-    startDate,
-    endDate,
-    projectStatus,
-    estimatedEndDate,
-    isDeleted
-  ) => {
+  calculateProjectStatus = (projectStatus, isDeleted) => {
     if (isDeleted === true)
       return [{ classVal: "spn-unactive", name: this.props.t("Deleted") }];
     if (projectStatus === 2)
@@ -271,14 +315,6 @@ class ProjectDetails extends Component {
   componentWillUnmount() {
     this.props.clearProjectData(null, null, [], [], []);
   }
-  togleActiveAssign = () => {
-    const { onlyActiveAssignments } = this.state;
-    this.setState({
-      onlyActiveAssignments: !onlyActiveAssignments,
-      isLoadingProject: true
-    });
-    this.props.getProject(this.props.match.params.id, !onlyActiveAssignments);
-  };
 
   closeAddEmployeeToProjectModal = () => {
     const addEmployeToProjectFormItems = [
@@ -296,17 +332,14 @@ class ProjectDetails extends Component {
       addEmployeModal: false
     });
   };
-  closeShareProjectModal = () =>{
+  closeShareProjectModal = () => {
     this.setState({
       shareProjectModal: false
     });
-  }
+  };
   handleChange = () => {
     const { matches } = this.state;
-    this.setState({
-      matches: !matches,
-      currentOpenedRow: -1
-    });
+    this.setState({ matches: !matches, currentOpenedRow: -1 });
   };
   createProgressBtns = (number, color, startVal, index, listName) => {
     const btnsArray = [];
@@ -334,33 +367,92 @@ class ProjectDetails extends Component {
       addEmployeToProjectFormItems: addEmployeToProjectFormItems
     });
   };
+
+  editEmployee = (employeeData) => {
+    const addEmployeToProjectFormItems = [
+      ...this.state.addEmployeToProjectFormItems
+    ];
+
+    addEmployeToProjectFormItems[0].value = employeeData.startDate;
+    addEmployeToProjectFormItems[1].value = employeeData.endDate;
+    addEmployeToProjectFormItems[2].minLength = 0;
+    addEmployeToProjectFormItems[2].value = employeeData.responsibilities;
+    addEmployeToProjectFormItems[3].value = employeeData.employeeId;
+    addEmployeToProjectFormItems[4].value = employeeData.role;
+    const lte = employeeData.assignedCapacity * 10;
+
+    this.setState({
+      editingEmployeeAssignment: true,
+      deletingEmployeeAssignment: false,
+      lteVal: lte,
+      editingAssignmentId: employeeData.assignmentId,
+      currentOpenedRow: -1,
+      addEmployeModal: !this.state.addEmployeModal,
+      addEmployeToProjectFormItems: addEmployeToProjectFormItems
+    });
+  }
+
+  clearForm = (project) => {
+    const addEmployeToProjectFormItems = [
+      ...this.state.addEmployeToProjectFormItems
+    ];
+
+    if(moment(project.startDate).format("YYYY-MM-DD") === '0001-01-01')
+    {
+      addEmployeToProjectFormItems[0].value = moment();
+      addEmployeToProjectFormItems[1].value = moment().add(1, 'days');
+    }else{
+      addEmployeToProjectFormItems[0].value = moment(project.startDate)._i;
+      addEmployeToProjectFormItems[1].value = moment(
+        project.endDate ? project.endDate : project.estimatedEndDate
+      )._i;
+    }
+
+    addEmployeToProjectFormItems[2].value = [];
+    addEmployeToProjectFormItems[3].value = '';
+    addEmployeToProjectFormItems[4].value = '';
+    const lte = 1;
+
+    this.setState({
+      lteVal: lte,
+      currentOpenedRow: -1,
+      editingEmployeeAssignment: false,
+      deletingEmployeeAssignment: false,
+      editingAssignmentId: null,
+      addEmployeModal: !this.state.addEmployeModal,
+      addEmployeToProjectFormItems: addEmployeToProjectFormItems
+    });
+  }
+
+  deleteEmployeeAssignment = () => {
+    const { deleteEmployeeAssignmentACreator, project } = this.props;
+    const { onlyActiveAssignments, deletingAssignment } = this.state;
+
+    this.setState({
+      deletingEmployeeAssignment: true,
+      editingEmployeeAssignment: false,
+      deleteEmpAssignmentModalOpen: false
+    })
+
+    deleteEmployeeAssignmentACreator( deletingAssignment.assignmentId, project.id, onlyActiveAssignments)
+  }
+
+  setDeletingAssignmentId = (assignment) => {
+    this.setState({
+      deleteEmpAssignmentModalOpen: true,
+      deletingAssignment: assignment
+    })
+  }
+
   render() {
-    const {
-      project,
-      loading,
-      loadProjectStatus,
-      addEmployeeToProjectStatus,
-      addEmployeeToProjectErrors,
-      loadProjectErrors,
-      changeProjectState,
-      changeProjectStateStatus,
-      changeProjectStateErrors,
-      getSuggestEmployeesStatus,
-      suggestEmployees,
-      addProjectOwnerToProjectStatus,
-      addProjectOwnerToProjectErrors,
-      t
-    } = this.props;
+    const { project, loading, loadProjectStatus, addEmployeeToProjectStatus,
+      addEmployeeToProjectErrors, changeProjectState, changeProjectStateStatus,
+      changeProjectStateErrors, getSuggestEmployeesStatus, suggestEmployees,
+      addProjectOwnerToProjectStatus, addProjectOwnerToProjectErrors, t } = this.props;
 
     const { reactivate, close } = WebApi.projects.put;
-    const {
-      projectStatus,
-      onlyActiveAssignments,
-      isChangingAssignment,
-      matches,
-      currentOpenedRow,
-      isLoadingProject
-    } = this.state;
+    const { projectStatus, onlyActiveAssignments, matches, currentOpenedRow,
+      isChangingAssignments, isLoadingProject } = this.state;
     return (
       <div
         onClick={
@@ -370,7 +462,7 @@ class ProjectDetails extends Component {
         }
         className="project-details-container"
       >
-        {loadProjectStatus === null && <OperationLoader isLoading={true} />}
+        {isLoadingProject && <Spinner message={t("LoadingProjectMessage")} fontSize="7px" />}
 
         {loadProjectStatus && (
           <Aux>
@@ -378,7 +470,7 @@ class ProjectDetails extends Component {
               <h1>
                 {projectStatus && (
                   <span className={projectStatus[0].classVal}>
-                    {projectStatus[0].name}
+                    {projectStatus[0].name} {loading && <Spinner fontSize="1.77px" position="absolute" positionClass="abs-spinner"/>}
                   </span>
                 )}
 
@@ -396,7 +488,7 @@ class ProjectDetails extends Component {
                   specialPermissioner().projects.isOwner(
                     this.props.project,
                     this.props.login
-                  ))  && (
+                  )) && (
                   <React.Fragment>
                     <button
                       onClick={() =>
@@ -407,44 +499,49 @@ class ProjectDetails extends Component {
                       {t("EditProject")}
                     </button>
 
-                     <button
+                    <button
                       onClick={() =>
-                        this.setState({ shareProjectModal: !this.state.shareProjectModal })
+                        this.setState({
+                          shareProjectModal: !this.state.shareProjectModal
+                        })
                       }
                       className="option-btn normal-btn"
                     >
-                      Udostępnij
+                      {t('Share')}
                     </button>
 
-                    {projectStatus[0].name !== t("Active") && (
-                      <button
-                        onClick={() =>
-                          changeProjectState(reactivate, "reactivate", {
-                            projectId: project.id,
-                            onlyActiveAssignments: onlyActiveAssignments
-                          })
-                        }
-                        className="option-btn green-btn"
-                      >
-                        {t("ActivateProject")}
-                      </button>
-                    )}
+                    {projectStatus &&
+                      projectStatus[0].name !== t("Active") && (
+                        <button
+                          onClick={() =>
+                            changeProjectState(reactivate, "reactivate", {
+                              projectId: project.id,
+                              onlyActiveAssignments: onlyActiveAssignments
+                            })
+                          }
+                          className="option-btn green-btn"
+                        >
+                          {t("ActivateProject")}
+                        </button>
+                      )}
 
-                    {projectStatus[0].name === t("Active") && (
-                      <button
-                        onClick={() =>
-                          changeProjectState(close, "close", {
-                            projectId: project.id,
-                            onlyActiveAssignments: onlyActiveAssignments
-                          })
-                        }
-                        className="option-btn option-dang"
-                      >
-                        {t("Close")}
-                      </button>
-                    )}
+                    {projectStatus &&
+                      projectStatus[0].name === t("Active") && (
+                        <button
+                          onClick={() =>
+                            changeProjectState(close, "close", {
+                              projectId: project.id,
+                              onlyActiveAssignments: onlyActiveAssignments
+                            })
+                          }
+                          className="option-btn option-dang"
+                        >
+                          {t("Close")}
+                        </button>
+                      )}
 
-                    {projectStatus[0].name !== t("Deleted") &&
+                    {projectStatus &&
+                      projectStatus[0].name !== t("Deleted") &&
                       projectStatus[0].name !== t("Closed") && (
                         <button
                           onClick={() =>
@@ -496,6 +593,7 @@ class ProjectDetails extends Component {
                   owners={project.owners}
                   changeProjectState={changeProjectState}
                   WebApi={WebApi}
+                  loggedUser={this.props.login}
                   projectId={project.id}
                   isProjectOwner={
                     binaryPermissioner(false)(0)(0)(0)(0)(0)(1)(
@@ -543,11 +641,15 @@ class ProjectDetails extends Component {
               <div className="right-project-spec">
                 <div className="a-asign-container">
                   <label>{t("ShowActiveAssignments")}</label>
-                  <input
+                  <input disabled={isChangingAssignments}
                     type="checkbox"
                     checked={onlyActiveAssignments}
-                    onChange={this.togleActiveAssign}
+                    onChange={this.togleActiveAssignments}
                   />
+                  <span className="assingments-spinner-container">
+                    {isChangingAssignments &&
+                      <Spinner fontSize="1.77px" positionClass="abs-spinner"/>}
+                  </span>
                 </div>
 
                 <Table
@@ -557,11 +659,10 @@ class ProjectDetails extends Component {
                   title={t("ProjectTeam")}
                   thds={this.workerNames}
                   emptyMsg={t("EmptyProjectTeam")}
-                  togleAddEmployeeModal={() =>
-                    this.setState({
-                      addEmployeModal: !this.state.addEmployeModal
-                    })
-                  }
+                  editEmployee={this.editEmployee}
+                  deleteEmployeeAssignment={this.deleteEmployeeAssignment}
+                  setDeletingAssignmentId={this.setDeletingAssignmentId}
+                  togleAddEmployeeModal={() => this.clearForm(project)}
                   login={this.props.login}
                   isProjectOwner={
                     binaryPermissioner(false)(0)(0)(0)(0)(0)(1)(
@@ -793,6 +894,7 @@ class ProjectDetails extends Component {
                 onlyActiveAssignments={onlyActiveAssignments}
                 editProjectStatus={this.props.editProjectStatus}
                 editProjectErrors={this.props.editProjectErrors}
+                responsiblePerson={project.responsiblePerson}
                 project={project}
                 getContactPersonDataACreator={
                   this.props.getContactPersonDataACreator
@@ -812,13 +914,16 @@ class ProjectDetails extends Component {
               }
               header={t("ConfirmDeleteProject")}
               operationName={t("Delete")}
+              denyName={t("Cancel")}
               operation={() =>
                 changeProjectState(WebApi.projects.delete.project, "delete", {
                   projectId: project.id,
                   onlyActiveAssignments: onlyActiveAssignments
                 })
               }
-            />
+            >
+             {loading && <Spinner fontSize="3px" positionClass="abs-spinner"/>}
+            </ConfirmModal>
 
             <Modal
               key={3}
@@ -828,10 +933,14 @@ class ProjectDetails extends Component {
               onClose={this.closeAddEmployeeToProjectModal}
             >
               <header>
-                <h3 className="section-heading">{t("AddEmployee")} </h3>
+                <h3 className="section-heading">
+                  {this.state.editingEmployeeAssignment ?
+                     t("EditEmployee")
+                     : t("AddEmployee")}
+                </h3>
               </header>
               <Form
-                btnTitle={t("Add")}
+                btnTitle={this.state.editingEmployeeAssignment ? t("Save") : t("Add")}
                 key={4}
                 endDate={this.props.estimatedEndDate}
                 shouldSubmit={false}
@@ -858,19 +967,32 @@ class ProjectDetails extends Component {
               contentLabel="Add employee to project modal"
               onClose={this.closeShareProjectModal}
             >
-              <ShareProject
-                projectId={this.props.match.params.id}
-              >
-              </ShareProject>              
+              <ShareProject projectId={this.props.match.params.id} />
             </Modal>
 
+            <ConfirmModal
+              key={6}
+              open={this.state.deleteEmpAssignmentModalOpen}
+              content="Delete employee assignment modal"
+              onClose={() =>
+                this.setState({
+                  deleteEmpAssignmentModalOpen: !this.state.deleteEmpAssignmentModalOpen
+                })
+              }
+              header={this.state.deletingAssignment && t("DeleteEmpAssignment") + this.state.deletingAssignment.firstName + " " + this.state.deletingAssignment.lastName + t("FromProject")}
+              operationName={t("Delete")}
+              denyName={t("Cancel")}
+              operation={() =>
+                this.deleteEmployeeAssignment()
+              }
+            />
 
             {addEmployeeToProjectStatus !== null &&
               addEmployeeToProjectStatus !== undefined && (
                 <OperationStatusPrompt
                   operationPromptContent={
                     addEmployeeToProjectStatus
-                      ? t("EmployeeAdded")
+                      ? this.state.editingEmployeeAssignment ? t("AssignmentSaved") : this.state.deletingEmployeeAssignment ? t("AssignmentDeleted") : t("EmployeeAdded")
                       : addEmployeeToProjectErrors &&
                         addEmployeeToProjectErrors[0]
                   }
@@ -881,20 +1003,9 @@ class ProjectDetails extends Component {
         )}
 
         {loadProjectStatus === false && (
-          <ServerError message={this.props.loadProjectErrors[0]} />
+          <NotFound404 />
+          // <ServerError message={this.props.loadProjectErrors[0]} />
         )}
-
-        {changeProjectStateStatus === false && (
-          <OperationLoader
-            operationError={
-              changeProjectStateErrors.length > 0
-                ? changeProjectStateErrors[0]
-                : ""
-            }
-            close={this.props.clearProjectState}
-          />
-        )}
-        {loading && <OperationLoader isLoading={loading} />}
       </div>
     );
   }
@@ -909,10 +1020,11 @@ const mapStateToProps = state => {
     responsiblePersonKeys: state.projectsReducer.responsiblePersonKeys,
     overViewKeys: state.projectsReducer.overViewKeys,
 
+    loading: state.asyncReducer.loading,
+
     changeProjectStateStatus: state.projectsReducer.changeProjectStateStatus,
     changeProjectStateErrors: state.projectsReducer.changeProjectStateErrors,
     currentOperation: state.projectsReducer.currentOperation,
-    loading: state.asyncReducer.loading,
 
     addEmployeeToProjectStatus:
       state.projectsReducer.addEmployeeToProjectStatus,
@@ -952,6 +1064,7 @@ const mapDispatchToProps = dispatch => {
       dispatch(
         editProjectACreator(projectId, projectToSend, onlyActiveAssignments)
       ),
+    getProjectDataACreator: (projectId, onlyActiveAssignments) => dispatch(getProjectDataACreator(projectId, onlyActiveAssignments)),
     editProjectClearData: (status, errors) =>
       dispatch(editProject(status, errors)),
     clearProjectData: (project, status, errors, personKeys, overViewKeys) =>
@@ -978,12 +1091,17 @@ const mapDispatchToProps = dispatch => {
           onlyActiveAssignments
         )
       ),
-    addEmployeeToProjectAction: (status, errors) =>
-      dispatch(addEmployeeToProject(status, errors)),
+    addEmployeeToProjectAction: (status, errors) => dispatch(addEmployeeToProject(status, errors)),
+
+    editEmployeeAssignment: ( startDate, endDate, role, assignedCapacity, responsibilites, assignmentId, onlyActiveAssignments, projectId) =>
+      dispatch(editEmployeeAssignmentACreator(startDate,endDate,role,assignedCapacity,responsibilites,assignmentId,onlyActiveAssignments, projectId)),
+
+    editEmployeeAssignmentAction: (status, errors) => dispatch(editEmployeeAssignment(status, errors)),
+
+    deleteEmployeeAssignmentACreator: ( assignmentId, projectId, onlyActiveAssignments) => dispatch(deleteEmployeeAssignmentACreator(assignmentId, projectId, onlyActiveAssignments)),
+
     changeProjectSkills: (projectId, skills, onlyActiveAssignments) =>
-      dispatch(
-        changeProjectSkillsACreator(projectId, skills, onlyActiveAssignments)
-      ),
+      dispatch(changeProjectSkillsACreator(projectId, skills, onlyActiveAssignments)),
 
     addProjectOwner: (projectId, ownersIdsArray) =>
       dispatch(addProjectOwnerACreator(projectId, ownersIdsArray)),

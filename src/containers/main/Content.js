@@ -13,22 +13,27 @@ import ClientsContainer from "../../components/clients/ClientsContainer";
 import PromptsCommander from "../../components/promptsCommander/promptsCommander";
 import ImportCVContainer from "../../components/importCV/ImportCVContainer";
 import NotFound404 from "../../components/notFound404/NotFound404";
-import Quarters from '../../components/quarters/quartersPanel.jsx';
-import { getNotificationACreator } from '../../actions/notificationActions'
+import Quarters from "../../components/quarters/quartersPanel.jsx";
+import { getNotificationACreator } from "../../actions/notificationActions";
 import { connect } from "react-redux";
+import Info from "./../../components/info/infoContainer"; 
+
 class Content extends React.Component {
-  componentDidMount(){
-    this.props.getNotificationACreator().then(() =>{
-    });
+  componentDidMount() {
+    this.props.getNotificationACreator().then(() => {});
   }
-  
+
+  showBackdropToChoosePosition = () => {
+    this.setState({showBackdropToChangeNotificationPosition: true});
+  }
+
   render() {
-    const { match } = this.props;
+    const { match, history } = this.props;
 
     return (
       <div className="content">
         <Confirmation />
-        <PromptsCommander />
+        <PromptsCommander history={history} />
         <Switch>
           <Route exact path={match.url} component={StatsContainer} />
           <Route path={match.url + "/projects"} component={ProjectsContainer} />
@@ -37,7 +42,11 @@ class Content extends React.Component {
             component={EmployeesContainer}
           />
           <Route path={match.url + "/users"} component={UsersContainer} />
-          <Route path={match.url + "/clients"} component={ClientsContainer} />
+          <Route
+            exact
+            path={match.url + "/clients"}
+            component={ClientsContainer}
+          />
 
           <Route
             path={match.url + "/employees"}
@@ -48,9 +57,11 @@ class Content extends React.Component {
           <Route path={match.url + "/reports"} component={ReportsContainer} />
           <Route path={match.url + "/quarters"} component={Quarters} />
           <Route
+            exact
             path={match.url + "/import-cv"}
             component={ImportCVContainer}
           />
+          <Route path={match.url + "/info"} component={Info} />
           <Route component={NotFound404} />
         </Switch>
         <div className="content-abs-footer">Billennium 2018</div>
@@ -65,15 +76,16 @@ Content.propTypes = {
 
 const mapDispatchToProps = dispatch => {
   return {
-    getNotificationACreator: (employeeId) => dispatch(getNotificationACreator(employeeId))
+    getNotificationACreator: employeeId =>
+      dispatch(getNotificationACreator(employeeId))
   };
 };
 
-const mapStateToProps  = state => {
+const mapStateToProps = state => {
   return {
     login: state.authReducer.login
-  }
-}
+  };
+};
 
 export default withRouter(
   connect(
