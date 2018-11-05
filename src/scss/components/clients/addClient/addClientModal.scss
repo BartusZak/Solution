@@ -61,25 +61,51 @@
     .add-client-input-error {
       color: red !important;
       border: red 1px solid !important;
+      -webkit-box-shadow: -1px 1px 24px -2px rgb(203, 50, 50) !important;
+      -moz-box-shadow: -1px 1px 24px -2px rgb(203, 50, 50) !important;
+      box-shadow: -1px 1px 24px -2px rgb(203, 50, 50) !important;
     }
     .intermediate-block {
       margin-top: 12vh;
     }
+
     .group {
       width: 100%;
       height: 70%;
       padding-top: 20px;
+      margin-bottom: 15px;
+
+      input, textarea{
+        width: 100%;
+        font-size: 12px;
+        border-radius: 4px;
+        outline: none;
+        transition: 0.5s all ease-in-out;
+        border: 1px solid #20B2A9 !important;
+      }
+
+      textarea{
+        resize: vertical;
+        max-height: 120px;
+      }
+
+      input:focus, textarea:focus{
+        -webkit-box-shadow: -1px 1px 24px -2px rgb(71, 138, 160);
+        -moz-box-shadow: -1px 1px 24px -2px rgb(112, 202, 233);
+        box-shadow: -1px 1px 24px -2px rgb(112, 202, 233);
+    }
 
       span {
         color: red;
         font-size: smaller;
         display: inline-block;
-        height: 20px;
+        height: 10px;
       }
 
       label {
         font-size: x-large;
         color: #6c757d;
+        margin-top: 5px;
         margin-bottom: 5px;
         display: block;
       }
@@ -103,7 +129,7 @@
         -moz-box-sizing: border-box;
         width: 100%;
         background: #fff;
-        margin-bottom: 4%;
+        //margin-bottom: 4%;
         border: 1px solid #ccc;
         padding: 3%;
         color: #555;

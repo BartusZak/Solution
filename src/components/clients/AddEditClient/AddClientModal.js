@@ -7,6 +7,7 @@ import "../../../scss/components/clients/addClient/addClientModal.scss";
 import BilleniumPleaceholder from "assets/img/small-logo.png";
 import FileInput from "components/common/inputs/fileInput/fileInput";
 import SmallSpinner from "../../common/spinner/small-spinner";
+import SpinnerButton from "../../form/spinner-btn/spinner-btn";
 
 class AddClientModal extends Component {
   state = {
@@ -132,6 +133,7 @@ class AddClientModal extends Component {
     const { loading, inputError } = this.state;
     return (
       <form>
+      
         <div className="add-client-container-left">
           <div className="group">
             <label htmlFor="clientName">{t("ClientName")}</label>
@@ -158,7 +160,7 @@ class AddClientModal extends Component {
 
             <label htmlFor="clientDescription">{t("ClientDescription")}</label>
             <textarea
-              style={{ resize: "vertical", maxHeight: "120px" }}
+              //style={{ resize: "vertical", maxHeight: "120px" }}
               type="text"
               id="clientDescription"
               name="clientDescription"
@@ -183,7 +185,7 @@ class AddClientModal extends Component {
           <Button
             disable={!this.state.isFormValid}
             onClick={e => this.handleAddClientButtonClick(e)}
-            mainClass="dcmt-button"
+            mainClass="submit-btn"
           >
             {this.props.editClient ? t("Save") : t("Add")}
           </Button>
