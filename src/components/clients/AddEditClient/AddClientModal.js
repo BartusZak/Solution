@@ -160,7 +160,6 @@ class AddClientModal extends Component {
 
             <label htmlFor="clientDescription">{t("ClientDescription")}</label>
             <textarea
-              //style={{ resize: "vertical", maxHeight: "120px" }}
               type="text"
               id="clientDescription"
               name="clientDescription"
