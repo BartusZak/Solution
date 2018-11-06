@@ -13,7 +13,9 @@
 
   .info-client-list-header-input {
     width: 30%;
-    text-align: right;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
     .switch {
       position: relative;
       display: inline-block;
@@ -48,6 +50,9 @@
       -webkit-transition: 0.4s;
       transition: 0.4s;
       border-radius: 50%;
+    }
+    .fa-trash{
+      padding: 4%
     }
     input:checked + .slider {
       background-color: #2196f3;
