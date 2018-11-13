@@ -26,6 +26,7 @@ class AddCloudModal extends PureComponent {
         inputType: "name"
       }
     ],
+    canSubmit: false,
     isLoading: false,
     newInput: false,
     newInputValues: []
@@ -70,7 +71,7 @@ class AddCloudModal extends PureComponent {
         inputClass === "value" ? inputValue : newInputValues[index].content
     };
 
-    this.setState({ newInputValues: inputValues }, () => this.forceUpdate());
+    this.setState({ newInputValues: inputValues, canSubmit: true }, () => this.forceUpdate());
   };
 
   addCloudHandler = () => {
@@ -90,10 +91,17 @@ class AddCloudModal extends PureComponent {
             clientId
           );
   };
+  deleteInputSection = (index) => {
+    const { newInputValues } = this.state;
+    const inputValues = newInputValues.filter(input => input !== newInputValues[index]);
+    this.setState({newInputValues:inputValues})
+  };
+  
 
   render() {
     const { t, resultBlockCloud, item } = this.props;
     const {
+      canSubmit,
       addCloudToClientFormItems,
       isLoading,
       newInput,
@@ -106,10 +114,15 @@ class AddCloudModal extends PureComponent {
             <div style={{ marginBottom: "10px" }} key={index}>
               <section className="new-section-input">
                 <label>{t("NewInputLabel")}</label>
+                
                 <input
                   className="label"
                   value={item.name}
                   onChange={e => this.handleChangeInput(e, index)}
+                />
+                <i                
+                  className="fa fa-minus icon-danger"
+                  onClick={() => this.deleteInputSection(index)}
                 />
               </section>
               <section className="new-section-input">
@@ -124,8 +137,9 @@ class AddCloudModal extends PureComponent {
           );
         })
       : null;
-
+    
     const buttonClass = newInputValues.length >= 3 ? "notDisplayed" : null;
+
     return (
       <div className="add-client-container">
         <header>
@@ -142,6 +156,7 @@ class AddCloudModal extends PureComponent {
           }}
         >
           <Form
+            btnDisabled={!canSubmit}
             btnTitle={item ? t("Save") : t("Add")}
             shouldSubmit={true}
             onSubmit={this.addCloudHandler}

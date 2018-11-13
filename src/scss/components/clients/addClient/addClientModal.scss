@@ -8,6 +8,7 @@
 
   .new-section-input {
     margin-bottom: 5px;
+    position: relative;
     label {
       margin: 3px 0;
       width: 32%;
@@ -23,6 +24,16 @@
       border: 1px solid #20b2a9 !important;
       height: calc(1.3525rem + 2px) !important;
       padding: 12.5px !important;
+    }
+    .fa-minus {
+      position: absolute;
+      right: 10px;
+      color: rgb(179, 36, 36);
+      bottom: auto;
+      top: auto;
+      &:hover {
+        cursor: pointer;
+      }
     }
   }
 
