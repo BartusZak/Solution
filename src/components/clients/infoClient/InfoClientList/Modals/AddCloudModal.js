@@ -1,5 +1,6 @@
 import React, { PureComponent } from "react";
 import Form from "../../../../form/form";
+import {validateInput} from "../../../../../services/validation";
 
 const populateValue = item => {
   let value = "";
@@ -29,7 +30,18 @@ class AddCloudModal extends PureComponent {
     canSubmit: false,
     isLoading: false,
     newInput: false,
-    newInputValues: []
+    newInputValues: [
+      { 
+        name: "",
+        content: "",
+        canBeNull: false,
+        minLength: 2,
+        maxLength: 20,
+        nameError: "",
+        contentError: ""
+      }
+    ],
+    isNewInputValidate: true
   };
 
   componentWillReceiveProps(nextProps) {
@@ -45,8 +57,16 @@ class AddCloudModal extends PureComponent {
 
   componentDidMount() {
     const { item } = this.props;
+    const validateInputValues = item && item.fields.length > 0 ? item.fields.map(input => {
+      input.canBeNull="false";
+      input.minLength=2;
+      input.maxLength=20;
+      input.error="";
+      return input;
+    }) : null;
+    console.log(validateInputValues)
     if (item && item.fields.length > 0) {
-      this.setState({ newInputValues: item.fields, newInput: true });
+      this.setState({ newInputValues: validateInputValues, newInput: true });
     }
   }
 
@@ -55,23 +75,44 @@ class AddCloudModal extends PureComponent {
 
     this.setState({
       newInput: true,
-      newInputValues: [...newInputValues, { name: "", content: "" }]
+      newInputValues: [...newInputValues, { name: "", content: "", canBeNull: false,
+        minLength: 2, maxLength: 20, nameError: "", contentError: "" }]
     });
   };
 
   handleChangeInput = (e, index) => {
-    const { newInputValues } = this.state;
+    const newInputValues = [...this.state.newInputValues];
     const { className: inputClass, value: inputValue } = e.target;
+    const {t} = this.props;
 
-    let inputValues = this.state.newInputValues;
+    const inputValues = {...newInputValues[index]};
+    
+    inputValues.content = inputClass === "value" ? inputValue : newInputValues[index].content;
+    inputValues.name = inputClass === "label" ? inputValue : newInputValues[index].name;
+    newInputValues[index] = inputValues;
 
-    inputValues[index] = {
-      name: inputClass === "label" ? inputValue : newInputValues[index].name,
-      content:
-        inputClass === "value" ? inputValue : newInputValues[index].content
-    };
+    inputValues.nameError = validateInput(
+      newInputValues[index].name,
+      false,
+      2,
+      20,
+      null,
+      t("NewInputLabel")
+    );
+    inputValues.contentError = validateInput(
+      newInputValues[index].content,
+      false,
+      2,
+      20,
+      null,
+      t("NewInputValue")
+    );
+    
+    this.setState({ newInputValues }, () => this.forceUpdate());
+    const canSubmit = !(inputValues.nameError || inputValues.contentError);
 
-    this.setState({ newInputValues: inputValues, canSubmit: true }, () => this.forceUpdate());
+    this.setState({ canSubmit });
+    console.log(newInputValues)
   };
 
   addCloudHandler = () => {
@@ -94,7 +135,7 @@ class AddCloudModal extends PureComponent {
   deleteInputSection = (index) => {
     const { newInputValues } = this.state;
     const inputValues = newInputValues.filter(input => input !== newInputValues[index]);
-    this.setState({newInputValues:inputValues})
+    this.setState({ newInputValues:inputValues })
   };
   
 
@@ -107,23 +148,26 @@ class AddCloudModal extends PureComponent {
       newInput,
       newInputValues
     } = this.state;
+    console.log("addCloudToClientFormItems", addCloudToClientFormItems)
 
     let newInputContent = newInput
       ? newInputValues.map((item, index) => {
           return (
             <div style={{ marginBottom: "10px" }} key={index}>
               <section className="new-section-input">
-                <label>{t("NewInputLabel")}</label>
-                
+                <label>{t("NewInputLabel")}</label>                
                 <input
                   className="label"
                   value={item.name}
                   onChange={e => this.handleChangeInput(e, index)}
                 />
                 <i                
-                  className="fa fa-minus icon-danger"
+                  className="fa fa-minus"
                   onClick={() => this.deleteInputSection(index)}
                 />
+                <p className="form-error">
+                  <span>{item.nameError}</span>
+                </p>
               </section>
               <section className="new-section-input">
                 <label>{t("NewInputValue")}</label>
@@ -132,6 +176,9 @@ class AddCloudModal extends PureComponent {
                   value={item.content}
                   onChange={e => this.handleChangeInput(e, index)}
                 />
+                <p className="form-error">
+                  <span>{item.contentError}</span>
+                </p>
               </section>
             </div>
           );
