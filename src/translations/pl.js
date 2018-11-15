@@ -492,7 +492,7 @@ const translations = {
     GeneralInfo: "Informacje ogólne",
     ResponsiblePerson: "Osoba do kontaktu",
     SkillsRequired: "Umiejętności na potrzeby projektu",
-    ShowActiveAssignments: "Pokaż aktywne przypisania",
+    ShowAllAssignments: "Uwzględnij nieaktywne przypisania",
     Name: "Nazwa",
     Role: "Rola",
     Experience: "Doświadczenie",
