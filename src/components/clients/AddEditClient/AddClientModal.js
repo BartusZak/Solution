@@ -133,7 +133,6 @@ class AddClientModal extends Component {
     const { loading, inputError } = this.state;
     return (
       <form>
-      
         <div className="add-client-container-left">
           <div className="group">
             <label htmlFor="clientName">{t("ClientName")}</label>
