@@ -23,24 +23,14 @@ class AddCloudModal extends PureComponent {
         error: "",
         canBeNull: false,
         minLength: 2,
-        maxLength: 20,
+        maxLength: 50,
         inputType: "name"
       }
     ],
     canSubmit: false,
     isLoading: false,
     newInput: false,
-    newInputValues: [
-      { 
-        name: "",
-        content: "",
-        canBeNull: false,
-        minLength: 2,
-        maxLength: 20,
-        nameError: "",
-        contentError: ""
-      }
-    ],
+    newInputValues: [],
     isNewInputValidate: true
   };
 
@@ -60,7 +50,7 @@ class AddCloudModal extends PureComponent {
     const validateInputValues = item && item.fields.length > 0 ? item.fields.map(input => {
       input.canBeNull="false";
       input.minLength=2;
-      input.maxLength=20;
+      input.maxLength=50;
       input.error="";
       return input;
     }) : null;
@@ -76,7 +66,8 @@ class AddCloudModal extends PureComponent {
     this.setState({
       newInput: true,
       newInputValues: [...newInputValues, { name: "", content: "", canBeNull: false,
-        minLength: 2, maxLength: 20, nameError: "", contentError: "" }]
+        minLength: 2, maxLength: 50, nameError: "", contentError: "" }],
+      canSubmit:false
     });
   };
 
@@ -95,7 +86,7 @@ class AddCloudModal extends PureComponent {
       newInputValues[index].name,
       false,
       2,
-      20,
+      50,
       null,
       t("NewInputLabel")
     );
@@ -103,7 +94,7 @@ class AddCloudModal extends PureComponent {
       newInputValues[index].content,
       false,
       2,
-      20,
+      50,
       null,
       t("NewInputValue")
     );
@@ -135,7 +126,8 @@ class AddCloudModal extends PureComponent {
   deleteInputSection = (index) => {
     const { newInputValues } = this.state;
     const inputValues = newInputValues.filter(input => input !== newInputValues[index]);
-    this.setState({ newInputValues:inputValues })
+    const canSubmit = newInputValues.every(input => input.name !== '' && input.content !== '')
+    this.setState({ newInputValues:inputValues, canSubmit })
   };
   
 
@@ -148,7 +140,6 @@ class AddCloudModal extends PureComponent {
       newInput,
       newInputValues
     } = this.state;
-    console.log("addCloudToClientFormItems", addCloudToClientFormItems)
 
     let newInputContent = newInput
       ? newInputValues.map((item, index) => {
@@ -190,18 +181,12 @@ class AddCloudModal extends PureComponent {
     return (
       <div className="add-client-container">
         <header>
-          <h3 className="section-heading">
+          <h2 className="section-heading">
             {item ? t("EditCloud") : t("AddCloud")}
-          </h3>
+          </h2>
         </header>
 
-        <div
-          style={{
-            position: "absolute",
-            width: "100%",
-            height: "90%"
-          }}
-        >
+        <div className="modal-content">
           <Form
             btnDisabled={!canSubmit}
             btnTitle={item ? t("Save") : t("Add")}
@@ -228,14 +213,7 @@ class AddCloudModal extends PureComponent {
             }}
           />
         </div>
-        <div
-          style={{
-            position: "absolute",
-            marginTop: "60px",
-            width: "100%",
-            textAlign: "center"
-          }}
-        >
+        <div className="new-input-content">
           {newInputContent}
           <button
             disabled={newInputValues.length >= 3}

@@ -30,7 +30,7 @@ const spinnerBtn = props => {
         className={
           !props.isLoading
             ? `submit-btn ${
-                props.validationResult === false ||
+                props.validationResult === false || props.btnDisabled ||
                 (props.shouldBeDisabledByOtherReason !== undefined && props.shouldBeDisabledByOtherReason) ||
                 (props.transactionEnd && !props.enableButtonAfterTransactionEnd)
                   ? "submit-btn-dis"

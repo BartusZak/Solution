@@ -160,7 +160,7 @@ export default class InfoClient extends Component {
         {openCloudAddModal && (
           <Modal
             open={openCloudAddModal}
-            classNames={{ modal: "Modal-add-cloud" }}
+            classNames={{ modal: "modal-add-cloud", closeIcon:"close-modal-icon" }}
             contentLabel="Add Cloud"
             onClose={this.handleCloudAddCloseModal}
           >
