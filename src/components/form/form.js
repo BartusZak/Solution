@@ -270,6 +270,7 @@ class Form extends Component {
   };
   render() {
     const { enableButtonAfterTransactionEnd = false, inputContainerClass, isDisabled} = this.props;
+    console.log("isDisabled", isDisabled)
     return (
       <form
         onSubmit={e => this.onSubmit(e)}
@@ -501,7 +502,7 @@ class Form extends Component {
           submitResult={this.props.submitResult}
           enableButtonAfterTransactionEnd={enableButtonAfterTransactionEnd}
           shouldBeDisabledByOtherReason={this.props.shouldBeDisabledByOtherReason}
-          btnDisabled = {this.props.btnDisabled ? this.props.btnDisabled : !this.state.formItemChanged}
+          btnDisabled = {this.props.btnDisabled!==undefined ? this.props.btnDisabled && !this.state.formItemChanged : !this.state.formItemChanged}
         />
       </form>
     );

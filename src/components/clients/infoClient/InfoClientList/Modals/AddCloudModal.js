@@ -1,6 +1,7 @@
 import React, { PureComponent } from "react";
 import Form from "../../../../form/form";
 import {validateInput} from "../../../../../services/validation";
+import AddCloudForm from "./AddCloudForm";
 
 const populateValue = item => {
   let value = "";
@@ -12,21 +13,20 @@ const populateValue = item => {
 
 class AddCloudModal extends PureComponent {
   state = {
-    addCloudToClientFormItems: [
-      {
-        title: this.props.t("CloudName"),
-        name: "cloudName",
-        type: "text",
-        placeholder: `${this.props.t("Insert")} ${this.props.t("CloudName")}`,
-        mode: "text",
-        value: this.props.item ? populateValue(this.props.item.name) : "",
-        error: "",
-        canBeNull: false,
-        minLength: 2,
-        maxLength: 50,
-        inputType: "name"
-      }
-    ],
+    addCloudToClientFormItems: 
+    {
+      title: this.props.t("CloudName"),
+      name: "cloudName",
+      type: "text",
+      placeholder: `${this.props.t("Insert")} ${this.props.t("CloudName")}`,
+      mode: "text",
+      value: this.props.item ? populateValue(this.props.item.name) : "",
+      error: "",
+      canBeNull: false,
+      minLength: 2,
+      maxLength: 50,
+      inputType: "name"
+    },
     canSubmit: false,
     isLoading: false,
     newInput: false,
@@ -73,6 +73,7 @@ class AddCloudModal extends PureComponent {
 
   handleChangeInput = (e, index) => {
     const newInputValues = [...this.state.newInputValues];
+    const addCloudName = {...this.state.addCloudToClientFormItems}
     const { className: inputClass, value: inputValue } = e.target;
     const {t} = this.props;
 
@@ -80,6 +81,7 @@ class AddCloudModal extends PureComponent {
     
     inputValues.content = inputClass === "value" ? inputValue : newInputValues[index].content;
     inputValues.name = inputClass === "label" ? inputValue : newInputValues[index].name;
+    addCloudName.value = addCloudName[index].value;
     newInputValues[index] = inputValues;
 
     inputValues.nameError = validateInput(
@@ -99,11 +101,11 @@ class AddCloudModal extends PureComponent {
       t("NewInputValue")
     );
     
-    this.setState({ newInputValues }, () => this.forceUpdate());
+    this.setState({ newInputValues, addCloudName }, () => this.forceUpdate());
     const canSubmit = !(inputValues.nameError || inputValues.contentError);
 
     this.setState({ canSubmit });
-    console.log(newInputValues)
+    console.log("!inputValues.name", !inputValues.name )
   };
 
   addCloudHandler = () => {
@@ -125,8 +127,8 @@ class AddCloudModal extends PureComponent {
   };
   deleteInputSection = (index) => {
     const { newInputValues } = this.state;
-    const inputValues = newInputValues.filter(input => input !== newInputValues[index]);
-    const canSubmit = newInputValues.every(input => input.name !== '' && input.content !== '')
+    const inputValues = newInputValues.filter(input => input !== newInputValues[index]);  
+    const canSubmit = inputValues.every(input => input.name !== '' && input.content !== '');  
     this.setState({ newInputValues:inputValues, canSubmit })
   };
   
@@ -187,41 +189,14 @@ class AddCloudModal extends PureComponent {
         </header>
 
         <div className="modal-content">
-          <Form
-            btnDisabled={!canSubmit}
-            btnTitle={item ? t("Save") : t("Add")}
-            shouldSubmit={true}
-            onSubmit={this.addCloudHandler}
-            isLoading={isLoading}
-            formItems={addCloudToClientFormItems}
-            submitResult={{
-              status:
-                resultBlockCloud && resultBlockCloud.errorOccurred
-                  ? !resultBlockCloud.errorOccurred()
-                    ? true
-                    : false
-                  : null,
-              content:
-                resultBlockCloud && resultBlockCloud.errorOccurred
-                  ? !resultBlockCloud.errorOccurred()
-                    ? item
-                      ? t("CloudEdited")
-                      : t("CloudAdded")
-                    : resultBlockCloud &&
-                      resultBlockCloud.getMostSignificantText()
-                  : null
-            }}
+          <AddCloudForm
+            addCloudToClientFormItems={addCloudToClientFormItems}
+            newInputContent={newInputContent}
+            newInputValues={newInputValues}
+            handleAddInput={this.handleAddInput}
+            onChange={this.handleChangeInput}
+            buttonClass={buttonClass}
           />
-        </div>
-        <div className="new-input-content">
-          {newInputContent}
-          <button
-            disabled={newInputValues.length >= 3}
-            onClick={this.handleAddInput}
-            className={`dcmt-button  ${buttonClass}`}
-          >
-            {t("AddInput")}
-          </button>
         </div>
       </div>
     );
