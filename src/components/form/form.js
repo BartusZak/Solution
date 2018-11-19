@@ -270,7 +270,6 @@ class Form extends Component {
   };
   render() {
     const { enableButtonAfterTransactionEnd = false, inputContainerClass, isDisabled} = this.props;
-    console.log("isDisabled", isDisabled)
     return (
       <form
         onSubmit={e => this.onSubmit(e)}

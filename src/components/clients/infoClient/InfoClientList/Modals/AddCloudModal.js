@@ -25,13 +25,12 @@ class AddCloudModal extends PureComponent {
       canBeNull: false,
       minLength: 2,
       maxLength: 50,
-      inputType: "name"
+      inputType: "name",
+      newInputValues: [],
     },
     canSubmit: false,
     isLoading: false,
     newInput: false,
-    newInputValues: [],
-    isNewInputValidate: true
   };
 
   componentWillReceiveProps(nextProps) {
@@ -54,82 +53,121 @@ class AddCloudModal extends PureComponent {
       input.error="";
       return input;
     }) : null;
-    console.log(validateInputValues)
     if (item && item.fields.length > 0) {
-      this.setState({ newInputValues: validateInputValues, newInput: true });
+      this.setState({ addCloudToClientFormItems:
+        {
+          ...this.state.addCloudToClientFormItems,
+          newInputValues: validateInputValues
+        },
+        newInput: true });
     }
   }
 
   handleAddInput = () => {
-    const { newInputValues } = this.state;
+    const { newInputValues } = this.state.addCloudToClientFormItems;
 
     this.setState({
+      addCloudToClientFormItems: {
+        ...this.state.addCloudToClientFormItems,
+        newInputValues: [...newInputValues, { name: "", content: "", canBeNull: false,
+          minLength: 2, maxLength: 50, nameError: "", contentError: "" }],
+      },
+      canSubmit:false,
       newInput: true,
-      newInputValues: [...newInputValues, { name: "", content: "", canBeNull: false,
-        minLength: 2, maxLength: 50, nameError: "", contentError: "" }],
-      canSubmit:false
     });
   };
 
   handleChangeInput = (e, index) => {
-    const newInputValues = [...this.state.newInputValues];
-    const addCloudName = {...this.state.addCloudToClientFormItems}
-    const { className: inputClass, value: inputValue } = e.target;
+    const newInputValues = [...this.state.addCloudToClientFormItems.newInputValues];
+    let addCloudToClientFormItems = {...this.state.addCloudToClientFormItems};
+    const { name: inputName, value: inputValue } = e.target;
     const {t} = this.props;
 
-    const inputValues = {...newInputValues[index]};
-    
-    inputValues.content = inputClass === "value" ? inputValue : newInputValues[index].content;
-    inputValues.name = inputClass === "label" ? inputValue : newInputValues[index].name;
-    addCloudName.value = addCloudName[index].value;
+    const inputValues = newInputValues.length > 0 ? {...newInputValues[index]} : null ;
+    let nameInputValue = {...addCloudToClientFormItems};
+    nameInputValue.value =  inputName === "cloudName" ? inputValue : addCloudToClientFormItems.value;
+
+    if (inputValues) {
+      inputValues.content = inputName === "fieldContent" ? inputValue : newInputValues[index].content
+      inputValues.name = inputName === "fieldName" ? inputValue : newInputValues[index].name;
+    };
+
     newInputValues[index] = inputValues;
+    addCloudToClientFormItems=nameInputValue;
 
-    inputValues.nameError = validateInput(
-      newInputValues[index].name,
+    nameInputValue.error = validateInput(
+      addCloudToClientFormItems.value,
       false,
       2,
       50,
-      null,
-      t("NewInputLabel")
+      addCloudToClientFormItems.inputType,
+      t("Name")
     );
-    inputValues.contentError = validateInput(
-      newInputValues[index].content,
-      false,
-      2,
-      50,
-      null,
-      t("NewInputValue")
-    );
-    
-    this.setState({ newInputValues, addCloudName }, () => this.forceUpdate());
-    const canSubmit = !(inputValues.nameError || inputValues.contentError);
+    if(inputValues){
+      inputValues.nameError = validateInput(
+        newInputValues[index].name,
+        false,
+        2,
+        50,
+        null,
+        t("NewInputLabel")
+      );
+      inputValues.contentError = validateInput(
+        newInputValues[index].content,
+        false,
+        2,
+        50,
+        null,
+        t("NewInputValue")
+      );
+    }
+    if (inputValues) {
+      addCloudToClientFormItems.newInputValues = newInputValues;
+    }
 
-    this.setState({ canSubmit });
-    console.log("!inputValues.name", !inputValues.name )
+    this.setState({ 
+      addCloudToClientFormItems
+        }, () => this.forceUpdate());
+
+    if(inputValues) {
+      const canSubmit = !(inputValues.nameError || inputValues.contentError || addCloudToClientFormItems.error);
+      this.setState({ canSubmit });
+    } else {
+      const canSubmit = !this.state.addCloudToClientFormItems.error;
+      this.setState({ canSubmit });
+    }
   };
 
-  addCloudHandler = () => {
+  addCloudHandler = e => {
+    e.preventDefault();
     const { handleAddCloud, handleEditCloud, clientId, item } = this.props;
     const { addCloudToClientFormItems, newInputValues } = this.state;
     this.setState({ isLoading: true }),
       item
         ? handleEditCloud(
             item.id,
-            addCloudToClientFormItems[0].value,
-            newInputValues,
+            addCloudToClientFormItems.value,
+            addCloudToClientFormItems.newInputValues,
             item.clientId
           )
         : handleAddCloud(
-            this.state.addCloudToClientFormItems[0].value,
-            newInputValues,
+            this.state.addCloudToClientFormItems.value,
+            addCloudToClientFormItems.newInputValues,
             clientId
           );
   };
   deleteInputSection = (index) => {
-    const { newInputValues } = this.state;
-    const inputValues = newInputValues.filter(input => input !== newInputValues[index]);  
-    const canSubmit = inputValues.every(input => input.name !== '' && input.content !== '');  
-    this.setState({ newInputValues:inputValues, canSubmit })
+    const { addCloudToClientFormItems } = this.state;
+    const inputValues = addCloudToClientFormItems
+      .newInputValues.filter(input => input !== addCloudToClientFormItems.newInputValues[index]);
+    const canSubmit = !(addCloudToClientFormItems.error || 
+      (inputValues.length > 0 && inputValues.every(input => input.name === '' || input.content === '')));
+    this.setState({ 
+      addCloudToClientFormItems:{
+        ...addCloudToClientFormItems,
+        newInputValues:inputValues
+      },
+      canSubmit });
   };
   
 
@@ -139,9 +177,9 @@ class AddCloudModal extends PureComponent {
       canSubmit,
       addCloudToClientFormItems,
       isLoading,
-      newInput,
-      newInputValues
+      newInput
     } = this.state;
+    const {newInputValues} = this.state.addCloudToClientFormItems;
 
     let newInputContent = newInput
       ? newInputValues.map((item, index) => {
@@ -150,7 +188,8 @@ class AddCloudModal extends PureComponent {
               <section className="new-section-input">
                 <label>{t("NewInputLabel")}</label>                
                 <input
-                  className="label"
+                  name="fieldName"
+                  className={newInputValues[index].nameError ? 'input-error' : ''}
                   value={item.name}
                   onChange={e => this.handleChangeInput(e, index)}
                 />
@@ -165,7 +204,8 @@ class AddCloudModal extends PureComponent {
               <section className="new-section-input">
                 <label>{t("NewInputValue")}</label>
                 <input
-                  className="value"
+                  name="fieldContent"
+                  className={newInputValues[index].contentError ? 'input-error' : ''}
                   value={item.content}
                   onChange={e => this.handleChangeInput(e, index)}
                 />
@@ -190,12 +230,35 @@ class AddCloudModal extends PureComponent {
 
         <div className="modal-content">
           <AddCloudForm
+            isLoading={isLoading}
+            onSubmit={this.addCloudHandler}
+            btnDisabled={!canSubmit}
+            btnTitle={item ? t("Save") : t("Add")}
             addCloudToClientFormItems={addCloudToClientFormItems}
             newInputContent={newInputContent}
             newInputValues={newInputValues}
             handleAddInput={this.handleAddInput}
             onChange={this.handleChangeInput}
             buttonClass={buttonClass}
+            submitResult={
+              {
+                status:
+                  resultBlockCloud && resultBlockCloud.errorOccurred
+                    ? !resultBlockCloud.errorOccurred()
+                      ? true
+                      : false
+                    : null,
+                content:
+                  resultBlockCloud && resultBlockCloud.errorOccurred
+                    ? !resultBlockCloud.errorOccurred()
+                      ? item
+                        ? t("CloudEdited")
+                        : t("CloudAdded")
+                      : resultBlockCloud &&
+                        resultBlockCloud.getMostSignificantText()
+                    : null
+              }
+            }
           />
         </div>
       </div>
