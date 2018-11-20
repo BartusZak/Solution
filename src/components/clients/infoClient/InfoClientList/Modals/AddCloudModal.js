@@ -77,6 +77,47 @@ class AddCloudModal extends PureComponent {
     });
   };
 
+  validateAllInputs = () => {
+    const {t} = this.props;
+    let result = true;
+    const formItems = {...this.state.addCloudToClientFormItems};
+      formItems.error = validateInput(
+        formItems.value,
+        false,
+        2,
+        50,
+        formItems.inputType,
+        t("Name")
+    );
+
+    if(formItems.newInputValues.length > 0){
+      for(let key in formItems.newInputValues) {
+        formItems.newInputValues[key].nameError = validateInput(
+          formItems.newInputValues[key].name,
+          false,
+          2,
+          50,
+          null,
+          t("NewInputLabel")
+      );
+        formItems.newInputValues[key].contentError = validateInput(
+        formItems.newInputValues[key].content,
+        false,
+        2,
+        50,
+        null,
+        t("NewInputValue")
+      );
+      }
+    }
+
+    if (formItems.error !== "" || !formItems.newInputValues.every(input => input.nameError === '' || input.contentError === '') ) {
+      result = false;
+    }
+    this.setState({ validationResult: result, addCloudToClientFormItems: formItems });
+    return result;
+  };
+
   handleChangeInput = (e, index) => {
     const newInputValues = [...this.state.addCloudToClientFormItems.newInputValues];
     let addCloudToClientFormItems = {...this.state.addCloudToClientFormItems};
@@ -121,53 +162,53 @@ class AddCloudModal extends PureComponent {
         t("NewInputValue")
       );
     }
+    let canSubmit=true;
+
     if (inputValues) {
       addCloudToClientFormItems.newInputValues = newInputValues;
+      canSubmit = newInputValues.every(input => input.nameError === '' && input.contentError === '')
+    }
+
+    if (addCloudToClientFormItems.error !== "") {
+      canSubmit=false;
     }
 
     this.setState({ 
-      addCloudToClientFormItems
-        }, () => this.forceUpdate());
-
-    if(inputValues) {
-      const canSubmit = !(inputValues.nameError || inputValues.contentError || addCloudToClientFormItems.error);
-      this.setState({ canSubmit });
-    } else {
-      const canSubmit = !this.state.addCloudToClientFormItems.error;
-      this.setState({ canSubmit });
-    }
+      addCloudToClientFormItems,
+      canSubmit,
+      }, () => this.forceUpdate());
+    
   };
 
   addCloudHandler = e => {
     e.preventDefault();
     const { handleAddCloud, handleEditCloud, clientId, item } = this.props;
-    const { addCloudToClientFormItems, newInputValues } = this.state;
-    this.setState({ isLoading: true }),
-      item
-        ? handleEditCloud(
-            item.id,
-            addCloudToClientFormItems.value,
-            addCloudToClientFormItems.newInputValues,
-            item.clientId
-          )
-        : handleAddCloud(
-            this.state.addCloudToClientFormItems.value,
-            addCloudToClientFormItems.newInputValues,
-            clientId
-          );
+    const { addCloudToClientFormItems } = this.state;
+    if(this.validateAllInputs() === true) {
+      this.setState({ isLoading: true }),
+        item
+          ? handleEditCloud(
+              item.id,
+              addCloudToClientFormItems.value,
+              addCloudToClientFormItems.newInputValues,
+              item.clientId
+            )
+          : handleAddCloud(
+              this.state.addCloudToClientFormItems.value,
+              addCloudToClientFormItems.newInputValues,
+              clientId
+            );
+        }
   };
   deleteInputSection = (index) => {
     const { addCloudToClientFormItems } = this.state;
     const inputValues = addCloudToClientFormItems
       .newInputValues.filter(input => input !== addCloudToClientFormItems.newInputValues[index]);
-    const canSubmit = !(addCloudToClientFormItems.error || 
-      (inputValues.length > 0 && inputValues.every(input => input.name === '' || input.content === '')));
     this.setState({ 
       addCloudToClientFormItems:{
         ...addCloudToClientFormItems,
         newInputValues:inputValues
-      },
-      canSubmit });
+      }});
   };
   
 
