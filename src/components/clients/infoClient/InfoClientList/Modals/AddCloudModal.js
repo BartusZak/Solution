@@ -69,8 +69,17 @@ class AddCloudModal extends PureComponent {
     this.setState({
       addCloudToClientFormItems: {
         ...this.state.addCloudToClientFormItems,
-        newInputValues: [...newInputValues, { name: "", content: "", canBeNull: false,
-          minLength: 2, maxLength: 50, nameError: "", contentError: "" }],
+        newInputValues: [
+          ...newInputValues,
+            { 
+              name: "",
+              content: "",
+              canBeNull: false,
+              minLength: 2, 
+              maxLength: 50,
+              nameError: "", 
+              contentError: "" 
+            }],
       },
       canSubmit:false,
       newInput: true,
@@ -81,13 +90,13 @@ class AddCloudModal extends PureComponent {
     const {t} = this.props;
     let result = true;
     const formItems = {...this.state.addCloudToClientFormItems};
-      formItems.error = validateInput(
-        formItems.value,
-        false,
-        2,
-        50,
-        formItems.inputType,
-        t("Name")
+    formItems.error = validateInput(
+      formItems.value,
+      false,
+      2,
+      50,
+      formItems.inputType,
+      t("Name")
     );
 
     if(formItems.newInputValues.length > 0){
@@ -101,20 +110,22 @@ class AddCloudModal extends PureComponent {
           t("NewInputLabel")
       );
         formItems.newInputValues[key].contentError = validateInput(
-        formItems.newInputValues[key].content,
-        false,
-        2,
-        50,
-        null,
-        t("NewInputValue")
+          formItems.newInputValues[key].content,
+          false,
+          2,
+          50,
+          null,
+          t("NewInputValue")
       );
       }
     }
 
-    if (formItems.error !== "" || !formItems.newInputValues.every(input => input.nameError === '' || input.contentError === '') ) {
+    if (formItems.error !== ""
+     || !formItems.newInputValues.every(input => input.nameError === '' || input.contentError === '')) {
       result = false;
     }
-    this.setState({ validationResult: result, addCloudToClientFormItems: formItems });
+    this.setState({ addCloudToClientFormItems: formItems });
+    
     return result;
   };
 
@@ -134,7 +145,7 @@ class AddCloudModal extends PureComponent {
     };
 
     newInputValues[index] = inputValues;
-    addCloudToClientFormItems=nameInputValue;
+    addCloudToClientFormItems = nameInputValue;
 
     nameInputValue.error = validateInput(
       addCloudToClientFormItems.value,
@@ -162,13 +173,12 @@ class AddCloudModal extends PureComponent {
         t("NewInputValue")
       );
     }
-    let canSubmit=true;
 
+    let canSubmit = true;
     if (inputValues) {
       addCloudToClientFormItems.newInputValues = newInputValues;
-      canSubmit = newInputValues.every(input => input.nameError === '' && input.contentError === '')
+      canSubmit = newInputValues.every(input => input.nameError === '' && input.contentError === '');
     }
-
     if (addCloudToClientFormItems.error !== "") {
       canSubmit=false;
     }
@@ -177,14 +187,13 @@ class AddCloudModal extends PureComponent {
       addCloudToClientFormItems,
       canSubmit,
       }, () => this.forceUpdate());
-    
   };
 
   addCloudHandler = e => {
     e.preventDefault();
     const { handleAddCloud, handleEditCloud, clientId, item } = this.props;
     const { addCloudToClientFormItems } = this.state;
-    if(this.validateAllInputs() === true) {
+    if(this.validateAllInputs()) {
       this.setState({ isLoading: true }),
         item
           ? handleEditCloud(
@@ -200,6 +209,7 @@ class AddCloudModal extends PureComponent {
             );
         }
   };
+
   deleteInputSection = (index) => {
     const { addCloudToClientFormItems } = this.state;
     const inputValues = addCloudToClientFormItems
@@ -274,7 +284,8 @@ class AddCloudModal extends PureComponent {
             isLoading={isLoading}
             onSubmit={this.addCloudHandler}
             btnDisabled={!canSubmit}
-            btnTitle={item ? t("Save") : t("Add")}
+            btnTitle={t("Add")}
+            submitTitle={item ? t("Save") : t("Add")}
             addCloudToClientFormItems={addCloudToClientFormItems}
             newInputContent={newInputContent}
             newInputValues={newInputValues}
