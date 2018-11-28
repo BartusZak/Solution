@@ -543,7 +543,12 @@ const translations = {
     Share: "Udostępnij",
     Cancel: "Anuluj",
     DeleteEmpAssignment : "Czy napewno chcesz usunąć przypisanie użytkownika \"",
-    FromProject : "\" z projektu ?"
+    FromProject : "\" z projektu ?",
+    EmployeeFreeCapacity: "Pracownicy z wolną częścią etatu",
+    EmployeeFreeCapacityAndSkills: "Pracownicy z wolną częścią etatu i umiejętnościami dopasowanymi do projektu",
+    CapacityLeft: "Niezagospodarowana część etatu",
+    Capacity: "Dostępność",
+    NoSkillsToShow: "Nie znaleziono umiejętności"
   },
   ResponsiblePersonBlock: {
     NameNoSpecial: "Imię nie może zawierać znaków specjalnych ani cyfr.",

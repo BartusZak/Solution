@@ -541,7 +541,9 @@ const translations = {
     Share: "Share",
     Cancel: "Cancel",
     DeleteEmpAssignment : "Are you sure you want to delete employee \"",
-    FromProject : "\" assignment ?"
+    FromProject : "\" assignment ?",
+    EmployeeFreeCapacity: "Employee with free capacity",
+    EmployeeFreeCapacityAndSkills: "Employees with free capacity and skills matched to this project"
   },
   ProjectRowUnfurl: {
     OwnersList: "Owners",

@@ -699,14 +699,14 @@ class ProjectDetails extends Component {
                     matches &&
                     getSuggestEmployeesStatus && (
                       <div>
-                        <h3>Employee with free capacity</h3>
+                        <h3>{t("EmployeeFreeCapacity")}</h3>
                         <table key={2}>
                           <thead>
                             <tr>
-                              <th>Employee</th>
-                              <th>Left Capacity</th>
-                              <th>Capacity</th>
-                              <th>Seniority</th>
+                            <th>{t("Employee")}</th>
+                              <th>{t("CapacityLeft")}</th>
+                              <th>{t("Capacity")}</th>
+                              <th>{t("Experience")}</th>
                             </tr>
                           </thead>
                           <tbody>
@@ -767,7 +767,7 @@ class ProjectDetails extends Component {
                                           </td>
                                         ) : (
                                           <td colSpan="5" className="noSkills">
-                                            "No skills to show"
+                                            {t("NoSkillsToShow")}
                                           </td>
                                         )}
                                       </tr>
@@ -785,16 +785,15 @@ class ProjectDetails extends Component {
                     getSuggestEmployeesStatus && (
                       <div>
                         <h3>
-                          Employees with free capacity and skills matched to
-                          this project
+                          {t("EmployeeFreeCapacityAndSkills")}
                         </h3>
                         <table key={1}>
                           <thead>
                             <tr>
-                              <th>Employee</th>
-                              <th>Left Capacity</th>
-                              <th>Capacity</th>
-                              <th>Seniority</th>
+                              <th>{t("Employee")}</th>
+                              <th>{t("CapacityLeft")}</th>
+                              <th>{t("Capacity")}</th>
+                              <th>{t("Experience")}</th>
                             </tr>
                           </thead>
                           <tbody>
@@ -871,7 +870,7 @@ class ProjectDetails extends Component {
                                           </td>
                                         ) : (
                                           <td colSpan="5" className="noSkills">
-                                            "No skills to show"
+                                            {t("NoSkillsToShow")}
                                           </td>
                                         )}
                                       </tr>
