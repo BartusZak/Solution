@@ -543,7 +543,10 @@ const translations = {
     DeleteEmpAssignment : "Are you sure you want to delete employee \"",
     FromProject : "\" assignment ?",
     EmployeeFreeCapacity: "Employee with free capacity",
-    EmployeeFreeCapacityAndSkills: "Employees with free capacity and skills matched to this project"
+    EmployeeFreeCapacityAndSkills: "Employees with free capacity and skills matched to this project",
+    CapacityLeft: "Capacity left",
+    Capacity: "Capacity",
+    NoSkillsToShow: "No skills to show"
   },
   ProjectRowUnfurl: {
     OwnersList: "Owners",

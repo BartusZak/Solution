@@ -703,7 +703,7 @@ class ProjectDetails extends Component {
                         <table key={2}>
                           <thead>
                             <tr>
-                            <th>{t("Employee")}</th>
+                              <th>{t("Employee")}</th>
                               <th>{t("CapacityLeft")}</th>
                               <th>{t("Capacity")}</th>
                               <th>{t("Experience")}</th>
