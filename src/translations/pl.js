@@ -488,6 +488,18 @@ const translations = {
     ProjectHasBeenEdited: "Projekt został pomyślnie edytowany"
   },
   ProjectDetails: {
+    parentName: "Nazwa głównego projektu",
+    EmptyProjectPhases: "Ten projekt nie ma jeszcze faz",
+    ProjectPhaseHasBeenAdded: "Faza projektu została dodana. Jesteś przekierowywany...",
+    Back: "Wróć",
+    Phone: "Nr. telefonu",
+    ContactPerson: "Wybierz lub dodaj osobę do kontaktu",
+    Insert: "Wpisz",
+    ProjectName: "Nazwa fazy projektu",
+    AddProjectPhase: "Dodaj fazę projektu",
+    Next: "Dalej",
+    Status: "Status",
+    ProjectPhases: "Fazy projektu",
     LoadingProjectMessage: "Trwa wczytywanie danych projektu",
     GeneralInfo: "Informacje ogólne",
     ResponsiblePerson: "Osoba do kontaktu",

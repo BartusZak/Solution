@@ -14,6 +14,7 @@ import {
   ADD_SKILLS_TO_PROJECT,
   CHANGE_PROJECT_STATE,
   CREATE_PROJECT,
+  CREATE_PROJECT_PHASE,
   GET_SUGGEST_EMPLOYEES,
   CHANGE_GET_SUGGEST_EMPLOYEES_STATUS,
   GET_CONTACT_PERSON_DATA,
@@ -72,6 +73,9 @@ const initialState = {
 
   createProjectStatus: null,
   createProjectErrors: [],
+
+  createProjectPhaseStatus: null,
+  createProjectPhaseError: [],
 
   getSuggestEmployeesStatus: null,
   getSuggestEmployeesError: [],
@@ -194,6 +198,11 @@ export const projectsReducer = (state = initialState, action) => {
       return updateObject(state, {
         createProjectStatus: action.createProjectStatus,
         createProjectErrors: action.createProjectErrors
+      });
+    case CREATE_PROJECT_PHASE:
+      return updateObject(state, {
+        createProjectPhaseStatus: action.createProjectPhaseStatus,
+        createProjectPhaseError: action.createProjectPhaseError
       });
     case GET_SUGGEST_EMPLOYEES:
       return updateObject(state, { suggestEmployees: action.suggestEmployees });

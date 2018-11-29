@@ -58,7 +58,8 @@ export const overViewNames = [
   "Client",
   "StartDate",
   "EstimatedEndDate",
-  "EndDate"
+  "EndDate",
+  "ParentName"
 ];
 export const ADD_PROJECT_OWNER_TO_PROJECT = "ADD_PROJECT_OWNER_TO_PROJECT";
 export const ADD_EMPLOYEE_TO_PROJECT = "ADD_EMPLOYEE_TO_PROJECT";
@@ -73,6 +74,7 @@ export const EDIT_PROJECT = "EDIT_PROJECT";
 export const CHANGE_PROJECT_SKILLS = "CHANGE_PROJECT_SKILLS";
 export const CHANGE_PROJECT_STATE = "CHANGE_PROJECT_STATE";
 export const CREATE_PROJECT = "CREATE_PROJECT";
+export const CREATE_PROJECT_PHASE = "CREATE_PROJECT_PHASE";
 export const GET_SUGGEST_EMPLOYEES = "GET_SUGGEST_EMPLOYEES";
 export const CHANGE_GET_SUGGEST_EMPLOYEES_STATUS =
   "CHANGE_GET_SUGGEST_EMPLOYEES_STATUS";

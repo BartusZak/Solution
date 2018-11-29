@@ -14,6 +14,7 @@ import {
   ADD_SKILLS_TO_PROJECT,
   CHANGE_PROJECT_STATE,
   CREATE_PROJECT,
+  CREATE_PROJECT_PHASE,
   GET_SUGGEST_EMPLOYEES,
   CHANGE_GET_SUGGEST_EMPLOYEES_STATUS,
   GET_CONTACT_PERSON_DATA,
@@ -142,7 +143,7 @@ export const getProjectDataACreator = (projectId, onlyActiveAssignments) => disp
       const overViewKeys = {
         keys: cutNotNeededKeysFromArray(
           Object.keys(response.replyBlock.data.dtoObject),
-          [0, 1, 2, 4, 8, 9, 10, 11, 12, 13, 14]
+          [0, 1, 2, 4, 8, 9, 10, 11, 12, 13, 14, 15, 16]
         ),
         names: overViewNames
       };
@@ -174,7 +175,7 @@ export const getProjectACreator = (projectId, onlyActiveAssignments) => {
         const overViewKeys = {
           keys: cutNotNeededKeysFromArray(
             Object.keys(response.replyBlock.data.dtoObject),
-            [0, 1, 2, 4, 8, 9, 10, 11, 12, 13, 14]
+            [0, 1, 2, 4, 8, 9, 10, 11, 12, 13, 14, 15, 16]
           ),
           names: overViewNames
         };
@@ -691,6 +692,40 @@ export const createProjectACreator = (firstArray, secondArray) => dispatch => {
       });
   });
 };
+
+export const createProjectPhase = (createProjectPhaseStatus, createProjectPhaseErrors) => {
+  return { type: CREATE_PROJECT_PHASE, createProjectPhaseStatus, createProjectPhaseErrors };
+};
+
+export const createProjectPhaseACreator = (firstArray, secondArray, parentProjectData) => dispatch => {
+  return new Promise((resolve, reject) => {
+    const model = {
+      name: firstArray[0].value,
+      description: firstArray[1].value,
+      responsiblePerson: {
+        firstName: secondArray[1].value,
+        lastName: secondArray[2].value,
+        email: secondArray[0].value,
+        phoneNumber: secondArray[3].value
+      },
+      startDate: firstArray[2].value,
+      estimatedEndDate: firstArray[3].value,
+      client: parentProjectData.client,
+      parentId: parentProjectData.parentId
+    };
+    WebApi.projects.post
+      .add(model)
+      .then(response => {
+        dispatch(createProjectPhase(true, []));
+        resolve(response.replyBlock.data.dtoObject);
+      })
+      .catch(error => {
+        dispatch(createProjectPhase(false, errorCatcher(error)));
+        reject(error);
+      });
+  });
+};
+
 export const getSuggestEmployeesStatus = (
   getSuggestEmployeesStatus,
   getSuggestEmployeesError
@@ -701,6 +736,7 @@ export const getSuggestEmployeesStatus = (
     getSuggestEmployeesError
   };
 };
+
 export const getSuggestEmployees = suggestEmployees => {
   return { type: GET_SUGGEST_EMPLOYEES, suggestEmployees };
 };
@@ -734,7 +770,7 @@ export const getContactPersonData = (
   };
 };
 
-export const getContactPersonDataACreator = clientId => dispatch => {
+export const getContactPersonDataACreator = clientId => dispatch => { 
   return new Promise((resolve, reject) => {
     WebApi.responsiblePerson.get
       .byClient(clientId)
