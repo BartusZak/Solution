@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import Modal from "react-responsive-modal";
 import PropTypes from "prop-types";
-
 import "./infoClient.scss";
 import BilleniumPleaceholder from "assets/img/small-logo.png";
 import Icon from "../../common/Icon";
@@ -118,6 +117,7 @@ export default class InfoClient extends Component {
                 editClient={onEditClient}
                 loading={false}
                 resultBlock={resultBlockAddClient}
+                t={t}
               >
                 <span>{t("EditClient")}</span>
               </AddEditClient>
@@ -160,7 +160,7 @@ export default class InfoClient extends Component {
         {openCloudAddModal && (
           <Modal
             open={openCloudAddModal}
-            classNames={{ modal: "Modal Modal-add-cloud" }}
+            classNames={{ modal: "modal-add-cloud", closeIcon:"close-modal-icon" }}
             contentLabel="Add Cloud"
             onClose={this.handleCloudAddCloseModal}
           >
