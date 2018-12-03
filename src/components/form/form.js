@@ -21,7 +21,8 @@ class Form extends Component {
     showList: false,
 
     searchedList: [],
-    showSearchedList: false
+    showSearchedList: false,
+    formItemChanged: false
   };
 
   componentDidUpdate(prevProps){
@@ -185,6 +186,7 @@ class Form extends Component {
     }
 
     this.setState({
+      formItemChanged : true,
       newFormItems: newFormItems,
       validationResult: newFormItems[id].error ? false : true,
       showList:
@@ -499,7 +501,7 @@ class Form extends Component {
           submitResult={this.props.submitResult}
           enableButtonAfterTransactionEnd={enableButtonAfterTransactionEnd}
           shouldBeDisabledByOtherReason={this.props.shouldBeDisabledByOtherReason}
-          isDisabled = {this.props.submitResult}
+          btnDisabled = {this.props.btnDisabled!==undefined ? this.props.btnDisabled && !this.state.formItemChanged : !this.state.formItemChanged}
         />
       </form>
     );
