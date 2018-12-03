@@ -38,16 +38,16 @@ class ClientsContainer extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     const {clients, async, clientsActions} = this.props;
-    if (nextProps.clients !== clients) {
+    const {clientIndex} =  this.state;
+    if (nextProps.clients !== clients) {      
       const updatedClient = nextProps.clients.filter(clientItem => {
-        return Object.getOwnPropertyNames(nextProps.clients).length !== 0
-          ? clientItem.id === nextProps.clients[0].id
+        return Object.getOwnPropertyNames(nextProps.clients).length !== 0 && clientIndex
+          ? clientItem.id === nextProps.clients[clientIndex].id
           : {};
       });
-
       this.setState({
         clients: nextProps.clients,
-        client: updatedClient[0],
+        client: clientIndex ? updatedClient[0] : clients[0],
         checked: null
       });
     }
@@ -266,10 +266,10 @@ class ClientsContainer extends React.Component {
     }
   };
 
-  clientNameClickedHandler = (client, index) => {
+  clientNameClickedHandler = (client, index) => {  
     this.setState({
       client,
-      clientIndex: index
+      clientIndex: index      
     });
   };
 
