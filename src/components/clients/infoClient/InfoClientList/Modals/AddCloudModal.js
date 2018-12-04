@@ -50,7 +50,9 @@ class AddCloudModal extends PureComponent {
       input.canBeNull="false";
       input.minLength=2;
       input.maxLength=50;
-      input.error="";
+      input.contentError="";
+      input.nameError="";
+
       return input;
     }) : null;
     if (item && item.fields.length > 0) {
