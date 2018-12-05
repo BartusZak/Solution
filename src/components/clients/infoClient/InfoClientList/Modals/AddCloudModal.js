@@ -50,7 +50,9 @@ class AddCloudModal extends PureComponent {
       input.canBeNull="false";
       input.minLength=2;
       input.maxLength=50;
-      input.error="";
+      input.contentError="";
+      input.nameError="";
+
       return input;
     }) : null;
     if (item && item.fields.length > 0) {
@@ -214,7 +216,9 @@ class AddCloudModal extends PureComponent {
     const { addCloudToClientFormItems } = this.state;
     const inputValues = addCloudToClientFormItems
       .newInputValues.filter(input => input !== addCloudToClientFormItems.newInputValues[index]);
-    this.setState({ 
+    const canSubmit = addCloudToClientFormItems.newInputValues.every(input => input.nameError === '' && input.contentError === '');
+    this.setState({
+      canSubmit,
       addCloudToClientFormItems:{
         ...addCloudToClientFormItems,
         newInputValues:inputValues

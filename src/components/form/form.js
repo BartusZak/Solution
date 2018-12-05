@@ -186,7 +186,6 @@ class Form extends Component {
     }
 
     this.setState({
-      formItemChanged : true,
       newFormItems: newFormItems,
       validationResult: newFormItems[id].error ? false : true,
       showList:
@@ -501,7 +500,7 @@ class Form extends Component {
           submitResult={this.props.submitResult}
           enableButtonAfterTransactionEnd={enableButtonAfterTransactionEnd}
           shouldBeDisabledByOtherReason={this.props.shouldBeDisabledByOtherReason}
-          btnDisabled = {this.props.btnDisabled!==undefined ? this.props.btnDisabled && !this.state.formItemChanged : !this.state.formItemChanged}
+          btnDisabled = {this.props.btnDisabled}
         />
       </form>
     );

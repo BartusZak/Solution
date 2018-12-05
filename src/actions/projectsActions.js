@@ -481,19 +481,7 @@ export const editProjectACreator = (
             };
 
             const overViewKeys = {
-              keys: cutNotNeededKeysFromArray(Object.keys(getProjectResponse), [
-                0,
-                1,
-                2,
-                ,
-                4,
-                8,
-                9,
-                10,
-                11,
-                12,
-                13
-              ]),
+              keys: cutNotNeededKeysFromArray(Object.keys(getProjectResponse), [0, 1, 2, 4, 8, 9, 10, 11, 12, 13, 14, 15, 16]),
               names: overViewNames
             };
 

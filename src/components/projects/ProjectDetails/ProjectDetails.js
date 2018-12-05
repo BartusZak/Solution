@@ -688,7 +688,7 @@ class ProjectDetails extends Component {
     const { project, loading, loadProjectStatus, addEmployeeToProjectStatus,
       addEmployeeToProjectErrors, changeProjectState, changeProjectStateStatus,
       changeProjectStateErrors, getSuggestEmployeesStatus, suggestEmployees,
-      addProjectOwnerToProjectStatus, addProjectOwnerToProjectErrors, t, createProjectStatus, createProjectErrors} = this.props;
+      addProjectOwnerToProjectStatus, addProjectOwnerToProjectErrors, t, createProjectStatus, createProjectErrors, match} = this.props;
     const projectPhases = project ? this.projectPhaseData() : null;
     const { reactivate, close } = WebApi.projects.put;
     const { projectStatus, onlyActiveAssignments, matches, currentOpenedRow,
@@ -712,12 +712,6 @@ class ProjectDetails extends Component {
                     {projectStatus[0].name}
                   </span>
                 )}
-                {project.parentName &&
-                <div>
-                  <span className="parent-name-span">{project.parentName}</span>
-                  <i className="fas fa-arrow-circle-right"
-                    onClick={() => this.pushIntoRoute(`/main/projects/${project.parentId}`)} /> 
-                </div>}
                 <i className="fa fa-briefcase fa-2x" />
                 <b title={project.name}>
                   {project.name.length > 60
@@ -806,6 +800,8 @@ class ProjectDetails extends Component {
               <div className="project-details">
                 <ProjectInformationsCart
                   key={1}
+                  match={match}
+                  pushIntoRoute={this.pushIntoRoute}
                   items={this.props.overViewKeys}
                   headerTitle={t("GeneralInfo")}
                   originalObject={project}
@@ -937,7 +933,7 @@ class ProjectDetails extends Component {
                     </thead>
                     <tbody>
                       {projectPhases.map((phase) => (
-                        <tr key={phase.id} onClick={() => this.pushIntoRoute(`/main/projects/${phase.id}`)}>
+                        <tr key={phase.id} onClick={() => this.pushIntoRoute(match.path.slice(0,-3) + phase.id)}>
                           <td>{phase.name}</td>
                           <td>{phase.startDate.slice(0,10)}</td>
                           <td>{phase.estimatedEndDate.slice(0,10)}</td>
