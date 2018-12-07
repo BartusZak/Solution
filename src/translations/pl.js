@@ -276,6 +276,7 @@ const translations = {
     SuccDeleteQuestion: "Pomyślnie usunięto pytanie",
     Date: "Data",
     Quarter: "Kwartał",
+    Question: "pytanie",
     QuestionWillBeHere: "tu pojawi się pytanie",
     ChooseOrSelectQuarter: "wpisz lub wybierz kwartał...",
     SuccAddedQuarter: "Pomyślnie utworzono rozmowę kwartalną",

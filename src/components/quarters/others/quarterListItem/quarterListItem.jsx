@@ -16,7 +16,7 @@ const quarterListItem = ({index, item, clickItemFunction, currentWatchedItemId, 
             <i title={item.isTaken ? doneQuarter : incomingQuarter} className={`fas fa-${item.isTaken ? "check" : "question"}`}></i>
         </p>
         <p>
-            <span>
+            <span className="clickable">
                  {forQuarter} {item.quarter} {quarter} {item.year} {inYear} <b>{connector}</b> 
             </span>
             <span className="span-light" title={item.isTaken ? "Data przeprowadzenia rozmowy" : "Planowana data odbycia rozmowy"}>

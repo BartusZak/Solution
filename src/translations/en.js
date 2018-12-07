@@ -272,6 +272,7 @@ const translations = {
     SuccDeleteQuestion: "The question was successfully removed",
     Date: "Date",
     Quarter: "Quarter",
+    Question: "question",
     QuestionWillBeHere: "question will be here",
     ChooseOrSelectQuarter: "choose or select quarter...",
     SuccAddedQuarter: "Quarter talk has been added",
