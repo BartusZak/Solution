@@ -71,6 +71,10 @@ class Table extends Component {
     this.setState({ trs: trs, currentTrs: trs });
   }
   componentWillReceiveProps(nextProps) {
+    if((nextProps.addFeedbackStatus === null || nextProps.editFeedbackStatus === null
+      || nextProps.deleteFeedbackStatus) && nextProps.loadFeedbackStatus !== true){
+      this.setState({ opinionModal: false });
+    }
     if (nextProps.items !== this.props.items) {
       const trs = this.populateTrs(nextProps.items, nextProps.t);
       this.setState({ trs: trs, currentTrs: trs, isLoading: false });
@@ -81,6 +85,7 @@ class Table extends Component {
       this.setState({ isLoading: false });
     }
   }
+
   closeCurrentOpenedRow = () => {
     const currentTrs = [...this.state.currentTrs];
     for (let i = 0; i < currentTrs.length; i++)
@@ -325,7 +330,7 @@ class Table extends Component {
   };
   closeModal = () => {
     this.clearData();
-    this.setState({ opinionModal: !this.state.opinionModal });
+    this.setState({ opinionModal: false });
   };
   componentWillUnmount() {
     this.clearData();

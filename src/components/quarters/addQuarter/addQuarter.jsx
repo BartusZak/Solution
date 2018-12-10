@@ -254,7 +254,7 @@ class AddQuarter extends Component{
                             {isAddingNewQuestion && 
                             <section className="input-container column-container">
                                 <label>
-                                    {newQuestionName.value ? newQuestionName.value : t("QuestionWillBeHere")}
+                                    {newQuestionName.value || ""}
                                 </label>
                                 <div className="right-form-container">
                                     <div>

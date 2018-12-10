@@ -273,7 +273,7 @@ const translations = {
     Date: "Date",
     Quarter: "Quarter",
     Question: "question",
-    QuestionWillBeHere: "question will be here",
+    QuestionContent: "Question content...",
     ChooseOrSelectQuarter: "choose or select quarter...",
     SuccAddedQuarter: "Quarter talk has been added",
     QuarterItemSubHeader: "carried out",

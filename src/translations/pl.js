@@ -277,7 +277,7 @@ const translations = {
     Date: "Data",
     Quarter: "Kwartał",
     Question: "pytanie",
-    QuestionWillBeHere: "tu pojawi się pytanie",
+    QuestionContent: "Treść pytania...",
     ChooseOrSelectQuarter: "wpisz lub wybierz kwartał...",
     SuccAddedQuarter: "Pomyślnie utworzono rozmowę kwartalną",
     QuarterItemSubHeader: "przeprowadził",
