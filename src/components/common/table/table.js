@@ -71,6 +71,10 @@ class Table extends Component {
     this.setState({ trs: trs, currentTrs: trs });
   }
   componentWillReceiveProps(nextProps) {
+    if((nextProps.addFeedbackStatus === null || nextProps.editFeedbackStatus === null
+      || nextProps.deleteFeedbackStatus) && nextProps.loadFeedbackStatus !== true){
+      this.setState({ opinionModal: false });
+    }
     if (nextProps.items !== this.props.items) {
       const trs = this.populateTrs(nextProps.items, nextProps.t);
       this.setState({ trs: trs, currentTrs: trs, isLoading: false });
@@ -81,6 +85,7 @@ class Table extends Component {
       this.setState({ isLoading: false });
     }
   }
+
   closeCurrentOpenedRow = () => {
     const currentTrs = [...this.state.currentTrs];
     for (let i = 0; i < currentTrs.length; i++)
@@ -325,7 +330,7 @@ class Table extends Component {
   };
   closeModal = () => {
     this.clearData();
-    this.setState({ opinionModal: !this.state.opinionModal });
+    this.setState({ opinionModal: false });
   };
   componentWillUnmount() {
     this.clearData();
@@ -495,7 +500,7 @@ class Table extends Component {
         {(addFeedbackStatus !== null && addFeedbackStatus !== undefined )
           && (
             <OperationStatusPrompt
-              closePrompt={() => addFeedbackClear(null, [])}
+              closePrompt={addFeedbackClear}
               operationPromptContent={
                 addFeedbackStatus
                   ? t("FeedbackAdded")
@@ -508,7 +513,7 @@ class Table extends Component {
         {(editFeedbackStatus !== null && editFeedbackStatus !== undefined )
           && (
             <OperationStatusPrompt
-              closePrompt={() => editFeedbackClear(null, [])}
+              closePrompt={editFeedbackClear}
               operationPromptContent={
                 editFeedbackStatus
                   ? t("FeedbackEdited")
@@ -521,7 +526,7 @@ class Table extends Component {
         {(deleteFeedbackStatus !== null && deleteFeedbackStatus !== undefined )
           && (
             <OperationStatusPrompt
-              closePrompt={() => deleteFeedbackClear(null, [])}
+              closePrompt={deleteFeedbackClear}
               operationPromptContent={
                 deleteFeedbackStatus
                   ? t("FeedbackDeleted")
@@ -579,9 +584,9 @@ const mapDispatchToProps = dispatch => {
     editFeedback: (feedbackId, feedbackContent, projectId, onlyActiveAssignments) =>
       dispatch(editFeedbackACreator(feedbackId, feedbackContent, projectId, onlyActiveAssignments)),
     deleteFeedback: (feedbackId, projectId, onlyActiveAssignments) => dispatch(deleteFeedbackACreator(feedbackId, projectId, onlyActiveAssignments)),
-    addFeedbackClear: (status, errors) => dispatch(addFeedback(status, errors)),
-    editFeedbackClear: (status, errors) => dispatch(editFeedback(status, errors)),
-    deleteFeedbackClear: (status, errors) => dispatch(deleteFeedback(status, errors)),
+    addFeedbackClear: () => dispatch(addFeedback(null, [])),
+    editFeedbackClear: () => dispatch(editFeedback(null, [])),
+    deleteFeedbackClear: () => dispatch(deleteFeedback(null, [])),
     getFeedbacksClear: (
       loadedFeedbacks,
       loadFeedbackStatus,

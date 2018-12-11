@@ -342,6 +342,7 @@ export const addFeedbackACreator = (projectId, employeeId, description, onlyActi
       .feedback(objectToSend)
       .then(response => {
         dispatch(addFeedback(true, []));
+        setTimeout(() => dispatch(addFeedback(null, [])), 3000);
         dispatch(getProjectACreator(projectId, onlyActiveAssignments));
       })
       .catch(error => {
@@ -391,8 +392,9 @@ export const deleteFeedbackACreator = (feedbackId, projectId, onlyActiveAssignme
   return new Promise((resolve, reject) => {
     WebApi.feedbacks.delete
     .deleteById(feedbackId)
-    .then(response => {
+    .then((response) => {
       dispatch(deleteFeedback(true, []));
+      setTimeout(() => dispatch(deleteFeedback(null, [])), 3000);
       dispatch(getProjectACreator(projectId, onlyActiveAssignments));
       resolve();
     })
@@ -417,6 +419,7 @@ export const editFeedbackACreator = (feedbackId, description, projectId, onlyAct
     .feedback(feedbackId, description)
     .then(response => {
       dispatch(editFeedback(true, []));
+      setTimeout(() => dispatch(editFeedback(null, [])), 3000);
       dispatch(getProjectACreator(projectId, onlyActiveAssignments));
     })
     .catch(error => {

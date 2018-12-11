@@ -31,7 +31,7 @@ class AddQuarter extends Component{
         isAddingQuarter: false,
         isLoadingQuestions: true,
         itemsDeletedCount: 0,
-        newQuestionName: {value: "", error: ""},
+        newQuestionName: {value: "", error: "", inputTitle: this.props.t("Question")},
         isAddingNewQuestion: false, isPostingNewQuestion: false, shouldPutAddedQuestionInForm: false,
         isDeletingQuestion: false
     }
@@ -157,7 +157,7 @@ class AddQuarter extends Component{
     onChangeNewQuestion = e => {
         const newQuestionName = {...this.state.newQuestionName};
         newQuestionName.value = e.target.value;
-        newQuestionName.error = validateInput(newQuestionName.value, false, 3, 120, null, "pytanie");
+        newQuestionName.error = validateInput(newQuestionName.value, false, 3, 120, null, newQuestionName.inputTitle);
         this.setState({newQuestionName});
     }
 
@@ -186,7 +186,7 @@ class AddQuarter extends Component{
     addQuestion = () => {
         const newQuestionName = {...this.state.newQuestionName};
         let addQuarterFormItems = [...this.state.addQuarterFormItems];
-        newQuestionName.error = validateInput(newQuestionName.value, false, 3, 120);
+        newQuestionName.error = validateInput(newQuestionName.value, false, 3, 120, null, newQuestionName.inputTitle);
         if(!newQuestionName.error){
             this.setState({isPostingNewQuestion: true});
             this.props.addQuestionACreator(newQuestionName.value)
@@ -208,7 +208,8 @@ class AddQuarter extends Component{
         const newQuestionName = {...this.state.newQuestionName};
         if(!isAddingNewQuestion){
             addQuestionClearData();
-            newQuestionName.value = ""; newQuestionName.error = "";
+            newQuestionName.value = "";
+            newQuestionName.error = "";
             this.setState({newQuestionName});           
         }
         this.setState({isAddingNewQuestion: !isAddingNewQuestion});
@@ -253,7 +254,7 @@ class AddQuarter extends Component{
                             {isAddingNewQuestion && 
                             <section className="input-container column-container">
                                 <label>
-                                    {newQuestionName.value ? newQuestionName.value : t("QuestionWillBeHere")}
+                                    {newQuestionName.value || ""}
                                 </label>
                                 <div className="right-form-container">
                                     <div>
@@ -263,6 +264,7 @@ class AddQuarter extends Component{
                                             type="text" placeholder={t("AddQuarter")+"..."}></textarea>
                                         {isPostingNewQuestion || 
                                             <i onClick={this.addQuestion}
+                                            title={t("AddQuestion")}
                                             className={`fa fa-plus ${newQuestionName.error !== "" ? "unactive-plus" : "active-plus"}`}></i>
                                         }
                                     </div>
