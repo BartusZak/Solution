@@ -192,7 +192,7 @@ class ProjectDetails extends Component {
         minLength: 3,
         maxLength: 1500,
         canBeNull: false
-      },      
+      },
       {
         title: this.props.t("StartDate"),
         name: "startDate",
@@ -416,7 +416,7 @@ class ProjectDetails extends Component {
     return addEmployeToProjectFormItems;
   };
 
-  componentWillReceiveProps(nextProps) {      
+  componentWillReceiveProps(nextProps) {
     if (this.props.match.params.id !== nextProps.match.params.id){
       this.loadProjectData("isLoadingProject", nextProps.match.params.id);
     }
@@ -460,7 +460,7 @@ class ProjectDetails extends Component {
             }
           : null
       );
-    }    
+    }
 
   }
 
@@ -920,11 +920,11 @@ class ProjectDetails extends Component {
                     binaryPermissioner(false)(1)(0)(0)(0)(0)(0)(this.props.binPem)
                   }
                   onlyActiveAssignments={this.state.onlyActiveAssignments}
-                />                                  
+                />
                  {project && !project.parentId ?
                     project.projectPhases.length > 0 ? (
-                    <div className="table-container table">
-                    <h3>{t("ProjectPhases")}</h3>
+                    <div className="table-container table project-phases-title">
+                    <h3 className="">{t("ProjectPhases")}</h3>
                     <table key={15}>
                     <thead>
                       <tr>
@@ -941,23 +941,23 @@ class ProjectDetails extends Component {
                         </tr>
                       )
                         )}
-                    </tbody>                        
+                    </tbody>
                     </table>
                     <button className="add-programmer-btn" onClick={() => this.setState({showAddPhaseModal: true})}>{t("Add")}</button>
                   </div>
-                  ): 
+                  ):
                   <div className="empty-project-phases-container">
                     <div>
                       <span>{t("EmptyProjectPhases")}</span>
                       <div  onClick={() => this.setState({showAddPhaseModal: true})}>
-                        <i className="fas fa-briefcase fa-lg " /> 
-                        <i className="fas fa-plus" />  
-                      </div>                
+                        <i className="fas fa-briefcase fa-lg " />
+                        <i className="fas fa-plus" />
+                      </div>
                     </div>
                   </div>:
                   ''}
-                    
-                  
+
+
                   <div className="table-container table">
                   {suggestEmployees && (
                     <label
@@ -1440,7 +1440,7 @@ const mapDispatchToProps = dispatch => {
           responsibilites,
           onlyActiveAssignments
         )
-      ),      
+      ),
     addEmployeeToProjectAction: (status, errors) => dispatch(addEmployeeToProject(status, errors)),
 
     editEmployeeAssignment: ( startDate, endDate, role, assignedCapacity, responsibilites, assignmentId, onlyActiveAssignments, projectId) =>
