@@ -97,6 +97,11 @@ class Table extends Component {
     this.setState({ currentTrs: currentTrs, currentOpenedRowId: null, isFeedbackLoaded: false });
   };
 
+  momentDifference(date) {
+    moment.locale(this.props.language);
+    return moment(date).startOf('minute').fromNow();
+  }
+
   pushUserDetailsIntoTableDOM = (id, t, shouldClose = true) => {
     const { currentOpenedRowId, trs } = this.state;
     if (
@@ -139,8 +144,7 @@ class Table extends Component {
                 {t("OnDate") + " "}
                 {items[id].createdAt.slice(0, 10)}
                 <i className="moment-date">
-                ({moment().diff(items[id].createdAt.slice(0, 10), "days")}{" "}
-                {t("DaysAgo")})
+                ({this.momentDifference(items[id].createdAt)})
                 </i>
               </li>
               {items[id].responsibilities.filter(i => i !== "").length > 0 ?
@@ -572,7 +576,9 @@ const mapStateToProps = state => {
     editFeedbackErrors: state.projectsReducer.editFeedbackErrors,
 
     currentUserEmail: state.authReducer.email,
-    currentUser: state.authReducer.login
+    currentUser: state.authReducer.login,
+
+    language: state.languageReducer.language
   };
 };
 
