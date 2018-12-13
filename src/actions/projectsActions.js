@@ -364,10 +364,10 @@ export const getFeedbacks = (
   };
 };
 
-export const getFeedbacksACreator = employeeId => {
+export const getFeedbacksACreator = (employeeId, projectId) => {
   return dispatch => {
     WebApi.feedbacks.get
-    .byEmployee(employeeId)
+    .byEmployeeInProject(employeeId, projectId)
     .then(response => {
       dispatch(getFeedbacks(response.replyBlock.data.dtoObjects, true, []));
     })
@@ -761,7 +761,7 @@ export const getContactPersonData = (
   };
 };
 
-export const getContactPersonDataACreator = clientId => dispatch => { 
+export const getContactPersonDataACreator = clientId => dispatch => {
   return new Promise((resolve, reject) => {
     WebApi.responsiblePerson.get
       .byClient(clientId)

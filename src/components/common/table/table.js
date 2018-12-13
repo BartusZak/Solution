@@ -263,7 +263,8 @@ class Table extends Component {
   getFeedbacks = () => {
     this.setState({opinionModal: true, modalType: false, modalEdit: false, isLoading: true});
     this.props.getFeedbacks(
-      this.props.items[this.state.currentOpenedRowId].employeeId
+      this.props.items[this.state.currentOpenedRowId].employeeId,
+      this.props.projectId
     );
   };
   deleteFeedback = feedbackId => {
@@ -310,7 +311,7 @@ class Table extends Component {
 
     if (modalType) {
       this.setState({ isLoading: true, modalType: false, modalEdit: false });
-      getFeedbacks(items[currentOpenedRowId].employeeId);
+      getFeedbacks(items[currentOpenedRowId].employeeId, this.props.projectId);
     } else this.setState({ modalType: true, modalEdit: false });
   };
   clearData = () => {
@@ -586,7 +587,7 @@ const mapDispatchToProps = dispatch => {
   return {
     addFeedback: (projectId, employeeId, description, onlyActiveAssignments) =>
       dispatch(addFeedbackACreator(projectId, employeeId, description, onlyActiveAssignments)),
-    getFeedbacks: employeeId => dispatch(getFeedbacksACreator(employeeId)),
+    getFeedbacks: (employeeId, projectId) => dispatch(getFeedbacksACreator(employeeId, projectId)),
     editFeedback: (feedbackId, feedbackContent, projectId, onlyActiveAssignments) =>
       dispatch(editFeedbackACreator(feedbackId, feedbackContent, projectId, onlyActiveAssignments)),
     deleteFeedback: (feedbackId, projectId, onlyActiveAssignments) => dispatch(deleteFeedbackACreator(feedbackId, projectId, onlyActiveAssignments)),
