@@ -141,12 +141,11 @@ class List extends React.PureComponent {
 
     render(){
         const { listClass, paginationSettings, component: Component, componentProps, 
-            listTitle, selectDataOptions, items, functionsToUse, shouldAnimateList, isDoingRequest } = this.props;
+            listTitle, selectDataOptions, items, functionsToUse, shouldAnimateList, isDoingRequest, setPlanHour } = this.props;
         
         const { showFilterDetails } = this.state;
 
         const modifiedItems = this.modifeList(items, functionsToUse);
-        
         const closeFiltersFunction = showFilterDetails ? this.togleFilterDetails : null;
         return (
             <React.Fragment>
@@ -164,7 +163,7 @@ class List extends React.PureComponent {
                     {modifiedItems.length > 0 ? 
                         Component ? 
                         modifiedItems.map((item, index) => (
-                            <Component clickItemFunction={(e, operationName) => this.stopEventPropagationer(item, operationName, e)} index={index} key={index} 
+                            <Component setPlanHour={setPlanHour} clickItemFunction={(e, operationName) => this.stopEventPropagationer(item, operationName, e)} index={index} key={index} 
                                 item={item} {...componentProps}  />
                         )) :
                         modifiedItems.map((item, index) => (
