@@ -1,10 +1,11 @@
 import React from 'react'
 import './hour.scss';
 
-const hour = ({item, clickItemFunction}) => (
-    <div onClick={clickItemFunction} className="hour-label">
+const hour = ({item, setPlanHour}) =>
+    <div 
+        onClick={(e) => setPlanHour(e.currentTarget.textContent)} 
+        className={"hour-label clickable"}>
         {item.name}
     </div>
-);
 
 export default hour;
