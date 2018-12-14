@@ -471,6 +471,11 @@ const WebApi = {
           `${API_ENDPOINT}/feedbacks/employee/${employeeId}?isDeleted=false`
         );
       },
+      byEmployeeInProject: (employeeId, projectId) => {
+        return WebAround.get(
+          `${API_ENDPOINT}/feedbacks/employeeInProject/${employeeId}?projectId=${projectId}&isDeleted=false`
+        );
+      },
       byProject: projectId => {}
     },
     post: {

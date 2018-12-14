@@ -42,7 +42,8 @@
                 font-size: 1rem;
             }
         }
-  }
+      }
+
     .fa-briefcase{
       bottom: -45px;
       cursor: pointer;
@@ -155,6 +156,9 @@
     color: grey;
     margin-left: 29px;
   }
+  .project-phases-title {
+    font-family: unset !important;
+  }
   header nav {
     width: 100%;
     margin: 25px 0;
@@ -202,6 +206,9 @@
       @media (min-width: 764px) {
         margin: 10px 0;
         padding: 15.5px 10px;
+      }
+      @media (max-width: 764px) {
+        margin: 15px;
       }
       i {
         cursor: pointer;
@@ -253,7 +260,7 @@
       margin: 10px 0 30px 0;
       font-weight: bold;
     }
-    @media (min-width: 1100px) {
+    @media (min-width: 1110px) {
       width: 65%;
     }
   }

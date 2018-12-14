@@ -1,6 +1,6 @@
 import React from "react";
 import { translate } from "react-translate";
-import { Link } from "react-router-dom";
+import moment from "moment";
 
 const sideProgressBar = ({
   currentDeletedElements,
@@ -50,46 +50,9 @@ const sideProgressBar = ({
       ? "fa-times"
       : "fa-bell";
 
-  const notificationDate = date => {
-    const timeStamp = new Date().getTime() - Date.parse(date);
-    var ago;
-    if (timeStamp < day / 24) {
-      ago = parseInt(Math.floor(timeStamp / 1000 / 60));
-      if (ago < 2) ago = `${t("OneMinute")} ${t("Ago")}`;
-      else if (
-        (ago > 20 || ago < 5) &&
-        [2, 3, 4].includes(
-          Number(
-            ago
-              .toString()
-              .split("")
-              .pop()
-          )
-        )
-      )
-        ago += ` ${t("Minutes")} ${t("Ago")}`;
-      else ago += ` ${t("MinutesPl")} ${t("Ago")}`;
-    } else if (timeStamp < day) {
-      ago = parseInt(Math.floor(timeStamp / 1000 / 60 / 60));
-      if (ago === 1) ago += ` ${t("Hour")} ${t("Ago")}`;
-      else if ([2, 3, 4, 22, 23].includes(ago))
-        ago += ` ${t("Hours")} ${t("Ago")}`;
-      else ago += ` ${t("HoursPl")} ${t("Ago")}`;
-    } else if (timeStamp >= day && timeStamp < day * 30) {
-      ago = parseInt(Math.floor(timeStamp / 1000 / 60 / 60 / 24));
-      if (ago === 1) ago += ` ${t("Day")} ${t("Ago")}`;
-      else ago += ` ${t("Days")} ${t("Ago")}`;
-    } else if (timeStamp >= day * 30 && timeStamp < day * 30 * 12) {
-      ago = parseInt(Math.floor(timeStamp / 1000 / 60 / 60 / 24 / 30));
-      if (ago === 1) ago = `${t("Month")} ${t("Ago")}`;
-      else if (ago >= 5) ago += `${t("Months")} ${t("Ago")}`;
-      else ago += ` ${t("MonthsPl")} ${t("Ago")}`;
-    } else if (timeStamp >= day * 30 * 12) {
-      ago = parseInt(Math.floor(timeStamp / 1000 / 60 / 60 / 24 / 30 / 12));
-      if (ago === 1) ago = `${t("Year")} ${t("Ago")}`;
-      else ago += ` ${t("Years")} ${t("Ago")}`;
-    }
-
+  const momentDifference = date => {
+    moment.locale(language);
+    const ago = moment(date).startOf('second').fromNow();
     return <p>{ago}</p>;
   };
 
@@ -113,10 +76,8 @@ const sideProgressBar = ({
     }
 
   }
-  
   const notificationContent = notification => {
     const redirectLink = generateRedirectLink(notification);
-
     return (
       <React.Fragment>
         <div className="container row">
@@ -133,7 +94,7 @@ const sideProgressBar = ({
               <i className="far fa-envelope-open" />
             ) : (
                 <i
-                  className={`fa fa-envelope 
+                  className={`fa fa-envelope
                   ${currentReadElements.includes(notification.id)
                       ? "spinAnimation"
                       : ""
@@ -143,20 +104,19 @@ const sideProgressBar = ({
                 />
             )}
           </div>
-          <div 
+          <div
           onClick={() => changeCurrentWatchedUserHandler(notification)}
           className="not-content col-10 col-sm-9">
-            <div 
-            className={`${redirectLink === null ? "noRedirect" : "redirect"} 
-            ${notification.isRead ? "" : "pointer"}`} 
+            <div
+            className={`${redirectLink === null ? "noRedirect" : "redirect"}
+            ${notification.isRead ? "" : "pointer"}`}
             onClick={notification.isRead ? null : () => handleMarkAsRead(notification.id, false)}>
-            
               <span className={`${notification.isRead ? "" : "font-weight-bold"}`}>
                 {language === "pl"
                   ? notification.contentPl
                   : notification.contentEng}
               </span>
-              {notificationDate(notification.date)}
+              {momentDifference(notification.date)}
             </div>
           </div>
         </div>
@@ -189,7 +149,7 @@ const sideProgressBar = ({
         <ul className="notifictions">
           {notifications.length !== 0 ? (notifications.map(notification => {
               return (
-                <li 
+                <li
                 key={notification.id}
                 style={notification.isRead ? {} : { backgroundColor: "#e8e8e8" }}
                 >
