@@ -28,6 +28,7 @@ class PlanQuarter extends React.PureComponent{
         isGettingReservedDates: true,
         isPlanningQuarter: false,
         hoursToUse: [],
+        shouldPutTimeIntoForm: false,
         planQuarterFormItems: [
         { title: this.props.t("PlannedDate"), mode: 'date-picker', error: "", locale: this.props.t("Language"), 
             callBackFunc: () => this.generateHoursToUse(), value: moment().locale(this.props.t("Language")).add(1, 'days'), canBeNull: false, checkIfDateIsfromPast: true },
@@ -45,8 +46,7 @@ class PlanQuarter extends React.PureComponent{
             inputType: "strongNumber",
             placeholder: this.props.t("YearHolder"),
             dataToMap: pushMomentValuesDynamicly(5, moment().format('YYYY-MM-DD'), 1, 'years', "YYYY")
-        }
-        
+        }        
       ]
 
     }
@@ -98,13 +98,19 @@ class PlanQuarter extends React.PureComponent{
     }
 
     componentDidUpdate(prevProps){
-        const { location, currentWatchedUser, clearPlanQuarter } = this.props;
+        const { location, currentWatchedUser, clearPlanQuarter, planQuarterStatus, planQuarterErrors } = this.props;
         if(prevProps.location.search !== location.search){
             const planQuarterFormItems = [...this.state.planQuarterFormItems];
             planQuarterFormItems[1].value = "";
             planQuarterFormItems[3].value = "";
             this.setState({isGettingReservedDates: true, hoursToUse: [], planQuarterFormItems});
             clearPlanQuarter();
+            this.getReservedDates(currentWatchedUser);
+        }
+        if(this.state.shouldPutTimeIntoForm) {
+            this.setState({shouldPutTimeIntoForm: false});
+        }
+        if(planQuarterStatus && planQuarterErrors !== prevProps.planQuarterErrors) {   
             this.getReservedDates(currentWatchedUser);
         }
     }
@@ -148,11 +154,23 @@ class PlanQuarter extends React.PureComponent{
         this.props.clearPlanQuarter();
     }
 
+    setPlanHour = hour => {
+        const planQuarterFormItems = [...this.state.planQuarterFormItems];
+        const indexOfHourInForm = 1;
+        const hourObjectFromForm = {...planQuarterFormItems[indexOfHourInForm]};
+        hourObjectFromForm.value = hour;
+        planQuarterFormItems[indexOfHourInForm] = hourObjectFromForm;
+        this.setState({
+            planQuarterFormItems,
+            shouldPutTimeIntoForm: true
+        })
+    }
+    
+
     render(){
         const { planQuarterStatus, planQuarterErrors, reservedDates, getDatesErrors, getDatesStatus, 
-            clearReservedDate, authStatus, authErrors, authOneDriveClear, match, t } = this.props;
-        const { isGettingReservedDates, isPlanningQuarter, planQuarterFormItems, hoursToUse } = this.state;
-        
+            clearReservedDate, authStatus, authErrors, authOneDriveClear, match, t, language } = this.props;
+        const { isGettingReservedDates, isPlanningQuarter, planQuarterFormItems, hoursToUse, shouldPutTimeIntoForm } = this.state;
         return (
             <React.Fragment>
             <LoadHandlingWrapper closePrompt={this.closeErrorPrompt} errors={getDatesErrors} 
@@ -163,7 +181,8 @@ class PlanQuarter extends React.PureComponent{
                         componentProps={{
                             minutes: t("Minutes"),
                             to: t("To"),
-                            from: t("From")
+                            from: t("From"),
+                            language: language
                         }}
                         shouldAnimateList listClass="calendar-list" listTitle={t("OccupiedDates")} component={CalendarItem} items={reservedDates} />
                     </div>
@@ -172,6 +191,8 @@ class PlanQuarter extends React.PureComponent{
                             {t("QuarterTalksDetails")}
                         </h2>
                         <Form
+                            newFormItems={planQuarterFormItems}
+                            shouldChangeFormState={shouldPutTimeIntoForm}
                             btnTitle={t("Plan")}
                             shouldSubmit
                             inputContainerClass="column-container"
@@ -189,7 +210,7 @@ class PlanQuarter extends React.PureComponent{
                     <div className="hours-to-use-container">
                         <List
                         shouldAnimateList listClass="question-list" listTitle={t("SugestedHours")}
-                        component={Hour} items={hoursToUse} />
+                        component={Hour} items={hoursToUse} setPlanHour={this.setPlanHour} />
                       
                     </div>
                 </div>   
@@ -208,6 +229,7 @@ class PlanQuarter extends React.PureComponent{
 
 const mapStateToProps = state => {
     return {
+        language: state.languageReducer.language,
         reservedDates: state.quarterTalks.reservedDates,
         getDatesStatus: state.quarterTalks.getDatesStatus,
         getDatesErrors: state.quarterTalks.getDatesErrors,

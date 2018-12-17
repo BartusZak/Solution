@@ -99,7 +99,6 @@ export const changeCurrentWatchedUser = currentWatchedUser => {
 }
 
 export const putNotificationIconInSideBar = isNotificationIconInSideBar => {
-  console.log(isNotificationIconInSideBar);
   return { type: PUT_NOTIFICATION_ICON_IN_SIDE_BAR, isNotificationIconInSideBar };
 }
 

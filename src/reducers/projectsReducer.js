@@ -5,12 +5,16 @@ import {
   GET_PROJECT,
   ADD_EMPLOYEE_TO_PROJECT,
   ADD_FEEDBACK,
+  GET_MY_FEEDBACK,
   GET_FEEDBACKS,
+  EDIT_FEEDBACK,
+  DELETE_FEEDBACK,
   EDIT_PROJECT,
   CHANGE_PROJECT_SKILLS,
   ADD_SKILLS_TO_PROJECT,
   CHANGE_PROJECT_STATE,
   CREATE_PROJECT,
+  CREATE_PROJECT_PHASE,
   GET_SUGGEST_EMPLOYEES,
   CHANGE_GET_SUGGEST_EMPLOYEES_STATUS,
   GET_CONTACT_PERSON_DATA,
@@ -40,9 +44,19 @@ const initialState = {
   addFeedbackStatus: null,
   addFeedbackErrors: [],
 
+  loadedFeedback: [],
+  getMyFeedbackStatus: null,
+  getMyFeedbackErrors: [],
+
   loadedFeedbacks: [],
   loadFeedbackStatus: null,
   loadFeedbackErrors: [],
+
+  deleteFeedbackStatus: null,
+  deleteFeedbackErrors: [],
+
+  editFeedbackStatus: null,
+  editFeedbackErrors: [],
 
   editProjectStatus: null,
   editProjectErrors: [],
@@ -59,6 +73,9 @@ const initialState = {
 
   createProjectStatus: null,
   createProjectErrors: [],
+
+  createProjectPhaseStatus: null,
+  createProjectPhaseError: [],
 
   getSuggestEmployeesStatus: null,
   getSuggestEmployeesError: [],
@@ -142,6 +159,18 @@ export const projectsReducer = (state = initialState, action) => {
         loadFeedbackErrors: action.loadFeedbackErrors
       });
 
+    case EDIT_FEEDBACK:
+      return updateObject(state, {
+        editFeedbackStatus: action.editFeedbackStatus,
+        editFeedbackErrors: action.editFeedbackErrors
+      });
+
+    case DELETE_FEEDBACK:
+      return updateObject(state, {
+        deleteFeedbackStatus: action.deleteFeedbackStatus,
+        deleteFeedbackErrors: action.deleteFeedbackErrors
+      });
+
     case EDIT_PROJECT:
       return updateObject(state, {
         editProjectStatus: action.editProjectStatus,
@@ -169,6 +198,11 @@ export const projectsReducer = (state = initialState, action) => {
       return updateObject(state, {
         createProjectStatus: action.createProjectStatus,
         createProjectErrors: action.createProjectErrors
+      });
+    case CREATE_PROJECT_PHASE:
+      return updateObject(state, {
+        createProjectPhaseStatus: action.createProjectPhaseStatus,
+        createProjectPhaseError: action.createProjectPhaseError
       });
     case GET_SUGGEST_EMPLOYEES:
       return updateObject(state, { suggestEmployees: action.suggestEmployees });
