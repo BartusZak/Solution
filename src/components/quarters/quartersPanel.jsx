@@ -12,6 +12,7 @@ import PlanQuarter from './planQuarter/planQuarter';
 import AuthWithOutlook from './authWithOutlookComponent/authWithOutlookComponent';
 import FindUserModal from './others/findUserModal/findUserModal';
 import { translate } from 'react-translate';
+import { API_ENDPOINT } from '../../api';
 const linkTypes = {
     "plan": "/employees/plan/",
     "addquarter": "/employees/addquarter/",
@@ -39,18 +40,18 @@ class Quarters extends React.PureComponent{
     changeActualWatchedUser = person => {
         const { history, match, changeCurrentWatchedUser } = this.props;
         const url = history.location;
-        
+
         const isUrlWithParam = url.search !== "";
         for(let key in linkTypes){
             if(url.pathname.search(key) !== -1){
                 changeCurrentWatchedUser(person);
                 this.setState({openFindUserModal: false});
                 history.push(`${match.url}${linkTypes[key]}${person}?=${person}`);
-                break; 
+                break;
             }
         }
     }
-  
+
     render(){
         const { match, history, lastWatchedPersons, planQuarterACreator, createLastWatchedPersonsArray,
             linkBeforeRedirectToOutlookAuth, changeLinkBeforeRedirect, sendAuthCodePromise,
@@ -62,17 +63,17 @@ class Quarters extends React.PureComponent{
             <div className="quarters-panel">
                 <header className="block-header">
                     <span><i className="fa fa-comments"></i>{t("QuarterTalkHeader")} </span>
-                {currentWatchedUser && 
+                {currentWatchedUser &&
                     <span>{t("QuarterTalkSubHeader")} <b>{currentWatchedUser}</b></span>
                 }
                 </header>
-                {isHistoryExist && 
+                {isHistoryExist &&
                     <div className="recent-watched">
                         {lastWatchedPersons.map(person => {
                             return (
                                 <div onClick={() => this.changeActualWatchedUser(person)} className={`last-watched-person ${person === currentWatchedUser ? "last-watched-person-focused" : ""}`} key={person}>
                                     <div className="avatar-container">
-                                        <div className="image" style={{backgroundImage: `url(${"http://10.255.20.241/ProfilePhotos/" + person + ".jpg"})`}}>
+                                        <div className="image" style={{backgroundImage: `url(${API_ENDPOINT + "/ProfilePhotos/" + person + ".jpg"})`}}>
                                         </div>
                                         <i className="fa fa-user"></i>
                                     </div>
@@ -86,17 +87,17 @@ class Quarters extends React.PureComponent{
                 }
 
                 <nav>
-                    <Button onClick={() => this.handleBtnClick(`${match.url}/employees`, true)} 
+                    <Button onClick={() => this.handleBtnClick(`${match.url}/employees`, true)}
                         title={t("QuaterTalks")} mainClass="generate-raport-btn btn-green"><i className="fa fa-comments"/></Button>
-                    <Button onClick={() => this.setState({openFindUserModal: true})} 
+                    <Button onClick={() => this.setState({openFindUserModal: true})}
                         title={t("Users")} mainClass="generate-raport-btn btn-green"><i className="fa fa-users"/></Button>
-                    <Button onClick={() => this.handleBtnClick(`${match.url}/employees/addquarter`, true)} 
+                    <Button onClick={() => this.handleBtnClick(`${match.url}/employees/addquarter`, true)}
                         title={t("AddQuarter")} mainClass="generate-raport-btn btn-green"><i className="fa fa-plus"/></Button>
-                    <Button onClick={() => this.handleBtnClick(`${match.url}/employees/plan`, true)} 
+                    <Button onClick={() => this.handleBtnClick(`${match.url}/employees/plan`, true)}
                         title={t("PlanQuarter")} mainClass="generate-raport-btn btn-green"><i className="fa fa-comment"/></Button>
-                    
-                    {isHistoryExist && 
-                        <Button onClick={() => createLastWatchedPersonsArray([])} title={t("ClearHistory")} 
+
+                    {isHistoryExist &&
+                        <Button onClick={() => createLastWatchedPersonsArray([])} title={t("ClearHistory")}
                             mainClass="generate-raport-btn btn-brown"><i className="fa fa-history"/></Button>
                     }
                 </nav>
@@ -108,7 +109,7 @@ class Quarters extends React.PureComponent{
                             sendAuthCodePromise={sendAuthCodePromise} />
                         )}/>
                         <Route exact path={`${match.url}/employees/plan/:id`} render={() => (
-                            <PlanQuarter currentWatchedUser={currentWatchedUser} location={history.location} planQuarterACreator={planQuarterACreator} match={match} 
+                            <PlanQuarter currentWatchedUser={currentWatchedUser} location={history.location} planQuarterACreator={planQuarterACreator} match={match}
                              redirectToLastWatchedPerson={this.handleBtnClick} changeLinkBeforeRedirect={changeLinkBeforeRedirect}/>
                         )}/>
                         <Route exact path={match.url + "/employees/addquarter/:id"} render={() => (
@@ -121,16 +122,16 @@ class Quarters extends React.PureComponent{
                             history={history} currentWatchedUser={currentWatchedUser} />
                         )}/>
 
-                    </Switch>   
+                    </Switch>
                 </div>
 
-                {openFindUserModal && 
-                    <FindUserModal changeActualWatchedUser={this.changeActualWatchedUser} 
-                    onClose={() => this.setState({ openFindUserModal: false })} 
+                {openFindUserModal &&
+                    <FindUserModal changeActualWatchedUser={this.changeActualWatchedUser}
+                    onClose={() => this.setState({ openFindUserModal: false })}
                     open={openFindUserModal} />
                 }
-                
-            
+
+
             </div>
         );
     }
