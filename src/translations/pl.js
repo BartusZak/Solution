@@ -311,7 +311,11 @@ const translations = {
     In: "w",
     InYear: "roku",
     DoneQuarter: "Ta rozmowa została przeprowadzona",
-    IncomingQuarter: "Ta rozmowa dopiero się odbędzie"
+    IncomingQuarter: "Ta rozmowa dopiero się odbędzie",
+    PeopleToTalkWith: "Osoba przeprowadzająca rozmowę",
+    DownloadTalkInDoc: "Pobierz rozmowę w formacie .doc",
+    QuarterTalkDate: "Data przeprowadzenia rozmowy",
+    PlannedQuarterTalkDate: "Planowana data odbycia rozmowy",
   },
   EmployeeSkills: {
     Add: "Dodaj",
