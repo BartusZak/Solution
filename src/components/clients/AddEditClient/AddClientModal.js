@@ -64,14 +64,14 @@ class AddClientModal extends Component {
 
     let error =
       e.target.name === "clientName"
-        ? validateInput(value, false, 3, 50, "name", this.props.t("ClientName"))
+        ? validateInput(value, false, 3, 50, "client", this.props.t("ClientName"))
         : e.target.name === "clientDescription"
           ? validateInput(
               value,
               true,
               3,
               200,
-              "name",
+              "client",
               this.props.t("ClientDescription")
             )
           : null;
@@ -159,7 +159,6 @@ class AddClientModal extends Component {
 
             <label htmlFor="clientDescription">{t("ClientDescription")}</label>
             <textarea
-              style={{ resize: "vertical", maxHeight: "120px" }}
               type="text"
               id="clientDescription"
               name="clientDescription"
@@ -184,7 +183,7 @@ class AddClientModal extends Component {
           <Button
             disable={!this.state.isFormValid}
             onClick={e => this.handleAddClientButtonClick(e)}
-            mainClass="dcmt-button"
+            mainClass="submit-btn"
           >
             {this.props.editClient ? t("Save") : t("Add")}
           </Button>
