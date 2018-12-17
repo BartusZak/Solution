@@ -63,11 +63,10 @@ class ImportCVContainer extends Component {
       if(accepted && accepted.length !== 0)
       {
         if(resultBlock.result && resultBlock.result.length !== 0){
-          console.log("elo")
           this.setState({ resultBlock: {}, accepted: importAccepted });
         }
 
-        importAccepted.map((x) => 
+        importAccepted.map((x) =>
           accepted.some(z => z.name == x.name) ? duplicatedFiles.push(x) : uniqueFiles.push(x)
         );
         importAccepted = uniqueFiles;
@@ -99,7 +98,6 @@ class ImportCVContainer extends Component {
   }
 
   render() {
-    console.log(this.state);
     const { accepted, loading, resultBlock } = this.state;
     const { t } = this.props;
     let lp = 1;
