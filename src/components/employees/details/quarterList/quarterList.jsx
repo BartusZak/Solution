@@ -16,6 +16,7 @@ import { withRouter } from 'react-router';
 import QuarterListItem from '../../../quarters/others/quarterListItem/quarterListItem.jsx';
 import { deleteQuarterTalkACreator, reactivateQuarterTalkACreator, deleteQuarterTalk } from '../../../../actions/quarterTalks.js';
 import List from '../../../common/list/list';
+
 class QuarterList extends React.PureComponent {
   state = {
     currentWatchedDetailIndex: -1
@@ -33,9 +34,15 @@ class QuarterList extends React.PureComponent {
   }
 
   operationsHandler = (quarter, operationName) => {
+    const { history, employeeId } = this.props;
     if(operationName === "expendDetails"){
       this.handleExpandDetails(quarter);
-    }
+    };
+    const url = `/main/quarters/employees/employeeId=${employeeId}`;
+    history.push({
+      pathname: url,
+      state: { quarterTalkId: quarter.id }
+    });
   }
 
   handleExpandDetails = quarter => {
