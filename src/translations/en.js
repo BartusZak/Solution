@@ -307,7 +307,12 @@ const translations = {
     In: "in",
     InYear: "year",
     DoneQuarter: "This conversation was carried out",
-    IncomingQuarter: "This conversation will only take place"
+    IncomingQuarter: "This conversation will only take place",
+    PeopleToTalkWith: "Person to talk with",
+    DownloadTalkInDoc: "Download talk in .doc",
+    QuarterTalkDate: "Quarter talk date",
+    PlannedQuarterTalkDate: "Planned quarter talk date",
+
   },
   EmployeeSkills: {
     Add: "Add",
