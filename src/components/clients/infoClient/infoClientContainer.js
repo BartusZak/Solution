@@ -7,16 +7,11 @@ export default class infoClientContainer extends Component {
     shouldAnimate: true
   };
 
-  componentWillReceiveProps(nextState) {
-    const { client } = this.props;
-    const { shouldAnimate } = this.state;
-    if (
-      shouldAnimate !== nextState.shouldAnimate &&
-      client !== nextState.client
-    ) {
+  componentDidMount() {
       this.setState({ shouldAnimate: true });
+      this.changeAnimation()
     }
-  }
+  
 
   changeAnimation = () => {
     setTimeout(() => {

@@ -33,7 +33,7 @@ const genReport = ({
 }) => {
   const isUrlDifferentFromFoldersUrl = (currentPath.search("onedrive") === -1 && currentPath.search("gdrive")) === -1;
   const shouldLetGenerate = (addList.length > 0 && !isUrlDifferentFromFoldersUrl) ? true : false;
-  
+
   return (
     <Modal
       key={1}
@@ -49,7 +49,7 @@ const genReport = ({
         {addList.length > 0 && addList.map((i, index) => {
           return (
             <li
-              className={pagesList !== undefined ? pagesList[index].error ? "inc-list-item" : "" : ""}
+              className={(pagesList !== undefined || pagesList[index] !== undefined) ? pagesList[index].error ? "inc-list-item" : "" : ""}
               key={index}
             >
               <label>{i.name} <b><i title={t("Employees")} className="fa fa-users"></i>{i.numberOfMemberInDB}</b></label>
@@ -62,10 +62,10 @@ const genReport = ({
           );
         })}
       </ul>
-     
-   
+
+
         <div className="choosen-folder-content">
-              {choosenFolder && 
+              {choosenFolder &&
                 <div className="icon-container">
                   <i className="fa fa-folder" />
                   <span onClick={() => window.open(choosenFolder.webUrl)}>
@@ -75,7 +75,7 @@ const genReport = ({
                   </span>
                 </div>
               }
-              {choosenFolder && 
+              {choosenFolder &&
                 <article className="folder-details">
                   {choosenFolder.id && (
                     <p>
@@ -103,8 +103,8 @@ const genReport = ({
                   )}
                 </article>
               }
-            
-              {isUrlDifferentFromFoldersUrl && 
+
+              {isUrlDifferentFromFoldersUrl &&
               <article className="gen-report-not-able-to-gen-prompt">
                 {t("FirstInfo")}
                 <Link onClick={closeModal} to={startPathname + "/choose"}>{t("ClickHere")}</Link>, {t("SecondInfo")}.
@@ -119,7 +119,7 @@ const genReport = ({
                 : generateReportErrors[0]
             }}
             isLoading={isReportGenerating || isStarted}
-            onClickHandler={(!isReportGenerating && !generateReportStatus && !isStarted) ? 
+            onClickHandler={(!isReportGenerating && !generateReportStatus && !isStarted) ?
               generateReport : null
               }
             btnTitle={t("GenReport")}
@@ -128,7 +128,7 @@ const genReport = ({
           <div className="availableUntil">
             <input type="checkbox" id="availableUntilCheckbox" onChange={handleAvailableUntilToggle}/>
             <label htmlFor="availableUntilCheckbox">{t("EmployeesInDay")}:</label>
-            <DatePicker 
+            <DatePicker
               startDate={availableUntilStartDate}
               minDate={availableUntilStartDate}
               selected={availableUntilDate}
@@ -147,7 +147,7 @@ const genReport = ({
         </React.Fragment>
         }
         </div>
-        {isStarted && 
+        {isStarted &&
           <PromptsCommander barType="small-progress" />
         }
     </Modal>

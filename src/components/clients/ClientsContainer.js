@@ -37,16 +37,17 @@ class ClientsContainer extends React.Component {
   };
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.clients !== this.props.clients) {
+    const {clients, async, clientsActions} = this.props;
+    const {clientIndex} =  this.state;
+    if (nextProps.clients !== clients) {      
       const updatedClient = nextProps.clients.filter(clientItem => {
-        return Object.getOwnPropertyNames(nextProps.clients).length !== 0
-          ? clientItem.id === nextProps.clients[0].id
+        return Object.getOwnPropertyNames(nextProps.clients).length !== 0 && clientIndex
+          ? clientItem.id === nextProps.clients[clientIndex].id
           : {};
       });
-
       this.setState({
         clients: nextProps.clients,
-        client: updatedClient[0],
+        client: clientIndex ? updatedClient[0] : clients[0],
         checked: null
       });
     }
@@ -54,28 +55,28 @@ class ClientsContainer extends React.Component {
       this.setState({ loaded: true });
     }
     if (this.validatePropsForClientDeletion(nextProps)) {
-      this.props.async.setActionConfirmationProgress(true);
-      this.props.clientsActions.deleteClient(nextProps.toConfirm.id);
+      async.setActionConfirmationProgress(true);
+      clientsActions.deleteClient(nextProps.toConfirm.id);
     }
     if (this.validatePropsForClientReactivation(nextProps)) {
-      this.props.async.setActionConfirmationProgress(true);
-      this.props.clientsActions.reactivateClient(nextProps.toConfirm.id);
+      async.setActionConfirmationProgress(true);
+      clientsActions.reactivateClient(nextProps.toConfirm.id);
     }
     if (this.validatePropsForCloudDeletion(nextProps)) {
-      this.props.async.setActionConfirmationProgress(true);
-      this.props.clientsActions.deleteCloud(nextProps.toConfirm.id);
+      async.setActionConfirmationProgress(true);
+      clientsActions.deleteCloud(nextProps.toConfirm.id);
     }
     if (this.validatePropsForCloudReactivation(nextProps)) {
-      this.props.async.setActionConfirmationProgress(true);
-      this.props.clientsActions.reactivateCloud(nextProps.toConfirm.id);
+      async.setActionConfirmationProgress(true);
+      clientsActions.reactivateCloud(nextProps.toConfirm.id);
     }
     if (this.validatePropsForResponsiblePersonDeletion(nextProps)) {
-      this.props.async.setActionConfirmationProgress(true);
-      this.props.clientsActions.deleteResponsiblePerson(nextProps.toConfirm.id);
+      async.setActionConfirmationProgress(true);
+      clientsActions.deleteResponsiblePerson(nextProps.toConfirm.id);
     }
     if (this.validatePropsForResponsiblePersonReactivation(nextProps)) {
-      this.props.async.setActionConfirmationProgress(true);
-      this.props.clientsActions.reactivateResponsiblePerson(
+      async.setActionConfirmationProgress(true);
+      clientsActions.reactivateResponsiblePerson(
         nextProps.toConfirm.id
       );
     }
@@ -162,7 +163,7 @@ class ClientsContainer extends React.Component {
   }
 
   generateOptions = client => {
-    const { t } = this.props;
+    const { t, resultBlockAddClient, clientsActions, loading } = this.props;
     
     let content = [];
     if (!client.isDeleted) {
@@ -190,9 +191,10 @@ class ClientsContainer extends React.Component {
       <AddEditClient
         key={4}
         client={client}
-        editClient={this.props.clientsActions.editClient}
-        loading={this.props.loading}
-        resultBlock={this.props.resultBlockAddClient}
+        editClient={clientsActions.editClient}
+        addClientResult={clientsActions.addClientResult}
+        loading={loading}
+        resultBlock={resultBlockAddClient}
         resetSearchInput={this.resetSearchInput}
       >
         <Icon icon="edit" iconType="fa" />
@@ -203,9 +205,10 @@ class ClientsContainer extends React.Component {
   };
 
   filterList = e => {
-    let updatedList = this.props.clients;
+    const {clients} = this.props;
+    let updatedList = clients;
     let searchedValue = e.target.value;
-    if (searchedValue && this.props.clients) {
+    if (searchedValue && clients) {
       updatedList = updatedList.filter((item, index) => {
         if (item.name && searchedValue) {
           return (
@@ -263,10 +266,10 @@ class ClientsContainer extends React.Component {
     }
   };
 
-  clientNameClickedHandler = (client, index) => {
+  clientNameClickedHandler = (client, index) => {  
     this.setState({
       client,
-      clientIndex: index
+      clientIndex: index      
     });
   };
 
@@ -375,6 +378,7 @@ class ClientsContainer extends React.Component {
           <div className="clients-add-search">
             <AddEditClient
               addClient={clientsActions.addClient}
+              addClientResult={clientsActions.addClientResult}
               resultBlock={resultBlockAddClient}
               resetSearchInput={this.resetSearchInput}
             />

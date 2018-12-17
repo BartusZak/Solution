@@ -128,6 +128,7 @@ export default class InfoClientList extends Component {
             <h2>{t(translateText.Header)}</h2>
           </div>
           <div className="info-client-list-header-input">
+            <Icon icon="trash" iconType="fa" />
             <label
               className="switch"
               title={!isDeleted ? t("showDeleted") : t("showActive")}
