@@ -508,7 +508,7 @@ const translations = {
     LoadingProjectMessage: "Loading project data",
     ResponsiblePerson: "Responsible person",
     SkillsRequired: "Skills required for this project",
-    ShowActiveAssignments: "Show active assignments",
+    ShowAllAssignments: "Show all assignments",
     Name: "Name",
     Role: "Role",
     Experience: "Experience",

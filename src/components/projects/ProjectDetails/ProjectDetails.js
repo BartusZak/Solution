@@ -164,7 +164,7 @@ class ProjectDetails extends Component {
     editingAssignmentId: null,
     addEmployeSpinner: false,
     projectStatus: [],
-    onlyActiveAssignments: true,
+    showAllAssignments: false,
     addNewProjectPhaseFormValues: [
       {
         title: this.props.t("ProjectName"),
@@ -372,20 +372,20 @@ class ProjectDetails extends Component {
   };
 
   togleActiveAssignments = () => {
-    const { onlyActiveAssignments } = this.state;
-    this.setState({ onlyActiveAssignments: !onlyActiveAssignments }, () => this.loadProjectData("isChangingAssignments"));
+    const { showAllAssignments } = this.state;
+    this.setState({ showAllAssignments: !showAllAssignments }, () => this.loadProjectData("isChangingAssignments"));
   };
 
   loadProjectData = (operationName, projectId) => {
     this.setState({[operationName]: true});
     const { getProjectDataACreator, match } = this.props;
-    const { onlyActiveAssignments } = this.state;
+    const { showAllAssignments } = this.state;
     if(projectId){
-      getProjectDataACreator(projectId, onlyActiveAssignments).then(() => {
+      getProjectDataACreator(projectId, !showAllAssignments).then(() => {
         this.setState({[operationName]: false});
       }).catch(() => this.setState({[operationName]: false}));
     } else {
-      getProjectDataACreator(match.params.id, onlyActiveAssignments).then(() => {
+      getProjectDataACreator(match.params.id, !showAllAssignments).then(() => {
         this.setState({[operationName]: false});
       }).catch(() => this.setState({[operationName]: false}));
     }
@@ -393,8 +393,8 @@ class ProjectDetails extends Component {
 
 
   changeOnlyActiveAssignments = () => {
-    const { onlyActiveAssignments } = this.state;
-    this.setState({ onlyActiveAssignments: !onlyActiveAssignments }, () => this.loadProjectData());
+    const { showAllAssignments } = this.state;
+    this.setState({ showAllAssignments: !showAllAssignments }, () => this.loadProjectData());
   };
 
   fillDates = (startDate, endDate, estimatedEndDate) => {
@@ -489,7 +489,7 @@ class ProjectDetails extends Component {
     const {
       addEmployeToProjectFormItems,
       lteVal,
-      onlyActiveAssignments,
+      showAllAssignments,
       editingEmployeeAssignment
     } = this.state;
     const { project, addEmployeeToProject, editEmployeeAssignment } = this.props;
@@ -502,7 +502,7 @@ class ProjectDetails extends Component {
         lteVal,
         addEmployeToProjectFormItems[2].value,
         this.state.editingAssignmentId,
-        onlyActiveAssignments,
+        showAllAssignments,
         project.id
       ) :
       addEmployeeToProject(
@@ -513,7 +513,7 @@ class ProjectDetails extends Component {
         addEmployeToProjectFormItems[4].value,
         lteVal,
         addEmployeToProjectFormItems[2].value,
-        onlyActiveAssignments
+        showAllAssignments
       )
     );
   };
@@ -647,7 +647,7 @@ class ProjectDetails extends Component {
 
   deleteEmployeeAssignment = () => {
     const { deleteEmployeeAssignmentACreator, project } = this.props;
-    const { onlyActiveAssignments, deletingAssignment } = this.state;
+    const { showAllAssignments, deletingAssignment } = this.state;
 
     this.setState({
       deletingEmployeeAssignment: true,
@@ -655,7 +655,7 @@ class ProjectDetails extends Component {
       deleteEmpAssignmentModalOpen: false
     })
 
-    deleteEmployeeAssignmentACreator( deletingAssignment.assignmentId, project.id, onlyActiveAssignments)
+    deleteEmployeeAssignmentACreator( deletingAssignment.assignmentId, project.id, !showAllAssignments)
   }
 
   setDeletingAssignmentId = (assignment) => {
@@ -691,7 +691,7 @@ class ProjectDetails extends Component {
       addProjectOwnerToProjectStatus, addProjectOwnerToProjectErrors, t, createProjectStatus, createProjectErrors, match} = this.props;
     const projectPhases = project ? this.projectPhaseData() : null;
     const { reactivate, close } = WebApi.projects.put;
-    const { projectStatus, onlyActiveAssignments, matches, currentOpenedRow,
+    const { projectStatus, showAllAssignments, matches, currentOpenedRow,
       isChangingAssignments, isLoadingProject, openFirstForm, addNewProjectPhaseFormValues, responsiblePersonFormValues, isLoading, responsiblePersons, selected } = this.state;
     return (
       <div
@@ -754,7 +754,7 @@ class ProjectDetails extends Component {
                           onClick={() =>
                             changeProjectState(reactivate, "reactivate", {
                               projectId: project.id,
-                              onlyActiveAssignments: onlyActiveAssignments
+                              showAllAssignments: showAllAssignments
                             })
                           }
                           className="option-btn green-btn"
@@ -769,7 +769,7 @@ class ProjectDetails extends Component {
                           onClick={() =>
                             changeProjectState(close, "close", {
                               projectId: project.id,
-                              onlyActiveAssignments: onlyActiveAssignments
+                              showAllAssignments: showAllAssignments
                             })
                           }
                           className="option-btn option-dang"
@@ -847,7 +847,7 @@ class ProjectDetails extends Component {
                 />
 
                 <Skills
-                  onlyActiveAssignments={onlyActiveAssignments}
+                  showAllAssignments={showAllAssignments}
                   projectId={project.id}
                   changeProjectSkillsStatus={
                     this.props.changeProjectSkillsStatus
@@ -880,10 +880,10 @@ class ProjectDetails extends Component {
 
               <div className="right-project-spec">
                 <div className="a-asign-container">
-                  <label>{t("ShowActiveAssignments")}</label>
+                  <label>{t("ShowAllAssignments")}</label>
                   <input disabled={isChangingAssignments}
                     type="checkbox"
-                    checked={onlyActiveAssignments}
+                    checked={showAllAssignments}
                     onChange={this.togleActiveAssignments}
                   />
                   <span className="assingments-spinner-container">
@@ -1232,7 +1232,7 @@ class ProjectDetails extends Component {
               onClose={this.clearEditModalData}
             >
               <ProjectDetailsBlock
-                onlyActiveAssignments={onlyActiveAssignments}
+                showAllAssignments={showAllAssignments}
                 editProjectStatus={this.props.editProjectStatus}
                 editProjectErrors={this.props.editProjectErrors}
                 responsiblePerson={project.responsiblePerson}
@@ -1259,7 +1259,7 @@ class ProjectDetails extends Component {
               operation={() =>
                 changeProjectState(WebApi.projects.delete.project, "delete", {
                   projectId: project.id,
-                  onlyActiveAssignments: onlyActiveAssignments
+                  showAllAssignments: showAllAssignments
                 })
               }
             >
@@ -1407,13 +1407,13 @@ const mapDispatchToProps = dispatch => {
     projectActions: bindActionCreators(projectsActions, dispatch),
     getContactPersonDataACreator: clientId =>
       dispatch(getContactPersonDataACreator(clientId)),
-    getProject: (projectId, onlyActiveAssignments) =>
-      dispatch(getProjectACreator(projectId, onlyActiveAssignments)),
-    editProject: (projectId, projectToSend, onlyActiveAssignments) =>
+    getProject: (projectId, showAllAssignments) =>
+      dispatch(getProjectACreator(projectId, showAllAssignments)),
+    editProject: (projectId, projectToSend, showAllAssignments) =>
       dispatch(
-        editProjectACreator(projectId, projectToSend, onlyActiveAssignments)
+        editProjectACreator(projectId, projectToSend, showAllAssignments)
       ),
-    getProjectDataACreator: (projectId, onlyActiveAssignments) => dispatch(getProjectDataACreator(projectId, onlyActiveAssignments)),
+    getProjectDataACreator: (projectId, showAllAssignments) => dispatch(getProjectDataACreator(projectId, showAllAssignments)),
     editProjectClearData: (status, errors) =>
       dispatch(editProject(status, errors)),
     clearProjectData: (project, status, errors, personKeys, overViewKeys) =>
@@ -1426,7 +1426,7 @@ const mapDispatchToProps = dispatch => {
       role,
       assignedCapacity,
       responsibilites,
-      onlyActiveAssignments
+      showAllAssignments
     ) =>
       dispatch(
         addEmployeeToProjectACreator(
@@ -1437,20 +1437,20 @@ const mapDispatchToProps = dispatch => {
           role,
           assignedCapacity,
           responsibilites,
-          onlyActiveAssignments
+          showAllAssignments
         )
       ),
     addEmployeeToProjectAction: (status, errors) => dispatch(addEmployeeToProject(status, errors)),
 
-    editEmployeeAssignment: ( startDate, endDate, role, assignedCapacity, responsibilites, assignmentId, onlyActiveAssignments, projectId) =>
-      dispatch(editEmployeeAssignmentACreator(startDate,endDate,role,assignedCapacity,responsibilites,assignmentId,onlyActiveAssignments, projectId)),
+    editEmployeeAssignment: ( startDate, endDate, role, assignedCapacity, responsibilites, assignmentId, showAllAssignments, projectId) =>
+      dispatch(editEmployeeAssignmentACreator(startDate,endDate,role,assignedCapacity,responsibilites,assignmentId,showAllAssignments, projectId)),
 
     editEmployeeAssignmentAction: (status, errors) => dispatch(editEmployeeAssignment(status, errors)),
 
-    deleteEmployeeAssignmentACreator: ( assignmentId, projectId, onlyActiveAssignments) => dispatch(deleteEmployeeAssignmentACreator(assignmentId, projectId, onlyActiveAssignments)),
+    deleteEmployeeAssignmentACreator: ( assignmentId, projectId, showAllAssignments) => dispatch(deleteEmployeeAssignmentACreator(assignmentId, projectId, showAllAssignments)),
 
-    changeProjectSkills: (projectId, skills, onlyActiveAssignments) =>
-      dispatch(changeProjectSkillsACreator(projectId, skills, onlyActiveAssignments)),
+    changeProjectSkills: (projectId, skills, showAllAssignments) =>
+      dispatch(changeProjectSkillsACreator(projectId, skills, showAllAssignments)),
 
     addProjectOwner: (projectId, ownersIdsArray) =>
       dispatch(addProjectOwnerACreator(projectId, ownersIdsArray)),
@@ -1459,12 +1459,12 @@ const mapDispatchToProps = dispatch => {
       dispatch(getAllSkillsACreator(currentAddedSkills)),
     getAllSkillsDataClear: (loadedSkills, loadSkillsStatus, loadSkillsErrors) =>
       dispatch(getAllSkills(loadedSkills, loadSkillsStatus, loadSkillsErrors)),
-    addSkillsToProject: (projectId, currentSkills, onlyActiveAssignments) =>
+    addSkillsToProject: (projectId, currentSkills, showAllAssignments) =>
       dispatch(
         addSkillsToProjectACreator(
           projectId,
           currentSkills,
-          onlyActiveAssignments
+          showAllAssignments
         )
       ),
     addSkillsToProjectClear: (state, errors) =>
