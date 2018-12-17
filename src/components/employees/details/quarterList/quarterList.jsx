@@ -51,7 +51,6 @@ class QuarterList extends React.PureComponent {
   render() {
     const {  t, employeeId, quarterTalks } = this.props;
     const { currentWatchedDetailIndex } = this.state;
-console.log("ssssssss", t("PeopleToTalkWith"));
     return (
       <div className="quaters-container">
         {quarterTalks && quarterTalks.length > 0 ?
