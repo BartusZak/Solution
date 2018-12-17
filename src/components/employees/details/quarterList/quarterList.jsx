@@ -16,13 +16,14 @@ import { withRouter } from 'react-router';
 import QuarterListItem from '../../../quarters/others/quarterListItem/quarterListItem.jsx';
 import { deleteQuarterTalkACreator, reactivateQuarterTalkACreator, deleteQuarterTalk } from '../../../../actions/quarterTalks.js';
 import List from '../../../common/list/list';
+
 class QuarterList extends React.PureComponent {
   state = {
     currentWatchedDetailIndex: -1
   };
 
   functionsToUseForQuarters = [
-    {name: "filter", count: true, filterBy: "isDeleted", 
+    {name: "filter", count: true, filterBy: "isDeleted",
         posibleValues: [{value: true, description: this.props.t("Deleted")}, {value: false, description: this.props.t("NotDeleted")}]}
   ];
 
@@ -33,50 +34,43 @@ class QuarterList extends React.PureComponent {
   }
 
   operationsHandler = (quarter, operationName) => {
+    const { history, employeeId } = this.props;
     if(operationName === "expendDetails"){
       this.handleExpandDetails(quarter);
-    }
+    };
+    const url = `/main/quarters/employees/employeeId=${employeeId}`;
+    history.push({
+      pathname: url,
+      state: { quarterTalkId: quarter.id }
+    });
   }
 
   handleExpandDetails = quarter => {
     const { quarterTalks } = this.props;
     const currentWatchedDetailIndex = quarterTalks.findIndex(i => i.id === quarter.id);
-    
+
     if(this.state.currentWatchedDetailIndex !== currentWatchedDetailIndex)
       this.setState({currentWatchedDetailIndex});
     else
-      this.setState({currentWatchedDetailIndex: -1});    
-
+      this.setState({currentWatchedDetailIndex: -1});
   }
-  
+
   render() {
     const {  t, employeeId, quarterTalks } = this.props;
     const { currentWatchedDetailIndex } = this.state;
-   
     return (
       <div className="quaters-container">
-        {quarterTalks && quarterTalks.length > 0 ? 
+        {quarterTalks && quarterTalks.length > 0 ?
           <List listClass="quarter-list" functionsToUse={this.functionsToUseForQuarters}
-          shouldAnimateList clickItemFunction={this.operationsHandler} items={quarterTalks} component={QuarterListItem} 
+          shouldAnimateList clickItemFunction={this.operationsHandler} items={quarterTalks} component={QuarterListItem}
             componentProps={{
               answers: quarterTalks[currentWatchedDetailIndex] ? quarterTalks[currentWatchedDetailIndex].quarterTalkQuestionItems : [],
               currentWatchedItemId: currentWatchedDetailIndex,
-              isDetailItemFromEmployeeDetails: true,
-              subHeader: t("QuarterItemSubHeader"),
-              deleteTranslation: t("Delete"),
-              doneQuarter: t("DoneQuarter"),
-              incomingQuarter: t("IncomingQuarter"),
-              reactivate: t("Reactivate"),
-              forQuarter: t("ForQuarter"),
-              conduct: t("Conduct"),
-              quarter: t("Quarter"),
-              connector: t("In"),
-              inYear: t("InYear"),  
-              QuarterDeletedPrompt: t("QuarterDeletedPrompt")
+              isDetailItemFromEmployeeDetails: true
           }}
           listTitle={`${t("QuaterTalks")}`}
           allKeysOfItems={["id", "isTaken", "year", "quarter" ,"quarterTalkQuestionItems", "questionerId", "plannedTalkDate"]}
-        /> : 
+        /> :
           <EmptyContent
               action={() => this.putEmployeeToLastWatchedAndRedirect(`/main/quarters/employees/addquarter/${employeeId}?=${employeeId}`)}
               sizeClass="quaters-size"
@@ -106,7 +100,7 @@ class QuarterList extends React.PureComponent {
 
 const mapStateToProps = state => {
   return {
-      deleteQuarterStatus: state.quarterTalks.deleteQuarterStatus, 
+      deleteQuarterStatus: state.quarterTalks.deleteQuarterStatus,
       deleteQuarterErrors: state.quarterTalks.deleteQuarterErrors,
 
       reactiveQuarterStatus: state.quarterTalks.reactiveQuarterStatus,

@@ -5,7 +5,9 @@
   .quarter-list{
     height: 360px;
     .single-quarter{
-      cursor: initial;
+      &:hover{
+        background-color: #f7e2e67c;
+      }
     }
     .current-watched-item{
       border-right-color: transparent;
@@ -27,7 +29,7 @@
     padding: 10px;
     margin: 0 auto;
     display: flex;
-    justify-content: center;    
+    justify-content: center;
     width: 80%;
     @media(max-width:764px){
       flex-flow: column;
@@ -37,7 +39,7 @@
         padding: 10px;
       }
     }
-    
+
   }
   @media screen and (max-width: 1470px) {
     margin-top: 400px;
