@@ -58,7 +58,7 @@ class Table extends Component {
         value: "",
         error: "",
         inputType: null,
-        minLength: 3,
+        minLength: 2,
         maxLength: 1500,
         canBeNull: false
       }
