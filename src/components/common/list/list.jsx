@@ -5,11 +5,38 @@ import SmallSpinner from '../../common/spinner/small-spinner.js';
 import { validateInput } from '../../../services/validation.js';
 import { translate } from 'react-translate';
 class List extends React.PureComponent {
-    state = {
-        searchInput: {value: "", error: ""},
-        sortOrder: "asc",
-        currentFilteringBy: {value: null, description: this.props.t("Default")},
-        showFilterDetails: false
+  constructor(props) {
+    super(props);
+    this.state = {
+      searchInput: {value: "", error: ""},
+      sortOrder: "asc",
+      currentFilteringBy: {value: null, description: this.props.t("Default")},
+      showFilterDetails: false
+    }
+
+    this.myRef = React.createRef();
+  }
+
+
+    componentDidMount() {
+      document.addEventListener("mousedown", this.handleClickOutside);
+    }
+
+    componentWillUnmount() {
+      document.removeEventListener("mousedown", this.handleClickOutside);
+    }
+
+    handleClickOutside = (event) => {
+      if (
+        event.target.className
+          .toString()
+          .split(" ")
+          .indexOf("selected-category") !== -1
+      )
+        return;
+      if (this.myRef && this.state.showFilterDetails && !this.myRef.current.contains(event.target)) {
+        this.togleFilterDetails();
+      }
     }
 
     togleFilterDetails = () => {
@@ -20,6 +47,7 @@ class List extends React.PureComponent {
     selectFilterCategory = (e, currentFilteringBy) => {
         e.stopPropagation();
         this.setState({currentFilteringBy});
+        this.togleFilterDetails();
     }
 
     putModifieListOptionsInDom = (functionsToUse, numberOfItems) => {
@@ -35,29 +63,29 @@ class List extends React.PureComponent {
             const { sortOrder, searchInput, currentFilteringBy, showFilterDetails } = this.state;
             return (
                 <div className="modifie-list-options">
-                    {shouldPutSearchBox && 
+                    {shouldPutSearchBox &&
                     <div className="search-box">
-                        <input value={searchInput.value} type="text" onChange={e => this.searchByKeys(e)} 
+                        <input value={searchInput.value} type="text" onChange={e => this.searchByKeys(e)}
                         placeholder={t("Search")} />
                         <i className="fa fa-search"></i>
-                        {shouldPutSearchBox.count && 
+                        {shouldPutSearchBox.count &&
                             <span className="items-counter">{numberOfItems}</span>
                         }
                     </div>
                     }
-                    {shouldPutSort && 
+                    {shouldPutSort &&
                     <div onClick={() => this.setState({sortOrder: sortOrder === "asc" ? "desc" : "asc"})} className="sort-box">
                         {t("Sort")} <i className={`fa fa-${sortOrder === "asc" ? "arrow-down" : "arrow-up"}`}></i>
                     </div>
                     }
-                    {shouldFilter && 
+                    {shouldFilter &&
                     <div onClick={this.togleFilterDetails} className="filter-box">
                         {t("Filters")} <i className="fa fa-cogs"></i>
-                        {shouldFilter.count && 
+                        {shouldFilter.count &&
                             <span className="items-counter">{numberOfItems}</span>
                         }
-                        {showFilterDetails && 
-                            <div className="filter-sugestions">
+                        {showFilterDetails &&
+                            <div className="filter-sugestions" ref={this.myRef}>
                                 {filterCategories.map(category => (
                                     <div onClick={e => this.selectFilterCategory(e, category)} className={currentFilteringBy.description === category.description ? "selected-category" : ""} key={category.value}>{category.description}</div>
                                 ))}
@@ -78,7 +106,7 @@ class List extends React.PureComponent {
             const shouldFilter = functionsToUse.find(item => item.name === "filter");
             let modifiedElements = [];
             const { currentFilteringBy } = this.state;
-          
+
             if(shouldPutSearchBox){
                 const searchInput = {...this.state.searchInput};
                 const typedValue = searchInput.value.toUpperCase();
@@ -90,7 +118,7 @@ class List extends React.PureComponent {
                 const { sortOrder } = this.state;
                 modifiedElements = _.orderBy(modifiedElements, shouldPutSort.sortBy, sortOrder);
             }
-   
+
             if(shouldFilter){
                 const listToUse = modifiedElements.length > 0 ? modifiedElements : originalList;
                 if(currentFilteringBy.value === null)
@@ -105,7 +133,7 @@ class List extends React.PureComponent {
 
             return modifiedElements;
         }
-        
+
         return originalList;
     }
 
@@ -140,9 +168,9 @@ class List extends React.PureComponent {
     }
 
     render(){
-        const { listClass, paginationSettings, component: Component, componentProps, 
+        const { listClass, paginationSettings, component: Component, componentProps,
             listTitle, selectDataOptions, items, functionsToUse, shouldAnimateList, isDoingRequest, setPlanHour } = this.props;
-        
+
         const { showFilterDetails } = this.state;
 
         const modifiedItems = this.modifeList(items, functionsToUse);
@@ -150,9 +178,9 @@ class List extends React.PureComponent {
         return (
             <React.Fragment>
                 <nav onClick={closeFiltersFunction} className="list-nav">
-                    {listTitle && 
+                    {listTitle &&
                         <div>{listTitle}
-                            {isDoingRequest && 
+                            {isDoingRequest &&
                                 <span><SmallSpinner /></span>
                             }
                         </div>
@@ -160,32 +188,32 @@ class List extends React.PureComponent {
                     {this.putModifieListOptionsInDom(functionsToUse, modifiedItems.length)}
                 </nav>
                 <div className={`${listClass} ${shouldAnimateList ? "animated-list" : ""}`}>
-                    {modifiedItems.length > 0 ? 
-                        Component ? 
+                    {modifiedItems.length > 0 ?
+                        Component ?
                         modifiedItems.map((item, index) => (
-                            <Component setPlanHour={setPlanHour} clickItemFunction={(e, operationName) => this.stopEventPropagationer(item, operationName, e)} index={index} key={index} 
+                            <Component setPlanHour={setPlanHour} clickItemFunction={(e, operationName) => this.stopEventPropagationer(item, operationName, e)} index={index} key={index}
                                 item={item} {...componentProps}  />
                         )) :
                         modifiedItems.map((item, index) => (
                             <div {...componentProps} key={index} >
                             </div>
                         ))
-                        : 
+                        :
                         this.putEmptyListComponentInDOM()
                     }
-                    
+
                 </div>
-                {paginationSettings && 
+                {paginationSettings &&
                 <div className="pagination">
 
                 </div>
                 }
-                
+
             </React.Fragment>
-            
+
         );
     }
-}        
+}
 List.defaultProps = {
     listClass: "list"
 }
