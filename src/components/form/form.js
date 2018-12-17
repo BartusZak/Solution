@@ -283,7 +283,7 @@ class Form extends Component {
               <label>{i.title} {i.showCount && <b>({i.dataToMap.length})</b>}</label>
               <div className="right-form-container">
                 {!i.mode || i.mode === "text" ? (
-                  <input
+                  <input                                
                     className={i.error !== "" ? "input-error" : null}
                     id={index}
                     value={i.value}
