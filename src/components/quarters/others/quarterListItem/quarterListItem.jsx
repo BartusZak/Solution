@@ -1,25 +1,25 @@
 import React from 'react'
 import './quarterListItem.scss';
 import QuarterDetalilsItem from '../quarterDetailsItem/quarterDetailsItem';
+import { translate } from "react-translate";
 
-const quarterListItem = ({index, item, clickItemFunction, currentWatchedItemId, subHeader, reactivate,
-    deleteTranslation, conduct, quarter, QuarterDeletedPrompt, isDetailItemFromEmployeeDetails, answers, forQuarter,
-    connector, inYear, doneQuarter, incomingQuarter}) => (
+const quarterListItem = ({index, item, clickItemFunction, currentWatchedItemId, isDetailItemFromEmployeeDetails, answers, t}) => (
     <div className={`single-quarter ${item.isDeleted ? "deleted-quarter" : ""} ${index === currentWatchedItemId ? "current-watched-item" : ""}`} onClick={e => clickItemFunction(e)}>
         <p>
-            <i title="Osoba przeprowadzająca rozmowe" className="fa fa-user"></i>
-            <span title="Osoba przeprowadzająca rozmowe">{item.questionerId}</span>
-            <span className="span-light">{item.isTaken ? subHeader : conduct}</span>
+            <i title={t("PeopleToTalkWith")} className="fa fa-user"></i>
+            <span title={t("PeopleToTalkWith")}>{item.questionerId}</span>
+            <span className="span-light">{item.isTaken ? t("QuarterItemSubHeader") : t("Conduct")}</span>
             {item.isTaken && !isDetailItemFromEmployeeDetails &&
-                <i title="Pobierz rozmowę w formacie .doc" onClick={e => clickItemFunction(e, "generateDoc")} className="fa fa-file-alt"></i>
+                <i title={t("DownloadTalkInDoc")} onClick={e => clickItemFunction(e, "generateDoc")} className="fa fa-file-alt"></i>
             }
-            <i title={item.isTaken ? doneQuarter : incomingQuarter} className={`fas fa-${item.isTaken ? "check" : "question"}`}></i>
+            <i title={item.isTaken ? t("DoneQuarter") : t("IncomingQuarter")} className={`fas fa-${item.isTaken ? "check" : "question"}`}></i>
         </p>
         <p>
             <span className="clickable">
-                 {forQuarter} {item.quarter} {quarter} {item.year} {inYear} <b>{connector}</b>
+
+                 {t("ForQuarter")} {item.quarter} {t("Quarter")} <b>{t("In")}</b> {item.year} {t("InYear")}
             </span>
-            <span className="span-light" title={item.isTaken ? "Data przeprowadzenia rozmowy" : "Planowana data odbycia rozmowy"}>
+            <span className="span-light" title={item.isTaken ? t("QuarterTalkDate") : t("PlannedQuarterTalkDate")}>
                 <i className="fa fa-calendar-alt"></i>{item.isTaken ? item.aswerQuestionDate : item.plannedTalkDate}
             </span>
         </p>
@@ -30,7 +30,7 @@ const quarterListItem = ({index, item, clickItemFunction, currentWatchedItemId, 
                 </span>
             }
             {isDetailItemFromEmployeeDetails ||
-                <span className="delete-span" onClick={e => clickItemFunction(e, "delete")}>{deleteTranslation}</span>
+                <span className="delete-span" onClick={e => clickItemFunction(e, "delete")}>{t("Delete")}</span>
             }
         </p>
         {isDetailItemFromEmployeeDetails && index === currentWatchedItemId && item.isTaken &&
@@ -40,11 +40,11 @@ const quarterListItem = ({index, item, clickItemFunction, currentWatchedItemId, 
         }
         {item.isDeleted &&
             <div className="backdrop-prompt">
-                <p>{QuarterDeletedPrompt}</p>
-                <span onClick={e => clickItemFunction(e, "reactivate")}>{reactivate}</span>
+                <p>{t("QuarterDeletedPrompt")}</p>
+                <span onClick={e => clickItemFunction(e, t("Reactivate"))}>{t("Reactivate")}</span>
             </div>
         }
 
     </div>
 );
-export default quarterListItem;
+export default translate("Quaters")(quarterListItem);

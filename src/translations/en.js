@@ -307,7 +307,12 @@ const translations = {
     In: "in",
     InYear: "year",
     DoneQuarter: "This conversation was carried out",
-    IncomingQuarter: "This conversation will only take place"
+    IncomingQuarter: "This conversation will only take place",
+    PeopleToTalkWith: "Person to talk with",
+    DownloadTalkInDoc: "Download talk in .doc",
+    QuarterTalkDate: "Quarter talk date",
+    PlannedQuarterTalkDate: "Planned quarter talk date",
+
   },
   EmployeeSkills: {
     Add: "Add",
@@ -554,7 +559,12 @@ const translations = {
     Share: "Share",
     Cancel: "Cancel",
     DeleteEmpAssignment : "Are you sure you want to delete employee \"",
-    FromProject : "\" assignment ?"
+    FromProject : "\" assignment ?",
+    EmployeeFreeCapacity: "Employee with free capacity",
+    EmployeeFreeCapacityAndSkills: "Employees with free capacity and skills matched to this project",
+    CapacityLeft: "Capacity left",
+    Capacity: "Capacity",
+    NoSkillsToShow: "No skills to show"
   },
   ProjectRowUnfurl: {
     OwnersList: "Owners",

@@ -311,7 +311,11 @@ const translations = {
     In: "w",
     InYear: "roku",
     DoneQuarter: "Ta rozmowa została przeprowadzona",
-    IncomingQuarter: "Ta rozmowa dopiero się odbędzie"
+    IncomingQuarter: "Ta rozmowa dopiero się odbędzie",
+    PeopleToTalkWith: "Osoba przeprowadzająca rozmowę",
+    DownloadTalkInDoc: "Pobierz rozmowę w formacie .doc",
+    QuarterTalkDate: "Data przeprowadzenia rozmowy",
+    PlannedQuarterTalkDate: "Planowana data odbycia rozmowy",
   },
   EmployeeSkills: {
     Add: "Dodaj",
@@ -556,7 +560,12 @@ const translations = {
     Share: "Udostępnij",
     Cancel: "Anuluj",
     DeleteEmpAssignment : "Czy napewno chcesz usunąć przypisanie użytkownika \"",
-    FromProject : "\" z projektu ?"
+    FromProject : "\" z projektu ?",
+    EmployeeFreeCapacity: "Pracownicy z wolną częścią etatu",
+    EmployeeFreeCapacityAndSkills: "Pracownicy z wolną częścią etatu i umiejętnościami dopasowanymi do projektu",
+    CapacityLeft: "Niezagospodarowana część etatu",
+    Capacity: "Dostępność",
+    NoSkillsToShow: "Nie znaleziono umiejętności"
   },
   ResponsiblePersonBlock: {
     NameNoSpecial: "Imię nie może zawierać znaków specjalnych ani cyfr.",

@@ -11,6 +11,7 @@ import Form from "../../../form/form";
 import CallSkype from "./callSkype";
 import ShareEmployeesModal from "./modals/shareEmployeesModal";
 import binaryPermissioner from "../../../../api/binaryPermissioner";
+import { API_ENDPOINT } from '../../../../api';
 
 const employeeContent = ({
   changeCurrentWatchedUser,
@@ -48,7 +49,7 @@ const employeeContent = ({
   const title = `${t("ProfilePhoto")} ${employee.id} `;
 
   const profilePhoto =
-    "http://10.255.20.241/ProfilePhotos/" + employee.id + ".jpg";
+    API_ENDPOINT + "/ProfilePhotos/" + employee.id + ".jpg";
   const imgContent = employee.profilePhoto ? (
     <img alt={title} title={title} src={profilePhoto} />
   ) : (

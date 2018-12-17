@@ -12,6 +12,7 @@ import PlanQuarter from './planQuarter/planQuarter';
 import AuthWithOutlook from './authWithOutlookComponent/authWithOutlookComponent';
 import FindUserModal from './others/findUserModal/findUserModal';
 import { translate } from 'react-translate';
+import { API_ENDPOINT } from '../../api';
 const linkTypes = {
     "plan": "/employees/plan/",
     "addquarter": "/employees/addquarter/",
@@ -72,7 +73,7 @@ class Quarters extends React.PureComponent{
                             return (
                                 <div onClick={() => this.changeActualWatchedUser(person)} className={`last-watched-person ${person === currentWatchedUser ? "last-watched-person-focused" : ""}`} key={person}>
                                     <div className="avatar-container">
-                                        <div className="image" style={{backgroundImage: `url(${"http://10.255.20.241/ProfilePhotos/" + person + ".jpg"})`}}>
+                                        <div className="image" style={{backgroundImage: `url(${API_ENDPOINT + "/ProfilePhotos/" + person + ".jpg"})`}}>
                                         </div>
                                         <i className="fa fa-user"></i>
                                     </div>

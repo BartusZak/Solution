@@ -58,36 +58,19 @@ class QuarterList extends React.PureComponent {
   render() {
     const {  t, employeeId, quarterTalks } = this.props;
     const { currentWatchedDetailIndex } = this.state;
-
     return (
       <div className="quaters-container">
         {quarterTalks && quarterTalks.length > 0 ?
-          <List
-            listClass="quarter-list"
-            functionsToUse={this.functionsToUseForQuarters}
-            shouldAnimateList
-            clickItemFunction={this.operationsHandler}
-            items={quarterTalks}
-            component={QuarterListItem}
+          <List listClass="quarter-list" functionsToUse={this.functionsToUseForQuarters}
+          shouldAnimateList clickItemFunction={this.operationsHandler} items={quarterTalks} component={QuarterListItem}
             componentProps={{
               answers: quarterTalks[currentWatchedDetailIndex] ? quarterTalks[currentWatchedDetailIndex].quarterTalkQuestionItems : [],
               currentWatchedItemId: currentWatchedDetailIndex,
-              isDetailItemFromEmployeeDetails: true,
-              subHeader: t("QuarterItemSubHeader"),
-              deleteTranslation: t("Delete"),
-              doneQuarter: t("DoneQuarter"),
-              incomingQuarter: t("IncomingQuarter"),
-              reactivate: t("Reactivate"),
-              forQuarter: t("ForQuarter"),
-              conduct: t("Conduct"),
-              quarter: t("Quarter"),
-              connector: t("In"),
-              inYear: t("InYear"),
-              QuarterDeletedPrompt: t("QuarterDeletedPrompt")
-            }}
-            listTitle={`${t("QuaterTalks")}`}
-            allKeysOfItems={["id", "isTaken", "year", "quarter" ,"quarterTalkQuestionItems", "questionerId", "plannedTalkDate"]}
-          /> :
+              isDetailItemFromEmployeeDetails: true
+          }}
+          listTitle={`${t("QuaterTalks")}`}
+          allKeysOfItems={["id", "isTaken", "year", "quarter" ,"quarterTalkQuestionItems", "questionerId", "plannedTalkDate"]}
+        /> :
           <EmptyContent
               action={() => this.putEmployeeToLastWatchedAndRedirect(`/main/quarters/employees/addquarter/${employeeId}?=${employeeId}`)}
               sizeClass="quaters-size"
