@@ -10,6 +10,7 @@ import AddEditClient from "../AddEditClient/AddEditClient";
 import InfoClientList from "./InfoClientList/InfoClientList";
 import AddCloudModal from "./InfoClientList/Modals/AddCloudModal";
 import AddResponsiblePersonModal from "./InfoClientList/Modals/AddResponsiblePersonModal";
+import { API_ENDPOINT } from '../../../api';
 
 export default class InfoClient extends Component {
   state = {
@@ -85,7 +86,7 @@ export default class InfoClient extends Component {
       : client.description;
 
     client.imgSrc = client.path
-      ? "http://10.255.20.241/ClientsPictures/" + client.path
+      ? API_ENDPOINT + "/ClientsPictures/" + client.path
       : BilleniumPleaceholder;
 
     client.imgAlt = client.path
