@@ -283,7 +283,7 @@ class Form extends Component {
               <label>{i.title} {i.showCount && <b>({i.dataToMap.length})</b>}</label>
               <div className="right-form-container">
                 {!i.mode || i.mode === "text" ? (
-                  <input                                
+                  <input
                     className={i.error !== "" ? "input-error" : null}
                     id={index}
                     value={i.value}
@@ -322,6 +322,7 @@ class Form extends Component {
                         : this.state.endDate
                     }
                     selected={moment(i.value)}
+                    minDate={i.minDate && this.state.startDate}
                     endDate={
                       i.name === "endDate"
                         ? this.state.endDate

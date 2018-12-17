@@ -16,7 +16,7 @@ import _ from 'lodash';
 import { translate } from 'react-translate';
 
 const functionsToUseForDates = [
-    {name: "search", searchBy: "date", count: true }, 
+    {name: "search", searchBy: "date", count: true },
     {name: "sort", sortBy: "date"}
 ];
 
@@ -30,8 +30,8 @@ class PlanQuarter extends React.PureComponent{
         hoursToUse: [],
         shouldPutTimeIntoForm: false,
         planQuarterFormItems: [
-        { title: this.props.t("PlannedDate"), mode: 'date-picker', error: "", locale: this.props.t("Language"), 
-            callBackFunc: () => this.generateHoursToUse(), value: moment().locale(this.props.t("Language")).add(1, 'days'), canBeNull: false, checkIfDateIsfromPast: true },
+        { title: this.props.t("PlannedDate"), mode: 'date-picker', error: "", locale: this.props.t("Language"),
+            callBackFunc: () => this.generateHoursToUse(), value: moment().locale(this.props.t("Language")).add(1, 'days'), canBeNull: false, minDate: true, checkIfDateIsfromPast: true },
         {
             title: this.props.t("PlannedHour"), value: "", error: "", canBeNull: false,
             type: "time", mode: "text", inputType: "number"
@@ -46,7 +46,7 @@ class PlanQuarter extends React.PureComponent{
             inputType: "strongNumber",
             placeholder: this.props.t("YearHolder"),
             dataToMap: pushMomentValuesDynamicly(5, moment().format('YYYY-MM-DD'), 1, 'years', "YYYY")
-        }        
+        }
       ]
 
     }
@@ -60,7 +60,7 @@ class PlanQuarter extends React.PureComponent{
             const currentSelectedDate = planQuarterFormItems[0].value.format("YYYY-MM-DD");;
 
             const datesWhichAreEqualToSelected = reservedDates.filter(date => (date.date === currentSelectedDate));
-            
+
             let hoursToUse = pushMomentValuesDynamicly(16, "2000-12-19 06:00", 1, 'hours', "HH:mm");
             const resultArray = [];
             if(datesWhichAreEqualToSelected.length > 0){
@@ -71,7 +71,7 @@ class PlanQuarter extends React.PureComponent{
                         const time = moment(datesWhichAreEqualToSelected[key].date + " " + element.name);
                         const isTimeAfterStartsAt = time.isSameOrAfter(startsAt);
                         const isTimeBeforeEndsAt = time.isSameOrBefore(endsAt);
-                        
+
                         const isElementAlreadyAdded = resultArray.findIndex(i => i.name === element.name);
                         if((!isTimeAfterStartsAt || !isTimeBeforeEndsAt) && isElementAlreadyAdded === -1){
                             resultArray.push(element);
@@ -110,7 +110,7 @@ class PlanQuarter extends React.PureComponent{
         if(this.state.shouldPutTimeIntoForm) {
             this.setState({shouldPutTimeIntoForm: false});
         }
-        if(planQuarterStatus && planQuarterErrors !== prevProps.planQuarterErrors) {   
+        if(planQuarterStatus && planQuarterErrors !== prevProps.planQuarterErrors) {
             this.getReservedDates(currentWatchedUser);
         }
     }
@@ -134,7 +134,7 @@ class PlanQuarter extends React.PureComponent{
             }
         });
     }
-    
+
     closeErrorPrompt = () => {
         this.props.clearReservedDate();
     }
@@ -165,19 +165,19 @@ class PlanQuarter extends React.PureComponent{
             shouldPutTimeIntoForm: true
         })
     }
-    
+
 
     render(){
-        const { planQuarterStatus, planQuarterErrors, reservedDates, getDatesErrors, getDatesStatus, 
+        const { planQuarterStatus, planQuarterErrors, reservedDates, getDatesErrors, getDatesStatus,
             clearReservedDate, authStatus, authErrors, authOneDriveClear, match, t, language } = this.props;
         const { isGettingReservedDates, isPlanningQuarter, planQuarterFormItems, hoursToUse, shouldPutTimeIntoForm } = this.state;
         return (
             <React.Fragment>
-            <LoadHandlingWrapper closePrompt={this.closeErrorPrompt} errors={getDatesErrors} 
+            <LoadHandlingWrapper closePrompt={this.closeErrorPrompt} errors={getDatesErrors}
             operationStatus={getDatesStatus} isLoading={isGettingReservedDates}>
                 <div className="plan-quarter-container">
                     <div className="dates">
-                        <List functionsToUse={functionsToUseForDates} 
+                        <List functionsToUse={functionsToUseForDates}
                         componentProps={{
                             minutes: t("Minutes"),
                             to: t("To"),
@@ -211,17 +211,17 @@ class PlanQuarter extends React.PureComponent{
                         <List
                         shouldAnimateList listClass="question-list" listTitle={t("SugestedHours")}
                         component={Hour} items={hoursToUse} setPlanHour={this.setPlanHour} />
-                      
+
                     </div>
-                </div>   
-            </LoadHandlingWrapper>    
-            {authStatus === false && 
-                <OperationStatusPrompt 
+                </div>
+            </LoadHandlingWrapper>
+            {authStatus === false &&
+                <OperationStatusPrompt
                 closePrompt={authOneDriveClear}
                 operationPromptContent={authErrors[0]}
                 operationPrompt={authStatus}
                 />
-            }            
+            }
             </React.Fragment>
         );
     }
