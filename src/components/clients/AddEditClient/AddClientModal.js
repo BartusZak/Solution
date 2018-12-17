@@ -7,6 +7,7 @@ import "../../../scss/components/clients/addClient/addClientModal.scss";
 import BilleniumPleaceholder from "assets/img/small-logo.png";
 import FileInput from "components/common/inputs/fileInput/fileInput";
 import SmallSpinner from "../../common/spinner/small-spinner";
+import { API_ENDPOINT } from '../../../api';
 
 class AddClientModal extends Component {
   state = {
@@ -39,7 +40,7 @@ class AddClientModal extends Component {
           clientDescription: client.description ? client.description : ""
         },
         imagePreviewUrl: client.path
-          ? "http://10.255.20.241/ClientsPictures/" + client.path
+          ? API_ENDPOINT + "/ClientsPictures/" + client.path
           : null
       });
     }
