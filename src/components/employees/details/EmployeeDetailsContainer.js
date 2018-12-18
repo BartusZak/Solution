@@ -76,32 +76,32 @@ class EmployeeDetailsContainer extends React.Component {
         this.props.async.setActionConfirmationProgress(true);
         this.props.deleteCertificate(
         this.props.toConfirm.certificate.id,
-        this.props.match.params.id        
+        this.props.match.params.id
         );
     }
     if (nextProps.employeeErrors !== this.props.employeeErrors) {
         this.setState({
             isLoadingFirstTimeEmployee: false,
             isChangingEmployeeData: false
-        });         
+        });
     }
     if (this.props.updateSkypeIdResult && this.props.updateSkypeIdResult.loading) {
         this.props.getEmployeePromise(this.props.match.params.id);
-    } 
-    if (nextProps.employee) {         
-        if (this.state.editSkypeFormItems[0] && !this.state.isChangingEmployeeData) { 
+    }
+    if (nextProps.employee) {
+        if (this.state.editSkypeFormItems[0] && !this.state.isChangingEmployeeData) {
             let form = this.state.editSkypeFormItems;
             form[0].value = nextProps.employee.skypeId;
             this.setState({
                 editSkypeFormItems: form,
                 isChangingEmployeeData: true,
-            });            
+            });
         }
     }
-    if(nextProps.match !== this.props.match) {
+    if(nextProps.match.patch !== this.props.match.patch) {
         this.setState({isLoadingFirstTimeEmployee: true});
         this.props.getEmployeePromise(nextProps.match.params.id);
-    }  
+    }
 }
   componentDidUpdate() {
     if (this.props.userDownloadCVLink && this.props.getUserCVStatus) {
