@@ -18,6 +18,72 @@
   position: relative;
   font-size: 0.7rem;
 
+  .empty-project-phases-container {
+    width: 100%;
+    min-height: 270px;
+    margin: 25px auto;
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 20px;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+    @media(min-width: 764px){
+      width: 74%;
+    }
+    @media(min-width: 1110px){
+        width: 100%;
+    }
+    div{
+        position: relative;
+        span{
+            font-size: 0.8rem;
+            @media(min-width: 764px){
+                font-size: 1rem;
+            }
+        }
+      }
+
+    .fa-briefcase{
+      bottom: -45px;
+      cursor: pointer;
+      left: 0;
+      width: 32px;
+      right: 0;
+      margin: 0 auto;
+      font-size: 32px;
+      position: absolute;
+      color: #988C98;
+    }
+    .fa-plus{
+      font-size: 18px;
+      bottom: -45px;
+      cursor: pointer;
+      left: 52px;
+      width: 32px;
+      right: 0;
+      margin: 0 auto;
+      position: absolute;
+      color: #988C98;
+    }
+  }
+
+  .add-programmer-btn {
+    padding: 10px;
+    border-radius: 5px;
+    margin: 15px 0;
+    font-size: 0.8rem;
+    cursor: pointer;
+    background-color: #883e4a;
+    color: white;
+    width: 100px;
+    transition: 0.5s all ease-in-out;
+    border: none;
+  }
+  .add-programmer-btn:hover{
+      background-color: #994f5b;
+  }
+
   button:focus {
     outline: none;
   }
@@ -64,7 +130,6 @@
     position: absolute;
     font-weight: bolder;
     bottom: -8px;
-    margin-left: 20px;
     @media (min-width: 1100px) {
       right: 10px;
       top: -10px;
@@ -81,12 +146,18 @@
   }
   .spn-active {
     color: #37d037;
+    margin-left: 34px;
   }
   .spn-unactive {
     color: red;
+    margin-left: 33px;
   }
   .spn-closed {
     color: grey;
+    margin-left: 29px;
+  }
+  .project-phases-title {
+    font-family: unset !important;
   }
   header nav {
     width: 100%;
@@ -135,6 +206,9 @@
       @media (min-width: 764px) {
         margin: 10px 0;
         padding: 15.5px 10px;
+      }
+      @media (max-width: 764px) {
+        margin: 15px;
       }
       i {
         cursor: pointer;
@@ -186,7 +260,7 @@
       margin: 10px 0 30px 0;
       font-weight: bold;
     }
-    @media (min-width: 1100px) {
+    @media (min-width: 1110px) {
       width: 65%;
     }
   }

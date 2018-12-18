@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import Modal from "react-responsive-modal";
 import PropTypes from "prop-types";
-
 import "./infoClient.scss";
 import BilleniumPleaceholder from "assets/img/small-logo.png";
 import Icon from "../../common/Icon";
@@ -11,6 +10,7 @@ import AddEditClient from "../AddEditClient/AddEditClient";
 import InfoClientList from "./InfoClientList/InfoClientList";
 import AddCloudModal from "./InfoClientList/Modals/AddCloudModal";
 import AddResponsiblePersonModal from "./InfoClientList/Modals/AddResponsiblePersonModal";
+import { API_ENDPOINT } from '../../../api';
 
 export default class InfoClient extends Component {
   state = {
@@ -86,7 +86,7 @@ export default class InfoClient extends Component {
       : client.description;
 
     client.imgSrc = client.path
-      ? "http://10.255.20.241/ClientsPictures/" + client.path
+      ? API_ENDPOINT + "/ClientsPictures/" + client.path
       : BilleniumPleaceholder;
 
     client.imgAlt = client.path
@@ -118,6 +118,7 @@ export default class InfoClient extends Component {
                 editClient={onEditClient}
                 loading={false}
                 resultBlock={resultBlockAddClient}
+                t={t}
               >
                 <span>{t("EditClient")}</span>
               </AddEditClient>
@@ -160,7 +161,7 @@ export default class InfoClient extends Component {
         {openCloudAddModal && (
           <Modal
             open={openCloudAddModal}
-            classNames={{ modal: "Modal Modal-add-cloud" }}
+            classNames={{ modal: "modal-add-cloud", closeIcon:"close-modal-icon" }}
             contentLabel="Add Cloud"
             onClose={this.handleCloudAddCloseModal}
           >

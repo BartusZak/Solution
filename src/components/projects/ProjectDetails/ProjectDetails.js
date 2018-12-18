@@ -19,7 +19,11 @@ import { getRandomColor } from "../../../services/methods";
 import OperationStatusPrompt from "../../form/operationStatusPrompt/operationStatusPrompt";
 import { translate } from "react-translate";
 import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import { loadClients } from "../../../actions/clientsActions";
+import * as projectsActions from "../../../actions/projectsActions";
 import {
+  createProjectPhaseACreator,
   getProjectDataACreator,
   getContactPersonDataACreator,
   getProjectACreator,
@@ -55,6 +59,8 @@ import Owners from "./Owners/Owners";
 import ShareProject from "./ShareProject";
 import NotFound404 from "../../notFound404/NotFound404";
 import Spinner from '../../common/spinner/spinner';
+import ContactList from "../../../components/common/contactList/contactList";
+import { clearDataOfForm } from "../../../services/methods";
 
 class ProjectDetails extends Component {
   workerNames = [
@@ -65,6 +71,12 @@ class ProjectDetails extends Component {
     this.props.t("StartDate"),
     this.props.t("EndDate")
   ];
+  projectPhasesNames = [
+    this.props.t("Name"),
+    this.props.t("StartDate"),
+    this.props.t("EndDate"),
+    this.props.t("Status")
+  ]
   state = {
     isLoadingProject: true,
     isChangingAssignments: false,
@@ -152,32 +164,237 @@ class ProjectDetails extends Component {
     editingAssignmentId: null,
     addEmployeSpinner: false,
     projectStatus: [],
-    onlyActiveAssignments: true,
+    showAllAssignments: false,
+    addNewProjectPhaseFormValues: [
+      {
+        title: this.props.t("ProjectName"),
+        type: "text",
+        placeholder: `${this.props.t("Insert")} ${this.props.t(
+          "ProjectName"
+        )}`,
+        value: "",
+        error: "",
+        inputType: "nameWithPolishLetters",
+        minLength: 3,
+        maxLength: 25,
+        canBeNull: false
+      },
+      {
+        title: this.props.t("Description"),
+        type: "text",
+        placeholder: `${this.props.t("Insert")} ${this.props.t(
+          "Description"
+        )}`,
+        mode: "textarea",
+        value: "",
+        error: "",
+        inputType: null,
+        minLength: 3,
+        maxLength: 1500,
+        canBeNull: false
+      },
+      {
+        title: this.props.t("StartDate"),
+        name: "startDate",
+        type: "text",
+        placeholder: `${this.props.t("Insert")} ${this.props.t("StartDate")}`,
+        mode: "date-picker",
+        value: moment(),
+        error: "",
+        canBeBefore: true
+      },
+      {
+        title: this.props.t("EndDate"),
+        name: "endDate",
+        type: "text",
+        placeholder: `${this.props.t("Insert")} ${this.props.t("EndDate")}`,
+        mode: "date-picker",
+        value: moment(),
+        error: "",
+        canBeBefore: false
+      }
+      ],
+      responsiblePersonFormValues: [
+        {
+          title: "Email",
+          type: "text",
+          placeholder: `${this.props.t("Insert")} Email
+          `,
+          value: "",
+          error: "",
+          inputType: "email",
+          minLength: 7,
+          maxLength: 70,
+          canBeNull: false
+        },
+        {
+          title: this.props.t("Name"),
+          type: "text",
+          placeholder: `${this.props.t("Insert")} ${this.props.t("Name")}`,
+          value: "",
+          error: "",
+          inputType: "firstName",
+          minLength: 3,
+          maxLength: 30,
+          canBeNull: false
+        },
+        {
+          title: this.props.t("Surname"),
+          type: "text",
+          placeholder: `${this.props.t("Insert")} ${this.props.t("Surname")}`,
+          value: "",
+          error: "",
+          inputType: "lastName",
+          minLength: 3,
+          maxLength: 40,
+          canBeNull: false
+        },
+        {
+          title: this.props.t("Phone"),
+          type: "text",
+          placeholder: `${this.props.t("Insert")} ${this.props.t("Phone")}`,
+          value: "",
+          inputType: "phoneNumber",
+          error: "",
+          canBeNull: false,
+          minLength: 7,
+          maxLength: 20
+        }
+      ],
+      showAddPhaseModal: false,
+      openFirstForm: true,
+      selected: this.props.t("SelectPeopleToContact"),
+      responsiblePersons: [],
+      isLoading: false
   };
   componentDidMount() {
-    this.loadProjectData("isLoadingProject");
+    this.loadProjectData("isLoadingProject",null);
     const { getSuggest } = this.props;
     getSuggest(this.props.match.params.id);
   }
 
-  togleActiveAssignments = () => {
-    const { onlyActiveAssignments } = this.state;
-    this.setState({ onlyActiveAssignments: !onlyActiveAssignments }, () => this.loadProjectData("isChangingAssignments"));
+  handleOpenModal() {
+    this.props.loadClients();
+    this.setState({ showAddPhaseModal: true });
+  }
+
+  handleCloseModal() {
+    this.setState({ showAddPhaseModal: false });
+  }
+  changeForm = () => {
+    this.goForClient();
+    this.setState({ openFirstForm: !this.state.openFirstForm });
   };
 
-  loadProjectData = operationName => {
+  goForClient = () => {
+    const { getContactPersonDataACreator, project, clients } = this.props;
+    const matchedClient = clients.find(client => client.name === project.client);
+    if (matchedClient) {
+      const clientId = matchedClient.id
+      this.setState({ isLoading: true });
+      getContactPersonDataACreator(clientId)
+      .then(response => {
+        if (response.length > 0) {
+          let responsiblePersons = [];
+          const responsiblePersonFormValues = [
+            ...this.state.responsiblePersonFormValues
+          ];
+
+          responsiblePersons = responsiblePersons.concat(response);
+
+          responsiblePersonFormValues[0].value = response[0].email;
+          responsiblePersonFormValues[1].value = response[0].firstName;
+          responsiblePersonFormValues[2].value = response[0].lastName;
+          responsiblePersonFormValues[3].value = response[0].phoneNumber;
+
+          this.setState({
+            responsiblePersons: responsiblePersons,
+            responsiblePersonFormValues: responsiblePersonFormValues
+          });
+        }
+          this.setState({ isLoading: false });
+        })
+        .catch(error => {
+          this.setState({ isLoading: false });
+        });
+    }
+  };
+
+  fetchContactDateByOtherClient = e => {
+    const { responsiblePersons } = this.state;
+    const index = responsiblePersons.findIndex(i => {
+      return i.firstName === e.target.value;
+    });
+    const responsiblePersonFormValues = [
+      ...this.state.responsiblePersonFormValues
+    ];
+    responsiblePersonFormValues[0].value = responsiblePersons[index].email;
+    responsiblePersonFormValues[1].value = responsiblePersons[index].firstName;
+    responsiblePersonFormValues[2].value = responsiblePersons[index].lastName;
+    responsiblePersonFormValues[3].value =
+      responsiblePersons[index].phoneNumber;
+
+    this.setState({
+      responsiblePersonFormValues: responsiblePersonFormValues,
+      selected: responsiblePersons[index].firstName
+    });
+  };
+
+  addProjectPhase = () => {
+    this.setState({ isLoading: true });
+    const { responsiblePersonFormValues } = this.state;
+    const addNewProjectPhaseFormValues = [...this.state.addNewProjectPhaseFormValues];
+    const { projectActions, project, createProjectPhase } = this.props;
+    let parentProjectData = null;
+    if(project) {
+      parentProjectData = {
+        parentId: project.id,
+        client: project.client
+      }
+    }
+    createProjectPhase(
+      addNewProjectPhaseFormValues,
+      responsiblePersonFormValues,
+      parentProjectData
+    )
+    .then(response => {
+      clearDataOfForm(addNewProjectPhaseFormValues);
+      setTimeout(() => {
+        this.setState({
+          showAddPhaseModal: false,
+          openFirstForm: true,
+          addNewProjectPhaseFormValues: addNewProjectPhaseFormValues
+        });
+        projectActions.createProjectPhase(null, []);
+        this.loadProjectData("isLoadingProject",null);
+      }, 1500);
+    });
+  };
+
+  togleActiveAssignments = () => {
+    const { showAllAssignments } = this.state;
+    this.setState({ showAllAssignments: !showAllAssignments }, () => this.loadProjectData("isChangingAssignments"));
+  };
+
+  loadProjectData = (operationName, projectId) => {
     this.setState({[operationName]: true});
     const { getProjectDataACreator, match } = this.props;
-    const { onlyActiveAssignments } = this.state;
-    getProjectDataACreator(match.params.id, onlyActiveAssignments).then(() => {
-      this.setState({[operationName]: false});
-    }).catch(() => this.setState({[operationName]: false}));
+    const { showAllAssignments } = this.state;
+    if(projectId){
+      getProjectDataACreator(projectId, !showAllAssignments).then(() => {
+        this.setState({[operationName]: false});
+      }).catch(() => this.setState({[operationName]: false}));
+    } else {
+      getProjectDataACreator(match.params.id, !showAllAssignments).then(() => {
+        this.setState({[operationName]: false});
+      }).catch(() => this.setState({[operationName]: false}));
+    }
   }
 
 
   changeOnlyActiveAssignments = () => {
-    const { onlyActiveAssignments } = this.state;
-    this.setState({ onlyActiveAssignments: !onlyActiveAssignments }, () => this.loadProjectData());
+    const { showAllAssignments } = this.state;
+    this.setState({ showAllAssignments: !showAllAssignments }, () => this.loadProjectData());
   };
 
   fillDates = (startDate, endDate, estimatedEndDate) => {
@@ -200,6 +417,10 @@ class ProjectDetails extends Component {
   };
 
   componentWillReceiveProps(nextProps) {
+    if (this.props.match.params.id !== nextProps.match.params.id){
+      this.loadProjectData("isLoadingProject", nextProps.match.params.id);
+    }
+
     if (
       this.props.project === null ||
       this.props.project !== nextProps.project
@@ -218,7 +439,6 @@ class ProjectDetails extends Component {
             project.isDeleted
           )
         });
-
         if (
           this.props.project &&
           (this.props.project.team !== project.team || project.team === null)
@@ -241,6 +461,7 @@ class ProjectDetails extends Component {
           : null
       );
     }
+
   }
 
   createLTEPicker = range => {
@@ -268,7 +489,7 @@ class ProjectDetails extends Component {
     const {
       addEmployeToProjectFormItems,
       lteVal,
-      onlyActiveAssignments,
+      showAllAssignments,
       editingEmployeeAssignment
     } = this.state;
     const { project, addEmployeeToProject, editEmployeeAssignment } = this.props;
@@ -281,7 +502,7 @@ class ProjectDetails extends Component {
         lteVal,
         addEmployeToProjectFormItems[2].value,
         this.state.editingAssignmentId,
-        onlyActiveAssignments,
+        showAllAssignments,
         project.id
       ) :
       addEmployeeToProject(
@@ -292,7 +513,7 @@ class ProjectDetails extends Component {
         addEmployeToProjectFormItems[4].value,
         lteVal,
         addEmployeToProjectFormItems[2].value,
-        onlyActiveAssignments
+        showAllAssignments
       )
     );
   };
@@ -426,7 +647,7 @@ class ProjectDetails extends Component {
 
   deleteEmployeeAssignment = () => {
     const { deleteEmployeeAssignmentACreator, project } = this.props;
-    const { onlyActiveAssignments, deletingAssignment } = this.state;
+    const { showAllAssignments, deletingAssignment } = this.state;
 
     this.setState({
       deletingEmployeeAssignment: true,
@@ -434,7 +655,7 @@ class ProjectDetails extends Component {
       deleteEmpAssignmentModalOpen: false
     })
 
-    deleteEmployeeAssignmentACreator( deletingAssignment.assignmentId, project.id, onlyActiveAssignments)
+    deleteEmployeeAssignmentACreator( deletingAssignment.assignmentId, project.id, !showAllAssignments)
   }
 
   setDeletingAssignmentId = (assignment) => {
@@ -444,15 +665,34 @@ class ProjectDetails extends Component {
     })
   }
 
+  projectPhaseData = () => {
+    const {project} = this.props;
+    let projectPhases = project.projectPhases.map(phase => ({...phase}) );
+
+    for(let phase of projectPhases) {
+      for(let key in phase){
+        if(phase[key] === null){
+          delete(phase[key]);
+        }
+      }
+    }
+    return projectPhases;
+  }
+
+  pushIntoRoute = path => {
+    const {history} = this.props;
+    history.push(path);
+  }
+
   render() {
     const { project, loading, loadProjectStatus, addEmployeeToProjectStatus,
       addEmployeeToProjectErrors, changeProjectState, changeProjectStateStatus,
       changeProjectStateErrors, getSuggestEmployeesStatus, suggestEmployees,
-      addProjectOwnerToProjectStatus, addProjectOwnerToProjectErrors, t } = this.props;
-
+      addProjectOwnerToProjectStatus, addProjectOwnerToProjectErrors, t, createProjectStatus, createProjectErrors, match} = this.props;
+    const projectPhases = project ? this.projectPhaseData() : null;
     const { reactivate, close } = WebApi.projects.put;
-    const { projectStatus, onlyActiveAssignments, matches, currentOpenedRow,
-      isChangingAssignments, isLoadingProject } = this.state;
+    const { projectStatus, showAllAssignments, matches, currentOpenedRow,
+      isChangingAssignments, isLoadingProject, openFirstForm, addNewProjectPhaseFormValues, responsiblePersonFormValues, isLoading, responsiblePersons, selected } = this.state;
     return (
       <div
         onClick={
@@ -463,17 +703,15 @@ class ProjectDetails extends Component {
         className="project-details-container"
       >
         {isLoadingProject && <Spinner message={t("LoadingProjectMessage")} fontSize="7px" />}
-
         {loadProjectStatus && (
           <Aux>
             <header>
               <h1>
                 {projectStatus && (
                   <span className={projectStatus[0].classVal}>
-                    {projectStatus[0].name} {loading && <Spinner fontSize="1.77px" position="absolute" positionClass="abs-spinner"/>}
+                    {projectStatus[0].name}
                   </span>
                 )}
-
                 <i className="fa fa-briefcase fa-2x" />
                 <b title={project.name}>
                   {project.name.length > 60
@@ -498,7 +736,7 @@ class ProjectDetails extends Component {
                     >
                       {t("EditProject")}
                     </button>
-
+                    {loading && <Spinner fontSize="1.77px" position="relative" positionClass="" />}
                     <button
                       onClick={() =>
                         this.setState({
@@ -516,7 +754,7 @@ class ProjectDetails extends Component {
                           onClick={() =>
                             changeProjectState(reactivate, "reactivate", {
                               projectId: project.id,
-                              onlyActiveAssignments: onlyActiveAssignments
+                              showAllAssignments: showAllAssignments
                             })
                           }
                           className="option-btn green-btn"
@@ -531,7 +769,7 @@ class ProjectDetails extends Component {
                           onClick={() =>
                             changeProjectState(close, "close", {
                               projectId: project.id,
-                              onlyActiveAssignments: onlyActiveAssignments
+                              showAllAssignments: showAllAssignments
                             })
                           }
                           className="option-btn option-dang"
@@ -562,6 +800,8 @@ class ProjectDetails extends Component {
               <div className="project-details">
                 <ProjectInformationsCart
                   key={1}
+                  match={match}
+                  pushIntoRoute={this.pushIntoRoute}
                   items={this.props.overViewKeys}
                   headerTitle={t("GeneralInfo")}
                   originalObject={project}
@@ -607,7 +847,7 @@ class ProjectDetails extends Component {
                 />
 
                 <Skills
-                  onlyActiveAssignments={onlyActiveAssignments}
+                  showAllAssignments={showAllAssignments}
                   projectId={project.id}
                   changeProjectSkillsStatus={
                     this.props.changeProjectSkillsStatus
@@ -640,10 +880,10 @@ class ProjectDetails extends Component {
 
               <div className="right-project-spec">
                 <div className="a-asign-container">
-                  <label>{t("ShowActiveAssignments")}</label>
+                  <label>{t("ShowAllAssignments")}</label>
                   <input disabled={isChangingAssignments}
                     type="checkbox"
-                    checked={onlyActiveAssignments}
+                    checked={showAllAssignments}
                     onChange={this.togleActiveAssignments}
                   />
                   <span className="assingments-spinner-container">
@@ -673,9 +913,52 @@ class ProjectDetails extends Component {
                       this.props.login
                     )
                   }
+                  canEditFeedbacks={
+                    binaryPermissioner(false)(0)(1)(1)(1)(1)(1)(this.props.binPem)
+                  }
+                  isDeveloper={
+                    binaryPermissioner(false)(1)(0)(0)(0)(0)(0)(this.props.binPem)
+                  }
+                  onlyActiveAssignments={this.state.onlyActiveAssignments}
                 />
+                 {project && !project.parentId ?
+                    project.projectPhases.length > 0 ? (
+                    <div className="table-container table project-phases-title">
+                    <h3 className="">{t("ProjectPhases")}</h3>
+                    <table key={15}>
+                    <thead>
+                      <tr>
+                        {this.projectPhasesNames.map((th, i) => <th key={i}>{th}</th>)}
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {projectPhases.map((phase) => (
+                        <tr key={phase.id} onClick={() => this.pushIntoRoute(match.path.slice(0,-3) + phase.id)}>
+                          <td>{phase.name}</td>
+                          <td>{phase.startDate.slice(0,10)}</td>
+                          <td>{phase.estimatedEndDate.slice(0,10)}</td>
+                          <td>{this.calculateProjectStatus(phase.status, phase.isDeleted)[0].name}</td>
+                        </tr>
+                      )
+                        )}
+                    </tbody>
+                    </table>
+                    <button className="add-programmer-btn" onClick={() => this.setState({showAddPhaseModal: true})}>{t("Add")}</button>
+                  </div>
+                  ):
+                  <div className="empty-project-phases-container">
+                    <div>
+                      <span>{t("EmptyProjectPhases")}</span>
+                      <div  onClick={() => this.setState({showAddPhaseModal: true})}>
+                        <i className="fas fa-briefcase fa-lg " />
+                        <i className="fas fa-plus" />
+                      </div>
+                    </div>
+                  </div>:
+                  ''}
 
-                <div className="table-container table">
+
+                  <div className="table-container table">
                   {suggestEmployees && (
                     <label
                       className="switch"
@@ -694,14 +977,14 @@ class ProjectDetails extends Component {
                     matches &&
                     getSuggestEmployeesStatus && (
                       <div>
-                        <h3>Employee with free capacity</h3>
+                        <h3>{t("EmployeeFreeCapacity")}</h3>
                         <table key={2}>
                           <thead>
                             <tr>
-                              <th>Employee</th>
-                              <th>Left Capacity</th>
-                              <th>Capacity</th>
-                              <th>Seniority</th>
+                              <th>{t("Employee")}</th>
+                              <th>{t("CapacityLeft")}</th>
+                              <th>{t("Capacity")}</th>
+                              <th>{t("Experience")}</th>
                             </tr>
                           </thead>
                           <tbody>
@@ -762,7 +1045,7 @@ class ProjectDetails extends Component {
                                           </td>
                                         ) : (
                                           <td colSpan="5" className="noSkills">
-                                            "No skills to show"
+                                            {t("NoSkillsToShow")}
                                           </td>
                                         )}
                                       </tr>
@@ -780,23 +1063,22 @@ class ProjectDetails extends Component {
                     getSuggestEmployeesStatus && (
                       <div>
                         <h3>
-                          Employees with free capacity and skills matched to
-                          this project
+                          {t("EmployeeFreeCapacityAndSkills")}
                         </h3>
                         <table key={1}>
                           <thead>
                             <tr>
-                              <th>Employee</th>
-                              <th>Left Capacity</th>
-                              <th>Capacity</th>
-                              <th>Seniority</th>
+                              <th>{t("Employee")}</th>
+                              <th>{t("CapacityLeft")}</th>
+                              <th>{t("Capacity")}</th>
+                              <th>{t("Experience")}</th>
                             </tr>
                           </thead>
                           <tbody>
                             {suggestEmployees.matchedEmployees.map(
                               (employee, index) => {
                                 return (
-                                  <React.Fragment>
+                                  <React.Fragment key={index}>
                                     <tr
                                       onClick={() =>
                                         currentOpenedRow === index
@@ -866,7 +1148,7 @@ class ProjectDetails extends Component {
                                           </td>
                                         ) : (
                                           <td colSpan="5" className="noSkills">
-                                            "No skills to show"
+                                            {t("NoSkillsToShow")}
                                           </td>
                                         )}
                                       </tr>
@@ -883,6 +1165,65 @@ class ProjectDetails extends Component {
               </div>
             </main>
 
+          <Modal
+            key={10}
+            open={this.state.showAddPhaseModal}
+            classNames={{
+              modal: `Modal ${openFirstForm ? "Modal-add-project" : ""}`
+            }}
+            contentLabel="Add project modal"
+            onClose={() => this.setState({ showAddPhaseModal: false })}
+          >
+            <header>
+              <h3>{openFirstForm ? t("AddProjectPhase") : t("ContactPerson")}</h3>
+            </header>
+
+          {openFirstForm ? (
+            <Form
+              btnTitle={t("Next")}
+              key={11}
+              shouldSubmit={false}
+              dateIndexesToCompare={[2, 3]}
+              onSubmit={this.changeForm}
+              formItems={addNewProjectPhaseFormValues}
+              endDate={moment()}
+              onBlur={this.goForClient}
+            />
+          ) : (
+            <Form
+              btnTitle={t("Add")}
+              key={12}
+              shouldSubmit={true}
+              formItems={responsiblePersonFormValues}
+              onSubmit={this.addProjectPhase}
+              isLoading={isLoading}
+              submitResult={{
+                status: createProjectStatus,
+                content: createProjectStatus
+                  ? t("ProjectPhaseHasBeenAdded")
+                  : createProjectErrors && createProjectErrors[0]
+              }}
+            >
+              <button
+                onClick={this.changeForm}
+                type="button"
+                className="come-back-btn"
+              >
+                {t("Back")}
+              </button>
+
+              {responsiblePersons.length > 0 && (
+                <ContactList
+                  selected={selected}
+                  onChange={e => this.fetchContactDateByOtherClient(e)}
+                  items={responsiblePersons}
+                  t={this.props.t}
+                />
+              )}
+            </Form>
+            )}
+          </Modal>
+
             <Modal
               key={1}
               open={this.state.editModal}
@@ -891,7 +1232,7 @@ class ProjectDetails extends Component {
               onClose={this.clearEditModalData}
             >
               <ProjectDetailsBlock
-                onlyActiveAssignments={onlyActiveAssignments}
+                showAllAssignments={showAllAssignments}
                 editProjectStatus={this.props.editProjectStatus}
                 editProjectErrors={this.props.editProjectErrors}
                 responsiblePerson={project.responsiblePerson}
@@ -918,7 +1259,7 @@ class ProjectDetails extends Component {
               operation={() =>
                 changeProjectState(WebApi.projects.delete.project, "delete", {
                   projectId: project.id,
-                  onlyActiveAssignments: onlyActiveAssignments
+                  showAllAssignments: showAllAssignments
                 })
               }
             >
@@ -1012,6 +1353,8 @@ class ProjectDetails extends Component {
 }
 const mapStateToProps = state => {
   return {
+    clients: state.clientsReducer.clients,
+
     getSuggestEmployeesStatus: state.projectsReducer.getSuggestEmployeesStatus,
     suggestEmployees: state.projectsReducer.suggestEmployees,
     project: state.projectsReducer.project,
@@ -1025,6 +1368,9 @@ const mapStateToProps = state => {
     changeProjectStateStatus: state.projectsReducer.changeProjectStateStatus,
     changeProjectStateErrors: state.projectsReducer.changeProjectStateErrors,
     currentOperation: state.projectsReducer.currentOperation,
+
+    createProjectStatus: state.projectsReducer.createProjectStatus,
+    createProjectErrors: state.projectsReducer.createProjectErrors,
 
     addEmployeeToProjectStatus:
       state.projectsReducer.addEmployeeToProjectStatus,
@@ -1056,15 +1402,18 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
+    loadClients: () => dispatch(loadClients()),
+    createProjectPhase: (firstArray, secondArray, parentProjectData) => dispatch(createProjectPhaseACreator(firstArray, secondArray, parentProjectData)),
+    projectActions: bindActionCreators(projectsActions, dispatch),
     getContactPersonDataACreator: clientId =>
       dispatch(getContactPersonDataACreator(clientId)),
-    getProject: (projectId, onlyActiveAssignments) =>
-      dispatch(getProjectACreator(projectId, onlyActiveAssignments)),
-    editProject: (projectId, projectToSend, onlyActiveAssignments) =>
+    getProject: (projectId, showAllAssignments) =>
+      dispatch(getProjectACreator(projectId, showAllAssignments)),
+    editProject: (projectId, projectToSend, showAllAssignments) =>
       dispatch(
-        editProjectACreator(projectId, projectToSend, onlyActiveAssignments)
+        editProjectACreator(projectId, projectToSend, showAllAssignments)
       ),
-    getProjectDataACreator: (projectId, onlyActiveAssignments) => dispatch(getProjectDataACreator(projectId, onlyActiveAssignments)),
+    getProjectDataACreator: (projectId, showAllAssignments) => dispatch(getProjectDataACreator(projectId, showAllAssignments)),
     editProjectClearData: (status, errors) =>
       dispatch(editProject(status, errors)),
     clearProjectData: (project, status, errors, personKeys, overViewKeys) =>
@@ -1077,7 +1426,7 @@ const mapDispatchToProps = dispatch => {
       role,
       assignedCapacity,
       responsibilites,
-      onlyActiveAssignments
+      showAllAssignments
     ) =>
       dispatch(
         addEmployeeToProjectACreator(
@@ -1088,20 +1437,20 @@ const mapDispatchToProps = dispatch => {
           role,
           assignedCapacity,
           responsibilites,
-          onlyActiveAssignments
+          showAllAssignments
         )
       ),
     addEmployeeToProjectAction: (status, errors) => dispatch(addEmployeeToProject(status, errors)),
 
-    editEmployeeAssignment: ( startDate, endDate, role, assignedCapacity, responsibilites, assignmentId, onlyActiveAssignments, projectId) =>
-      dispatch(editEmployeeAssignmentACreator(startDate,endDate,role,assignedCapacity,responsibilites,assignmentId,onlyActiveAssignments, projectId)),
+    editEmployeeAssignment: ( startDate, endDate, role, assignedCapacity, responsibilites, assignmentId, showAllAssignments, projectId) =>
+      dispatch(editEmployeeAssignmentACreator(startDate,endDate,role,assignedCapacity,responsibilites,assignmentId,showAllAssignments, projectId)),
 
     editEmployeeAssignmentAction: (status, errors) => dispatch(editEmployeeAssignment(status, errors)),
 
-    deleteEmployeeAssignmentACreator: ( assignmentId, projectId, onlyActiveAssignments) => dispatch(deleteEmployeeAssignmentACreator(assignmentId, projectId, onlyActiveAssignments)),
+    deleteEmployeeAssignmentACreator: ( assignmentId, projectId, showAllAssignments) => dispatch(deleteEmployeeAssignmentACreator(assignmentId, projectId, showAllAssignments)),
 
-    changeProjectSkills: (projectId, skills, onlyActiveAssignments) =>
-      dispatch(changeProjectSkillsACreator(projectId, skills, onlyActiveAssignments)),
+    changeProjectSkills: (projectId, skills, showAllAssignments) =>
+      dispatch(changeProjectSkillsACreator(projectId, skills, showAllAssignments)),
 
     addProjectOwner: (projectId, ownersIdsArray) =>
       dispatch(addProjectOwnerACreator(projectId, ownersIdsArray)),
@@ -1110,12 +1459,12 @@ const mapDispatchToProps = dispatch => {
       dispatch(getAllSkillsACreator(currentAddedSkills)),
     getAllSkillsDataClear: (loadedSkills, loadSkillsStatus, loadSkillsErrors) =>
       dispatch(getAllSkills(loadedSkills, loadSkillsStatus, loadSkillsErrors)),
-    addSkillsToProject: (projectId, currentSkills, onlyActiveAssignments) =>
+    addSkillsToProject: (projectId, currentSkills, showAllAssignments) =>
       dispatch(
         addSkillsToProjectACreator(
           projectId,
           currentSkills,
-          onlyActiveAssignments
+          showAllAssignments
         )
       ),
     addSkillsToProjectClear: (state, errors) =>

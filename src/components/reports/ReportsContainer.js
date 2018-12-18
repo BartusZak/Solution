@@ -222,17 +222,20 @@ class ReportsContainer extends Component {
       generateReportToHardDrive,
       downloadReportZipFileACreator
     } = this.props;
+
+    const {hardDrive, saveAsFavorite, availableUntilToggle, availableUntilDate} = this.state;
+
     this.setState({ isReportGenerating: true });
     createSignalRConnection().then(response => {
 
-      if(this.state.hardDrive){
-        generateReportToHardDrive(addList, pagesList, this.state.saveAsFavorite, this.state.availableUntilToggle ? this.state.availableUntilDate : null)
+      if(hardDrive){
+        generateReportToHardDrive(addList, pagesList, saveAsFavorite, availableUntilToggle ? availableUntilDate : null)
         .then(response => { 
           downloadReportZipFileACreator(response.replyBlock.data.dtoObject.filename);
         }).catch(() => console.log("Error"));
       }
       else{
-        generateReport(addList, choosenFolder, pagesList, history, this.state.saveAsFavorite, this.state.availableUntilToggle ? this.state.availableUntilDate : null);
+        generateReport(addList, choosenFolder, pagesList, history, saveAsFavorite, availableUntilToggle ? availableUntilDate : null);
       }
     });
   };
@@ -305,7 +308,7 @@ class ReportsContainer extends Component {
   };
 
   render() {
-    const { reportModal, spinner, valueToSearch, isReportGenerating, extendId } = this.state;
+    const { reportModal, spinner, valueToSearch, isReportGenerating, extendId, hardDrive, availableUntilDate } = this.state;
     const { addList, baseList, folders, pagesList, choosenFolder, generateReportStatus, generateReportErrors,
       getFoldersStatus, getFoldersErrors, path, loadTeamsResult, loadTeamsErrors, history, isStarted, driveSortType,
       changeSortBy, reportsStatus, reports, reportsErrors, t } = this.props;
@@ -446,8 +449,8 @@ class ReportsContainer extends Component {
             handleAvailableUntilToggle={this.handleAvailableUntilToggle}
             handleAvailableUntil={this.handleAvailableUntil}
             availableUntilStartDate={moment()}
-            availableUntilDate={this.state.availableUntilDate}
-            hardDrive={this.state.hardDrive}
+            availableUntilDate={availableUntilDate}
+            hardDrive={hardDrive}
           />
         )}
       </div>

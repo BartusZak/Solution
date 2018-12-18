@@ -270,7 +270,7 @@ class Skills extends Component {
         </h3>
         {items.map((i, index) => {
           return (
-            <div key={i.obj.skillId} className="progress-bar-container">
+            <div key={i.obj.skillId} className="progress-bar-container project-skills-responsive">
               <b>{i.obj.skillName}</b>
               <ProgressPicker
                 createResult={this.createProgressBtns(
@@ -295,7 +295,7 @@ class Skills extends Component {
           </div>
         )}
 
-        {items.length > 0 && skillsHasBeedChanged && 
+        {items.length > 0 && skillsHasBeedChanged &&
           isProjectOwner && (
             <button
               disabled={isChanging}
@@ -351,7 +351,7 @@ class Skills extends Component {
 
                   {searchedSkills.map((skill, index) => {
                     return (
-                      <div key={index} className="progress-bar-container">
+                      <div key={index} className="add-skill-to-project-bar progress-bar-container">
                         <b>
                           {skill.obj.name
                             ? skill.obj.name

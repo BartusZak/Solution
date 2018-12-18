@@ -216,7 +216,8 @@ class ProjectDetailsBlock extends React.PureComponent {
         phoneNumber: responsiblePersonArray[3].value
       },
       startDate: moment(editProjectArray[4].value).format(),
-      estimatedEndDate: moment(editProjectArray[5].value).format()
+      estimatedEndDate: moment(editProjectArray[5].value).format(),
+      parentId: project.parentId
     };
 
 
