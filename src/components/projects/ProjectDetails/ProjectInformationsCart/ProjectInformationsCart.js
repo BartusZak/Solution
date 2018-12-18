@@ -24,16 +24,25 @@ const projectInformationsCart = props => {
                         field && props.items.names[index] &&
                         <span>{t(props.items.names[index])}: </span>
                     }
+                    
+                    {field && 
 
-                    {field &&
-
+                    props.items.names[index] && t(props.items.names[index]) === t("ParentName") ?  
+                    <b className="clickable" onClick={ () => props.pushIntoRoute(props.match.path.slice(0,-3) + props.originalObject.parentId) }>
+                    {                       
+                     (props.dateKeys &&
+                     contains(i, props.dateKeys) ? 
+                     field.slice(0, 10) : 
+                     field)
+                    }                       
+                    </b> : field &&
                     <b>
-                       { 
+                        {                       
                          (props.dateKeys &&
                          contains(i, props.dateKeys) ? 
                          field.slice(0, 10) : 
                          field)
-                       }
+                        }                       
                     </b>
                     }
                     

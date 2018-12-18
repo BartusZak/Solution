@@ -20,7 +20,7 @@ const spinnerBtn = props => {
 
       <button
         disabled={
-          !props.validationResult ||
+          !props.validationResult || props.btnDisabled ||
           (props.shouldBeDisabledByOtherReason !== undefined && props.shouldBeDisabledByOtherReason) ||
           (props.transactionEnd && !props.enableButtonAfterTransactionEnd)
             ? true
@@ -30,7 +30,7 @@ const spinnerBtn = props => {
         className={
           !props.isLoading
             ? `submit-btn ${
-                props.validationResult === false ||
+                props.validationResult === false || props.btnDisabled ||
                 (props.shouldBeDisabledByOtherReason !== undefined && props.shouldBeDisabledByOtherReason) ||
                 (props.transactionEnd && !props.enableButtonAfterTransactionEnd)
                   ? "submit-btn-dis"

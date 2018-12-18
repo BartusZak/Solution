@@ -21,7 +21,8 @@ class Form extends Component {
     showList: false,
 
     searchedList: [],
-    showSearchedList: false
+    showSearchedList: false,
+    formItemChanged: false
   };
 
   componentDidUpdate(prevProps){
@@ -321,6 +322,7 @@ class Form extends Component {
                         : this.state.endDate
                     }
                     selected={moment(i.value)}
+                    minDate={i.minDate && this.state.startDate}
                     endDate={
                       i.name === "endDate"
                         ? this.state.endDate
@@ -499,7 +501,7 @@ class Form extends Component {
           submitResult={this.props.submitResult}
           enableButtonAfterTransactionEnd={enableButtonAfterTransactionEnd}
           shouldBeDisabledByOtherReason={this.props.shouldBeDisabledByOtherReason}
-          isDisabled = {this.props.submitResult}
+          btnDisabled = {this.props.btnDisabled}
         />
       </form>
     );
