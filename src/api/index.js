@@ -626,7 +626,12 @@ const WebApi = {
       recentReports: numberOfReports =>
         WebAround.get(
           `${API_ENDPOINT}/reports/recentAndFavorites?numberOfReports=${numberOfReports}`
-        )
+        ),
+      reportZip: fileName => {
+        return WebAround.get(
+          `${API_ENDPOINT}/reports/reportzip/${fileName}`
+          )
+        },
     },
     post: {
       report: (model, hyperlinksOnGDrive, hyperlinksOnOneDrive) => {
