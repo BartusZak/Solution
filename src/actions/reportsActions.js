@@ -144,18 +144,14 @@ export const downloadReportZipFile = (downloadReportZipFileStatus, downloadRepor
   return { type: DOWNLOAD_REPORT_ZIP_FILE, downloadReportZipFileStatus, downloadReportZipFileErrors}
 };
 
-export const downloadReportZipFileACreator = (fileName) => dispatch => {
-  return new Promise((resolve, reject) => {
+export const downloadReportZipFileACreator = (fileName) => dispatch =>
     WebApi.reports.get.reportZip(fileName).then(response => {
       dispatch(downloadReportZipFile(true, []));
       window.open(response.replyBlock.request.responseURL);
-      resolve();
     }).catch(errors => {
       dispatch(downloadReportZipFile(false, errorCatcher(errors)));
-      reject();
     })
-  })
-}
+
 
 export const generateReport = (generateReportStatus, generateReportErrors) => {
   return { type: GENERATE_REPORT, generateReportStatus, generateReportErrors };
