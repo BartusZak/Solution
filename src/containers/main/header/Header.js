@@ -6,7 +6,9 @@ import TopBar from "./TopBar";
 import Icon from "../../../components/common/Icon";
 import LeftMenu from "../menu/LeftMenu";
 import { browserHistory } from 'react-router';
+import { putNotificationIconInSideBar } from "../../../actions/persistHelpActions";
 import {Link} from 'react-router-dom';
+import { connect } from "react-redux";
 
 class Header extends React.Component {
   constructor(props) {
@@ -45,15 +47,21 @@ class Header extends React.Component {
   }
 
   render() {
+    const {
+      isNotificationIconInSideBar,
+      putNotificationIconInSideBar
+    } = this.props;
+
     return (
       <div className="header">
         <div className="first-bar"/>
         <div className="second-bar"/>
         <div onClick={this.handleBlockedClick} className="extender menu-hide-exclusion">
           <Icon additionalClass="menu-hide-exclusion" icon="bars" iconSize="lg"/>
+          {isNotificationIconInSideBar && <div><i class="fa fa-bell notification-in-sidebar-icon"></i></div>}
         </div>
         <LeftMenu className="left-menu" close={this.closeMenu} extended={this.state.extended} />
-        <Link to="/main"> 
+        <Link to="/main">
             <Logo size="vector_cut_header"/>
         </Link>
         <TopBar />
@@ -62,8 +70,26 @@ class Header extends React.Component {
   }
 }
 
+function mapStateToProps(state) {
+  return {
+    isNotificationIconInSideBar:
+      state.persistHelpReducer.isNotificationIconInSideBar
+  };
+}
+const mapDispatchToProps = dispatch => {
+  return {
+    putNotificationIconInSideBar: isNotificationIconInSideBar =>
+      dispatch(putNotificationIconInSideBar(isNotificationIconInSideBar))
+  };
+};
+
 Header.propTypes = {
   history: PropTypes.object.isRequired
 };
 
-export default withRouter(Header);
+export default withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(Header)
+);
