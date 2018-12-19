@@ -22,6 +22,11 @@
   right: 10px;
   cursor: pointer;
 }
+.generate-raport-btn-div {
+  @media(min-width: 800px) {
+    margin-left: auto;
+  }
+}
 .generate-raport-btn {
   border: 1px solid transparent;
   font-size: 14px;
