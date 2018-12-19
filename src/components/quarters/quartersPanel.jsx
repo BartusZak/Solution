@@ -21,7 +21,8 @@ const linkTypes = {
 
 class Quarters extends React.PureComponent{
     state = {
-        openFindUserModal: false
+        openFindUserModal: false,
+        historyLighted: false
     }
 
     handleBtnClick = (urlToPush, isUrlWithParam, quarterToPopulateId) => {
@@ -52,11 +53,18 @@ class Quarters extends React.PureComponent{
         }
     }
 
+    enterHistoryBtn = () => {
+      this.setState({ historyLighted: true });
+    }
+    overHistoryBtn = () => {
+      this.setState({ historyLighted: false });
+    }
+
     render(){
         const { match, history, lastWatchedPersons, planQuarterACreator, createLastWatchedPersonsArray,
             linkBeforeRedirectToOutlookAuth, changeLinkBeforeRedirect, sendAuthCodePromise,
             authCodeStatus, authCodeErrors, currentWatchedUser, changeCurrentWatchedUser, t } = this.props;
-        const { openFindUserModal, shouldLoadDataAfterLinkChange } = this.state;
+        const { openFindUserModal, historyLighted } = this.state;
 
         const isHistoryExist = lastWatchedPersons && lastWatchedPersons.length > 0;
         return (
@@ -68,7 +76,7 @@ class Quarters extends React.PureComponent{
                 }
                 </header>
                 {isHistoryExist &&
-                    <div className="recent-watched">
+                    <div className={`recent-watched ${historyLighted ? "light-history" : ""}`}>
                         {lastWatchedPersons.map(person => {
                             return (
                                 <div onClick={() => this.changeActualWatchedUser(person)} className={`last-watched-person ${person === currentWatchedUser ? "last-watched-person-focused" : ""}`} key={person}>
@@ -97,8 +105,10 @@ class Quarters extends React.PureComponent{
                         title={t("PlanQuarter")} mainClass="generate-raport-btn btn-green"><i className="fa fa-comment"/></Button>
 
                     {isHistoryExist &&
+                    <div onMouseEnter={this.enterHistoryBtn} onMouseLeave={this.overHistoryBtn} className="generate-raport-btn-div">
                         <Button onClick={() => createLastWatchedPersonsArray([])} title={t("ClearHistory")}
-                            mainClass="generate-raport-btn btn-brown"><i className="fa fa-history"/></Button>
+                            mainClass="generate-raport-btn btn-brown" ><i className="fa fa-history"/></Button>
+                    </div>
                     }
                 </nav>
                 <div className="quarters-content">
