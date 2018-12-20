@@ -185,6 +185,24 @@ class Form extends Component {
       newFormItems[cloudIdInForm].disable = newFormItems[id].error !== "";
     }
 
+    if(type === "cloud")
+    {
+      const { cloudIdInForm } = this.props;
+
+      const clientName = newFormItems[cloudIdInForm - 1] && newFormItems[cloudIdInForm - 1].value !== '' && newFormItems[cloudIdInForm - 1].value;
+      if(clientName !== null)
+      {
+        const indexOfMatchedClient = newFormItems[cloudIdInForm - 1].dataToMap.findIndex(i => {
+          return i.name === clientName
+        });
+
+        if(indexOfMatchedClient !== -1){
+          const cloudsInClient = newFormItems[cloudIdInForm - 1].dataToMap[indexOfMatchedClient].clouds;
+          newFormItems[cloudIdInForm].dataToMap = cloudsInClient;
+        }
+      }
+    }
+
     this.setState({
       newFormItems: newFormItems,
       validationResult: newFormItems[id].error ? false : true,

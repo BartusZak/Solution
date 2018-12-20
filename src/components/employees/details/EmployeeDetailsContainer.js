@@ -25,16 +25,19 @@ import {
   downloadCV,
   getUserCv,
   updateSkypeResult,
-  loadEmployeeFeedbacks
+  loadEmployeeFeedbacks,
+  loadEmployeeOnBoardsACreator
 } from "../../../actions/employeesActions";
 import Spinner from "../../common/spinner/spinner";
 import OperationStatusPrompt from "../../form/operationStatusPrompt/operationStatusPrompt";
 import EmployeeSkills from "./employeeSkills/employeeSkills";
 import EmployeeCertificates from "./employeeCertificates/employeeCertificates";
+import EmployeeOnBoards from './employeeOnBoards/employeeOnBoards';
 import EmployeeFeedbacks from "./employeeFeedbacks/employeeFeedbacks";
 import { ACTION_CONFIRMED } from "./../../../constants";
 import { translate } from "react-translate";
 import NotFound404 from "../../notFound404/NotFound404";
+import { loadClients } from "../../../actions/clientsActions";
 
 class EmployeeDetailsContainer extends React.Component {
   constructor(props) {
@@ -64,11 +67,15 @@ class EmployeeDetailsContainer extends React.Component {
       getEmployeePromise,
       loadCertificates,
       loadEmployeeFeedbacks,
+      loadEmployeeOnBoardsACreator,
+      loadClients,
       match
     } = this.props;
     getEmployeePromise(match.params.id);
     loadCertificates(match.params.id);
+    loadEmployeeOnBoardsACreator(match.params.id);
     loadEmployeeFeedbacks(match.params.id);
+    loadClients();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -275,6 +282,15 @@ class EmployeeDetailsContainer extends React.Component {
                 binPem={binPem}
               />
 
+              <EmployeeOnBoards
+                employee={this.props.employee}
+                onBoards={this.props.onBoards}
+                isYou={login === employee.id}
+                loadClients={this.props.loadClients}
+                clients={this.props.clients}
+                binPem={binPem}
+              />
+
               <EmployeeFeedbacks
                 employeeFeedbacks={employeeFeedbacks}
                 loadEmployeeFeedbacksErrors={loadEmployeeFeedbacksErrors}
@@ -338,6 +354,8 @@ const mapStateToProps = state => {
     certificates: state.employeesReducer.certificates,
     resultBlockAddCertificate: state.employeesReducer.resultBlockAddCertificate,
 
+    onBoards: state.employeesReducer.onBoards,
+
     changeSkillsStatus: state.employeesReducer.changeSkillsStatus,
     changeSkillsErrors: state.employeesReducer.changeSkillsErrors,
 
@@ -355,7 +373,9 @@ const mapStateToProps = state => {
     loadEmployeeFeedbacksErrors:
       state.employeesReducer.loadEmployeeFeedbacksErrors,
     loadEmployeeFeedbacksStatus:
-      state.employeesReducer.loadEmployeeFeedbacksStatus
+      state.employeesReducer.loadEmployeeFeedbacksStatus,
+
+    clients: state.clientsReducer.clients
   };
 };
 
@@ -384,6 +404,7 @@ const mapDispatchToProps = dispatch => {
     updateSkype: (skypeId, employeeId) =>
       dispatch(updateSkype(skypeId, employeeId)),
     loadCertificates: employeeId => dispatch(loadCertificates(employeeId)),
+    loadEmployeeOnBoardsACreator: employeeId => dispatch(loadEmployeeOnBoardsACreator(employeeId)),
     addCertificate: (certificate, userId) =>
       dispatch(addCertificate(certificate, userId)),
     editCertificate: (certificateId, certificate, userId) =>
@@ -393,7 +414,8 @@ const mapDispatchToProps = dispatch => {
     changeCurrentWatchedUser: currentWatchedUser =>
       dispatch(changeCurrentWatchedUser(currentWatchedUser)),
     loadEmployeeFeedbacks: employeeId =>
-      dispatch(loadEmployeeFeedbacks(employeeId))
+      dispatch(loadEmployeeFeedbacks(employeeId)),
+    loadClients: () => dispatch(loadClients())
   };
 };
 

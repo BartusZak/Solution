@@ -188,15 +188,15 @@
         -webkit-text-stroke: 2px rgba(66, 66, 66, 0.637);
 
         @keyframes animateSize {
-           0% {transform : scale (1); color: #8c1b2f}
-          12% {transform : scale (1.5); color: #fff;}
-          25% {transform : scale (1); color: #8c1b2f}
-          37% {transform : scale (1.5); color: #fff;}
-          50% {transform : scale (1); color: #8c1b2f}
-          62% {transform : scale (1.5); color: #fff;}
-          75% {transform : scale (1); color: #8c1b2f}
+          0% {transform : scale (1); opacity: 0;}
+          12% {transform : scale (1.5); color: #fff;opacity: 1}
+          25% {transform : scale (1); opacity: 0;}
+          37% {transform : scale (1.5); color: #fff;opacity: 1}
+          50% {transform : scale (1); opacity: 0;}
+          62% {transform : scale (1.5); color: #fff;opacity: 1}
+          75% {transform : scale (1); opacity: 0;}
           87% {transform : scale (1.5); color: #fff; opacity: 1;}
-          100% {transform : scale (1); color: #8c1b2f; opacity: 0;}
+          100% {transform : scale (1); opacity: 0;}
         }
       }
 

@@ -58,7 +58,7 @@ class Header extends React.Component {
         <div className="second-bar"/>
         <div onClick={this.handleBlockedClick} className="extender menu-hide-exclusion">
           <Icon additionalClass="menu-hide-exclusion" icon="bars" iconSize="lg"/>
-          {isNotificationIconInSideBar && <div><i class="fa fa-bell notification-in-sidebar-icon"></i></div>}
+          {isNotificationIconInSideBar && <div><i className="fa fa-bell notification-in-sidebar-icon"></i></div>}
         </div>
         <LeftMenu className="left-menu" close={this.closeMenu} extended={this.state.extended} />
         <Link to="/main">
