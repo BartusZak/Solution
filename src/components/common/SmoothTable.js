@@ -203,12 +203,10 @@ class SmoothTable extends Component {
     );
   }
 
-  handleFilterDateChange() {}
-
-  toolBoxButton(button, object) {
+  toolBoxButton(button, object, index) {
     return (
       <button
-        key={button.icon.icon}
+        key={index}
         title={button.title}
         onClick={this.deepenFunction(button.click, object)}
       >
@@ -217,10 +215,15 @@ class SmoothTable extends Component {
     );
   }
 
+  generateEmptyButton = (index) => <button key={index} className="break-centering-button"> </button>
+
   generateToolBox(object, toolBoxColumn) {
     return toolBoxColumn.toolBox.map((button, index) => {
       if (button.comparator === undefined || button.comparator(object)) {
-        return this.toolBoxButton(button, object);
+        if(object.employeeShared && (button.icon.icon === "minus-square" || button.icon.icon === "plus-square")) {
+          return this.generateEmptyButton(index);
+        }
+        return this.toolBoxButton(button, object, index);           
       }
     });
   }

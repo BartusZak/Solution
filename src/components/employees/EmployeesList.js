@@ -115,7 +115,7 @@ class EmployeesList extends Component {
                 this.props.activateEmployee(object, t);
               },
               comparator: object =>
-                binaryPermissioner(false)(0)(0)(0)(0)(0)(1)(
+              binaryPermissioner(false)(0)(0)(0)(1)(0)(1)(
                   this.props.binPem
                 ) &&
                 (!object.seniority || object.isDeleted)
@@ -127,7 +127,7 @@ class EmployeesList extends Component {
                 this.props.removeEmployee(object, t);
               },
               comparator: object =>
-                binaryPermissioner(false)(0)(0)(0)(0)(0)(1)(
+                binaryPermissioner(false)(0)(0)(0)(1)(0)(1)(
                   this.props.binPem
                 ) &&
                 !object.isDeleted &&
