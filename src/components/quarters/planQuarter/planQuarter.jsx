@@ -42,10 +42,10 @@ class PlanQuarter extends React.PureComponent{
           selectValues: ["1", "2", "3", "4"]
         },
         {
-            title: this.props.t("Year"), mode: "type-and-select", value: "", error: "", canBeNull: false,
-            inputType: "strongNumber",
+            title: this.props.t("Year"), mode: "select", value: moment().year(), error: "", canBeNull: false,
+            inputType: "number",
             placeholder: this.props.t("YearHolder"),
-            dataToMap: pushMomentValuesDynamicly(5, moment().format('YYYY-MM-DD'), 1, 'years', "YYYY")
+            selectValues: _.range(moment().locale(this.props.t("Language")).add(-5, 'years').year(), moment().locale(this.props.t("Language")).add(6, 'years').year())
         }
       ]
 
