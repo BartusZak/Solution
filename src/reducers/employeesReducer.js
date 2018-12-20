@@ -23,7 +23,9 @@ import {
   GET_TEAMLEADERS_AND_MANAGERS,
   GET_EMPLOYEES_FEEDBACKS,
   CHANGE_LOAD_EMPLOYEES_FEEDBACKS,
-  GET_USER_CV
+  GET_USER_CV,
+  CHANGE_GET_EMPLOYEE_ONBOARDS_STATUS,
+  GET_EMPLOYEE_ONBOARDS
 } from "../constants";
 import { updateObject } from "../services/methods";
 const initialState = {
@@ -77,7 +79,11 @@ const initialState = {
 
   employeeFeedbacks: [],
   loadEmployeeFeedbacksStatus: null,
-  loadEmployeeFedebacksErrors: []
+  loadEmployeeFedebacksErrors: [],
+
+  onBoards: [],
+  loadEmployeesOnBoardsStatus: null,
+  loadEmployeesOnBoardsErrors: []
 };
 
 export const employeesReducer = (state = initialState, action) => {
@@ -139,6 +145,15 @@ export const employeesReducer = (state = initialState, action) => {
       });
     case GET_CERTYFICATES:
       return updateObject(state, { certificates: action.certificates });
+    case CHANGE_GET_EMPLOYEE_ONBOARDS_STATUS:
+      return updateObject(state, {
+        loadEmployeesOnBoardsStatus: action.loadEmployeesOnBoardsStatus,
+        loadEmployeesOnBoardsErrors: action.loadEmployeesOnBoardsErrors
+      });
+    case GET_EMPLOYEE_ONBOARDS:
+      return updateObject(state, {
+        onBoards: action.onBoards
+      });
     case ADD_CERTIFICATE_RESULT:
       return updateObject(state, {
         resultBlockAddCertificate: action.resultBlockAddCertificate

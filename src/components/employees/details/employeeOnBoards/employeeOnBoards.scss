@@ -1,0 +1,52 @@
+.onBoard {
+  tr {
+    max-height: 200px;
+    animation: 1.5s animate-height forwards;
+
+    @keyframes animate-height {
+      from {opacity: 0}
+      to {opacity: 1}
+    }
+  }
+
+  .title-bar {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+
+    .checkbox {
+      background-color: rgb(68, 68, 68);
+      color: #fff;
+      border-radius: 5px;
+      border: none;
+      padding: 5px 10px;
+      cursor: pointer;
+      transition: 0.5s;
+
+      @media (max-width: 500px){
+        font-size: 2vh;
+      }
+
+      &:hover {
+        background-color: rgb(114, 114, 114);
+      }
+    }
+  }
+
+  .error-container {
+    width: 100%;
+    text-align: center;
+    font-weight: 700;
+    font-size: 1rem;
+    margin-top: 10%;
+
+    .error {
+      margin-top: 10px;
+      font-weight: 500;
+      font-size: 1rem;
+      color: #883e4a;
+    }
+  }
+
+}

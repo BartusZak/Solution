@@ -377,6 +377,10 @@ const WebApi = {
           `${API_ENDPOINT}/sharedEmployees/getEmployeesAndManagers`
         );
       },
+      onBoards: employeeId => {
+        return WebAround.get(`${API_ENDPOINT}/employees/GetOnBoardsByEmployeeId/${employeeId}`
+        );
+      },
       emplo: {
         contact: employeeId => {
           return WebAround.get(
@@ -398,7 +402,13 @@ const WebApi = {
       },
       add: employee => {
         return WebAround.post(`${API_ENDPOINT}/employees/add`, employee);
+      },
+      addOnBoard: onBoardModel => {
+        return WebAround.post(`${API_ENDPOINT}/employees/addToOnBoard`, onBoardModel);
       }
+    },
+    deleteOnBoard: onBoardId => {
+      return WebAround.delete(`${API_ENDPOINT}/employees/DeleteOnBoard/${onBoardId}`);
     },
     delete: employeeId => {
       return WebAround.delete(`${API_ENDPOINT}/employees/${employeeId}`);
@@ -421,6 +431,9 @@ const WebApi = {
           skypeId,
           employeeId
         });
+      },
+      updateOnBoard: (onBoardModel, onBoardId) => {
+        return WebAround.patch(`${API_ENDPOINT}/Employees/EditOnBoard/${onBoardId}`, onBoardModel);
       }
     },
     patch: {

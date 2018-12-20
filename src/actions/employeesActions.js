@@ -20,7 +20,11 @@ import {
   CHANGE_LOAD_TEAMLEADERS_AND_MANGERS_STATUS,
   GET_TEAMLEADERS_AND_MANAGERS,
   GET_EMPLOYEES_FEEDBACKS,
-  CHANGE_LOAD_EMPLOYEES_FEEDBACKS
+  CHANGE_LOAD_EMPLOYEES_FEEDBACKS,
+  ADD_EMPLOYEE_ONBOARD,
+  CHANGE_GET_EMPLOYEE_ONBOARDS_STATUS,
+  GET_EMPLOYEE_ONBOARDS,
+  UPDATE_EMPLOYEE_ONBOARD
 } from "../constants";
 import WebApi from "../api";
 import {
@@ -730,3 +734,83 @@ export const editCertificate = (certificateId, newCretificate, userId) => {
       });
   };
 };
+
+export const getEmployeeOnBoards = onBoards => {
+  return {
+    type: GET_EMPLOYEE_ONBOARDS,
+    onBoards
+  };
+};
+
+export const changeGetEmployeeOnBoardsStatus = (getEmployeeOnBoardStatus, getEmployeeOnBoardErrors) => {
+  return { type: CHANGE_GET_EMPLOYEE_ONBOARDS_STATUS, getEmployeeOnBoardStatus, getEmployeeOnBoardErrors };
+};
+
+export const loadEmployeeOnBoardsACreator = employeeId => {
+  return dispatch => {
+    WebApi.employees.get
+      .onBoards(employeeId)
+      .then(response => {
+        if (!response.errorOccurred()) {
+          dispatch(getEmployeeOnBoards(response.extractData()));
+          dispatch(changeGetEmployeeOnBoardsStatus(true, []));
+        }
+      })
+      .catch(error => {
+        dispatch(changeGetEmployeeOnBoardsStatus(false, errorCatcher(error)));
+      });
+  };
+};
+
+export const deleteOnBoard = (onBoardId) => dispatch => {
+  return new Promise((resolve, reject) => {
+    WebApi.employees.deleteOnBoard(onBoardId)
+      .then(response => {
+        dispatch(setActionConfirmationResult(response));
+        resolve()
+      })
+      .catch(error => {
+        dispatch(setActionConfirmationResult(error));
+        reject()
+      });
+  });
+};
+
+export const addEmployeeOnBoard = (addEmployeeOnBoardStatus, addEmployeeOnBoardErrors) => {
+  return { type: ADD_EMPLOYEE_ONBOARD, addEmployeeOnBoardStatus, addEmployeeOnBoardErrors };
+};
+
+export const addEmployeeOnBoardACreator = (onBoardModel) => dispatch => {
+  return new Promise((resolve, reject) => {
+    WebApi.employees.post
+      .addOnBoard(onBoardModel)
+      .then(response => {
+        dispatch(addEmployeeOnBoard(true, []));
+        resolve(response.replyBlock.data.dtoObject);
+      })
+      .catch(error => {
+        dispatch(addEmployeeOnBoard(false, errorCatcher(error)));
+        reject(errorCatcher(error));
+      });
+  });
+};
+
+export const updateEmployeeOnBoard = (updateEmployeeOnBoardStatus, updateEmployeeOnBoardErrors) => {
+  return { type: UPDATE_EMPLOYEE_ONBOARD, updateEmployeeOnBoardStatus, updateEmployeeOnBoardErrors };
+};
+
+export const updateEmployeeOnBoardACreator = (onBoardModel, onBoardId) => dispatch => {
+  return new Promise((resolve, reject) => {
+    WebApi.employees.put
+      .updateOnBoard(onBoardModel, onBoardId)
+      .then(response => {
+        dispatch(updateEmployeeOnBoard(true, []));
+        resolve(response.replyBlock.data.dtoObject);
+      })
+      .catch(error => {
+        dispatch(updateEmployeeOnBoard(false, errorCatcher(error)));
+        reject(errorCatcher(error));
+      });
+  });
+};
+
