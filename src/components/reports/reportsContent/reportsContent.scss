@@ -23,7 +23,7 @@
         justify-content: center;
         align-items: center;
         span{
-          word-break: break-all;
+          word-break: break-word;
         }
         @media(max-width: 1000px){
           font-size: 14px;
