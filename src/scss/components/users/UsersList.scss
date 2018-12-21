@@ -1,4 +1,7 @@
 .users-list-container {
+  .smooth-row {
+    cursor: unset !important;
+  }
   @media screen and (max-width: 500px) {
     margin-left: 10px;
     tbody tr:first-child,

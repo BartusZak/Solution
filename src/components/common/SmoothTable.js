@@ -223,7 +223,7 @@ class SmoothTable extends Component {
         if(object.employeeShared && (button.icon.icon === "minus-square" || button.icon.icon === "plus-square")) {
           return this.generateEmptyButton(index);
         }
-        return this.toolBoxButton(button, object, index);           
+        return this.toolBoxButton(button, object, index);
       }
     });
   }
