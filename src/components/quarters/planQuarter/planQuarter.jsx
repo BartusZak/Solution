@@ -186,32 +186,34 @@ class PlanQuarter extends React.PureComponent{
                         }}
                         shouldAnimateList listClass="calendar-list" listTitle={t("OccupiedDates")} component={CalendarItem} items={reservedDates} />
                     </div>
-                    <div className="plan-quarter-form">
-                        <h2>
-                            {t("QuarterTalksDetails")}
-                        </h2>
-                        <Form
-                            newFormItems={planQuarterFormItems}
-                            shouldChangeFormState={shouldPutTimeIntoForm}
-                            btnTitle={t("Plan")}
-                            shouldSubmit
-                            inputContainerClass="column-container"
-                            onSubmit={this.planQuarterHandler}
-                            isLoading={isPlanningQuarter}
-                            formItems={planQuarterFormItems}
-                            enableButtonAfterTransactionEnd
-                            submitResult={{
-                                status: planQuarterStatus,
-                                content: planQuarterStatus ? t("SuccPlannedQuarter") :
-                                    planQuarterErrors[0]
-                            }}
-                        />
-                    </div>
-                    <div className="hours-to-use-container">
-                        <List
-                        shouldAnimateList listClass="question-list" listTitle={t("SugestedHours")}
-                        component={Hour} items={hoursToUse} setPlanHour={this.setPlanHour} />
+                    <div>
+                      <div className="plan-quarter-form">
+                          <h2>
+                              {t("QuarterTalksDetails")}
+                          </h2>
+                          <Form
+                              newFormItems={planQuarterFormItems}
+                              shouldChangeFormState={shouldPutTimeIntoForm}
+                              btnTitle={t("Plan")}
+                              shouldSubmit
+                              inputContainerClass="column-container"
+                              onSubmit={this.planQuarterHandler}
+                              isLoading={isPlanningQuarter}
+                              formItems={planQuarterFormItems}
+                              enableButtonAfterTransactionEnd
+                              submitResult={{
+                                  status: planQuarterStatus,
+                                  content: planQuarterStatus ? t("SuccPlannedQuarter") :
+                                      planQuarterErrors[0]
+                              }}
+                          />
+                      </div>
+                      <div className="hours-to-use-container">
+                          <List
+                          shouldAnimateList listClass="question-list" listTitle={t("SugestedHours")}
+                          component={Hour} items={hoursToUse} setPlanHour={this.setPlanHour} />
 
+                      </div>
                     </div>
                 </div>
             </LoadHandlingWrapper>

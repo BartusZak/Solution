@@ -14,51 +14,73 @@
         margin-top: 10px;
         font-size: 20px;
     }
-    .dates{
-        @media(max-width: 750px){
-            width: 100%;
-        }
-    }
+
     .plan-quarter-form{
+        display: inline-block;
         position: relative;
-        height: 350px;
         width: 350px;
         margin: 45px 45px;
         .submit-btn, .spinner-btn{
-            bottom: -180px;
+            bottom: -100px;
+            @media(max-width: 1200px){
+              bottom: -280px;
+            }
+        }
+        @media(min-width: 450px){
+          height: 350px;
         }
         .correct-status, .incorrect-status{
             bottom: -90px;
         }
+        @media(max-width: 1200px){
+          margin-bottom: 0;
+        }
         @media(max-width: 750px){
-            .right-form-container{
-                .form-error{
-                    height: auto;
-                }
-            }
-            .submit-btn, .spinner-btn, .correct-status, .incorrect-status{
-                position: relative;
-                bottom: 0;
-            }
             .correct-status, .incorrect-status{
                 margin-top: 25px;
             }
         }
-     
-        
+
+
+    }
+    .dates{
+      @media(max-width: 750px){
+        width: 450px;
+      }
     }
     .hours-to-use-container{
-        margin: 45px 45px;
-        width: 500px;
-        height: 350px;     
-        @media(max-width: 1000px){
-            margin-top: 180px;
+      display: inline-block;
+      margin: 45px 45px;
+      width: 500px;
+      height: 350px;
+      @media(max-width: 1700px){
+        margin: 45px 5px;
+        width: 380px;
+      }
+      @media(max-width: 1500px){
+        width: 310px;
+      }
+      @media(max-width: 1470px){
+        margin: 45px 5px;
+        width: 300px;
+      }
+      @media(max-width: 1300px){
+        width: 200px;
+      }
+      @media(max-width: 1200px){
+        display: block;
+        width: 420px;
+        margin-left: 35px;
+        margin-top: 0;
+        .hour-label{
+          padding: 10px 16px;
+
         }
-        @media(max-width: 750px){
-            width: 100%;
-        }
-        @media(max-width: 450px){
-            margin-top: 50px;
-        }
+      }
+      @media(max-width: 400px){
+        width: 375px;
+        padding: 10px 13px;
+        maegin-left: 10px;
+      }
     }
 }
