@@ -191,22 +191,26 @@ export const MARKASREAD_NOTIFICATION = "MARKASREAD_NOTIFICATION";
 export const MARKALLASREAD_NOTIFICATION = "MARKALLASREAD_NOTIFICATION";
 
 //INFO
-export const ACCOUNT_CAN_SEARCH_USERS_ACCOUNTS =
-  "ACCOUNT_CAN_SEARCH_USERS_ACCOUNTS";
-export const ACCOUNT_CAN_CHANGE_USERS_ROLES = "ACCOUNT_CAN_CHANGE_USERS_ROLES";
-export const ACCOUNT_CAN_SEARCH_AD = "ACCOUNT_CAN_SEARCH_AD";
-export const ACCOUNT_CAN_ADD_USER = "ACCOUNT_CAN_ADD_USER";
-export const ACCOUNT_CAN_REACTIVATE_USER = "ACCOUNT_CAN_REACTIVATE_USER";
-export const ACCOUNT_CAN_DELETE_USER = "ACCOUNT_CAN_DELETE_USER";
-export const ACCOUNT_CAN_DELETE_USER_REQUEST =
-  "ACCOUNT_CAN_DELETE_USER_REQUEST";
+export const CHANGE_STATE = 'CHANGE_STATE';
 
-export const PROJECT_CAN_SEARCH_PROJECTS = "PROJECT_CAN_SEARCH_PROJECTS";
-export const PROJECT_CAN_ADD_PROJECTS = "PROJECT_CAN_ADD_PROJECTS";
-export const PROJECT_CAN_EDIT_PROJECTS = "PROJECT_CAN_EDIT_PROJECTS";
+export const ACCOUNT = 'account'
+export const CAN_SEARCH_USER_ACCOUNT = 'canSearchUserAccounts'
+export const CAN_EDIT_USERS_ROLES = 'canEditUsersRoles'
+export const CAN_SEARCH_AD = 'canSearchAD'
+export const CAN_ADD_USER = 'canAddUser'
+export const CAN_REACTIVATE_USER = 'canReactivateUser'
+export const CAN_DELETE_USER = 'canDeleteUser'
+export const CAN_DELETE_USER_REQUEST = 'canDeleteUserRequest'
 
-export const CLIENT_GET_LIST_OF_CLIENTS = "CLIENT_GET_LIST_OF_CLIENTS";
-export const CLIENT_POST_CLIENT = "CLIENT_POST_CLIENT";
-export const CLIENT_DELETE_CLIENT = "CLIENT_DELETE_CLIENT";
-export const CLIENT_EDIT_CLIENT = "CLIENT_EDIT_CLIENT";
-export const CLIENT_REACTIVATE_CLIENT = "CLIENT_REACTIVATE_CLIENT";
+export const PROJECTS = 'projects'
+export const CAN_SEARCH_PROJECTS = "canSearchProjects";
+export const CAN_ADD_PROJECT = "canAddProject";
+export const CAN_EDIT_PROJECT = "canEditProject";
+export const CAN_GET_PROJECT = "canGetProject";
+
+export const CLIENT = 'client'
+export const CAN_GET_LIST_OF_CLIENTS = "canGetListOfClients";
+export const CAN_ADD_CLIENT = "canAddClient";
+export const CAN_DELETE_CLIENT = "canDeleteClient";
+export const CAN_EDIT_CLIENT = "canEditClient";
+export const CAN_REACTIVATE_CLIENT = "canReactivateClient";

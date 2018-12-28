@@ -1,221 +1,179 @@
 import WebApi from "../api";
 
 import {
-  ACCOUNT_CAN_SEARCH_USERS_ACCOUNTS,
-  ACCOUNT_CAN_CHANGE_USERS_ROLES,
-  ACCOUNT_CAN_SEARCH_AD,
-  ACCOUNT_CAN_ADD_USER,
-  ACCOUNT_CAN_REACTIVATE_USER,
-  ACCOUNT_CAN_DELETE_USER,
-  ACCOUNT_CAN_DELETE_USER_REQUEST,
-  PROJECT_CAN_SEARCH_PROJECTS,
-  PROJECT_CAN_ADD_PROJECTS,
-  CLIENT_GET_LIST_OF_CLIENTS,
-  CLIENT_POST_CLIENT,
-  CLIENT_DELETE_CLIENT,
-  CLIENT_EDIT_CLIENT,
-  CLIENT_REACTIVATE_CLIENT,
-  PROJECT_CAN_EDIT_PROJECTS,
+  CHANGE_STATE,
+  ACCOUNT,
+  CAN_SEARCH_USER_ACCOUNT,
+  CAN_EDIT_USERS_ROLES,
+  CAN_SEARCH_AD,
+  CAN_ADD_USER,
+  CAN_REACTIVATE_USER,
+  CAN_DELETE_USER,
+  CAN_DELETE_USER_REQUEST,
+  PROJECTS,
+  CAN_SEARCH_PROJECTS,
+  CAN_ADD_PROJECT,
+  CAN_EDIT_PROJECT,
+  CLIENT,
+  CAN_GET_LIST_OF_CLIENTS,
+  CAN_ADD_CLIENT,
+  CAN_DELETE_CLIENT,
+  CAN_EDIT_CLIENT,
+  CAN_REACTIVATE_CLIENT,
+  CAN_GET_PROJECT,
 
 } from "../constants";
 
 export const infoActionCreator = () => {
   return dispatch => {
-    dispatch(accountPostUsersListACreator());
-    dispatch(accountPatchChangeUsersRolesACreator());
-    dispatch(accountGetSearchADACreator());
-    dispatch(accountPostAddUserACreator());
-    dispatch(accountPatchReactivateUserACreator());
-    dispatch(accountDeleteUserACreator());
-    dispatch(accountDeleteUserRequestsACreator());
 
-    dispatch(projectsPostProjectsListACreator());
-    dispatch(projectsAddProjectACreator());
-    dispatch(projectsEditProjectACreator());
+    infoCreators.forEach(creator => {
+      dispatch(creator())
+    });
 
-    dispatch(clientGetListOfClientsACreator());
-    dispatch(clientAddClientACreator());
-    dispatch(clientDeleteClientACreator());
-    dispatch(clientEditClientACreator());
-    dispatch(clientReactivateClientACreator());
   };
 };
 
-export const genericChangeTypeStatusLoading = (type, status, loading) => {
+
+export const genericChangeTypeStatusLoading = (controllerKey, requestKey, status, loading) => {
   return {
-    type,
-    status,
-    loading
+    type: CHANGE_STATE,
+    controllerKey,
+    requestKey,
+    value:{
+      status,
+      loading
+    }
   };
 };
 
-export const genericInfoACreator = (Api, type) => {
+
+export const genericInfoACreator = (Api, controllerKey, requestKey) => {
   return dispatch => {
-    dispatch(genericChangeTypeStatusLoading(type, false, true));
+    dispatch(genericChangeTypeStatusLoading(controllerKey, requestKey, false, true));
     Api.then(response => {
       !response.errorOccurred() &&
-        dispatch(genericChangeTypeStatusLoading(type, true, false));
+        dispatch(genericChangeTypeStatusLoading(controllerKey, requestKey, true, false));
     }).catch(error => {
       if (error.replyBlock.status === 400) {
-        dispatch(genericChangeTypeStatusLoading(type, true, false));
+        dispatch(genericChangeTypeStatusLoading(controllerKey, requestKey, true, false));
       } else {
-        dispatch(genericChangeTypeStatusLoading(type, false, false));
+        dispatch(genericChangeTypeStatusLoading(controllerKey, requestKey, false, false));
       }
     });
   };
 };
 
-//ACCOUNT
-export const accountPostUsersListACreator = () => {
-  return dispatch => {
-    dispatch(
-      genericInfoACreator(
-        WebApi.users.post.list({ Limit: 1, Page: 1 }),
-        ACCOUNT_CAN_SEARCH_USERS_ACCOUNTS
-      )
-    );
-  };
-};
 
-export const accountPatchChangeUsersRolesACreator = () => {
-  return dispatch => {
-    dispatch(
-      genericInfoACreator(
-        WebApi.users.patch.roles(),
-        ACCOUNT_CAN_CHANGE_USERS_ROLES
-      )
-    );
-  };
-};
-
-export const accountGetSearchADACreator = () => {
-  return dispatch => {
-    dispatch(
-      genericInfoACreator(WebApi.users.get.adSearch(), ACCOUNT_CAN_SEARCH_AD)
-    );
-  };
-};
-
-export const accountPostAddUserACreator = () => {
-  return dispatch => {
-    dispatch(
-      genericInfoACreator(WebApi.users.post.add(), ACCOUNT_CAN_ADD_USER)
-    );
-  };
-};
-
-export const accountPatchReactivateUserACreator = () => {
-  return dispatch => {
-    dispatch(
-      genericInfoACreator(
-        WebApi.users.patch.reactivate(),
-        ACCOUNT_CAN_REACTIVATE_USER
-      )
-    );
-  };
-};
-
-export const accountDeleteUserACreator = () => {
-  return dispatch => {
-    dispatch(
-      genericInfoACreator(WebApi.users.delete.user(), ACCOUNT_CAN_DELETE_USER)
-    );
-  };
-};
-
-export const accountDeleteUserRequestsACreator = () => {
-  return dispatch => {
-    dispatch(
-      genericInfoACreator(
-        WebApi.users.delete.request(),
-        ACCOUNT_CAN_DELETE_USER_REQUEST
-      )
-    );
-  };
-};
-
-//PROJECTS
-export const projectsPostProjectsListACreator = () => {
-  return dispatch => {
-    dispatch(
-      genericChangeTypeStatusLoading(PROJECT_CAN_SEARCH_PROJECTS, false, true)
-    );
-    WebApi.projects.post
-      .list({ Limit: 1, Page: 1 })
-      .then(response => {
-        !response.errorOccurred() &&
-          dispatch(
-            genericChangeTypeStatusLoading(
-              PROJECT_CAN_SEARCH_PROJECTS,
-              true,
-              false
-            )
-          );
-      })
-      .catch(error => {
-        dispatch(
-          genericChangeTypeStatusLoading(
-            PROJECT_CAN_SEARCH_PROJECTS,
-            false,
-            false
-          )
-        );
-      });
-  };
-};
-
-export const projectsAddProjectACreator = () => {
-  return dispatch => {
-    dispatch(
-      genericInfoACreator(WebApi.projects.post.add({}), PROJECT_CAN_ADD_PROJECTS)
-    );
-  };
-};
-
-export const projectsEditProjectACreator = () => {
-  return dispatch => {
-    dispatch(
-      genericInfoACreator(WebApi.projects.put.project(0,{}), PROJECT_CAN_EDIT_PROJECTS)
-    );
-  };
-};
-
-//CLIENT
-export const clientGetListOfClientsACreator = () => {
-  return dispatch => {
-    dispatch(
-      genericInfoACreator(WebApi.clients.get.all(), CLIENT_GET_LIST_OF_CLIENTS)
-    );
-  };
-};
-
-export const clientAddClientACreator = () => {
-  return dispatch => {
-    dispatch(genericInfoACreator(WebApi.clients.post(), CLIENT_POST_CLIENT));
-  };
-};
-
-export const clientDeleteClientACreator = () => {
-  return dispatch => {
-    dispatch(genericInfoACreator(WebApi.clients.post(), CLIENT_DELETE_CLIENT));
-  };
-};
-
-export const clientEditClientACreator = () => {
-  return dispatch => {
-    dispatch(
-      genericInfoACreator(WebApi.clients.put.info(), CLIENT_EDIT_CLIENT)
-    );
-  };
-};
-
-export const clientReactivateClientACreator = () => {
-  return dispatch => {
-    dispatch(
-      genericInfoACreator(
-        WebApi.clients.put.reactivate(),
-        CLIENT_REACTIVATE_CLIENT
-      )
-    );
-  };
-};
+const infoCreators = [
+  //ACCOUNT
+  ()=>{
+    return dispatch => { dispatch(
+      genericInfoACreator( WebApi.users.post.list({ Limit: 1, Page: 1 }), ACCOUNT, CAN_SEARCH_USER_ACCOUNT )
+    )}
+  },
+  () => {
+    return dispatch => {
+      dispatch(
+        genericInfoACreator( WebApi.users.patch.roles(),ACCOUNT, CAN_EDIT_USERS_ROLES)
+      )}
+  },
+  () => {
+    return dispatch => {
+      dispatch(
+        genericInfoACreator(WebApi.users.get.adSearch(), ACCOUNT, CAN_SEARCH_AD)
+      );
+    };
+  },
+  () => {
+    return dispatch => {
+      dispatch(
+        genericInfoACreator(WebApi.users.post.add(), ACCOUNT, CAN_ADD_USER)
+      );
+    };
+  },
+  () => {
+    return dispatch => {
+      dispatch(
+        genericInfoACreator(
+          WebApi.users.patch.reactivate(), ACCOUNT, CAN_REACTIVATE_USER)
+      );
+    };
+  },
+  () => {
+    return dispatch => {
+      dispatch(
+        genericInfoACreator(WebApi.users.delete.user(), ACCOUNT, CAN_DELETE_USER)
+      );
+    };
+  },
+  () => {
+    return dispatch => {
+      dispatch(
+        genericInfoACreator(WebApi.users.delete.request(), ACCOUNT, CAN_DELETE_USER_REQUEST)
+      );
+    };
+  },
+  //PROJECTS
+  () => {
+    return dispatch => {
+      dispatch(
+        genericInfoACreator( WebApi.projects.post.list({ Limit: 1, Page: 1 }), PROJECTS, CAN_SEARCH_PROJECTS)
+      );
+  }},
+  () => {
+    return dispatch => {
+      dispatch(
+        genericInfoACreator(WebApi.projects.post.add({}),PROJECTS, CAN_ADD_PROJECT)
+      );
+    };
+  },
+  () => {
+    return dispatch => {
+      dispatch(
+        genericInfoACreator(WebApi.projects.put.project(0,{}), PROJECTS, CAN_EDIT_PROJECT)
+      );
+    };
+  },
+  () => {
+    return dispatch => {
+      dispatch(
+        genericInfoACreator(WebApi.projects.get.projects(0), PROJECTS, CAN_GET_PROJECT)
+      );
+    };
+  },
+  //CLIENT
+  () => {
+    return dispatch => {
+      dispatch(
+        genericInfoACreator(WebApi.clients.get.all(), CLIENT, CAN_GET_LIST_OF_CLIENTS)
+      );
+    };
+  },
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator(WebApi.clients.post(), CLIENT, CAN_ADD_CLIENT))
+    };
+  },
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator(WebApi.clients.post(), CLIENT, CAN_DELETE_CLIENT))
+    };
+  },
+  () => {
+    return dispatch => {
+      dispatch(
+        genericInfoACreator(WebApi.clients.put.info(), CLIENT, CAN_EDIT_CLIENT)
+      );
+    };
+  },
+  () => {
+    return dispatch => {
+      dispatch(
+        genericInfoACreator(
+          WebApi.clients.put.reactivate(),CLIENT, CAN_REACTIVATE_CLIENT
+        )
+      );
+    };
+  }
+]

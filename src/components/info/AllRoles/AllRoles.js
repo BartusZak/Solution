@@ -6,6 +6,7 @@ import * as infoActions from "../../../actions/infoActions";
 import ApiEndPoint from "./ApiEndPoint/ApiEndPoint";
 
 import "./AllRoles.scss";
+import { ACCOUNT, CAN_SEARCH_USER_ACCOUNT, CAN_EDIT_USERS_ROLES, CAN_SEARCH_AD, CAN_ADD_USER, CAN_REACTIVATE_USER, CAN_DELETE_USER, CAN_DELETE_USER_REQUEST, CAN_SEARCH_PROJECTS, CAN_ADD_PROJECT, CAN_EDIT_PROJECT, CAN_GET_LIST_OF_CLIENTS, CAN_ADD_CLIENT, CAN_DELETE_CLIENT, CAN_EDIT_CLIENT, CAN_REACTIVATE_CLIENT, CAN_GET_PROJECT } from "../../../constants";
 
 class AllRoles extends PureComponent {
   state = {};
@@ -19,67 +20,71 @@ class AllRoles extends PureComponent {
     const AccountRequests = [
       {
         text: t("SearchingUsersAccounts"),
-        values: account.searchUserAccounts
+        values: account[CAN_SEARCH_USER_ACCOUNT]
       },
       {
         text: t("EditingUsersRoles"),
-        values: account.editUsersRoles
+        values: account[CAN_EDIT_USERS_ROLES]        
       },
       {
         text: t("SearchAD"),
-        values: account.canSearchAD
+        values: account[CAN_SEARCH_AD]
       },
       {
         text: t("AddUser"),
-        values: account.addUser
+        values: account[CAN_ADD_USER]
       },
       {
         text: t("ReactivateUser"),
-        values: account.canReactivateUser
+        values: account[CAN_REACTIVATE_USER]
       },
       {
         text: t("DeleteUser"),
-        values: account.canDeleteUser
+        values: account[CAN_DELETE_USER]
       },
       {
         text: t("DeleteUserRequest"),
-        values: account.canDeleteUserRequest
+        values: account[CAN_DELETE_USER_REQUEST]
       }
     ];
     const ProjectsRequests = [
       {
         text: t("SearchingProjects"),
-        values: projects.searchProjects
+        values: projects[CAN_SEARCH_PROJECTS]
       },
       {
         text: t("AddingProject"),
-        values: projects.addProject
+        values: projects[CAN_ADD_PROJECT]
       },
       {
         text: t("EditProject"),
-        values: projects.editProject
+        values: projects[CAN_EDIT_PROJECT]
+      },
+      {
+        text: t("ProjectDetails"),
+        values: projects[CAN_GET_PROJECT]
       }
     ];
     const ClientRequests = [
       {
         text: t("GettingListOfClients"),
-        values: client.getListOfClients
+        values: client[CAN_GET_LIST_OF_CLIENTS]
       },
       {
         text: t("AddingClient"),
-        values: client.addingClient
+        values: client[CAN_ADD_CLIENT]
       },
       {
         text: t("DeletingClient"),
-        values: client.deleteClient
+        values: client[CAN_DELETE_CLIENT]
       },
       {
         text: t("EditingClient"),
-        values: client.editClient
+        values: client[CAN_EDIT_CLIENT]
       },
       {
         text: t("ReactivatingClient"),
-        values: client.reactivateClient
+        values: client[CAN_REACTIVATE_CLIENT]
       }
     ];
 
