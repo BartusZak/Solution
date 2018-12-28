@@ -21,6 +21,13 @@ import {
   CAN_EDIT_CLIENT,
   CAN_REACTIVATE_CLIENT,
   CAN_GET_PROJECT,
+  CAN_ADD_PROJECT_OWNERS,
+  CAN_DELETE_PROJECT_OWNERS,
+  CAN_CLOSE_PROJECT,
+  CAN_REACTIVATE_PROJECT,
+  CAN_SET_PROJECT_SKILLS,
+  CAN_GET_SUGGESTED_EMPLOYEES,
+  CAN_DELETE_PROJECT,
 
 } from "../constants";
 
@@ -139,6 +146,55 @@ const infoCreators = [
     return dispatch => {
       dispatch(
         genericInfoACreator(WebApi.projects.get.projects(0), PROJECTS, CAN_GET_PROJECT)
+      );
+    };
+  },
+  () => {
+    return dispatch => {
+      dispatch(
+        genericInfoACreator(WebApi.projects.put.owner(0,[]), PROJECTS, CAN_ADD_PROJECT_OWNERS)
+      );
+    };
+  },
+  () => {
+    return dispatch => {
+      dispatch(
+        genericInfoACreator(WebApi.projects.delete.owner({}), PROJECTS, CAN_DELETE_PROJECT_OWNERS)
+      );
+    };
+  },
+  () => {
+    return dispatch => {
+      dispatch(
+        genericInfoACreator(WebApi.projects.put.closeProject(0), PROJECTS, CAN_CLOSE_PROJECT)
+      );
+    };
+  },
+  () => {
+    return dispatch => {
+      dispatch(
+        genericInfoACreator(WebApi.projects.put.reactivateProject(0), PROJECTS, CAN_REACTIVATE_PROJECT)
+      );
+    };
+  },
+  () => {
+    return dispatch => {
+      dispatch(
+        genericInfoACreator(WebApi.projects.put.skills(0,[]), PROJECTS, CAN_SET_PROJECT_SKILLS)
+      );
+    };
+  },
+  () => {
+    return dispatch => {
+      dispatch(
+        genericInfoACreator(WebApi.projects.delete.project(0), PROJECTS, CAN_DELETE_PROJECT)
+      );
+    };
+  },
+  () => {
+    return dispatch => {
+      dispatch(
+        genericInfoACreator(WebApi.projects.get.suggestEmployees(0), PROJECTS, CAN_GET_SUGGESTED_EMPLOYEES)
       );
     };
   },

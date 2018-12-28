@@ -18,7 +18,14 @@ import {
   CLIENT,
   PROJECTS,
   ACCOUNT,
-  CAN_GET_PROJECT
+  CAN_GET_PROJECT,
+  CAN_ADD_PROJECT_OWNERS,
+  CAN_DELETE_PROJECT_OWNERS,
+  CAN_CLOSE_PROJECT,
+  CAN_REACTIVATE_PROJECT,
+  CAN_SET_PROJECT_SKILLS,
+  CAN_DELETE_PROJECT,
+  CAN_GET_SUGGESTED_EMPLOYEES
 } from "../constants";
 import { updateObject } from "../services/methods";
 
@@ -44,6 +51,13 @@ const initialState = {
     [CAN_ADD_PROJECT]: new InfoState(),
     [CAN_EDIT_PROJECT]: new InfoState(),
     [CAN_GET_PROJECT]: new InfoState(),
+    [CAN_ADD_PROJECT_OWNERS]: new InfoState(),
+    [CAN_DELETE_PROJECT_OWNERS]: new InfoState(),
+    [CAN_CLOSE_PROJECT]: new InfoState(),
+    [CAN_REACTIVATE_PROJECT]: new InfoState(),
+    [CAN_SET_PROJECT_SKILLS]: new InfoState(),
+    [CAN_DELETE_PROJECT]: new InfoState(),
+    [CAN_GET_SUGGESTED_EMPLOYEES]: new InfoState(),
   },
   [CLIENT]: {
     [CAN_GET_LIST_OF_CLIENTS]: new InfoState(),

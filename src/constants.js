@@ -207,6 +207,13 @@ export const CAN_SEARCH_PROJECTS = "canSearchProjects";
 export const CAN_ADD_PROJECT = "canAddProject";
 export const CAN_EDIT_PROJECT = "canEditProject";
 export const CAN_GET_PROJECT = "canGetProject";
+export const CAN_ADD_PROJECT_OWNERS = "canAddProjectOwners";
+export const CAN_DELETE_PROJECT_OWNERS = "canDeleteProjectOwners";
+export const CAN_CLOSE_PROJECT = 'canCloseProject';
+export const CAN_REACTIVATE_PROJECT = 'canReactivateProject';
+export const CAN_SET_PROJECT_SKILLS = 'canSetProjectSkills';
+export const CAN_DELETE_PROJECT = 'canDeleteProject'
+export const CAN_GET_SUGGESTED_EMPLOYEES = 'canGetSuggestedEmployees'
 
 export const CLIENT = 'client'
 export const CAN_GET_LIST_OF_CLIENTS = "canGetListOfClients";
@@ -214,3 +221,5 @@ export const CAN_ADD_CLIENT = "canAddClient";
 export const CAN_DELETE_CLIENT = "canDeleteClient";
 export const CAN_EDIT_CLIENT = "canEditClient";
 export const CAN_REACTIVATE_CLIENT = "canReactivateClient";
+
+

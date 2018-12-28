@@ -6,7 +6,7 @@ import * as infoActions from "../../../actions/infoActions";
 import ApiEndPoint from "./ApiEndPoint/ApiEndPoint";
 
 import "./AllRoles.scss";
-import { ACCOUNT, CAN_SEARCH_USER_ACCOUNT, CAN_EDIT_USERS_ROLES, CAN_SEARCH_AD, CAN_ADD_USER, CAN_REACTIVATE_USER, CAN_DELETE_USER, CAN_DELETE_USER_REQUEST, CAN_SEARCH_PROJECTS, CAN_ADD_PROJECT, CAN_EDIT_PROJECT, CAN_GET_LIST_OF_CLIENTS, CAN_ADD_CLIENT, CAN_DELETE_CLIENT, CAN_EDIT_CLIENT, CAN_REACTIVATE_CLIENT, CAN_GET_PROJECT } from "../../../constants";
+import { ACCOUNT, CAN_SEARCH_USER_ACCOUNT, CAN_EDIT_USERS_ROLES, CAN_SEARCH_AD, CAN_ADD_USER, CAN_REACTIVATE_USER, CAN_DELETE_USER, CAN_DELETE_USER_REQUEST, CAN_SEARCH_PROJECTS, CAN_ADD_PROJECT, CAN_EDIT_PROJECT, CAN_GET_LIST_OF_CLIENTS, CAN_ADD_CLIENT, CAN_DELETE_CLIENT, CAN_EDIT_CLIENT, CAN_REACTIVATE_CLIENT, CAN_GET_PROJECT, CAN_ADD_PROJECT_OWNERS, CAN_DELETE_PROJECT_OWNERS, CAN_CLOSE_PROJECT, CAN_REACTIVATE_PROJECT, CAN_SET_PROJECT_SKILLS, CAN_DELETE_PROJECT, CAN_GET_SUGGESTED_EMPLOYEES } from "../../../constants";
 
 class AllRoles extends PureComponent {
   state = {};
@@ -63,7 +63,35 @@ class AllRoles extends PureComponent {
       {
         text: t("ProjectDetails"),
         values: projects[CAN_GET_PROJECT]
-      }
+      },
+      {
+        text: t("AddProjectOwners"),
+        values: projects[CAN_ADD_PROJECT_OWNERS]
+      },
+      {
+        text: t("DeleteProjectOwners"),
+        values: projects[CAN_DELETE_PROJECT_OWNERS]
+      },
+      {
+        text: t("CloseProject"),
+        values: projects[CAN_CLOSE_PROJECT]
+      },
+      {
+        text: t("ReactivateProject"),
+        values: projects[CAN_REACTIVATE_PROJECT]
+      },
+      {
+        text: t("SetProjectSkills"),
+        values: projects[CAN_SET_PROJECT_SKILLS]
+      },
+      {
+        text: t("DeleteProject"),
+        values: projects[CAN_DELETE_PROJECT]
+      },
+      {
+        text: t("GetSuggestedEmployees"),
+        values: projects[CAN_GET_SUGGESTED_EMPLOYEES]
+      },
     ];
     const ClientRequests = [
       {

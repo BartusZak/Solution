@@ -792,9 +792,18 @@ const translations = {
     ReactivateUser: "Reactivating Users Accounts",
     DeleteUserRequest: "Deleting Users Accounts Requests",
     DeleteUser: "Deleting Users Accounts",
+
+
     SearchingProjects: "Searching Projects",
     AddingProject: "Adding Project",
     EditProject: "Edit Project",
+    DeleteProjectOwners: "",
+    CloseProject: "Close Project",
+    ReactivateProject: "Reactivate Project",
+    SetProjectSkills: "Set Project Skills",
+    DeleteProject: "Delete Projekt",
+    GetSuggestedEmployees: "Get Suggested Employees",
+
     GettingListOfClients: "Getting List of Clients",
     AddingClient: "Adding Client",
     DeletingClient: "Deleting Client",
