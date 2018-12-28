@@ -793,6 +793,8 @@ const translations = {
     DeleteUserRequest: "Deleting Users Accounts Requests",
     DeleteUser: "Deleting Users Accounts",
     SearchingProjects: "Searching Projects",
+    AddingProject: "Adding Project",
+    EditProject: "Edit Project",
     GettingListOfClients: "Getting List of Clients",
     AddingClient: "Adding Client",
     DeletingClient: "Deleting Client",

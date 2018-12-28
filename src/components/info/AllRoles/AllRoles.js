@@ -50,6 +50,14 @@ class AllRoles extends PureComponent {
       {
         text: t("SearchingProjects"),
         values: projects.searchProjects
+      },
+      {
+        text: t("AddingProject"),
+        values: projects.addProject
+      },
+      {
+        text: t("EditProject"),
+        values: projects.editProject
       }
     ];
     const ClientRequests = [

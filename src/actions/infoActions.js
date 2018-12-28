@@ -9,11 +9,14 @@ import {
   ACCOUNT_CAN_DELETE_USER,
   ACCOUNT_CAN_DELETE_USER_REQUEST,
   PROJECT_CAN_SEARCH_PROJECTS,
+  PROJECT_CAN_ADD_PROJECTS,
   CLIENT_GET_LIST_OF_CLIENTS,
   CLIENT_POST_CLIENT,
   CLIENT_DELETE_CLIENT,
   CLIENT_EDIT_CLIENT,
-  CLIENT_REACTIVATE_CLIENT
+  CLIENT_REACTIVATE_CLIENT,
+  PROJECT_CAN_EDIT_PROJECTS,
+
 } from "../constants";
 
 export const infoActionCreator = () => {
@@ -27,6 +30,8 @@ export const infoActionCreator = () => {
     dispatch(accountDeleteUserRequestsACreator());
 
     dispatch(projectsPostProjectsListACreator());
+    dispatch(projectsAddProjectACreator());
+    dispatch(projectsEditProjectACreator());
 
     dispatch(clientGetListOfClientsACreator());
     dispatch(clientAddClientACreator());
@@ -156,6 +161,22 @@ export const projectsPostProjectsListACreator = () => {
           )
         );
       });
+  };
+};
+
+export const projectsAddProjectACreator = () => {
+  return dispatch => {
+    dispatch(
+      genericInfoACreator(WebApi.projects.post.add({}), PROJECT_CAN_ADD_PROJECTS)
+    );
+  };
+};
+
+export const projectsEditProjectACreator = () => {
+  return dispatch => {
+    dispatch(
+      genericInfoACreator(WebApi.projects.put.project(0,{}), PROJECT_CAN_EDIT_PROJECTS)
+    );
   };
 };
 

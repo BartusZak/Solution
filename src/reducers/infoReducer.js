@@ -11,7 +11,9 @@ import {
   CLIENT_POST_CLIENT,
   CLIENT_DELETE_CLIENT,
   CLIENT_EDIT_CLIENT,
-  CLIENT_REACTIVATE_CLIENT
+  CLIENT_REACTIVATE_CLIENT,
+  PROJECT_CAN_ADD_PROJECTS,
+  PROJECT_CAN_EDIT_PROJECTS
 } from "../constants";
 import { updateObject } from "../services/methods";
 
@@ -50,6 +52,14 @@ const initialState = {
     searchProjects: {
       status: false,
       loading: true
+    },
+    addProject:{
+      status: false,
+      loading: true,    
+    },
+    editProject:{
+      status: false,
+      loading: true,    
     }
   },
   client: {
@@ -138,6 +148,21 @@ export const infoReducer = (state = initialState, action) => {
           searchProjects: { status: action.status, loading: action.loading }
         }
       });
+    case PROJECT_CAN_ADD_PROJECTS:
+      return updateObject(state, {
+        projects: {
+          ...state.projects,
+          addProject: { status: action.status, loading: action.loading }
+        }
+      });
+    case PROJECT_CAN_EDIT_PROJECTS:
+      return updateObject(state, {
+        projects: {
+          ...state.projects,
+          editProject: { status: action.status, loading: action.loading }
+        }
+      });
+
     case CLIENT_GET_LIST_OF_CLIENTS:
       return updateObject(state, {
         client: {

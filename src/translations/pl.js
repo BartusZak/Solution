@@ -805,6 +805,8 @@ const translations = {
     DeleteUserRequest: "Usuwanie próśb o Konto Użytkowników",
     DeleteUser: "Usuwanie Kont Użytkowników",
     SearchingProjects: "Wyszukiwanie Projektów",
+    AddingProject: "Dodawanie projektu",
+    EditProject: "Edytowanie projektu",
     GettingListOfClients: "Wyświetlanie Listy Klientów",
     AddingClient: "Dodawanie Klientów",
     DeletingClient: "Usuwanie Klientów",
