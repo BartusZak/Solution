@@ -6,7 +6,7 @@ import * as infoActions from "../../../actions/infoActions";
 import ApiEndPoint from "./ApiEndPoint/ApiEndPoint";
 
 import "./AllRoles.scss";
-import { ACCOUNT, CAN_SEARCH_USER_ACCOUNT, CAN_EDIT_USERS_ROLES, CAN_SEARCH_AD, CAN_ADD_USER, CAN_REACTIVATE_USER, CAN_DELETE_USER, CAN_DELETE_USER_REQUEST, CAN_SEARCH_PROJECTS, CAN_ADD_PROJECT, CAN_EDIT_PROJECT, CAN_GET_LIST_OF_CLIENTS, CAN_ADD_CLIENT, CAN_DELETE_CLIENT, CAN_EDIT_CLIENT, CAN_REACTIVATE_CLIENT, CAN_GET_PROJECT, CAN_ADD_PROJECT_OWNERS, CAN_DELETE_PROJECT_OWNERS, CAN_CLOSE_PROJECT, CAN_REACTIVATE_PROJECT, CAN_SET_PROJECT_SKILLS, CAN_DELETE_PROJECT, CAN_GET_SUGGESTED_EMPLOYEES } from "../../../constants";
+import { ACCOUNT, CAN_SEARCH_USER_ACCOUNT, CAN_EDIT_USERS_ROLES, CAN_SEARCH_AD, CAN_ADD_USER, CAN_REACTIVATE_USER, CAN_DELETE_USER, CAN_DELETE_USER_REQUEST, CAN_SEARCH_PROJECTS, CAN_ADD_PROJECT, CAN_EDIT_PROJECT, CAN_GET_LIST_OF_CLIENTS, CAN_ADD_CLIENT, CAN_DELETE_CLIENT, CAN_EDIT_CLIENT, CAN_REACTIVATE_CLIENT, CAN_GET_PROJECT, CAN_ADD_PROJECT_OWNERS, CAN_DELETE_PROJECT_OWNERS, CAN_CLOSE_PROJECT, CAN_REACTIVATE_PROJECT, CAN_SET_PROJECT_SKILLS, CAN_DELETE_PROJECT, CAN_GET_SUGGESTED_EMPLOYEES, CAN_GET_EMPLOYEE_ASSIGNMENTS, CAN_GET_PROJECT_ASSIGNMENTS, CAN_ADD_ASSIGNMENT, CAN_EDIT_ASSIGNMENT, CAN_DELETE_ASSIGNMENT, ASSIGNMENTS, CLIENT, PROJECTS } from "../../../constants";
 
 class AllRoles extends PureComponent {
   state = {};
@@ -16,7 +16,7 @@ class AllRoles extends PureComponent {
   };
 
   render() {
-    const { account, projects, client, t } = this.props;
+    const { account, projects, client,assignments, t } = this.props;
     const AccountRequests = [
       {
         text: t("SearchingUsersAccounts"),
@@ -116,20 +116,45 @@ class AllRoles extends PureComponent {
       }
     ];
 
+    const AssignmentsRequests = [
+      {
+        text: t("GetEmployeeAssignments"),
+        values: assignments[CAN_GET_EMPLOYEE_ASSIGNMENTS]
+      },
+      {
+        text: t("GetProjectAssignments"),
+        values: assignments[CAN_GET_PROJECT_ASSIGNMENTS]
+      },
+      {
+        text: t("AddAssignment"),
+        values: assignments[CAN_ADD_ASSIGNMENT]
+      },
+      {
+        text: t("EditAssignment"),
+        values: assignments[CAN_EDIT_ASSIGNMENT]
+      },
+      {
+        text: t("DeleteAssignment"),
+        values: assignments[CAN_DELETE_ASSIGNMENT]
+      }
+    ];
+
     return (
       <div id="all-roles" className="content-container">
         <ApiEndPoint name="Account" endPoints={AccountRequests} />
         <ApiEndPoint name="Projects" endPoints={ProjectsRequests} />
         <ApiEndPoint name="Client" endPoints={ClientRequests} />
+        <ApiEndPoint name="Assignments" endPoints={AssignmentsRequests} />
       </div>
     );
   }
 }
 function mapStateToProps(state) {
   return {
-    account: state.infoReducer.account,
-    projects: state.infoReducer.projects,
-    client: state.infoReducer.client
+    account: state.infoReducer[ACCOUNT],
+    projects: state.infoReducer[PROJECTS],
+    client: state.infoReducer[CLIENT],
+    assignments: state.infoReducer[ASSIGNMENTS]
   };
 }
 function mapDispatchToProps(dispatch) {

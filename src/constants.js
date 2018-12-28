@@ -222,4 +222,10 @@ export const CAN_DELETE_CLIENT = "canDeleteClient";
 export const CAN_EDIT_CLIENT = "canEditClient";
 export const CAN_REACTIVATE_CLIENT = "canReactivateClient";
 
+export const ASSIGNMENTS = 'assignments'
+export const CAN_GET_EMPLOYEE_ASSIGNMENTS = 'canGetEmployeeAssignments';
+export const CAN_GET_PROJECT_ASSIGNMENTS = 'canGetProjectAssignments';
+export const CAN_ADD_ASSIGNMENT = 'canAddAssignment';
+export const CAN_EDIT_ASSIGNMENT = 'canEditAssignment';
+export const CAN_DELETE_ASSIGNMENT = 'canDeleteAssignment';
 

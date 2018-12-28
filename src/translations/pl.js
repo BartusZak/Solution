@@ -819,7 +819,13 @@ const translations = {
     AddingClient: "Dodawanie Klientów",
     DeletingClient: "Usuwanie Klientów",
     EditingClient: "Edytowanie Klientów",
-    ReactivatingClient: "Reaktywowanie Klientów"
+    ReactivatingClient: "Reaktywowanie Klientów",
+
+    GetEmployeeAssignments: "Pobierz przypisania pracownika",
+    GetProjectAssignments: "Pobierz przypisania projektu",
+    AddAssignment: "Przypisanie pracownika do projektu",
+    EditAssignment: "Edytowanie przypisania",
+    DeleteAssignment: "Usuwanie przypisania",
   },
   ReportsCloudView: {
     LoadingAccountDataPrompt:

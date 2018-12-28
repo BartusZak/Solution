@@ -25,7 +25,13 @@ import {
   CAN_REACTIVATE_PROJECT,
   CAN_SET_PROJECT_SKILLS,
   CAN_DELETE_PROJECT,
-  CAN_GET_SUGGESTED_EMPLOYEES
+  CAN_GET_SUGGESTED_EMPLOYEES,
+  ASSIGNMENTS,
+  CAN_GET_EMPLOYEE_ASSIGNMENTS,
+  CAN_GET_PROJECT_ASSIGNMENTS,
+  CAN_ADD_ASSIGNMENT,
+  CAN_EDIT_ASSIGNMENT,
+  CAN_DELETE_ASSIGNMENT
 } from "../constants";
 import { updateObject } from "../services/methods";
 
@@ -65,7 +71,14 @@ const initialState = {
     [CAN_DELETE_CLIENT]: new InfoState(),
     [CAN_EDIT_CLIENT]: new InfoState(),
     [CAN_REACTIVATE_CLIENT]: new InfoState(),
-  }
+  },
+  [ASSIGNMENTS]:{
+    [CAN_GET_EMPLOYEE_ASSIGNMENTS]: new InfoState(),
+    [CAN_GET_PROJECT_ASSIGNMENTS]: new InfoState(),
+    [CAN_ADD_ASSIGNMENT]: new InfoState(),
+    [CAN_EDIT_ASSIGNMENT]: new InfoState(),
+    [CAN_DELETE_ASSIGNMENT]: new InfoState(),
+  },
 };
 
 export const infoReducer = (state = initialState, action) => {

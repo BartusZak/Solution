@@ -28,6 +28,12 @@ import {
   CAN_SET_PROJECT_SKILLS,
   CAN_GET_SUGGESTED_EMPLOYEES,
   CAN_DELETE_PROJECT,
+  ASSIGNMENTS,
+  CAN_GET_EMPLOYEE_ASSIGNMENTS,
+  CAN_GET_PROJECT_ASSIGNMENTS,
+  CAN_ADD_ASSIGNMENT,
+  CAN_EDIT_ASSIGNMENT,
+  CAN_DELETE_ASSIGNMENT,
 
 } from "../constants";
 
@@ -230,6 +236,32 @@ const infoCreators = [
           WebApi.clients.put.reactivate(),CLIENT, CAN_REACTIVATE_CLIENT
         )
       );
+    }
+  },
+  //ASSIGNMENTS
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator(WebApi.assignments.get.byEmployee(0), ASSIGNMENTS, CAN_GET_EMPLOYEE_ASSIGNMENTS))
     };
-  }
+  },
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator(WebApi.assignments.get.byProject(0), ASSIGNMENTS, CAN_GET_PROJECT_ASSIGNMENTS))
+    };
+  },
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator(WebApi.assignments.post(), ASSIGNMENTS, CAN_ADD_ASSIGNMENT))
+    };
+  },
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator(WebApi.assignments.put(), ASSIGNMENTS, CAN_EDIT_ASSIGNMENT))
+    };
+  },
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator(WebApi.assignments.delete(), ASSIGNMENTS, CAN_DELETE_ASSIGNMENT))
+    };
+  },
 ]

@@ -793,7 +793,6 @@ const translations = {
     DeleteUserRequest: "Deleting Users Accounts Requests",
     DeleteUser: "Deleting Users Accounts",
 
-
     SearchingProjects: "Searching Projects",
     AddingProject: "Adding Project",
     EditProject: "Edit Project",
@@ -808,7 +807,14 @@ const translations = {
     AddingClient: "Adding Client",
     DeletingClient: "Deleting Client",
     EditingClient: "Editing Client",
-    ReactivatingClient: "Reactivating Client"
+    ReactivatingClient: "Reactivating Client",
+
+    GetEmployeeAssignments: "Get Employee Assignments",
+    GetProjectAssignments: "Get ProjectAssignments",
+    AddAssignment: "Add Assignment",
+    EditAssignment: "Edit Assignment",
+    DeleteAssignment: "Delete Assignment",
+
   },
   ReportsCloudView: {
     LoadingAccountDataPrompt: "Cloud data is loading right now. Please wait...",
