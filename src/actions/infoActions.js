@@ -39,6 +39,18 @@ import {
   CAN_GET_EMPLOYEE_CERTIFICATES,
   CAN_ADD_CERTIFICATE,
   CAN_DELETE_CERTIFICATE,
+  CAN_REACTIVATE_CLOUD,
+  CAN_ADD_CLOUD,
+  CAN_EDIT_CLOUD,
+  CAN_DELETE_CLOUD,
+  CLOUDS,
+  CAN_IMPORT_CV,
+  CV_IMPORT,
+  EDUCATION,
+  CAN_GET_EDUCATION,
+  CAN_ADD_EDUCATION,
+  CAN_EDIT_EDUCATION,
+  CAN_DELETE_EDUCATION,
 
 } from "../constants";
 
@@ -291,4 +303,56 @@ const infoCreators = [
       dispatch(genericInfoACreator(WebApi.certificates.delete.deleteById(), CERTIFICATES, CAN_DELETE_CERTIFICATE))
     };
   },
+
+  //CLOUDS
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator(WebApi.clouds.reactivate(0), CLOUDS, CAN_REACTIVATE_CLOUD))
+    };
+  },
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator(WebApi.clouds.post(), CLOUDS, CAN_ADD_CLOUD))
+    };
+  },
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator(WebApi.clouds.edit(0), CLOUDS, CAN_EDIT_CLOUD))
+    };
+  },
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator(WebApi.clouds.delete(0), CLOUDS, CAN_DELETE_CLOUD))
+    };
+  },
+
+  //CV IMPORT
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator(WebApi.CvImport.post(new FormData()), CV_IMPORT, CAN_IMPORT_CV))
+    };
+  },
+
+  //EDUCATION
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator(WebApi.education.get.byEducation(0), EDUCATION, CAN_GET_EDUCATION))
+    };
+  },
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator(WebApi.education.post(), CLOUDS, CAN_ADD_EDUCATION))
+    };
+  },
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator(WebApi.education.edit(0), CLOUDS, CAN_EDIT_EDUCATION))
+    };
+  },
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator(WebApi.education.delete(0), CLOUDS, CAN_DELETE_EDUCATION))
+    };
+  },
+
 ]

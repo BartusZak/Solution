@@ -36,7 +36,19 @@ import {
   CAN_EDIT_CERTIFICATE,
   CAN_GET_EMPLOYEE_CERTIFICATES,
   CAN_DELETE_CERTIFICATE,
-  CAN_ADD_CERTIFICATE
+  CAN_ADD_CERTIFICATE,
+  CLOUDS,
+  CAN_ADD_CLOUD,
+  CAN_EDIT_CLOUD,
+  CAN_DELETE_CLOUD,
+  CAN_REACTIVATE_CLOUD,
+  CV_IMPORT,
+  CAN_IMPORT_CV,
+  EDUCATION,
+  CAN_ADD_EDUCATION,
+  CAN_EDIT_EDUCATION,
+  CAN_GET_EDUCATION,
+  CAN_DELETE_EDUCATION
 } from "../constants";
 import { updateObject } from "../services/methods";
 
@@ -90,7 +102,24 @@ const initialState = {
     [CAN_EDIT_CERTIFICATE]: new InfoState(),
     [CAN_DELETE_CERTIFICATE]: new InfoState(),
     [CAN_ADD_CERTIFICATE]: new InfoState(),
-  }
+  },
+  [CLOUDS]:{
+    [CAN_ADD_CLOUD]: new InfoState(),
+    [CAN_EDIT_CLOUD]: new InfoState(),
+    [CAN_DELETE_CLOUD]: new InfoState(),
+    [CAN_REACTIVATE_CLOUD]: new InfoState(),
+  },
+  [CV_IMPORT]:{
+    [CAN_IMPORT_CV]: new InfoState(),
+  },
+
+  [EDUCATION]: {
+    [CAN_ADD_EDUCATION]: new InfoState(),
+    [CAN_EDIT_EDUCATION]: new InfoState(),
+    [CAN_GET_EDUCATION]: new InfoState(),
+    [CAN_DELETE_EDUCATION]: new InfoState(),
+  },
+
 };
 
 export const infoReducer = (state = initialState, action) => {

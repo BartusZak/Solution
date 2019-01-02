@@ -813,12 +813,23 @@ const translations = {
     GettingProjectAssignments: "Getting ProjectAssignments",
     AddingAssignment: "Adding Assignment",
     EditingAssignment: "Editing Assignment",
-    DeleteAssignment: "Delete Assignment",
+    DeletingAssignment: "Deleting Assignment",
 
     GettingEmployeeCertificates: "Getting Employee Certificate",
     EditingCertificate: "Editing Employee Certificate",
     AddingCertificate: "Adding Certificate",
     DeletingCertificate: "Deleting Certificate",
+
+    AddingCloud: "Adding Cloud",
+    EditingCloud: "Editing Cloud",
+    DeletingCloud: "Deleting Cloud",
+    ReactivatingCloud: "Reactivating Cloud",
+
+    ImportingCV: "Importing CV",
+
+    AddingEducation: "Adding Education",
+    EditingEducation: "Editing Education",
+    DeletingEducation: "Deleting Education",
   },
   ReportsCloudView: {
     LoadingAccountDataPrompt: "Cloud data is loading right now. Please wait...",

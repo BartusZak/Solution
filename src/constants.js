@@ -235,3 +235,17 @@ export const CAN_EDIT_CERTIFICATE = 'canEditCertificate'
 export const CAN_DELETE_CERTIFICATE= 'canDeleteCertificate'
 export const CAN_ADD_CERTIFICATE = 'canAddCertificate'
 
+export const CLOUDS = 'Clouds'
+export const CAN_ADD_CLOUD = 'canAddCloud';
+export const CAN_EDIT_CLOUD = 'canEditCloud';
+export const CAN_DELETE_CLOUD = 'canDeleteCloud';
+export const CAN_REACTIVATE_CLOUD = 'canReactivateCloud';
+
+export const CV_IMPORT = 'CVImport'
+export const CAN_IMPORT_CV = 'canImportCV'
+
+export const EDUCATION = 'Education'
+export const CAN_ADD_EDUCATION = 'canAddEducation'
+export const CAN_EDIT_EDUCATION = 'canEditEducation'
+export const CAN_GET_EDUCATION = 'canGetEducation'
+export const CAN_DELETE_EDUCATION = 'canDeleteEducation'

@@ -6,7 +6,7 @@ import * as infoActions from "../../../actions/infoActions";
 import ApiEndPoint from "./ApiEndPoint/ApiEndPoint";
 
 import "./AllRoles.scss";
-import { ACCOUNT, CAN_SEARCH_USER_ACCOUNT, CAN_EDIT_USERS_ROLES, CAN_SEARCH_AD, CAN_ADD_USER, CAN_REACTIVATE_USER, CAN_DELETE_USER, CAN_DELETE_USER_REQUEST, CAN_SEARCH_PROJECTS, CAN_ADD_PROJECT, CAN_EDIT_PROJECT, CAN_GET_LIST_OF_CLIENTS, CAN_ADD_CLIENT, CAN_DELETE_CLIENT, CAN_EDIT_CLIENT, CAN_REACTIVATE_CLIENT, CAN_GET_PROJECT, CAN_ADD_PROJECT_OWNERS, CAN_DELETE_PROJECT_OWNERS, CAN_CLOSE_PROJECT, CAN_REACTIVATE_PROJECT, CAN_SET_PROJECT_SKILLS, CAN_DELETE_PROJECT, CAN_GET_SUGGESTED_EMPLOYEES, CAN_GET_EMPLOYEE_ASSIGNMENTS, CAN_GET_PROJECT_ASSIGNMENTS, CAN_ADD_ASSIGNMENT, CAN_EDIT_ASSIGNMENT, CAN_DELETE_ASSIGNMENT, ASSIGNMENTS, CLIENT, PROJECTS, CERTIFICATES, CAN_GET_EMPLOYEE_CERTIFICATES, CAN_EDIT_CERTIFICATE, CAN_DELETE_CERTIFICATE, CAN_ADD_CERTIFICATE } from "../../../constants";
+import { ACCOUNT, CAN_SEARCH_USER_ACCOUNT, CAN_EDIT_USERS_ROLES, CAN_SEARCH_AD, CAN_ADD_USER, CAN_REACTIVATE_USER, CAN_DELETE_USER, CAN_DELETE_USER_REQUEST, CAN_SEARCH_PROJECTS, CAN_ADD_PROJECT, CAN_EDIT_PROJECT, CAN_GET_LIST_OF_CLIENTS, CAN_ADD_CLIENT, CAN_DELETE_CLIENT, CAN_EDIT_CLIENT, CAN_REACTIVATE_CLIENT, CAN_GET_PROJECT, CAN_ADD_PROJECT_OWNERS, CAN_DELETE_PROJECT_OWNERS, CAN_CLOSE_PROJECT, CAN_REACTIVATE_PROJECT, CAN_SET_PROJECT_SKILLS, CAN_DELETE_PROJECT, CAN_GET_SUGGESTED_EMPLOYEES, CAN_GET_EMPLOYEE_ASSIGNMENTS, CAN_GET_PROJECT_ASSIGNMENTS, CAN_ADD_ASSIGNMENT, CAN_EDIT_ASSIGNMENT, CAN_DELETE_ASSIGNMENT, ASSIGNMENTS, CLIENT, PROJECTS, CERTIFICATES, CAN_GET_EMPLOYEE_CERTIFICATES, CAN_EDIT_CERTIFICATE, CAN_DELETE_CERTIFICATE, CAN_ADD_CERTIFICATE, CAN_ADD_CLOUD, CAN_EDIT_CLOUD, CAN_REACTIVATE_CLOUD, CLOUDS, CAN_DELETE_CLOUD, CAN_IMPORT_CV, CV_IMPORT, CAN_ADD_EDUCATION, CAN_EDIT_EDUCATION, CAN_GET_EDUCATION, CAN_DELETE_EDUCATION, EDUCATION } from "../../../constants";
 
 class AllRoles extends PureComponent {
   state = {};
@@ -16,7 +16,7 @@ class AllRoles extends PureComponent {
   };
 
   render() {
-    const { account, projects, client,assignments, certificates, t } = this.props;
+    const { account, projects, client,assignments, certificates, clouds, cvImport, education, t } = this.props;
     const AccountRequests = [
       {
         text: t("SearchingUsersAccounts"),
@@ -158,6 +158,32 @@ class AllRoles extends PureComponent {
       },
     ]
 
+    const CloudsRequests = [
+      {
+        text: t('AddingCloud'),
+        values: clouds[CAN_ADD_CLOUD]
+      },
+      {
+        text: t('EditingCloud'),
+        values: clouds[CAN_EDIT_CLOUD]
+      },
+      {
+        text: t('DeletingCloud'),
+        values: clouds[CAN_DELETE_CLOUD]
+      },
+      {
+        text: t('ReactivatingCloud'),
+        values: clouds[CAN_REACTIVATE_CLOUD]
+      },
+    ]
+
+    const CVImportRequests = [
+      {
+        text: t('ImportingCV'),
+        values: cvImport[CAN_IMPORT_CV]
+      },
+    ]
+
     
     const template = [
       {
@@ -173,6 +199,8 @@ class AllRoles extends PureComponent {
         <ApiEndPoint name="Client" endPoints={ClientRequests} />
         <ApiEndPoint name="Assignments" endPoints={AssignmentsRequests} />
         <ApiEndPoint name="Certificates" endPoints={CertificatesRequests} />
+        <ApiEndPoint name="Clouds" endPoints={CloudsRequests} />
+        <ApiEndPoint name="CVImports" endPoints={CVImportRequests} />
       </div>
     );
   }
@@ -183,7 +211,10 @@ function mapStateToProps(state) {
     projects: state.infoReducer[PROJECTS],
     client: state.infoReducer[CLIENT],
     assignments: state.infoReducer[ASSIGNMENTS],
-    certificates: state.infoReducer[CERTIFICATES]
+    certificates: state.infoReducer[CERTIFICATES],
+    clouds: state.infoReducer[CLOUDS],
+    cvImport: state.infoReducer[CV_IMPORT],
+    education: state.infoReducer[EDUCATION]
   };
 }
 function mapDispatchToProps(dispatch) {

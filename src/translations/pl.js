@@ -831,6 +831,13 @@ const translations = {
     EditingCertificate: "Edytowanie certyfikatu",
     AddingCertificate: "Dodawanie certyfikatu",
     DeletingCertificate: "Usuwanie certyfikatu",
+
+    AddingCloud: "Dodawanie chmury",
+    EditingCloud: "Edytowanie chmury",
+    DeletingCloud: "Usuwanie chmury",
+    ReactivatingCloud: "Reaktywacja chmury",
+
+    ImportingCV: 'Importowanie CV',
   },
   ReportsCloudView: {
     LoadingAccountDataPrompt:
