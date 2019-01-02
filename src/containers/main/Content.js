@@ -16,8 +16,8 @@ import NotFound404 from "../../components/notFound404/NotFound404";
 import Quarters from "../../components/quarters/quartersPanel.jsx";
 import { getNotificationACreator } from "../../actions/notificationActions";
 import { connect } from "react-redux";
-import Info from "./../../components/info/infoContainer"; 
-
+import Info from "./../../components/info/infoContainer";
+import Alerts from '../../components/common/alerts/alerts';
 class Content extends React.Component {
   componentDidMount() {
     this.props.getNotificationACreator().then(() => {});
@@ -34,6 +34,7 @@ class Content extends React.Component {
       <div className="content">
         <Confirmation />
         <PromptsCommander history={history} />
+        <Alerts />
         <Switch>
           <Route exact path={match.url} component={StatsContainer} />
           <Route path={match.url + "/projects"} component={ProjectsContainer} />

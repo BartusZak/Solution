@@ -369,7 +369,7 @@ class ProjectsContainer extends React.Component {
             addNewProjectFormValues: addNewProjectFormValues
           });
           projectActions.createProject(null, []);
-          history.push(match.url + "/" + response.id);
+          // history.push(match.url + "/" + response.id);
         }, 1500);
       });
   };

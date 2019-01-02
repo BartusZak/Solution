@@ -1,0 +1,54 @@
+$error: #cb3232;
+$main: #1c7744;
+.alerts {
+  position: fixed;
+  bottom: 1em;
+  left: 1em;
+  z-index: 1200;
+  .alert-in {
+    animation: .4s animate-in ease-in-out forwards;
+    @keyframes animate-in{
+      0% {
+        transform: translateY(-15px);
+        opacity: 0;
+      }
+      100% {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+  }
+  .alert-item {
+    background: #fff;
+    border-radius: 4px;
+    width: 320px;
+    div:first-of-type {
+      display: flex;
+      padding: 7.5px;
+      .fa-times {
+        margin-left: auto;
+        cursor: pointer;
+      }
+    }
+    article {
+      padding: 7.5px;
+      color: grey;
+    }
+  }
+}
+.ok {
+  div:first-of-type {
+    color: #fff;
+    background: green;
+  }
+}
+.warn {
+
+}
+.err {
+  div:first-of-type {
+    color: #fff;
+    background: $error;
+  }
+}
+
