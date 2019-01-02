@@ -229,3 +229,9 @@ export const CAN_ADD_ASSIGNMENT = 'canAddAssignment';
 export const CAN_EDIT_ASSIGNMENT = 'canEditAssignment';
 export const CAN_DELETE_ASSIGNMENT = 'canDeleteAssignment';
 
+export const CERTIFICATES = 'Certificates'
+export const CAN_GET_EMPLOYEE_CERTIFICATES = 'canGetEmployeeCertificates'
+export const CAN_EDIT_CERTIFICATE = 'canEditCertificate'
+export const CAN_DELETE_CERTIFICATE= 'canDeleteCertificate'
+export const CAN_ADD_CERTIFICATE = 'canAddCertificate'
+

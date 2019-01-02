@@ -34,6 +34,11 @@ import {
   CAN_ADD_ASSIGNMENT,
   CAN_EDIT_ASSIGNMENT,
   CAN_DELETE_ASSIGNMENT,
+  CERTIFICATES,
+  CAN_EDIT_CERTIFICATE,
+  CAN_GET_EMPLOYEE_CERTIFICATES,
+  CAN_ADD_CERTIFICATE,
+  CAN_DELETE_CERTIFICATE,
 
 } from "../constants";
 
@@ -165,7 +170,7 @@ const infoCreators = [
   () => {
     return dispatch => {
       dispatch(
-        genericInfoACreator(WebApi.projects.delete.owner({}), PROJECTS, CAN_DELETE_PROJECT_OWNERS)
+        genericInfoACreator(WebApi.projects.delete.owner([0]), PROJECTS, CAN_DELETE_PROJECT_OWNERS)
       );
     };
   },
@@ -193,7 +198,7 @@ const infoCreators = [
   () => {
     return dispatch => {
       dispatch(
-        genericInfoACreator(WebApi.projects.delete.project(0), PROJECTS, CAN_DELETE_PROJECT)
+        genericInfoACreator(WebApi.projects.delete.deleteProject(0), PROJECTS, CAN_DELETE_PROJECT)
       );
     };
   },
@@ -251,17 +256,39 @@ const infoCreators = [
   },
   () => {
     return dispatch => {
-      dispatch(genericInfoACreator(WebApi.assignments.post(), ASSIGNMENTS, CAN_ADD_ASSIGNMENT))
+      dispatch(genericInfoACreator(WebApi.assignments.post({}), ASSIGNMENTS, CAN_ADD_ASSIGNMENT))
     };
   },
   () => {
     return dispatch => {
-      dispatch(genericInfoACreator(WebApi.assignments.put(), ASSIGNMENTS, CAN_EDIT_ASSIGNMENT))
+      dispatch(genericInfoACreator(WebApi.assignments.put(0, {}), ASSIGNMENTS, CAN_EDIT_ASSIGNMENT))
     };
   },
   () => {
     return dispatch => {
       dispatch(genericInfoACreator(WebApi.assignments.delete(), ASSIGNMENTS, CAN_DELETE_ASSIGNMENT))
+    };
+  },
+
+   //CERTIFICATES
+   () => {
+    return dispatch => {
+      dispatch(genericInfoACreator(WebApi.certificates.get.byEmployee(0), CERTIFICATES, CAN_GET_EMPLOYEE_CERTIFICATES))
+    };
+  },
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator(WebApi.certificates.post.add({}), CERTIFICATES, CAN_ADD_CERTIFICATE))
+    };
+  },
+  () => {
+    return dispatch => {CERTIFICATES
+      dispatch(genericInfoACreator(WebApi.certificates.put.update(0,{}), CERTIFICATES, CAN_EDIT_CERTIFICATE))
+    };
+  },
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator(WebApi.certificates.delete.deleteById(), CERTIFICATES, CAN_DELETE_CERTIFICATE))
     };
   },
 ]

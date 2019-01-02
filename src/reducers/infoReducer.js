@@ -31,7 +31,12 @@ import {
   CAN_GET_PROJECT_ASSIGNMENTS,
   CAN_ADD_ASSIGNMENT,
   CAN_EDIT_ASSIGNMENT,
-  CAN_DELETE_ASSIGNMENT
+  CAN_DELETE_ASSIGNMENT,
+  CERTIFICATES,
+  CAN_EDIT_CERTIFICATE,
+  CAN_GET_EMPLOYEE_CERTIFICATES,
+  CAN_DELETE_CERTIFICATE,
+  CAN_ADD_CERTIFICATE
 } from "../constants";
 import { updateObject } from "../services/methods";
 
@@ -79,6 +84,13 @@ const initialState = {
     [CAN_EDIT_ASSIGNMENT]: new InfoState(),
     [CAN_DELETE_ASSIGNMENT]: new InfoState(),
   },
+  [CERTIFICATES]:{
+    [CAN_EDIT_CERTIFICATE]: new InfoState(),
+    [CAN_GET_EMPLOYEE_CERTIFICATES]: new InfoState(),
+    [CAN_EDIT_CERTIFICATE]: new InfoState(),
+    [CAN_DELETE_CERTIFICATE]: new InfoState(),
+    [CAN_ADD_CERTIFICATE]: new InfoState(),
+  }
 };
 
 export const infoReducer = (state = initialState, action) => {
