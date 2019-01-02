@@ -93,6 +93,7 @@ class List extends React.PureComponent {
                         }
                     </div>
                     }
+                    {this.props.renderNavigationElement()}
                 </div>
             );
         }

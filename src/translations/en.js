@@ -291,6 +291,8 @@ const translations = {
     AddQuestion: "Add question",
     QuestionMenage: "Question manager",
     ChooseQuestionHeader: "Choose question to use",
+    CheckAll: "Check all",
+    UncheckAll: "Uncheck all",
     Start: "Start",
     SuccDeleteQuestion: "The question was successfully removed",
     Date: "Date",

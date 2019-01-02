@@ -295,6 +295,8 @@ const translations = {
     AddQuestion: "Dodaj pytanie",
     QuestionMenage: "Zarządzaj pytaniami",
     ChooseQuestionHeader: "Wybierz pytania do wypełnienia",
+    CheckAll: "Zaznacz wszystkie",
+    UncheckAll: "Odznacz wszystkie",
     Start: "Rozpocznij",
     SuccDeleteQuestion: "Pomyślnie usunięto pytanie",
     Date: "Data",
