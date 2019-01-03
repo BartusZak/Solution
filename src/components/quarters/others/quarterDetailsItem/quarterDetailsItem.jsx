@@ -7,11 +7,13 @@ const quarterDetailsItem = ({item, clickItemFunction, markedQuestionsIds}) => (
       <p><i className="fa fa-question"></i> {item.question}</p>
       <p><i className="fa fa-comment"></i> {item.answer}</p>
 
-      <div className={`toolbox ${markedQuestionsIds[item.id] ? 'expanded-toolbox' : ''}`}>
-        <Checkbox checked={markedQuestionsIds[item.id] ? true : false} id={item.id}
-        handleChange={e => clickItemFunction(e, 'togleMarkingQuestion')}/>
-        <i className="fa fa-edit"></i>
-      </div>
+      {markedQuestionsIds &&
+        <div className={`toolbox ${markedQuestionsIds[item.id] ? 'expanded-toolbox' : ''}`}>
+          <Checkbox checked={markedQuestionsIds[item.id] ? true : false} id={item.id}
+          handleChange={e => clickItemFunction(e, 'togleMarkingQuestion')}/>
+          <i className="fa fa-edit"></i>
+        </div>
+      }
 
     </div>
 );

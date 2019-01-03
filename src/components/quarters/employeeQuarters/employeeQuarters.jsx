@@ -22,7 +22,7 @@ class EmployeeQuarters extends React.PureComponent{
         isLoadingQuarters: true,
         currentWatchedQuarterDetail: -1,
         quarterToDeleteId: -1,
-        isChangingSomethingInQuarterList: false,
+        reactivatingQuarterId: -1,
         isDeletingQuarter: false,
 
         markedQuestionsIds: {},
@@ -127,10 +127,10 @@ class EmployeeQuarters extends React.PureComponent{
           this.setState({quarterToDeleteId: quarter.id})
         break;
         case "reactivate":
-          this.setState({isChangingSomethingInQuarterList: true});
+          this.setState({reactivatingQuarterId: quarter.id});
           reactivateQuarterTalkACreator(quarter.id, quartersForEmployee).then(() => {
-              this.setState({isChangingSomethingInQuarterList: false});
-          }).catch(() => this.setState({isChangingSomethingInQuarterList: false}));
+              this.setState({reactivatingQuarterId: -1});
+          }).catch(() => this.setState({reactivatingQuarterId: -1}));
         break;
         case "generateDoc":
           window.open(`${API_ENDPOINT}/QuarterTalks/GenerateDocx/${quarter.id}`)
@@ -162,7 +162,7 @@ class EmployeeQuarters extends React.PureComponent{
     }
 
     render(){
-        const { isLoadingQuarters, currentWatchedQuarterDetail, quarterToDeleteId, isDeletingQuarter, isChangingSomethingInQuarterList, markedQuestionsIds,
+        const { isLoadingQuarters, currentWatchedQuarterDetail, quarterToDeleteId, isDeletingQuarter, reactivatingQuarterId, markedQuestionsIds,
           isMarkedMoreThanOneQuestion, openQuestionsToDeleteModal, isDeletingQuestions } = this.state;
         const { t, getQuartersForEmployee, quartersForEmployee,
             quartersForEmployeeStatus, quartersForEmployeeErrors, shouldLoadDataAfterLinkChange,
@@ -172,8 +172,7 @@ class EmployeeQuarters extends React.PureComponent{
                 operationStatus={quartersForEmployeeStatus} isLoading={isLoadingQuarters}>
                 <main className="employee-quarters">
                     <div className="quarters-list-container">
-                        <List isDoingRequest={isChangingSomethingInQuarterList}
-                        listClass="quarter-list" functionsToUse={this.functionsToUseForQuarters} componentProps={{
+                        <List listClass="quarter-list" functionsToUse={this.functionsToUseForQuarters} componentProps={{
                             currentWatchedItemId: currentWatchedQuarterDetail,
                             subHeader: t("QuarterItemSubHeader"),
                             doneQuarter: t("DoneQuarter"),
@@ -185,7 +184,7 @@ class EmployeeQuarters extends React.PureComponent{
                             connector: t("In"),
                             inYear: t("InYear"),
                             quarter: t("Quarter"),
-                            QuarterDeletedPrompt: t("QuarterDeletedPrompt")
+                            reactivatingQuarterId
                         }}
                         shouldAnimateList
                         clickItemFunction={this.onClickOperationHandler}

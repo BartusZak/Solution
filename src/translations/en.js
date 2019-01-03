@@ -302,7 +302,6 @@ const translations = {
     QuarterItemSubHeader: "carried out",
     Reactivate: "Reactivate",
     Conduct: "conduct",
-    QuarterDeletedPrompt: "This quarter is deleted",
     Year: "Year",
     PlannedDate: "Planned date",
     PlannedHour: "Planned hour",
@@ -336,7 +335,8 @@ const translations = {
     QuarterTalkDate: "Quarter talk date",
     PlannedQuarterTalkDate: "Planned quarter talk date",
     DeleteMarked: "Delete marked",
-    MakeSureYouWantDeleteQuestion: "Are you sure you want to delete the selected questions ?"
+    MakeSureYouWantDeleteQuestion: "Are you sure you want to delete the selected questions ?",
+    DeletedQuarter: 'This quarter talk is in delete state'
   },
   EmployeeSkills: {
     Add: "Add",

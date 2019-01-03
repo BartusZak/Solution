@@ -306,7 +306,6 @@ const translations = {
     QuarterItemSubHeader: "przeprowadził",
     Reactivate: "Reaktywuj",
     Conduct: "przeprowadzi",
-    QuarterDeletedPrompt: "Ta rozmowa jest usunięta",
     Year: "Rok",
     PlannedDate: "Planowana data",
     PlannedHour: "Planowana godzina",
@@ -340,7 +339,8 @@ const translations = {
     QuarterTalkDate: "Data przeprowadzenia rozmowy",
     PlannedQuarterTalkDate: "Planowana data odbycia rozmowy",
     DeleteMarked: "Usuń zaznaczone",
-    MakeSureYouWantDeleteQuestion: "Czy jestes pewny ze chcesz usunac zaznaczone pytania ?"
+    MakeSureYouWantDeleteQuestion: "Czy jestes pewny ze chcesz usunac zaznaczone pytania ?",
+    DeletedQuarter: 'Ta rozmowa kwartalna jest usunięta'
   },
   EmployeeSkills: {
     Add: "Dodaj",

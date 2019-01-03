@@ -35,14 +35,17 @@ class QuarterList extends React.PureComponent {
 
   operationsHandler = (quarter, operationName) => {
     const { history, employeeId } = this.props;
+    console.log(quarter);
     if(operationName === "expendDetails"){
       this.handleExpandDetails(quarter);
-    };
-    const url = `/main/quarters/employees/employeeId=${employeeId}`;
-    history.push({
-      pathname: url,
-      state: { quarterTalkId: quarter.id }
-    });
+    }
+    else {
+      const url = `/main/quarters/employees/employeeId=${employeeId}`;
+      history.push({
+        pathname: url,
+        state: { quarterTalkId: quarter.id }
+      });
+    }
   }
 
   handleExpandDetails = quarter => {

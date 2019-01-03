@@ -91,7 +91,7 @@
         }
     }
 }
-.animated-list div{
+.animated-list > div{
     animation: 0.5s animate-in forwards;
     opacity: 0;
     @for $i from 2 through 20 {
