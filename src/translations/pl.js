@@ -56,7 +56,9 @@ const translations = {
     Archive: "Archiwalne",
     EmployeesFTE: "FTE Pracowników",
     UnUsed: "Wolne",
-    Used: "Zajęte"
+    Used: "Zajęte",    
+    Remote: "ZDALNIE",
+    Others: "INNE"
   },
   UsersList: {
     Add: "Dodaj",
