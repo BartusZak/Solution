@@ -56,7 +56,9 @@ const translations = {
     Archive: "Archive",
     EmployeesFTE: "Employees FTE",
     UnUsed: "UnUsed",
-    Used: "Used"
+    Used: "Used",
+    Remote: "REMOTE",
+    Others: "OTHERS"
   },
   UsersList: {
     Add: "Add",
