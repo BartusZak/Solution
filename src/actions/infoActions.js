@@ -51,6 +51,24 @@ import {
   CAN_ADD_EDUCATION,
   CAN_EDIT_EDUCATION,
   CAN_DELETE_EDUCATION,
+  CAN_GET_EMPLOYEE,
+  EMPLOYEES,
+  CAN_GET_EMPLOYEE_CAPACITY,
+  CAN_GET_EMPLOYEES_AND_MANAGERS,
+  CAN_GET_EMPLOYEE_ONBOARDS,
+  CAN_GET_EMPLO_CONTACT,
+  CAN_GET_EMPLO_SKILLS,
+  CAN_SEARCH_EMPLOYEES,
+  CAN_ADD_EMPLOYEE,
+  CAN_ADD_EMPLOYEE_ONBOARD,
+  CAN_DELETE_EMPLOYEE,
+  CAN_SET_EMPLOYEE_SKILLS,
+  CAN_SET_EMPLOYEE_F_LANGUAGES,
+  CAN_SET_EMPLOYEE_SKYPE,
+  CAN_EDIT_EMPLOYEE_ONBOARD,
+  CAN_REACTIVATE_EMPLOYEE,
+  CAN_DELETE_EMPLOYEE_ONBOARD,
+  CAN_EDIT_EMPLOYEE,
 
 } from "../constants";
 
@@ -99,7 +117,7 @@ const infoCreators = [
   //ACCOUNT
   ()=>{
     return dispatch => { dispatch(
-      genericInfoACreator( WebApi.users.post.list({ Limit: 1, Page: 1 }), ACCOUNT, CAN_SEARCH_USER_ACCOUNT )
+      genericInfoACreator( WebApi.users.post.list({ Limit: 0, Page: 0 }), ACCOUNT, CAN_SEARCH_USER_ACCOUNT )
     )}
   },
   () => {
@@ -148,7 +166,7 @@ const infoCreators = [
   () => {
     return dispatch => {
       dispatch(
-        genericInfoACreator( WebApi.projects.post.list({ Limit: 1, Page: 1 }), PROJECTS, CAN_SEARCH_PROJECTS)
+        genericInfoACreator( WebApi.projects.post.list({ Limit: 0, Page: 0 }), PROJECTS, CAN_SEARCH_PROJECTS)
       );
   }},
   () => {
@@ -236,7 +254,7 @@ const infoCreators = [
   },
   () => {
     return dispatch => {
-      dispatch(genericInfoACreator(WebApi.clients.post(), CLIENT, CAN_DELETE_CLIENT))
+      dispatch(genericInfoACreator(WebApi.clients.delete(), CLIENT, CAN_DELETE_CLIENT))
     };
   },
   () => {
@@ -332,27 +350,90 @@ const infoCreators = [
       dispatch(genericInfoACreator(WebApi.CvImport.post(new FormData()), CV_IMPORT, CAN_IMPORT_CV))
     };
   },
-
-  //EDUCATION
+  //EMPLOYEES
   () => {
     return dispatch => {
-      dispatch(genericInfoACreator(WebApi.education.get.byEducation(0), EDUCATION, CAN_GET_EDUCATION))
+      dispatch(genericInfoACreator(WebApi.employees.get.byEmployee(0), EMPLOYEES, CAN_GET_EMPLOYEE))
     };
   },
   () => {
     return dispatch => {
-      dispatch(genericInfoACreator(WebApi.education.post(), CLOUDS, CAN_ADD_EDUCATION))
+      dispatch(genericInfoACreator(WebApi.employees.get.capacity(0), EMPLOYEES, CAN_GET_EMPLOYEE_CAPACITY))
     };
   },
   () => {
     return dispatch => {
-      dispatch(genericInfoACreator(WebApi.education.edit(0), CLOUDS, CAN_EDIT_EDUCATION))
+      dispatch(genericInfoACreator(WebApi.employees.get.employeesAndManagers(), EMPLOYEES, CAN_GET_EMPLOYEES_AND_MANAGERS))
     };
   },
   () => {
     return dispatch => {
-      dispatch(genericInfoACreator(WebApi.education.delete(0), CLOUDS, CAN_DELETE_EDUCATION))
+      dispatch(genericInfoACreator(WebApi.employees.get.onBoards(0), EMPLOYEES, CAN_GET_EMPLOYEE_ONBOARDS))
     };
   },
-
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator(WebApi.employees.get.emplo.contact(0), EMPLOYEES, CAN_GET_EMPLO_CONTACT))
+    };
+  },
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator(WebApi.employees.get.emplo.skills(0), EMPLOYEES, CAN_GET_EMPLO_SKILLS))
+    };
+  },
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator(WebApi.employees.post.list({limit: 0}), EMPLOYEES, CAN_SEARCH_EMPLOYEES))
+    };
+  },
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator(WebApi.employees.post.add({}), EMPLOYEES, CAN_ADD_EMPLOYEE))
+    };
+  },
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator(WebApi.employees.post.addOnBoard({}), EMPLOYEES, CAN_ADD_EMPLOYEE_ONBOARD))
+    };
+  },
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator(WebApi.employees.deleteOnBoard(0), EMPLOYEES, CAN_DELETE_EMPLOYEE_ONBOARD))
+    };
+  },
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator(WebApi.employees.delete(0), EMPLOYEES, CAN_DELETE_EMPLOYEE))
+    };
+  },
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator(WebApi.employees.put.skills(0,[]), EMPLOYEES, CAN_SET_EMPLOYEE_SKILLS))
+    };
+  },
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator(WebApi.employees.put.foreignLanguages(0,[]), EMPLOYEES, CAN_SET_EMPLOYEE_F_LANGUAGES))
+    };
+  },
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator(WebApi.employees.put.updateSkype(0,0), EMPLOYEES, CAN_SET_EMPLOYEE_SKYPE))
+    };
+  },
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator(WebApi.employees.put.updateOnBoard({},0), EMPLOYEES, CAN_EDIT_EMPLOYEE_ONBOARD))
+    };
+  },
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator(WebApi.employees.patch.reactivate(0), EMPLOYEES, CAN_REACTIVATE_EMPLOYEE))
+    };
+  },
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator(WebApi.employees.patch.data(), EMPLOYEES, CAN_EDIT_EMPLOYEE))
+    };
+  },
 ]

@@ -48,7 +48,26 @@ import {
   CAN_ADD_EDUCATION,
   CAN_EDIT_EDUCATION,
   CAN_GET_EDUCATION,
-  CAN_DELETE_EDUCATION
+  CAN_DELETE_EDUCATION,
+  EMPLOYEES,
+  CAN_GET_EMPLOYEE,
+  CAN_GET_EMPLOYEE_CAPACITY_REFACTOR,
+  CAN_GET_EMPLOYEES_AND_MANAGERS,
+  CAN_GET_EMPLOYEE_ONBOARDS,
+  CAN_GET_EMPLO_CONTACT,
+  CAN_GET_EMPLO_SKILLS,
+  CAN_SEARCH_EMPLOYEES,
+  CAN_ADD_EMPLOYEE,
+  CAN_ADD_EMPLOYEE_ONBOARD,
+  CAN_DELETE_EMPLOYEE,
+  CAN_SET_EMPLOYEE_SKILLS,
+  CAN_SET_EMPLOYEE_F_LANGUAGES,
+  CAN_SET_EMPLOYEE_SKYPE,
+  CAN_EDIT_EMPLOYEE_ONBOARD,
+  CAN_REACTIVATE_EMPLOYEE,
+  CAN_GET_EMPLOYEE_CAPACITY,
+  CAN_DELETE_EMPLOYEE_ONBOARD,
+  CAN_EDIT_EMPLOYEE
 } from "../constants";
 import { updateObject } from "../services/methods";
 
@@ -119,7 +138,25 @@ const initialState = {
     [CAN_GET_EDUCATION]: new InfoState(),
     [CAN_DELETE_EDUCATION]: new InfoState(),
   },
-
+  [EMPLOYEES]:{
+    [CAN_GET_EMPLOYEE] : new InfoState(),
+    [CAN_GET_EMPLOYEE_CAPACITY] : new InfoState(),
+    [CAN_GET_EMPLOYEES_AND_MANAGERS] : new InfoState(),
+    [CAN_GET_EMPLOYEE_ONBOARDS] : new InfoState(),
+    [CAN_GET_EMPLO_CONTACT] : new InfoState(),
+    [CAN_GET_EMPLO_SKILLS] : new InfoState(),
+    [CAN_SEARCH_EMPLOYEES] : new InfoState(),
+    [CAN_ADD_EMPLOYEE] : new InfoState(),
+    [CAN_ADD_EMPLOYEE_ONBOARD] : new InfoState(),
+    [CAN_DELETE_EMPLOYEE_ONBOARD] : new InfoState(),
+    [CAN_DELETE_EMPLOYEE] : new InfoState(),
+    [CAN_SET_EMPLOYEE_SKILLS] : new InfoState(),
+    [CAN_SET_EMPLOYEE_F_LANGUAGES] : new InfoState(),
+    [CAN_SET_EMPLOYEE_SKYPE] : new InfoState(),
+    [CAN_EDIT_EMPLOYEE_ONBOARD] : new InfoState(),
+    [CAN_REACTIVATE_EMPLOYEE] : new InfoState(),
+    [CAN_EDIT_EMPLOYEE] : new InfoState(),
+  }  
 };
 
 export const infoReducer = (state = initialState, action) => {
