@@ -32,6 +32,7 @@ const select = state =>
 const selectLang = state =>
   state.languageReducer.language ? state.languageReducer.language : "pl";
 
+let lang = '';
 function listener() {
   // const token = `Bearer ${select(store.getState())}`;
 
@@ -45,6 +46,8 @@ function listener() {
       langHeader = "en-US";
       break;
   }
+
+  lang = langHeader;
 
   axios.defaults.withCredentials = true;
   // axios.defaults.headers.common["Authorization"] = token;
@@ -89,7 +92,7 @@ const parseSuccess = (response, key) => {
   parser.parse();
   const succMessage = fromAlertSettings.succOperationsWhiteObject[key];
   if (succMessage) {
-    store.dispatch(addAlert({ id: key, content: succMessage.eng, type: 'ok', time: 5000 }));
+    store.dispatch(addAlert({ id: key, content: succMessage[lang], type: 'ok', time: 5000 }));
   }
 
   return BluebirdResolve(parser);
