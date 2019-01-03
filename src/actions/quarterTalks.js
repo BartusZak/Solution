@@ -162,9 +162,7 @@ export const getReservedDates = (reservedDates, getDatesStatus, getDatesErrors) 
             quartersForEmployeeCopy[indexWithGivenId].isDeleted = true;
             dispatch(getQuartersForEmployee(quartersForEmployeeCopy, true, []));
             resolve();
-        }).catch(error => {
-            reject();
-        });
+        }).catch(() => reject());
     })
   }
 
@@ -176,9 +174,7 @@ export const getReservedDates = (reservedDates, getDatesStatus, getDatesErrors) 
             quartersForEmployeeCopy[indexOfQuarter].isDeleted = false;
             dispatch(getQuartersForEmployee(quartersForEmployeeCopy, true, []));
             resolve();
-        }).catch(error => {
-            reject();
-        });
+        }).catch(() => reject());
     })
   }
 
@@ -229,13 +225,23 @@ export const deleteQuestionACreator = questionId => dispatch => {
       })
   }
 
-  export const editQuarterTalkACreator = (id, model) => dispatch => {
-    console.log(id, model);
-    useRequest('editQuarterTalk', id, model)
-      .then(response => {
-        console.log(response);
-      })
-      .catch(error => {
+  export const editQuestionsInQuarter = (id, questions) => ({type: EDIT_QUESTIONS_IN_QUARTER, id, quarter})
 
-      });
+  export const editQuarterTalkACreator = (id, currentQuarter, questionsToDeleteIds) => dispatch => {
+    const { year, quarter, plannedTalkDate } = currentQuarter;
+    const model = { year, quarter, plannedTalkDate,
+      quarterTalkQuestionItems:
+        currentQuarter.quarterTalkQuestionItems.filter(question => !questionsToDeleteIds[question.id]).map(question => {
+          return { quarterTalkQuestionId: question.id, answer: question.answer };
+        })
+    };
+    console.log(model.quarterTalkQuestionItems);
+    return new Promise((resolve, reject) => {
+      useRequest('editQuarterTalk', id, model)
+      .then(response => {
+        dispatch(editQuestionsInQuarter(id, model))
+        resolve();
+      })
+      .catch(() => reject());
+    });
   }

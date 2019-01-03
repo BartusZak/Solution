@@ -24,9 +24,12 @@ class EmployeeQuarters extends React.PureComponent{
         quarterToDeleteId: -1,
         isChangingSomethingInQuarterList: false,
         isDeletingQuarter: false,
+
         markedQuestionsIds: {},
         isMarkedMoreThanOneQuestion: false,
-        questionsToDeleteIds: []
+        questionsToDeleteIds: [],
+        openQuestionsToDeleteModal: false,
+        isDeletingQuestions: false
     }
 
     functionsToUseForQuestions = [
@@ -43,25 +46,8 @@ class EmployeeQuarters extends React.PureComponent{
       togleMarkingQuestion: data => this.handleMarkingQuestions(data)
     };
 
-    quartersFunctionsHandler = (data, name) => {
-      this.quarterFunctions[name](data);
-    }
-
-    handleMarkingQuestions = question => {
-      const markedQuestionsIds = {...this.state.markedQuestionsIds};
-      markedQuestionsIds[question.id] = markedQuestionsIds[question.id] ? false : true;
-      const isMarkedMoreThanOneQuestion = Object.keys(markedQuestionsIds).findIndex(key => markedQuestionsIds[key]) !== -1;
-      this.setState({markedQuestionsIds, isMarkedMoreThanOneQuestion});
-    }
-
-    takeQuestionsToDeleteIds = () => {
-      const { markedQuestionsIds } = this.state;
-      const questionsToDeleteIds = Object.keys(markedQuestionsIds).filter(key => markedQuestionsIds[key]);
-      this.setState({questionsToDeleteIds})
-    }
-
     componentDidMount(){
-        this.getQuartersForEmployeeHandler(getEmployeeId());
+      this.getQuartersForEmployeeHandler(getEmployeeId());
     }
 
     componentDidUpdate(prevProps, prevState){
@@ -74,6 +60,38 @@ class EmployeeQuarters extends React.PureComponent{
         if(this.state.currentWatchedQuarterDetail !== prevState.currentWatchedQuarterDetail) {
           this.setState({markedQuestionsIds: {}});
         }
+    }
+
+    quartersFunctionsHandler = (data, name) => {
+      this.quarterFunctions[name](data);
+    }
+
+    handleMarkingQuestions = question => {
+      const markedQuestionsIds = {...this.state.markedQuestionsIds};
+      markedQuestionsIds[question.id] = markedQuestionsIds[question.id] ? false : true;
+      const isMarkedMoreThanOneQuestion = Object.keys(markedQuestionsIds).findIndex(key => markedQuestionsIds[key]) !== -1;
+      this.setState({markedQuestionsIds, isMarkedMoreThanOneQuestion});
+    }
+
+    takeOnlyMarkedQuestions = () => {
+      const { markedQuestionsIds } = this.state;
+      const questionsToDeleteIds = {};
+      Object.keys(markedQuestionsIds).forEach(key => {
+        if (markedQuestionsIds[key])
+          questionsToDeleteIds[key] = markedQuestionsIds[key];
+      });
+      const openQuestionsToDeleteModal = Object.keys(questionsToDeleteIds).length > 0;
+      this.setState({questionsToDeleteIds, openQuestionsToDeleteModal})
+    }
+
+    deleteMarkedQuestions = () => {
+      const { currentWatchedQuarterDetail, questionsToDeleteIds } = this.state;
+      const { quartersForEmployee, editQuarterTalkACreator } = this.props;
+      this.setState({isDeletingQuestions: true});
+      editQuarterTalkACreator(quartersForEmployee[currentWatchedQuarterDetail].id,
+        quartersForEmployee[currentWatchedQuarterDetail], questionsToDeleteIds)
+        .then(() => this.setState({isDeletingQuestions: false}))
+        .catch(() => this.setState({isDeletingQuestions: false}));
     }
 
     getQuartersForEmployeeHandler = employeeId => {
@@ -103,25 +121,25 @@ class EmployeeQuarters extends React.PureComponent{
     }
 
     onClickOperationHandler = (quarter, operationName) => {
-        const { reactivateQuarterTalkACreator, quartersForEmployee, generateQuarterDocACreator } = this.props;
-        switch(operationName){
-            case "delete":
-                this.setState({quarterToDeleteId: quarter.id})
-                break;
-            case "reactivate":
-                this.setState({isChangingSomethingInQuarterList: true});
-                reactivateQuarterTalkACreator(quarter.id, quartersForEmployee).then(() => {
-                    this.setState({isChangingSomethingInQuarterList: false});
-                }).catch(() => this.setState({isChangingSomethingInQuarterList: false}));
-                break;
-            case "generateDoc":
-                window.open(`${API_ENDPOINT}/QuarterTalks/GenerateDocx/${quarter.id}`)
-                break;
-            default:
-                const currentWatchedItemId = quartersForEmployee.findIndex(item => item.id === quarter.id);
-                this.setState({currentWatchedQuarterDetail: currentWatchedItemId});
-                break;
-        }
+      const { reactivateQuarterTalkACreator, quartersForEmployee, generateQuarterDocACreator } = this.props;
+      switch(operationName){
+        case "delete":
+          this.setState({quarterToDeleteId: quarter.id})
+        break;
+        case "reactivate":
+          this.setState({isChangingSomethingInQuarterList: true});
+          reactivateQuarterTalkACreator(quarter.id, quartersForEmployee).then(() => {
+              this.setState({isChangingSomethingInQuarterList: false});
+          }).catch(() => this.setState({isChangingSomethingInQuarterList: false}));
+        break;
+        case "generateDoc":
+          window.open(`${API_ENDPOINT}/QuarterTalks/GenerateDocx/${quarter.id}`)
+        break;
+        default:
+          const currentWatchedItemId = quartersForEmployee.findIndex(item => item.id === quarter.id);
+          this.setState({currentWatchedQuarterDetail: currentWatchedItemId});
+        break;
+      }
     }
 
     handleQuarterTalkDelete = () => {
@@ -145,7 +163,7 @@ class EmployeeQuarters extends React.PureComponent{
 
     render(){
         const { isLoadingQuarters, currentWatchedQuarterDetail, quarterToDeleteId, isDeletingQuarter, isChangingSomethingInQuarterList, markedQuestionsIds,
-          isMarkedMoreThanOneQuestion, questionsToDeleteIds } = this.state;
+          isMarkedMoreThanOneQuestion, openQuestionsToDeleteModal, isDeletingQuestions } = this.state;
         const { t, getQuartersForEmployee, quartersForEmployee,
             quartersForEmployeeStatus, quartersForEmployeeErrors, shouldLoadDataAfterLinkChange,
             generateDocStatus, generateDocErrors, generateQuarterDoc, currentWatchedUser } = this.props;
@@ -183,7 +201,7 @@ class EmployeeQuarters extends React.PureComponent{
                             component={QuarterDetailsItem} items={quartersForEmployee[currentWatchedQuarterDetail].quarterTalkQuestionItems}>
 
                               {isMarkedMoreThanOneQuestion &&
-                                <Button onClick={this.takeQuestionsToDeleteIds} title={t("DeleteMarked")}
+                                <Button onClick={this.takeOnlyMarkedQuestions} title={t("DeleteMarked")}
                                   mainClass="btn medium-btn danger-btn animated-icon-btn" ><i className="fa fa-times"/></Button>
                               }
 
@@ -208,10 +226,10 @@ class EmployeeQuarters extends React.PureComponent{
                 </ConfirmModal>
 
                 <ConfirmModal
-                operation={this.handleQuarterTalkDelete} denyName={t("Deny")}
+                operation={this.deleteMarkedQuestions} denyName={t("Deny")}
                 operationName={t("Delete")} header={t("MakeSureYouWantDeleteQuestion")}
-                onClose={() => this.setState({questionsToDeleteIds: []})} open={questionsToDeleteIds.length > 0}>
-                    {isDeletingQuarter && <Spinner fontSize="3px" positionClass="abs-spinner"/>}
+                onClose={() => this.setState({questionsToDeleteIds: [], openQuestionsToDeleteModal: false})} open={openQuestionsToDeleteModal}>
+                    {isDeletingQuestions && <Spinner fontSize="3px" positionClass="abs-spinner"/>}
                 </ConfirmModal>
 
                 {generateDocStatus === false &&
@@ -240,7 +258,7 @@ const mapDispatchToProps = dispatch => {
         getQuartersForEmployeeACreator: (employeeId) => dispatch(getQuartersForEmployeeACreator(employeeId)),
         deleteQuarterTalkACreator: (quarterToDeleteId, quartersForEmployee) => dispatch(deleteQuarterTalkACreator(quarterToDeleteId, quartersForEmployee)),
         reactivateQuarterTalkACreator: (quarterId, quartersForEmployee) => dispatch(reactivateQuarterTalkACreator(quarterId, quartersForEmployee)),
-        editQuarterTalk: (id, model) => dispatch(editQuarterTalkACreator(id, model))
+        editQuarterTalkACreator: (id, currentQuarter, questionsToDeleteIds) => dispatch(editQuarterTalkACreator(id, currentQuarter, questionsToDeleteIds))
     }
 }
 

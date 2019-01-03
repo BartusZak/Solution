@@ -1,14 +1,15 @@
 .list-nav{
     & > div{
+      position: relative;
       padding: 10px;
       font-size: 20px;
       span{
-          margin-left: 35px;
-          position: relative;
-          .small-spiner{
-              right: 0;
-              top: -10px;
-          }
+        margin-left: 35px;
+        position: relative;
+        .small-spiner{
+            right: 0;
+            top: -10px;
+        }
       }
     }
     .modifie-list-options{

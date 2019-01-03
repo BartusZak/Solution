@@ -91,7 +91,6 @@ const parseSuccess = (response, key) => {
   let parser = new ResponseParser(response);
   parser.parse();
   const succMessage = fromAlertSettings.succOperationsWhiteObject[key];
-  console.log(lang);
   if (succMessage) {
     store.dispatch(addAlert({ id: key, content: succMessage[lang], type: 'ok', time: 5000 }));
   }
@@ -141,7 +140,7 @@ const requests = {
   //QUATER TALKS
   reactivateQuaterTalk: id => execute(fromAlertSettings.reactivateQuaterTalk, `QuarterTalks/Reactivate/${id}`, requestTypes.put),
   deleteQuaterTalk: id => execute(fromAlertSettings.deleteQuaterTalk, `QuarterTalks/${id}`, requestTypes.delete),
-  editQuaterTalk: (id, model) => execute(fromAlertSettings.editQuaterTalk, `QuarterTalks/${id}`, requestTypes.put, model)
+  editQuarterTalk: (id, model) => execute(fromAlertSettings.editQuarterTalk, `QuarterTalks/${id}`, requestTypes.put, model)
 };
 
 export const useRequest = (name, ...params) => requests[name](...params);

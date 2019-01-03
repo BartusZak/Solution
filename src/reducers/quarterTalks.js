@@ -1,4 +1,4 @@
-import { ADD_QUESTION, DELETE_QUESTION,
+import { ADD_QUESTION, DELETE_QUESTION, EDIT_QUESTIONS_IN_QUARTER,
     ADD_QUARTER_TALK, GET_QUESTIONS, GET_RESERVED_DATES, PLAN_QUARTER, GET_QUARTERS_FOR_EMPLOYEE
   } from "../constants";
   import { updateObject } from '../services/methods';
@@ -23,9 +23,16 @@ import { ADD_QUESTION, DELETE_QUESTION,
 
   export const quarterTalks = (state = initialState, action) => {
     switch (action.type) {
+        case EDIT_QUESTIONS_IN_QUARTER:
+          return {
+            ...state,
+            quartersForEmployee: state.quartersForEmployee.map(quarter => {
+              return quarter.id === action.id ? {...action.quarter} : quarter
+            })
+          };
         case ADD_QUARTER_TALK:
-            return updateObject(state, { addQuarterTalkStatus: action.addQuarterTalkStatus,
-                addQuarterTalkErrors: action.addQuarterTalkErrors })
+          return updateObject(state, { addQuarterTalkStatus: action.addQuarterTalkStatus,
+              addQuarterTalkErrors: action.addQuarterTalkErrors })
         case GET_QUESTIONS:
             return updateObject(state, { getQuestionsStatus: action.getQuestionsStatus, getQuestionsErrors: action.getQuestionsErrors,
                 questions: action.questions})
