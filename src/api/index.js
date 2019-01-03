@@ -117,7 +117,7 @@ const params = obj => {
   };
 };
 
-const execute = (key, path = '', type = 'get', payload = {}) => {
+const execute = (key, path = '', type = requestTypes.get, payload = {}) => {
   const fullPath = `${API_ENDPOINT}/${path}`;
 
   return axios[type](fullPath, payload)
@@ -126,8 +126,16 @@ const execute = (key, path = '', type = 'get', payload = {}) => {
     .catch(response => parseFailure(response, key));
 };
 
+const requestTypes = {
+  get: 'get',
+  post: 'post',
+  put: 'put',
+  patch: 'patch',
+  delete: 'delete'
+};
+
 const requests = {
-  addProject: projectModel => execute(fromAlertSettings.getProjects, `projects/add`, 'post', projectModel),
+  addProject: model => execute(fromAlertSettings.getProjects, `projects/add`, requestTypes.post, model)
 };
 
 export const useRequest = (name, ...params) => requests[name](...params);
