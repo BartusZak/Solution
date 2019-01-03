@@ -2,6 +2,8 @@
     padding: 10px;
     margin: 15px;
     background: white;
+    position: relative;
+    overflow: hidden;
     @media(max-width: 500px){
         margin: 5px;
         p{
@@ -9,11 +11,34 @@
         }
     }
     p{
-        
         margin: 10px 0;
         i{
             margin-right: 2.5px;
         }
     }
-    
+    .toolbox {
+      position: absolute;
+      opacity: 0;
+      top: 0;
+      right: -30px;
+      transition: .3s;
+      padding: 10px;
+      background: #EDEDED;
+      display: flex;
+      align-items: center;
+      border-bottom-left-radius: 10px;
+      & > * {
+        margin: 0 7.5px;
+      }
+    }
+    .expanded-toolbox {
+      opacity: 1;
+      right: 0;
+    }
+    &:hover {
+      .toolbox {
+        right: 0;
+        opacity: 1;
+      }
+    }
 }

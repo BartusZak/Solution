@@ -41,13 +41,13 @@ function listener() {
   switch (selectLang(store.getState())) {
     case "pl":
       langHeader = "pl-PL";
+      lang = 'pl';
       break;
     case "en":
       langHeader = "en-US";
+      lang = 'en';
       break;
   }
-
-  lang = langHeader;
 
   axios.defaults.withCredentials = true;
   // axios.defaults.headers.common["Authorization"] = token;
@@ -91,6 +91,7 @@ const parseSuccess = (response, key) => {
   let parser = new ResponseParser(response);
   parser.parse();
   const succMessage = fromAlertSettings.succOperationsWhiteObject[key];
+  console.log(lang);
   if (succMessage) {
     store.dispatch(addAlert({ id: key, content: succMessage[lang], type: 'ok', time: 5000 }));
   }
@@ -133,9 +134,14 @@ const requestTypes = {
   patch: 'patch',
   delete: 'delete'
 };
-
 const requests = {
-  addProject: model => execute(fromAlertSettings.getProjects, `projects/add`, requestTypes.post, model)
+  //PROJECTS
+  addProject: model => execute(fromAlertSettings.getProjects, `projects/add`, requestTypes.post, model),
+
+  //QUATER TALKS
+  reactivateQuaterTalk: id => execute(fromAlertSettings.reactivateQuaterTalk, `QuarterTalks/Reactivate/${id}`, requestTypes.put),
+  deleteQuaterTalk: id => execute(fromAlertSettings.deleteQuaterTalk, `QuarterTalks/${id}`, requestTypes.delete),
+  editQuaterTalk: (id, model) => execute(fromAlertSettings.editQuaterTalk, `QuarterTalks/${id}`, requestTypes.put, model)
 };
 
 export const useRequest = (name, ...params) => requests[name](...params);
@@ -323,9 +329,6 @@ const WebApi = {
       }
     },
     delete: {
-      quarter: quarterId => {
-        return WebAround.delete(`${API_ENDPOINT}/QuarterTalks/${quarterId}`);
-      },
       question: questionId => {
         return WebAround.delete(
           `${API_ENDPOINT}/QuarterTalks/Question/${questionId}`
@@ -333,11 +336,6 @@ const WebApi = {
       }
     },
     put: {
-      reactivate: quarterId => {
-        return WebAround.put(
-          `${API_ENDPOINT}/QuarterTalks/Reactivate/${quarterId}`
-        );
-      },
       populateQuarter: (model, quarterId) => {
         return WebAround.put(
           `${API_ENDPOINT}/QuarterTalks/${quarterId}`,

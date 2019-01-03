@@ -178,8 +178,6 @@ export const SET_SIGNAL_R_CONNECTION_RESULT = "SET_SIGNAL_R_CONNECTION_RESULT";
 export const connectionError =
   "Wystąpił błąd podczas konfiguracji wskaźnika postępu";
 export const GENERATE_HUB_CONNECTION = "GENERATE_HUB_CONNECTION";
-export const DELETE_QUARTER_TALK = "DELETE_QUARTER_TALK";
-export const REACTIVATE_QUARTER_TALK = "REACTIVATE_QUARTER_TALK";
 export const ADD_QUESTION = "ADD_QUESTION";
 export const DELETE_QUESTION = "DELETE_QUESTION";
 

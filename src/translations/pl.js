@@ -339,6 +339,8 @@ const translations = {
     DownloadTalkInDoc: "Pobierz rozmowę w formacie .doc",
     QuarterTalkDate: "Data przeprowadzenia rozmowy",
     PlannedQuarterTalkDate: "Planowana data odbycia rozmowy",
+    DeleteMarked: "Usuń zaznaczone",
+    MakeSureYouWantDeleteQuestion: "Czy jestes pewny ze chcesz usunac zaznaczone pytania ?"
   },
   EmployeeSkills: {
     Add: "Dodaj",

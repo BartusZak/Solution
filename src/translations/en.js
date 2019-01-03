@@ -335,7 +335,8 @@ const translations = {
     DownloadTalkInDoc: "Download talk in .doc",
     QuarterTalkDate: "Quarter talk date",
     PlannedQuarterTalkDate: "Planned quarter talk date",
-
+    DeleteMarked: "Delete marked",
+    MakeSureYouWantDeleteQuestion: "Are you sure you want to delete the selected questions ?"
   },
   EmployeeSkills: {
     Add: "Add",

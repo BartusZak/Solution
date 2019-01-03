@@ -6,12 +6,6 @@
         transform: scale(1.1);
       }
     }
-    .btn-brown {
-      &:hover i {
-        transition: all .8s;
-        transform: rotate(-360deg) scale(1.2);
-      }
-    }
     .recent-watched{
         display: flex;
         flex-flow: wrap;

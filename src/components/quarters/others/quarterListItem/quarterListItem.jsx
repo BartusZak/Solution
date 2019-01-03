@@ -41,7 +41,7 @@ const quarterListItem = ({index, item, clickItemFunction, currentWatchedItemId, 
         {item.isDeleted &&
             <div className="backdrop-prompt">
                 <p>{t("QuarterDeletedPrompt")}</p>
-                <span onClick={e => clickItemFunction(e, t("Reactivate"))}>{t("Reactivate")}</span>
+                <span onClick={e => clickItemFunction(e, "reactivate")}>{t("Reactivate")}</span>
             </div>
         }
 
