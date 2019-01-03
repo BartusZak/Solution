@@ -188,7 +188,9 @@ const translations = {
     ActivateEmployeeInfinitive: "Activate Employee",
     DeleteEmployee: "Delete Employee",
     DeleteEmployeeInfinitive: "Delete Employee",
-    EmployeeHasBeenDeleted: "Employee has been Deleted."
+    EmployeeHasBeenDeleted: "Employee has been Deleted.",    
+    DownloadEmployeeCVInWordFormat: "Download CV.docx",
+    DownloadEmployeeCVInPdfFormat: "Download CV.pdf"
   },
   EmployeeDetails: {
     Close: "Close",
