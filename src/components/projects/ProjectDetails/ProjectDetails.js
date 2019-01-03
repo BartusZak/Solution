@@ -48,7 +48,6 @@ import {
   getAllSkills
 } from "../../../actions/skillsActions";
 import Skills from "../../common/skills/skills";
-import { changeOperationStatus } from "../../../actions/asyncActions";
 import ConfirmModal from "../../common/confimModal/confirmModal";
 import ServerError from "../../common/serverError/serverError";
 import WebApi from "../../../api/index";

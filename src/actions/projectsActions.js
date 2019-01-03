@@ -32,6 +32,7 @@ import {
 import { errorCatcher } from "../services/errorsHandler";
 import { cutNotNeededKeysFromArray } from "../services/methods";
 import moment from "moment";
+import { useRequest } from '../api/index';
 
 export const loadProjectsSuccess = (projects, resultBlock) => {
   return {
@@ -671,8 +672,7 @@ export const createProjectACreator = (firstArray, secondArray) => dispatch => {
       startDate: firstArray[4].value,
       estimatedEndDate: firstArray[5].value
     };
-    WebApi.projects.post
-      .add(model)
+    useRequest('addProject', model)
       .then(response => {
         dispatch(createProject(true, []));
         resolve(response.replyBlock.data.dtoObject);
