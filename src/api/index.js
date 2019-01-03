@@ -89,7 +89,7 @@ const parseSuccess = (response, key) => {
   parser.parse();
   const succMessage = fromAlertSettings.succOperationsWhiteObject[key];
   if (succMessage) {
-    store.dispatch(addAlert({ id: key, content: succMessage.eng, type: 'ok', time: 10000 }));
+    store.dispatch(addAlert({ id: key, content: succMessage.eng, type: 'ok', time: 5000 }));
   }
 
   return BluebirdResolve(parser);
@@ -99,8 +99,11 @@ const parseFailure = (response, key) => {
   if (response instanceof Error && response.request === undefined)
     throw response;
 
+  const isKeyInBlackList = fromAlertSettings.errorsBlackList.findIndex(item => item === key);
   let parser = new ResponseParser(response);
-  store.dispatch(addAlert({ id: key, content: parser.parse().message, type: 'err', time: 10000 }));
+  if (isKeyInBlackList === -1) {
+    store.dispatch(addAlert({ id: key, content: parser.parse().message, type: 'err', time: 5000 }));
+  }
 
   throw parser;
 };
