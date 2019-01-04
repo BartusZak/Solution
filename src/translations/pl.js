@@ -56,7 +56,7 @@ const translations = {
     Archive: "Archiwalne",
     EmployeesFTE: "FTE Pracowników",
     UnUsed: "Wolne",
-    Used: "Zajęte",    
+    Used: "Zajęte",
     Remote: "ZDALNIE",
     Others: "INNE"
   },
@@ -556,6 +556,7 @@ const translations = {
     Deleted: "Usunięty",
     Closed: "Zamknięty",
     Inactive: "Nieaktywny",
+    InactiveTitle: "Project jest nieaktywny ponieważ jeszcze się nie rozpoczął",
     Active: "Aktywny",
     DeleteProject: "Usuń projekt",
     ProjectTeam: "Zespół projektowy",
