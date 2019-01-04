@@ -1,9 +1,10 @@
-import { LOAD_SKILLS_SUCCESS, SKILL_ADDED, GET_ALL_SKILLS, ADD_NEW_SKILL } from "../constants";
+import { LOAD_SKILLS_SUCCESS, SKILL_ADDED, GET_ALL_SKILLS, ADD_NEW_SKILL, REMOVE_SKILL, EDIT_SKILL, EDIT_SKILL_ERROR } from "../constants";
 import axios from "axios";
 import WebApi from "../api";
-import { asyncStarted, asyncEnded } from "./asyncActions";
+import { asyncStarted, asyncEnded, setActionConfirmationResult } from "./asyncActions";
 import { errorCatcher } from '../services/errorsHandler';
 import { isArrayContainsByObjectKey, checkForContains, generateSortFunction, sortStrings } from '../services/methods';
+
 export const loadSkillsSuccess = skills => {
   return {
     type: LOAD_SKILLS_SUCCESS,
@@ -98,14 +99,56 @@ export const getAllSkillsForEmployee = currentEmployeeSkills => {
   }
 }
 
-export const addNewSkill = (addNewSkillStatus, addNewSkillErrors) => {
-  return { type: ADD_NEW_SKILL, addNewSkillStatus, addNewSkillErrors}
+export const addNewSkill = (addedSkillId, addNewSkillStatus, addNewSkillErrors) => {
+  return { type: ADD_NEW_SKILL, addedSkillId, addNewSkillStatus, addNewSkillErrors}
 }
 
 export const addNewSkillACreator = name => (dispatch) => {
     WebApi.skills.post(name).then(response => {
-      dispatch(addNewSkill(true, []));
+      dispatch(addNewSkill(response.replyBlock.data.dtoObject.id, true, []));
     }).catch(error => {
       dispatch(addNewSkill(false, errorCatcher(error)));
     })
 }
+
+export const removeSkill = (skillId) => {
+  return { type: REMOVE_SKILL, skillId}
+}
+
+export const deleteSkill = (skillId) => dispatch => {
+  return new Promise((resolve, reject) => {
+    WebApi.skills.delete(skillId)
+      .then(response => {
+        dispatch(setActionConfirmationResult(response));
+        dispatch(removeSkill(skillId));
+        resolve()
+      })
+      .catch(error => {
+        dispatch(setActionConfirmationResult(error));
+        reject()
+      });
+  });
+};
+
+export const editSkill = (skillId, skillName) => {
+  return { type: EDIT_SKILL, skillId, skillName}
+}
+
+export const editSkillError = (editSkillError) => {
+  return { type: EDIT_SKILL_ERROR, editSkillError}
+}
+
+export const editSkillACreator = (skillId, skillName) => dispatch => {
+  const skillModel = {name: skillName};
+  return new Promise((resolve, reject) => {
+    WebApi.skills.put(skillId, skillModel)
+      .then(response => {
+        dispatch(editSkill(skillId, skillName))
+        resolve()
+      })
+      .catch(error => {
+        dispatch(editSkillError(errorCatcher(error)))
+        reject()
+      })
+  });
+};

@@ -707,7 +707,20 @@ const translations = {
     Info1:
       "Ten proces jest permanentny. Usuwa wpis z bazy danych i wszystkich powiązanych miejsc.",
     Info2: "Cofnięcie tej akcji jest niemożliwe.",
-    SuccessfullyDeleted: "Pomyślnie usunięto umiejętność"
+    SuccessfullyDeleted: "Pomyślnie usunięto umiejętność",
+    AllSkills: "Wszystkie umiejętności",
+    AddSkillName: "wpisz nazwę nowej umiejętności...",
+    EnterSkillName: "wpisz nazwę umiejętności...",
+    SkillExists: "Ta umiejętność już istnieje",
+    SkillName: "Nazwa umiejętności"
+  },
+  SkillList: {
+    DeleteSkill: "Usuń umiejętność",
+    EditSkill: "Edytuj umiejętność",
+    DeleteSkillQuestion: "Czy na pewno chcesz usunąć skill ",
+    SuccessfullyDeletedSkill: "Pomyślnie usunięto skill",
+    SkillLenghtError: "Nazwa umiejętności nie może być dłuższa niż 100 znaków",
+    NoResults: "Brak wyników dla tego ciągu znaków"
   },
   FileInput: {
     ChooseFile: "Wybierz plik",
