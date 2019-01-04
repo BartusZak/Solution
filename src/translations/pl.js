@@ -340,7 +340,14 @@ const translations = {
     PlannedQuarterTalkDate: "Planowana data odbycia rozmowy",
     DeleteMarked: "Usuń zaznaczone",
     MakeSureYouWantDeleteQuestion: "Czy jestes pewny ze chcesz usunac zaznaczone pytania ?",
-    DeletedQuarter: 'Ta rozmowa kwartalna jest usunięta'
+    DeletedQuarter: 'Ta rozmowa kwartalna jest usunięta',
+
+  },
+  EditQuestion: {
+    EditingHeaderModal: 'Aktualnie edytujesz zaznaczone pytanie',
+    Confirm: 'Potwierdź',
+    Answer: 'Odpowiedź',
+    InsertAnswer: 'wprowadź odpowiedź na pytanie'
   },
   EmployeeSkills: {
     Add: "Dodaj",

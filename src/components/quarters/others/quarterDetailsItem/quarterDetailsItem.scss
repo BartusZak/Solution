@@ -1,7 +1,9 @@
+$white: #fff;
+$toolbox-bg: #EDEDED;
 .quarter-details-item{
     padding: 10px;
     margin: 15px;
-    background: white;
+    background: $white;
     position: relative;
     overflow: hidden;
     @media(max-width: 500px){
@@ -26,12 +28,16 @@
       right: -30px;
       transition: .3s;
       padding: 10px;
-      background: #EDEDED;
+      background: $toolbox-bg;
       display: flex;
       align-items: center;
       border-bottom-left-radius: 10px;
       & > * {
         margin: 0 7.5px;
+      }
+      i {
+        font-size: 20px;
+        cursor: pointer;
       }
     }
     .expanded-toolbox {

@@ -1,8 +1,8 @@
 import React from 'react'
 import './employeeQuarters.scss';
 import { connect } from 'react-redux';
-import { getQuartersForEmployeeACreator, getQuartersForEmployee, editQuarterTalkACreator,
-    deleteQuarterTalkACreator, reactivateQuarterTalkACreator  } from '../../../actions/quarterTalks.js';
+import { getQuartersForEmployeeACreator, getQuartersForEmployee, deleteQuestionsFromQuarterTalk,
+    deleteQuarterTalkACreator, reactivateQuarterTalkACreator, editQuestionInQuarterTalk  } from '../../../actions/quarterTalks.js';
 import LoadHandlingWrapper from '../../../hocs/handleLoadingContent';
 import List from '../../common/list/list';
 import Button from '../../common/button/button.js';
@@ -15,7 +15,7 @@ import { translate } from 'react-translate';
 import { API_ENDPOINT } from '../../../api/index.js';
 import EmptyContent from '../../common/empty-content/empty-content.js';
 import { getEmployeeId } from '../../../services/methods.js';
-
+import EditQuestion from '../others/edit-question.js';
 
 class EmployeeQuarters extends React.PureComponent{
     state = {
@@ -29,7 +29,9 @@ class EmployeeQuarters extends React.PureComponent{
         isMarkedMoreThanOneQuestion: false,
         questionsToDeleteIds: [],
         openQuestionsToDeleteModal: false,
-        isDeletingQuestions: false
+        isDeletingQuestions: false,
+
+        questionToEdit: null
     }
 
     functionsToUseForQuestions = [
@@ -43,7 +45,8 @@ class EmployeeQuarters extends React.PureComponent{
     ];
 
     quarterFunctions = {
-      togleMarkingQuestion: data => this.handleMarkingQuestions(data)
+      togleMarkingQuestion: data => this.handleMarkingQuestions(data),
+      togleEditQuestionModal: data => this.togleEditQuestionModal(data)
     };
 
     componentDidMount(){
@@ -60,6 +63,10 @@ class EmployeeQuarters extends React.PureComponent{
         if(this.state.currentWatchedQuarterDetail !== prevState.currentWatchedQuarterDetail) {
           this.setState({markedQuestionsIds: {}});
         }
+    }
+
+    togleEditQuestionModal = questionToEdit => {
+      this.setState({questionToEdit});
     }
 
     quartersFunctionsHandler = (data, name) => {
@@ -86,10 +93,9 @@ class EmployeeQuarters extends React.PureComponent{
 
     deleteMarkedQuestions = () => {
       const { currentWatchedQuarterDetail, questionsToDeleteIds } = this.state;
-      const { quartersForEmployee, editQuarterTalkACreator } = this.props;
+      const { quartersForEmployee, deleteQuestionsFromQuarterTalk } = this.props;
       this.setState({isDeletingQuestions: true});
-      editQuarterTalkACreator(quartersForEmployee[currentWatchedQuarterDetail].id,
-        quartersForEmployee[currentWatchedQuarterDetail], questionsToDeleteIds)
+      deleteQuestionsFromQuarterTalk(quartersForEmployee[currentWatchedQuarterDetail], questionsToDeleteIds)
         .then(() => this.setState({isDeletingQuestions: false}))
         .catch(() => this.setState({isDeletingQuestions: false}));
     }
@@ -163,10 +169,11 @@ class EmployeeQuarters extends React.PureComponent{
 
     render(){
         const { isLoadingQuarters, currentWatchedQuarterDetail, quarterToDeleteId, isDeletingQuarter, reactivatingQuarterId, markedQuestionsIds,
-          isMarkedMoreThanOneQuestion, openQuestionsToDeleteModal, isDeletingQuestions } = this.state;
+          isMarkedMoreThanOneQuestion, openQuestionsToDeleteModal, isDeletingQuestions, questionToEdit } = this.state;
         const { t, getQuartersForEmployee, quartersForEmployee,
             quartersForEmployeeStatus, quartersForEmployeeErrors, shouldLoadDataAfterLinkChange,
-            generateDocStatus, generateDocErrors, generateQuarterDoc, currentWatchedUser } = this.props;
+            generateDocStatus, generateDocErrors, generateQuarterDoc, currentWatchedUser, editQuestionInQuarterTalk } = this.props;
+
         return (
             <LoadHandlingWrapper errors={quartersForEmployeeErrors} closePrompt={() => getQuartersForEmployee([], null, [])}
                 operationStatus={quartersForEmployeeStatus} isLoading={isLoadingQuarters}>
@@ -231,8 +238,16 @@ class EmployeeQuarters extends React.PureComponent{
                     {isDeletingQuestions && <Spinner fontSize="3px" positionClass="abs-spinner"/>}
                 </ConfirmModal>
 
+                {questionToEdit &&
+                  <EditQuestion
+                  close={() => this.togleEditQuestionModal(null)} question={questionToEdit}
+                  handleEdit={newQuestion => editQuestionInQuarterTalk(quartersForEmployee[currentWatchedQuarterDetail], newQuestion) } />
+                }
+
+
                 {generateDocStatus === false &&
-                  <OperationStatusPrompt closePrompt={generateQuarterDoc}
+                  <OperationStatusPrompt
+                      closePrompt={generateQuarterDoc}
                       operationPromptContent={generateDocErrors[0]}
                       operationPrompt={false}
                   />
@@ -257,7 +272,8 @@ const mapDispatchToProps = dispatch => {
         getQuartersForEmployeeACreator: (employeeId) => dispatch(getQuartersForEmployeeACreator(employeeId)),
         deleteQuarterTalkACreator: (quarterToDeleteId, quartersForEmployee) => dispatch(deleteQuarterTalkACreator(quarterToDeleteId, quartersForEmployee)),
         reactivateQuarterTalkACreator: (quarterId, quartersForEmployee) => dispatch(reactivateQuarterTalkACreator(quarterId, quartersForEmployee)),
-        editQuarterTalkACreator: (id, currentQuarter, questionsToDeleteIds) => dispatch(editQuarterTalkACreator(id, currentQuarter, questionsToDeleteIds))
+        deleteQuestionsFromQuarterTalk: (currentQuarter, questionsToDeleteIds) => dispatch(deleteQuestionsFromQuarterTalk(currentQuarter, questionsToDeleteIds)),
+        editQuestionInQuarterTalk: (currentQuarter, newQuestion) => dispatch(editQuestionInQuarterTalk(currentQuarter, newQuestion))
     }
 }
 

@@ -227,7 +227,7 @@ export const deleteQuestionACreator = questionId => dispatch => {
 
   export const editQuestionsInQuarter = (id, questions) => ({type: EDIT_QUESTIONS_IN_QUARTER, id, quarter})
 
-  export const editQuarterTalkACreator = (id, currentQuarter, questionsToDeleteIds) => dispatch => {
+  export const deleteQuestionsFromQuarterTalk = (currentQuarter, questionsToDeleteIds) => dispatch => {
     const { year, quarter, plannedTalkDate } = currentQuarter;
     const model = { year, quarter, plannedTalkDate,
       quarterTalkQuestionItems:
@@ -235,13 +235,25 @@ export const deleteQuestionACreator = questionId => dispatch => {
           return { quarterTalkQuestionId: question.id, answer: question.answer };
         })
     };
-    console.log(model.quarterTalkQuestionItems);
     return new Promise((resolve, reject) => {
-      useRequest('editQuarterTalk', id, model)
+      useRequest('editQuarterTalk', currentQuarter.id, model)
       .then(response => {
-        dispatch(editQuestionsInQuarter(id, model))
+        dispatch(editQuestionsInQuarter(currentQuarter.id, model))
         resolve();
       })
       .catch(() => reject());
     });
   }
+export const editQuestionInQuarterTalk = (currentQuarter, newQuestion) => dispatch => {
+  const model = {...currentQuarter};
+  model.quarterTalkQuestionItems = model.quarterTalkQuestionItems.map(question => {
+    return question.id === newQuestion.id ? newQuestion : question
+  });
+  return new Promise((resolve, reject) => {
+    useRequest('editQuarterTalk', currentQuarter.id, model)
+      .then(response => {
+        resolve();
+
+      }).catch(() => reject());
+  })
+}
