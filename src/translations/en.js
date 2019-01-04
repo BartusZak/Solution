@@ -555,6 +555,7 @@ const translations = {
     Deleted: "Deleted",
     Closed: "Closed",
     Inactive: "Inactive",
+    InactiveTitle: "Project is inacitve because it has not yet started",
     Active: "Active",
     DeleteProject: "Delete project",
     ProjectTeam: "Project team",
