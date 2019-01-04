@@ -11,12 +11,15 @@
         position: relative;
         padding: 20px 0;
         align-self: flex-start;
+        & > div.small-spiner {
+            top: 20px;
+        }
         .small-spiner{
             position: absolute;
             left: 180px;
-            top: 0;
         }
     }
+  
     .asign-error{
         color: tomato;
         padding-top: 30px;

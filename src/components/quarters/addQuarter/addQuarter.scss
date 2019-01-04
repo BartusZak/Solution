@@ -19,7 +19,7 @@
         h1{
            @media(max-width: 799px){
              margin-bottom: 35px;
-           }     
+           }
         }
         .spinner-btn, .submit-btn, .incorrect-status, .correct-status{
             position: relative;
@@ -66,13 +66,13 @@
                 }
             }
         }
-       
+
     }
     .adding-quarter-settings{
         margin-left: 60px;
         h1{
             margin-bottom: 25px;
-        } 
+        }
         @media(max-width: 799px){
             width: 100%;
             margin-left: 0;
@@ -86,7 +86,7 @@
             }
         }
     }
-  
+
 }
 
 .select-questions-modal{
@@ -111,6 +111,13 @@
                     }
                 }
             }
+        }
+        .check-all-box{
+          position: absolute;
+          cursor: pointer;
+          right: 40px;
+          top: 110px;
+          font-size: 18px;
         }
     }
 }
