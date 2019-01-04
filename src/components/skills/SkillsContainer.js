@@ -26,6 +26,7 @@ const createColorIcons = currentSkills => {
 class SkillsContainer extends Component {
   state = {
     skills: null,
+    loadedSkillsArray: [],
     isLoading: true,
     searchValue: "",
     searchedSkills: [],
@@ -39,26 +40,58 @@ class SkillsContainer extends Component {
   componentDidMount() {
     this.props.getAllSkillsACreator([]);
   }
-  componentDidUpdate() {
-    const { skills, isAddingSkillSpinner } = this.state;
+  componentDidUpdate(prevProps) {
+    const {
+      skills,
+      isAddingSkillSpinner,
+      loadedSkillsArray,
+      searchValue,
+      searchedSkills: oldSearchedSkills,} = this.state;
     const {
       loadedSkills,
       loadSkillsStatus,
       addNewSkillStatus,
-      addNewSkillErrors
+      addNewSkillErrors,
+      addedSkillId,
+      removedSkillId,
+      editedSkill
     } = this.props;
-    if (!skills || loadSkillsStatus === null) {
-      const skillsWithColors = createColorIcons(loadedSkills);
-      this.setState({
-        skills: skillsWithColors,
-        isLoading: false,
-        searchedSkills: skillsWithColors
-      });
-    } else if (isAddingSkillSpinner && addNewSkillStatus !== null) {
-      this.modifyDataAfterSkillAdding(addNewSkillStatus, addNewSkillErrors);
+    if (!skills || loadSkillsStatus === null || prevProps.removedSkillId !== removedSkillId || prevProps.editedSkill !== editedSkill) {
+      if(skills)
+      {
+        if(prevProps.editedSkill !== editedSkill)
+        {
+          skills.forEach(skill => {
+            if(skill.skill.id === editedSkill.id)
+            {
+              skill.skill.name = editedSkill.name;
+            }
+          });
+        }
+
+        const actualSkills = skills.filter(x => x.skill.id !== removedSkillId);
+        const searchedSkills = this.searchInSkills(actualSkills, searchValue);
+
+        this.setState({
+          skills: actualSkills,
+          isLoading: false,
+          searchedSkills: searchedSkills
+        });
+      } else {
+        const skillsWithColors = createColorIcons(loadedSkills);
+
+        this.setState({
+          skills: skillsWithColors,
+          isLoading: false,
+          searchedSkills: skillsWithColors
+        });
+      }
+
+    } else if (isAddingSkillSpinner && addNewSkillStatus !== null && addedSkillId !== prevProps.addedSkillId) {
+      this.modifyDataAfterSkillAdding(addedSkillId, addNewSkillStatus, addNewSkillErrors);
     }
   }
-  modifyDataAfterSkillAdding = (result, errors) => {
+  modifyDataAfterSkillAdding = (addedSkillId, result, errors) => {
     if (result) {
       const {
         newSkillName,
@@ -67,7 +100,7 @@ class SkillsContainer extends Component {
         newAddedCounter,
         newAddSkillColor
       } = this.state;
-      const newSkill = { name: newSkillName, key: newSkillName };
+      const newSkill = { id: addedSkillId, name: newSkillName, key: newSkillName };
       const newlyAdded = [
         { skill: newSkill, class: "recently-added", color: newAddSkillColor }
       ];
@@ -88,11 +121,6 @@ class SkillsContainer extends Component {
           isAddingSkill: false,
           skills: concatedSkills,
           newAddSkillColor: getRandomColor()
-        },
-        () => {
-          setTimeout(() => {
-            this.props.addNewSkill(null, []);
-          }, 1500);
         }
       );
     } else {
@@ -143,12 +171,14 @@ class SkillsContainer extends Component {
   };
   validate = value => {
     const { skills } = this.state;
+    const { t } = this.props;
+
     for (let key in skills) {
       if (skills[key].skill.name.toLowerCase() === value.toLowerCase())
-        return "Ta umiejętność już istnieje";
+        return t("SkillExists");
     }
 
-    return validateInput(value, false, 0, 120, null, "nazwa umiejętności");
+    return validateInput(value, false, 0, 120, null, t("SkillName"));
   };
   addNewSkill = e => {
     if (e.key === "Enter") {
@@ -178,7 +208,8 @@ class SkillsContainer extends Component {
     const {
       loadSkillsStatus,
       loadSkillsErrors,
-      addNewSkillStatus
+      addNewSkillStatus,
+      t
     } = this.props;
 
     const iconType = isAddingSkill ? (
@@ -205,7 +236,7 @@ class SkillsContainer extends Component {
               {addNewSkillStatus && <CorrectOperation />}
               <header>
                 <span>
-                  Wszystkie umiejętności
+                  {t("AllSkills")}
                   {iconType}
                 </span>
                 <div className="searcher-container">
@@ -220,7 +251,7 @@ class SkillsContainer extends Component {
                       }
                       type="text"
                       value={newSkillName}
-                      placeholder="wpisz nazwę nowej umiejętności"
+                      placeholder={t("AddSkillName")}
                       onChange={e => this.onChangeNewFolderName(e)}
                     />
                   ) : (
@@ -228,7 +259,7 @@ class SkillsContainer extends Component {
                       value={searchValue}
                       onChange={e => this.onChangeInputSearch(e)}
                       type="text"
-                      placeholder="wpisz nazwę umiejętności..."
+                      placeholder={t("EnterSkillName")}
                     />
                   )}
                   <p className="valid-error">
@@ -241,6 +272,7 @@ class SkillsContainer extends Component {
               </header>
 
               <SkillList
+                getAllSkills={this.props.getAllSkillsACreator}
                 newAddSkillColor={newAddSkillColor}
                 newSkillName={newSkillName}
                 newSkillNameError={newSkillNameError}
@@ -263,8 +295,13 @@ const mapStateToProps = state => {
     loadSkillsStatus: state.skillsReducer.loadSkillsStatus,
     loadSkillsErrors: state.skillsReducer.loadSkillsErrors,
 
+    addedSkillId: state.skillsReducer.addedSkillId,
+    removedSkillId: state.skillsReducer.removedSkillId,
     addNewSkillStatus: state.skillsReducer.addNewSkillStatus,
-    addNewSkillErrors: state.skillsReducer.addNewSkillErrors
+    addNewSkillErrors: state.skillsReducer.addNewSkillErrors,
+
+    editedSkill: state.skillsReducer.editedSkill,
+    editedSkillError: state.skillsReducer.editedSkillError
   };
 };
 
