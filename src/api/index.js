@@ -29,22 +29,20 @@ store.subscribe(listener);
 const select = state =>
   state.authReducer.tokens !== undefined ? state.authReducer.tokens.token : "";
 
-const selectLang = state =>
+export const selectLang = state =>
   state.languageReducer.language ? state.languageReducer.language : "pl";
 
 let lang = '';
 function listener() {
   // const token = `Bearer ${select(store.getState())}`;
-
-  let langHeader = "";
-
+  let langHeader = '';
   switch (selectLang(store.getState())) {
     case "pl":
-      langHeader = "pl-PL";
-      break;
-    case "en":
-      langHeader = "en-US";
-      break;
+    langHeader = "pl-PL";
+    break;
+  case "en":
+    langHeader = "en-US";
+    break;
   }
 
   lang = langHeader;
