@@ -56,7 +56,9 @@ const translations = {
     Archive: "Archive",
     EmployeesFTE: "Employees FTE",
     UnUsed: "UnUsed",
-    Used: "Used"
+    Used: "Used",
+    Remote: "REMOTE",
+    Others: "OTHERS"
   },
   UsersList: {
     Add: "Add",
@@ -291,6 +293,8 @@ const translations = {
     AddQuestion: "Add question",
     QuestionMenage: "Question manager",
     ChooseQuestionHeader: "Choose question to use",
+    CheckAll: "Check all",
+    UncheckAll: "Uncheck all",
     Start: "Start",
     SuccDeleteQuestion: "The question was successfully removed",
     Date: "Date",
@@ -558,6 +562,7 @@ const translations = {
     Deleted: "Deleted",
     Closed: "Closed",
     Inactive: "Inactive",
+    InactiveTitle: "Project is inacitve because it has not yet started",
     Active: "Active",
     DeleteProject: "Delete project",
     ProjectTeam: "Project team",
@@ -698,7 +703,20 @@ const translations = {
     Info1:
       "Deletion will be permanent, removing entries from the database and all places where referenced.",
     Info2: "Rollback of this action is not available.",
-    SuccessfullyDeleted: "Successfully deleted skill"
+    SuccessfullyDeleted: "Successfully deleted skill",
+    AllSkills: "All skills",
+    AddSkillName: "Enter new skill name",
+    EnterSkillName: "Enter skill name...",
+    SkillExists: "That skill already exists",
+    SkillName: "Skill name"
+  },
+  SkillList: {
+    DeleteSkill: "Delete skill",
+    EditSkill: "Edit skill",
+    DeleteSkillQuestion: "Are you sure that you want to delete that skill ",
+    SuccessfullyDeletedSkill: "Successfully deleted skill",
+    SkillLenghtError: "Skill name can't be longer than 100 characters",
+    NoResults: "No matching results"
   },
   FileInput: {
     ChooseFile: "Choose File",

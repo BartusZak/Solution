@@ -69,9 +69,16 @@ class StatsContainer extends Component {
     localizations &&
       Object.entries(localizations).map(
         ([_i, { localization, count }], index) => {
-          cols.push([localization, count]);
+          if(localization === "ZDALNIE") {
+            cols.push([t("Remote"), count]);
+          } else if(localization === "INNE") {
+            cols.push([t("Others"), count]);
+          } else {
+            cols.push([localization, count]);
+          }
         }
       );
+
     const data = {
       type: "pie",
       columns: cols
@@ -84,7 +91,7 @@ class StatsContainer extends Component {
         }
       }
     };
-
+    
     return (
       <span className="chart-container">
         <span>{t("DevLocalization")}</span>

@@ -51,7 +51,7 @@ class List extends React.PureComponent {
     }
 
     putModifieListOptionsInDom = (functionsToUse, numberOfItems) => {
-        const { t } = this.props;
+        const { renderNavigationElement, t } = this.props;
         if(functionsToUse){
             const shouldPutSearchBox = functionsToUse.find(item => item.name === "search");
             const shouldPutSort = functionsToUse.find(item => item.name === "sort");
@@ -94,6 +94,7 @@ class List extends React.PureComponent {
                     </div>
                     }
                     {this.props.children}
+                    {renderNavigationElement && renderNavigationElement()}
                 </div>
             );
         }
