@@ -310,7 +310,6 @@ const translations = {
     QuarterItemSubHeader: "przeprowadził",
     Reactivate: "Reaktywuj",
     Conduct: "przeprowadzi",
-    QuarterDeletedPrompt: "Ta rozmowa jest usunięta",
     Year: "Rok",
     PlannedDate: "Planowana data",
     PlannedHour: "Planowana godzina",
@@ -343,6 +342,16 @@ const translations = {
     DownloadTalkInDoc: "Pobierz rozmowę w formacie .doc",
     QuarterTalkDate: "Data przeprowadzenia rozmowy",
     PlannedQuarterTalkDate: "Planowana data odbycia rozmowy",
+    DeleteMarked: "Usuń zaznaczone",
+    MakeSureYouWantDeleteQuestion: "Czy jestes pewny ze chcesz usunac zaznaczone pytania ?",
+    DeletedQuarter: 'Ta rozmowa kwartalna jest usunięta',
+
+  },
+  EditQuestion: {
+    EditingHeaderModal: 'Aktualnie edytujesz zaznaczone pytanie',
+    Confirm: 'Potwierdź',
+    Answer: 'Odpowiedź',
+    InsertAnswer: 'wprowadź odpowiedź na pytanie'
   },
   EmployeeSkills: {
     Add: "Dodaj",

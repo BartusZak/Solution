@@ -14,7 +14,7 @@ import Form from "../../../form/form";
 import { translate } from "react-translate";
 import { withRouter } from 'react-router';
 import QuarterListItem from '../../../quarters/others/quarterListItem/quarterListItem.jsx';
-import { deleteQuarterTalkACreator, reactivateQuarterTalkACreator, deleteQuarterTalk } from '../../../../actions/quarterTalks.js';
+import { deleteQuarterTalkACreator, reactivateQuarterTalkACreator } from '../../../../actions/quarterTalks.js';
 import List from '../../../common/list/list';
 
 class QuarterList extends React.PureComponent {
@@ -37,12 +37,14 @@ class QuarterList extends React.PureComponent {
     const { history, employeeId } = this.props;
     if(operationName === "expendDetails"){
       this.handleExpandDetails(quarter);
-    };
-    const url = `/main/quarters/employees/employeeId=${employeeId}`;
-    history.push({
-      pathname: url,
-      state: { quarterTalkId: quarter.id }
-    });
+    }
+    else {
+      const url = `/main/quarters/employees/employeeId=${employeeId}`;
+      history.push({
+        pathname: url,
+        state: { quarterTalkId: quarter.id }
+      });
+    }
   }
 
   handleExpandDetails = quarter => {
@@ -98,25 +100,14 @@ class QuarterList extends React.PureComponent {
   }
 }
 
-const mapStateToProps = state => {
-  return {
-      deleteQuarterStatus: state.quarterTalks.deleteQuarterStatus,
-      deleteQuarterErrors: state.quarterTalks.deleteQuarterErrors,
-
-      reactiveQuarterStatus: state.quarterTalks.reactiveQuarterStatus,
-      reactiveQuarterErrors: state.quarterTalks.reactiveQuarterErrors,
-  }
-}
-
 const mapDispatchToProps = dispatch => {
   return {
       deleteQuarterTalkACreator: (quarterToDeleteId, quartersForEmployee) => dispatch(deleteQuarterTalkACreator(quarterToDeleteId, quartersForEmployee)),
-      reactivateQuarterTalkACreator: (quarterId, quartersForEmployee) => dispatch(reactivateQuarterTalkACreator(quarterId, quartersForEmployee)),
-      deleteQuarterTalk: () => dispatch(deleteQuarterTalk(null, []))
+      reactivateQuarterTalkACreator: (quarterId, quartersForEmployee) => dispatch(reactivateQuarterTalkACreator(quarterId, quartersForEmployee))
   }
 }
 
 export default connect(
-  mapStateToProps,
+  null,
   mapDispatchToProps
 )(translate("Quaters")(withRouter(QuarterList)));

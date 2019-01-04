@@ -306,7 +306,6 @@ const translations = {
     QuarterItemSubHeader: "carried out",
     Reactivate: "Reactivate",
     Conduct: "conduct",
-    QuarterDeletedPrompt: "This quarter is deleted",
     Year: "Year",
     PlannedDate: "Planned date",
     PlannedHour: "Planned hour",
@@ -339,7 +338,15 @@ const translations = {
     DownloadTalkInDoc: "Download talk in .doc",
     QuarterTalkDate: "Quarter talk date",
     PlannedQuarterTalkDate: "Planned quarter talk date",
-
+    DeleteMarked: "Delete marked",
+    MakeSureYouWantDeleteQuestion: "Are you sure you want to delete the selected questions ?",
+    DeletedQuarter: 'This quarter talk is in delete state',
+  },
+  EditQuestion: {
+    EditingHeaderModal: 'You are currently editing selected question',
+    Confirm: 'Confirm',
+    Answer: 'Answer',
+    InsertAnswer: 'fill answer for question'
   },
   EmployeeSkills: {
     Add: "Add",

@@ -106,8 +106,8 @@ class Quarters extends React.PureComponent{
 
                     {isHistoryExist &&
                     <div onMouseEnter={this.enterHistoryBtn} onMouseLeave={this.overHistoryBtn} className="generate-raport-btn-div">
-                        <Button onClick={() => createLastWatchedPersonsArray([])} title={t("ClearHistory")}
-                            mainClass="generate-raport-btn btn-brown" ><i className="fa fa-history"/></Button>
+                      <Button onClick={() => createLastWatchedPersonsArray([])} title={t("ClearHistory")}
+                          mainClass="btn xl-btn danger-btn animated-icon-btn" ><i className="fa fa-history"/></Button>
                     </div>
                     }
                 </nav>

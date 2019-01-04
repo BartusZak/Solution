@@ -2,12 +2,13 @@ import {ADD_QUESTION, DELETE_QUESTION,
  ADD_QUARTER_TALK, GET_QUESTIONS, GET_RESERVED_DATES, PLAN_QUARTER, GET_QUARTERS_FOR_EMPLOYEE, DELETE_QUARTER_TALK, REACTIVATE_QUARTER_TALK
 } from "../constants";
   import WebApi from "../api";
-  import { errorCatcher } from "../services/errorsHandler"; 
+  import { errorCatcher } from "../services/errorsHandler";
   import { getEmployeePromise } from './employeesActions.js';
 import moment from 'moment';
 import _ from 'lodash';
 import { createLastWatchedPersonsArrayACreator } from './persistHelpActions';
 import { changeOperationStatus } from './asyncActions';
+import { useRequest } from '../api/index';
 
 
 export const getQuestions = (getQuestionsStatus, getQuestionsErrors, questions) => {
@@ -50,7 +51,7 @@ export const getQuestions = (getQuestionsStatus, getQuestionsErrors, questions) 
         const filteredQuarters = quarterTalkQuestionItems.filter(i => i.mode === "textarea");
 
         model.quarterTalkQuestionItems = filteredQuarters.map(item => {
-            return { quarterTalkQuestionId: item.id, answer: item.value} 
+            return { quarterTalkQuestionId: item.id, answer: item.value}
         });
 
         WebApi.quarterTalks.post.createQuarter(model).then(response => {
@@ -93,7 +94,7 @@ export const getReservedDates = (reservedDates, getDatesStatus, getDatesErrors) 
             }
             dispatch(getReservedDates(extractedData, true, []));
             dispatch(createLastWatchedPersonsArrayACreator(employeeId));
-            
+
             resolve(extractedData);
         }).catch(error => {
             const catchedError = errorCatcher(error);
@@ -135,7 +136,7 @@ export const getReservedDates = (reservedDates, getDatesStatus, getDatesErrors) 
       return new Promise((resolve, reject) => {
         WebApi.quarterTalks.get.getQuarterForEmployee(employeeId).then(response => {
             const { dtoObjects: items } = response.replyBlock.data;
-            
+
             items.forEach(function(part, index){
                 if(part.plannedTalkDate)
                     items[index].plannedTalkDate = moment(part.plannedTalkDate).format("YYYY-MM-DD HH:mm");
@@ -144,7 +145,7 @@ export const getReservedDates = (reservedDates, getDatesStatus, getDatesErrors) 
             })
             dispatch(getQuartersForEmployee(items, true, []));
             dispatch(createLastWatchedPersonsArrayACreator(employeeId));
-            
+
             resolve(items);
         }).catch(error => {
             dispatch(getQuartersForEmployee([], false, errorCatcher(error)));
@@ -153,44 +154,27 @@ export const getReservedDates = (reservedDates, getDatesStatus, getDatesErrors) 
       })
   }
 
-  export const deleteQuarterTalk = (deleteQuarterStatus, deleteQuarterErrors) => {
-      return { type: DELETE_QUARTER_TALK, deleteQuarterStatus, deleteQuarterErrors }
-  }
-
   export const deleteQuarterTalkACreator = (quarterToDeleteId, quartersForEmployee) => dispatch => {
     return new Promise((resolve, reject) => {
-        WebApi.quarterTalks.delete.quarter(quarterToDeleteId).then(response => {
+        useRequest('deleteQuaterTalk', quarterToDeleteId).then(response => {
             const quartersForEmployeeCopy = [...quartersForEmployee];
             const indexWithGivenId = quartersForEmployeeCopy.findIndex(i => i.id === quarterToDeleteId);
             quartersForEmployeeCopy[indexWithGivenId].isDeleted = true;
-            dispatch(deleteQuarterTalk(true, []));
             dispatch(getQuartersForEmployee(quartersForEmployeeCopy, true, []));
             resolve();
-        }).catch(error => {
-            dispatch(deleteQuarterTalk(false, errorCatcher(error)));
-            reject();
-        });
+        }).catch(() => reject());
     })
-  }
-
-
-  export const reactivateQuarterTalk = (reactiveQuarterStatus, reactiveQuarterErrors) => {
-      return { type: REACTIVATE_QUARTER_TALK, reactiveQuarterStatus, reactiveQuarterErrors }
   }
 
   export const reactivateQuarterTalkACreator = (quarterId, quartersForEmployee) => dispatch => {
     return new Promise((resolve, reject) => {
-        WebApi.quarterTalks.put.reactivate(quarterId).then(response => {
+        useRequest('reactivateQuaterTalk', quarterId).then(response => {
             const quartersForEmployeeCopy = [...quartersForEmployee];
             const indexOfQuarter = quartersForEmployeeCopy.findIndex(i => i.id === quarterId);
             quartersForEmployeeCopy[indexOfQuarter].isDeleted = false;
-            dispatch(reactivateQuarterTalk(true, []));
             dispatch(getQuartersForEmployee(quartersForEmployeeCopy, true, []));
             resolve();
-        }).catch(error => {
-            dispatch(reactivateQuarterTalk(false, errorCatcher(error)));
-            reject();
-        });
+        }).catch(() => reject());
     })
   }
 
@@ -240,3 +224,36 @@ export const deleteQuestionACreator = questionId => dispatch => {
         })
       })
   }
+
+  export const editQuestionsInQuarter = (id, questions) => ({type: EDIT_QUESTIONS_IN_QUARTER, id, quarter})
+
+  export const deleteQuestionsFromQuarterTalk = (currentQuarter, questionsToDeleteIds) => dispatch => {
+    const { year, quarter, plannedTalkDate } = currentQuarter;
+    const model = { year, quarter, plannedTalkDate,
+      quarterTalkQuestionItems:
+        currentQuarter.quarterTalkQuestionItems.filter(question => !questionsToDeleteIds[question.id]).map(question => {
+          return { quarterTalkQuestionId: question.id, answer: question.answer };
+        })
+    };
+    return new Promise((resolve, reject) => {
+      useRequest('editQuarterTalk', currentQuarter.id, model)
+      .then(response => {
+        dispatch(editQuestionsInQuarter(currentQuarter.id, model))
+        resolve();
+      })
+      .catch(() => reject());
+    });
+  }
+export const editQuestionInQuarterTalk = (currentQuarter, newQuestion) => dispatch => {
+  const model = {...currentQuarter};
+  model.quarterTalkQuestionItems = model.quarterTalkQuestionItems.map(question => {
+    return question.id === newQuestion.id ? newQuestion : question
+  });
+  return new Promise((resolve, reject) => {
+    useRequest('editQuarterTalk', currentQuarter.id, model)
+      .then(response => {
+        resolve();
+
+      }).catch(() => reject());
+  })
+}

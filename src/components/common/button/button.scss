@@ -134,3 +134,50 @@
 .files-btn:focus{
   outline: none;
 }
+
+$white: #fff;
+$danger: #d22708;
+$danger-hover: #d33819;
+.btn {
+  border-radius: 5px;
+  font-family: inherit;
+  border: none;
+  cursor: pointer;
+  text-transform: capitalize;
+  display: flex;
+  align-items: center;
+  i {
+    margin-right: 7.5px;
+  }
+}
+.medium-btn {
+  padding: 10px;
+  font-size: 12px;
+  min-width: 100px;
+  i {
+    font-size: 14px;
+  }
+}
+.xl-btn {
+  font-size: 14px;
+  min-width: 120px;
+  padding: 15px;
+}
+.danger-btn {
+  color: $white;
+  background: #d22708;
+  &:hover {
+    background: #d33819;
+  }
+}
+.animated-icon-btn {
+  @media(min-width: 764px) {
+    i {
+      transition: .8s;
+      transform: rotate(0);
+    }
+    &:hover i {
+      transform: rotate(-360deg);
+    }
+  }
+}

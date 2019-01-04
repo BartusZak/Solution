@@ -38,14 +38,14 @@ function listener() {
   let langHeader = '';
   switch (selectLang(store.getState())) {
     case "pl":
-    langHeader = "pl-PL";
-    break;
-  case "en":
-    langHeader = "en-US";
-    break;
+      langHeader = "pl-PL";
+      lang = 'pl';
+      break;
+    case "en":
+      langHeader = "en-US";
+      lang = 'en';
+      break;
   }
-
-  lang = langHeader;
 
   axios.defaults.withCredentials = true;
   // axios.defaults.headers.common["Authorization"] = token;
@@ -115,7 +115,7 @@ const params = obj => {
   };
 };
 
-const execute = (key, path = '', type = 'get', payload = {}) => {
+const execute = (key, path = '', type = requestTypes.get, payload = {}) => {
   const fullPath = `${API_ENDPOINT}/${path}`;
 
   return axios[type](fullPath, payload)
@@ -124,8 +124,21 @@ const execute = (key, path = '', type = 'get', payload = {}) => {
     .catch(response => parseFailure(response, key));
 };
 
+const requestTypes = {
+  get: 'get',
+  post: 'post',
+  put: 'put',
+  patch: 'patch',
+  delete: 'delete'
+};
 const requests = {
-  addProject: projectModel => execute(fromAlertSettings.getProjects, `projects/add`, 'post', projectModel),
+  //PROJECTS
+  addProject: model => execute(fromAlertSettings.getProjects, `projects/add`, requestTypes.post, model),
+
+  //QUATER TALKS
+  reactivateQuaterTalk: id => execute(fromAlertSettings.reactivateQuaterTalk, `QuarterTalks/Reactivate/${id}`, requestTypes.put),
+  deleteQuaterTalk: id => execute(fromAlertSettings.deleteQuaterTalk, `QuarterTalks/${id}`, requestTypes.delete),
+  editQuarterTalk: (id, model) => execute(fromAlertSettings.editQuarterTalk, `QuarterTalks/${id}`, requestTypes.put, model)
 };
 
 export const useRequest = (name, ...params) => requests[name](...params);
@@ -313,9 +326,6 @@ const WebApi = {
       }
     },
     delete: {
-      quarter: quarterId => {
-        return WebAround.delete(`${API_ENDPOINT}/QuarterTalks/${quarterId}`);
-      },
       question: questionId => {
         return WebAround.delete(
           `${API_ENDPOINT}/QuarterTalks/Question/${questionId}`
@@ -323,11 +333,6 @@ const WebApi = {
       }
     },
     put: {
-      reactivate: quarterId => {
-        return WebAround.put(
-          `${API_ENDPOINT}/QuarterTalks/Reactivate/${quarterId}`
-        );
-      },
       populateQuarter: (model, quarterId) => {
         return WebAround.put(
           `${API_ENDPOINT}/QuarterTalks/${quarterId}`,

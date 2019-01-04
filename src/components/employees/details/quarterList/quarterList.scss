@@ -4,11 +4,6 @@
   height: 600px;
   .quarter-list{
     height: 360px;
-    .single-quarter{
-      &:hover{
-        background-color: #f7e2e67c;
-      }
-    }
     .current-watched-item{
       border-right-color: transparent;
       border-left-color: #82b541;

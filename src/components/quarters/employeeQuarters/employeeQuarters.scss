@@ -16,7 +16,7 @@
         width: 100%;
         padding: 10px;
         @media(min-width: 900px){
-            padding: 0 20px;
+            padding: 0 0 0 20px;
             width: 90%;
         }
         @media(max-width: 889px){
@@ -33,5 +33,11 @@
                 margin-top: 25px;
             }
         }
+    }
+    .danger-btn {
+      margin-left: auto;
+      @media(max-width: 500px) {
+        margin: 10px auto;
+      }
     }
 }
