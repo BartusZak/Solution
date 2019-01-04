@@ -13,6 +13,7 @@ import en from "../translations/en";
 import pl from "../translations/pl";
 
 import LoginScreen from "./login/LoginScreen";
+
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { LANGUAGE_CHANGE } from "../constants";
@@ -71,6 +72,7 @@ class App extends Component {
           />
           <Route component={NotFound404} />
         </Switch>
+
       </TranslatorProvider>
     );
   }

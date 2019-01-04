@@ -17,6 +17,8 @@ import ResponseParser from "./responseParser";
 import Config from "Config";
 import { loginACreator } from "../actions/persistHelpActions";
 import { Certificate } from "crypto";
+import { addAlert, removeAlert } from '../actions/alertsActions';
+import * as fromAlertSettings from './request-settings';
 const { store } = storeCreator;
 
 export const API_ENDPOINT = Config.serverUrl;
@@ -30,11 +32,11 @@ const select = state =>
 export const selectLang = state =>
   state.languageReducer.language ? state.languageReducer.language : "pl";
 
-
-  function listener() {
-    // const token = `Bearer ${select(store.getState())}`;
-    let langHeader = '';
-    switch (selectLang(store.getState())) {
+let lang = '';
+function listener() {
+  // const token = `Bearer ${select(store.getState())}`;
+  let langHeader = '';
+  switch (selectLang(store.getState())) {
     case "pl":
     langHeader = "pl-PL";
     break;
@@ -42,6 +44,8 @@ export const selectLang = state =>
     langHeader = "en-US";
     break;
   }
+
+  lang = langHeader;
 
   axios.defaults.withCredentials = true;
   // axios.defaults.headers.common["Authorization"] = token;
@@ -81,17 +85,27 @@ const authValidator = response => {
   throw response;
 };
 
-const parseSuccess = response => {
+const parseSuccess = (response, key) => {
   let parser = new ResponseParser(response);
   parser.parse();
+  const succMessage = fromAlertSettings.succOperationsWhiteObject[key];
+  if (succMessage) {
+    store.dispatch(addAlert({ id: key, content: succMessage[lang], type: 'ok', time: 5000 }));
+  }
+
   return BluebirdResolve(parser);
 };
 
-const parseFailure = response => {
+const parseFailure = (response, key) => {
   if (response instanceof Error && response.request === undefined)
     throw response;
+
+  const isKeyInBlackList = fromAlertSettings.errorsBlackList.findIndex(item => item === key);
   let parser = new ResponseParser(response);
-  parser.parse();
+  if (isKeyInBlackList === -1) {
+    store.dispatch(addAlert({ id: key, content: parser.parse().message, type: 'err', time: 5000 }));
+  }
+
   throw parser;
 };
 
@@ -100,6 +114,21 @@ const params = obj => {
     params: obj
   };
 };
+
+const execute = (key, path = '', type = 'get', payload = {}) => {
+  const fullPath = `${API_ENDPOINT}/${path}`;
+
+  return axios[type](fullPath, payload)
+    .then(response => parseSuccess(response, key))
+    .catch(response => authValidator(response))
+    .catch(response => parseFailure(response, key));
+};
+
+const requests = {
+  addProject: projectModel => execute(fromAlertSettings.getProjects, `projects/add`, 'post', projectModel),
+};
+
+export const useRequest = (name, ...params) => requests[name](...params);
 
 const WebAround = {
   get: (path, payload) => {
