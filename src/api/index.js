@@ -132,6 +132,9 @@ const requestTypes = {
   delete: 'delete'
 };
 const requests = {
+  //EMPLOYEES
+  getEmployees: settings => execute(fromAlertSettings.getEmployees, 'employees', requestTypes.post, settings),
+
   //PROJECTS
   addProject: model => execute(fromAlertSettings.getProjects, `projects/add`, requestTypes.post, model),
 
@@ -430,9 +433,6 @@ const WebApi = {
       }
     },
     post: {
-      list: (settings = {}) => {
-        return WebAround.post(`${API_ENDPOINT}/employees/`, settings);
-      },
       add: employee => {
         return WebAround.post(`${API_ENDPOINT}/employees/add`, employee);
       },
@@ -1118,16 +1118,6 @@ class DCMTWebApi {
   deleteAssignment(id) {
     return axios.delete(`${API_ENDPOINT}/assignments/${id}`);
     //.catch(response => authValidator(response));
-  }
-
-  getEmployees(settings = {}) {
-    return (
-      axios
-        .post(`${API_ENDPOINT}/employees`, settings)
-        .then(response => parseSuccess(response))
-        //.catch(response => authValidator(response))
-        .catch(response => parseFailure(response))
-    );
   }
 
   getEmployee(id) {

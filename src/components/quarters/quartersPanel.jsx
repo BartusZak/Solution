@@ -10,9 +10,9 @@ import { createLastWatchedPersonsArray, changeLinkBeforeRedirect, changeCurrentW
 import { sendAuthCodePromise } from '../../actions/oneDriveActions.js';
 import PlanQuarter from './planQuarter/planQuarter';
 import AuthWithOutlook from './authWithOutlookComponent/authWithOutlookComponent';
-import FindUserModal from './others/findUserModal/findUserModal';
 import { translate } from 'react-translate';
 import { API_ENDPOINT } from '../../api';
+import EmployeeSearcher from '../employees/employee-searcher/employee-searcher.js';
 const linkTypes = {
     "plan": "/employees/plan/",
     "addquarter": "/employees/addquarter/",
@@ -21,7 +21,6 @@ const linkTypes = {
 
 class Quarters extends React.PureComponent{
     state = {
-        openFindUserModal: false,
         historyLighted: false
     }
 
@@ -64,7 +63,7 @@ class Quarters extends React.PureComponent{
         const { match, history, lastWatchedPersons, planQuarterACreator, createLastWatchedPersonsArray,
             linkBeforeRedirectToOutlookAuth, changeLinkBeforeRedirect, sendAuthCodePromise,
             authCodeStatus, authCodeErrors, currentWatchedUser, changeCurrentWatchedUser, t } = this.props;
-        const { openFindUserModal, historyLighted } = this.state;
+        const { historyLighted } = this.state;
 
         const isHistoryExist = lastWatchedPersons && lastWatchedPersons.length > 0;
         return (
@@ -76,71 +75,63 @@ class Quarters extends React.PureComponent{
                 }
                 </header>
                 {isHistoryExist &&
-                    <div className={`recent-watched ${historyLighted ? "light-history" : ""}`}>
-                        {lastWatchedPersons.map(person => {
-                            return (
-                                <div onClick={() => this.changeActualWatchedUser(person)} className={`last-watched-person ${person === currentWatchedUser ? "last-watched-person-focused" : ""}`} key={person}>
-                                    <div className="avatar-container">
-                                        <div className="image" style={{backgroundImage: `url(${API_ENDPOINT + "/ProfilePhotos/" + person + ".jpg"})`}}>
-                                        </div>
-                                        <i className="fa fa-user"></i>
+                  <div className={`recent-watched ${historyLighted ? "light-history" : ""}`}>
+                    {lastWatchedPersons.map(person => {
+                        return (
+                            <div onClick={() => this.changeActualWatchedUser(person)} className={`last-watched-person ${person === currentWatchedUser ? "last-watched-person-focused" : ""}`} key={person}>
+                                <div className="avatar-container">
+                                    <div className="image" style={{backgroundImage: `url(${API_ENDPOINT + "/ProfilePhotos/" + person + ".jpg"})`}}>
                                     </div>
-                                    <div>
-                                        {person}
-                                    </div>
+                                    <i className="fa fa-user"></i>
                                 </div>
-                            );
-                        })}
-                    </div>
+                                <div>
+                                    {person}
+                                </div>
+                            </div>
+                        );
+                    })}
+                  </div>
                 }
 
-                <nav>
+                <nav className="quarter-talks-navigation">
+                  <EmployeeSearcher emitEmployeeClick={id => this.changeActualWatchedUser(id)} />
+
+                  <div className="btns-nav-wrapper">
                     <Button onClick={() => this.handleBtnClick(`${match.url}/employees`, true)}
-                        title={t("QuaterTalks")} mainClass="generate-raport-btn btn-green"><i className="fa fa-comments"/></Button>
-                    <Button onClick={() => this.setState({openFindUserModal: true})}
-                        title={t("Users")} mainClass="generate-raport-btn btn-green"><i className="fa fa-users"/></Button>
+                        title={t("QuaterTalks")} mainClass="btn xl-btn ok-btn animated-icon-btn"><i className="fa fa-comments"/></Button>
                     <Button onClick={() => this.handleBtnClick(`${match.url}/employees/addquarter`, true)}
-                        title={t("AddQuarter")} mainClass="generate-raport-btn btn-green"><i className="fa fa-plus"/></Button>
+                        title={t("AddQuarter")} mainClass="btn xl-btn ok-btn animated-icon-btn"><i className="fa fa-plus"/></Button>
                     <Button onClick={() => this.handleBtnClick(`${match.url}/employees/plan`, true)}
-                        title={t("PlanQuarter")} mainClass="generate-raport-btn btn-green"><i className="fa fa-comment"/></Button>
+                        title={t("PlanQuarter")} mainClass="btn xl-btn ok-btn animated-icon-btn"><i className="fa fa-comment"/></Button>
 
                     {isHistoryExist &&
-                    <div onMouseEnter={this.enterHistoryBtn} onMouseLeave={this.overHistoryBtn} className="generate-raport-btn-div">
                       <Button onClick={() => createLastWatchedPersonsArray([])} title={t("ClearHistory")}
                           mainClass="btn xl-btn danger-btn animated-icon-btn" ><i className="fa fa-history"/></Button>
-                    </div>
                     }
+                  </div>
                 </nav>
                 <div className="quarters-content">
                     <Switch>
-                        <Route path={`${match.url}/employees/calendar/auth`} render={() => (
-                            <AuthWithOutlook linkBeforeRedirectToOutlookAuth={linkBeforeRedirectToOutlookAuth} push={history.push}
-                            authCodeStatus={authCodeStatus} authCodeErrors={authCodeErrors} match={match}
-                            sendAuthCodePromise={sendAuthCodePromise} />
-                        )}/>
-                        <Route exact path={`${match.url}/employees/plan/:id`} render={() => (
-                            <PlanQuarter currentWatchedUser={currentWatchedUser} location={history.location} planQuarterACreator={planQuarterACreator} match={match}
-                             redirectToLastWatchedPerson={this.handleBtnClick} changeLinkBeforeRedirect={changeLinkBeforeRedirect}/>
-                        )}/>
-                        <Route exact path={match.url + "/employees/addquarter/:id"} render={() => (
-                            <AddQuarter history={history} currentWatchedUser={currentWatchedUser} onCloseModal={() => this.handleBtnClick(`${match.url}/employees`, true)}/>
-                        )} />
-                        <Route exact path={`${match.url}/employees/:id`} render={() => (
-                            <EmployeeQuarters createLastWatchedPersonsArrayACreator={createLastWatchedPersonsArrayACreator}
-                            changeCurrentWatchedUser={changeCurrentWatchedUser} lastWatchedPersons={lastWatchedPersons}
-                            redirectToPopulatingQuarter={(quarterId) => this.handleBtnClick(`${match.url}/employees/addquarter`, true, quarterId)}
-                            history={history} currentWatchedUser={currentWatchedUser} />
-                        )}/>
-
+                      <Route path={`${match.url}/employees/calendar/auth`} render={() => (
+                          <AuthWithOutlook linkBeforeRedirectToOutlookAuth={linkBeforeRedirectToOutlookAuth} push={history.push}
+                          authCodeStatus={authCodeStatus} authCodeErrors={authCodeErrors} match={match}
+                          sendAuthCodePromise={sendAuthCodePromise} />
+                      )}/>
+                      <Route exact path={`${match.url}/employees/plan/:id`} render={() => (
+                          <PlanQuarter currentWatchedUser={currentWatchedUser} location={history.location} planQuarterACreator={planQuarterACreator} match={match}
+                            redirectToLastWatchedPerson={this.handleBtnClick} changeLinkBeforeRedirect={changeLinkBeforeRedirect}/>
+                      )}/>
+                      <Route exact path={match.url + "/employees/addquarter/:id"} render={() => (
+                          <AddQuarter history={history} currentWatchedUser={currentWatchedUser} onCloseModal={() => this.handleBtnClick(`${match.url}/employees`, true)}/>
+                      )} />
+                      <Route exact path={`${match.url}/employees/:id`} render={() => (
+                          <EmployeeQuarters createLastWatchedPersonsArrayACreator={createLastWatchedPersonsArrayACreator}
+                          changeCurrentWatchedUser={changeCurrentWatchedUser} lastWatchedPersons={lastWatchedPersons}
+                          redirectToPopulatingQuarter={(quarterId) => this.handleBtnClick(`${match.url}/employees/addquarter`, true, quarterId)}
+                          history={history} currentWatchedUser={currentWatchedUser} />
+                      )}/>
                     </Switch>
                 </div>
-
-                {openFindUserModal &&
-                    <FindUserModal changeActualWatchedUser={this.changeActualWatchedUser}
-                    onClose={() => this.setState({ openFindUserModal: false })}
-                    open={openFindUserModal} />
-                }
-
 
             </div>
         );

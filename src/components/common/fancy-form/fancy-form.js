@@ -1,8 +1,6 @@
 import React from 'react';
-import { validatorsFunctions, checkFormContainErrors, createSlotFunctionsNames } from './index';
-import Input from './input';
+import { validatorsFunctions, checkFormContainErrors, createSlotFunctionsNames, runSingleValidation } from './index';
 import Select from './select';
-import './fancy-form.scss';
 
 export class InputSettings {
   constructor(label, validators, listData = [], needsSlot = false, component = 'input', componentProps = {className: 'field'}) {
@@ -17,7 +15,6 @@ export class InputSettings {
 }
 
 class FancyForm extends React.PureComponent {
-    slots;
     constructor(props) {
         super(props);
         const formKeys = Object.keys(props.initialValues);
@@ -32,6 +29,7 @@ class FancyForm extends React.PureComponent {
             isFormInvalid: false
         };
     }
+    slots;
 
     componentDidUpdate = prevProps => {
         if (prevProps.initialValues !== this.props.initialValues) {
@@ -48,35 +46,29 @@ class FancyForm extends React.PureComponent {
         this.setState({values, formKeys});
     }
 
-    handleChange = (e, key) => {
-        const values = {...this.state.values};
-        const errors = {...this.state.errors};
-        values[key] = e.target.value;
-        errors[key] = this.runSingleValidation(key, values[key]);
+    putChanges = (value, key) => {
+      const { settings, isFormDirty } = this.state;
+      const values = {...this.state.values};
+      const errors = {...this.state.errors};
+      values[key] = value;
+      errors[key] = runSingleValidation(values[key], settings[key].validators, settings[key].label);
 
-        if (this.state.isFormDirty) this.setState({ values, errors, isFormInvalid: checkFormContainErrors(errors) });
-        else this.setState({values, errors});
+      if (isFormDirty) this.setState({ values, errors, isFormInvalid: checkFormContainErrors(errors) });
+      else this.setState({values, errors});
 
-        return errors[key];
+      return errors[key];
     }
 
-    runSingleValidation = (key, value) => {
-        const { settings } = this.state;
-        const { validators, label } = settings[key];
-        for(let vk in validators) {
-            const expectedVal = validators[vk];
-            const error = validatorsFunctions[vk](value, expectedVal, label);
-            if (error) return error;
-        }
-        return '';
-    }
+    handleChangeFromEvent = (e, key) => this.putChanges(e.target.value, key);
+    handleChangeDirectly = (value, key) => this.putChanges(value, key);
+
 
     runOnSubmitValidation = funcRef => {
-        const { values, formKeys } = this.state;
+        const { values, formKeys, settings } = this.state;
         const errors = {...this.state.errors};
         let isFormInvalid = false;
         formKeys.forEach(key => {
-            errors[key] = this.runSingleValidation(key, values[key]);
+            errors[key] = runSingleValidation(values[key], settings[key].validators, settings[key].label);
             if (errors[key]) {
                 isFormInvalid = true;
             }
@@ -96,9 +88,9 @@ class FancyForm extends React.PureComponent {
     renderComponent = (settings, props) => {
         switch(settings.component) {
             case 'select':
-                return <Select {...settings.componentProps} {...props} listData={settings.listData} />;
+              return <Select {...settings.componentProps} {...props} listData={settings.listData} />;
             default:
-                return <Input {...settings.componentProps} {...props} />;
+              return <input {...settings.componentProps} {...props} />;
         }
     }
 
@@ -107,11 +99,11 @@ class FancyForm extends React.PureComponent {
         const { renderForm, renderSubmitBtn, btnTitle, formClass, inputWrapperClass, labelClass, errorClass, btnClass } = this.props;
         return (
             <React.Fragment>
-                {renderForm ? renderForm(formKeys, values, errors, isFormInvalid, isFormDirty, this.handleChange, this.handleSubmit) :
+                {renderForm ? renderForm(formKeys, values, errors, isFormInvalid, isFormDirty, this.handleChangeFromEvent, this.handleSubmit) :
                 <form className={formClass} onSubmit={this.handleSubmit}>
                     {formKeys.map(key => {
                         if (settings[key].needsSlot && this.props[this.slots[key]])
-                            return this.props[this.slots[key]](key, values[key], errors[key], this.handleChange, this.handleSubmit);
+                            return this.props[this.slots[key]](key, values[key], errors[key], this.handleChangeFromEvent, this.handleChangeDirectly);
 
                         else {
                             return (
@@ -119,7 +111,7 @@ class FancyForm extends React.PureComponent {
                                     <label className={labelClass}>{settings[key].label}</label>
 
                                     {this.renderComponent(settings[key], {
-                                        value: values[key], onChange: e => this.handleChange(e, key)
+                                        value: values[key], onChange: e => this.handleChangeFromEvent(e, key)
                                     })}
 
                                     <p className={errorClass}>{errors[key]}</p>
@@ -143,7 +135,7 @@ class FancyForm extends React.PureComponent {
 
 FancyForm.defaultProps = {
     formClass: 'form',
-    inputWrapperClass: 'fields-wrapper',
+    inputWrapperClass: 'fields-wrapper-col',
     labelClass: 'field-label',
     errorClass: 'field-error',
     btnClass: 'label-submit',

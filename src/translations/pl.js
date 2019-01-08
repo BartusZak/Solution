@@ -1,5 +1,10 @@
 const translations = {
   locale: "pl",
+  EmployeeSearcher: {
+    EmployeeSearcherPlaceholder: 'zacznij pisać aby rozpocząć wyszukiwanie...',
+    Employee: 'Znajdź pracownika',
+    EmptyEmployeeQuery: 'Nie znaleziono pracowników o podanych parametrach'
+  },
   LoginForm: {
     EnterUsername: "Podaj login",
     EnterPassword: "Podaj hasło",
@@ -278,17 +283,14 @@ const translations = {
     QuarterTalkActivated: "Aktywowano rozmowę kwartalną",
     QuarterTalkHeader: "Panel rozmów kwartalnych",
     QuarterTalkSubHeader: "aktualnie przeglądany użytkownik",
-    Users: "Pracownicy",
     PlanQuarter: "Zaplanuj rozmowę",
     AddQuarter: "Dodaj rozmowę",
     ClearHistory: "Wyczyść historię",
     EmptyQuarterTalk: "Ta rozmowa kwartalna nie posiada żadnych odpowiedzi",
     SuccDeletedQuarter: "Wybrana przez Ciebie rozmowa została usunięta",
     SpeechState: "Przebieg rozmowy",
-    FindUserModalTitle: "Znajdź użytkownika do przeglądania",
     Next: "Przejdź",
-    Worker: "Pracownik",
-    WorkerPlaceholder: "wpisz nazwę użytkownika...",
+    Employee: "Pracownik",
     Deny: "Anuluj",
     MakeSureYouWantDeleteQuarter:
       "Czy jesteś pewny, że chcesz usunąć tą rozmowę kwartalną?",
@@ -345,7 +347,6 @@ const translations = {
     DeleteMarked: "Usuń zaznaczone",
     MakeSureYouWantDeleteQuestion: "Czy jestes pewny ze chcesz usunac zaznaczone pytania ?",
     DeletedQuarter: 'Ta rozmowa kwartalna jest usunięta',
-
   },
   EditQuestion: {
     EditingHeaderModal: 'Aktualnie edytujesz zaznaczone pytanie',

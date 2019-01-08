@@ -1,5 +1,10 @@
+// Employees
+export const getEmployees = 'getEmployees';
+
+// Projects
 export const getProjects = 'getProjects';
 
+// Quarter talks
 export const editQuarterTalk = 'editQuarterTalk';
 export const deleteQuaterTalk = 'deleteQuaterTalk';
 export const reactivateQuaterTalk = 'reactivateQuaterTalk';
