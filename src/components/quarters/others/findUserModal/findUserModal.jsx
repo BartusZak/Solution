@@ -27,7 +27,7 @@ class FindUserModal extends React.PureComponent{
         const { findUserFormItems } = this.state;
         const foundEmployee = findUserFormItems[0].value;
         changeActualWatchedUser(foundEmployee);
-        
+
     }
     render(){
         const { onClose, open, t } = this.props;

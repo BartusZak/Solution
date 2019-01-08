@@ -1,0 +1,43 @@
+.field {
+  border: 1px solid #D3D3D3;
+  border-radius: 4px;
+  padding: 10px;
+}
+.field:focus {
+  outline: none;
+}
+.field-label {
+  color: #006064;
+  margin-left: 5px;
+  margin-bottom: 10px;
+}
+.fields-wrapper {
+  display: flex;
+  flex-flow: column;
+}
+.field-error {
+  font-size: 14px;
+  margin: 0;
+  box-sizing: border-box;
+  height: 35px;
+  display: flex;
+  padding: 2px 0 0 5px;
+  flex-flow: column;
+  justify-content: center;
+  color: #CF3737;
+}
+.label-submit {
+  font-size: 20px;
+  color: #006064;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+  text-transform: uppercase;
+  font-family: inherit;
+  margin: 30px auto 0 auto;
+  display: block;
+  &:focus {
+    outline: none;
+  }
+}
