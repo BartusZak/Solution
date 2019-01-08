@@ -268,3 +268,10 @@ export const CAN_SET_EMPLOYEE_SKYPE = 'canSetEmployeeSkype';
 export const CAN_EDIT_EMPLOYEE_ONBOARD = 'canEditEmployeeOnboard';
 export const CAN_REACTIVATE_EMPLOYEE = 'canReactivateEmployee';
 export const CAN_EDIT_EMPLOYEE = 'canEditEmployee';
+
+export const FEEDBACKS = 'Feedbacks'
+export const CAN_GET_FEEDBACKS_BY_EMPLOYEE = 'canGetFeedbacksByEmployee';
+export const CAN_GET_FEEDBACKS_BY_EMPLOYEE_IN_PROJECT = 'canGetFeedbacksByEmployeeInProject';
+export const CAN_ADD_FEEDBACK = 'canAddFeedback';
+export const CAN_EDIT_FEEDBACK = 'canEditFeedback';
+export const CAN_DELETE_FEEDBACK = 'canDeleteFeedback';

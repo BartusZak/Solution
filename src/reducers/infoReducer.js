@@ -67,7 +67,13 @@ import {
   CAN_REACTIVATE_EMPLOYEE,
   CAN_GET_EMPLOYEE_CAPACITY,
   CAN_DELETE_EMPLOYEE_ONBOARD,
-  CAN_EDIT_EMPLOYEE
+  CAN_EDIT_EMPLOYEE,
+  CAN_GET_FEEDBACKS_BY_EMPLOYEE,
+  CAN_ADD_FEEDBACK,
+  CAN_EDIT_FEEDBACK,
+  CAN_DELETE_FEEDBACK,
+  FEEDBACKS,
+  CAN_GET_FEEDBACKS_BY_EMPLOYEE_IN_PROJECT
 } from "../constants";
 import { updateObject } from "../services/methods";
 
@@ -156,7 +162,14 @@ const initialState = {
     [CAN_EDIT_EMPLOYEE_ONBOARD] : new InfoState(),
     [CAN_REACTIVATE_EMPLOYEE] : new InfoState(),
     [CAN_EDIT_EMPLOYEE] : new InfoState(),
-  }  
+  },
+  [FEEDBACKS]:{
+    [CAN_GET_FEEDBACKS_BY_EMPLOYEE]: new InfoState(),
+    [CAN_GET_FEEDBACKS_BY_EMPLOYEE_IN_PROJECT]: new InfoState(),
+    [CAN_ADD_FEEDBACK]: new InfoState(),
+    [CAN_EDIT_FEEDBACK]: new InfoState(),
+    [CAN_DELETE_FEEDBACK]: new InfoState(),
+  }
 };
 
 export const infoReducer = (state = initialState, action) => {

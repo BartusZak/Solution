@@ -69,6 +69,12 @@ import {
   CAN_REACTIVATE_EMPLOYEE,
   CAN_DELETE_EMPLOYEE_ONBOARD,
   CAN_EDIT_EMPLOYEE,
+  FEEDBACKS,
+  CAN_GET_FEEDBACKS_BY_EMPLOYEE,
+  CAN_GET_FEEDBACKS_BY_EMPLOYEE_IN_PROJECT,
+  CAN_ADD_FEEDBACK,
+  CAN_EDIT_FEEDBACK,
+  CAN_DELETE_FEEDBACK,
 
 } from "../constants";
 
@@ -434,6 +440,32 @@ const infoCreators = [
   () => {
     return dispatch => {
       dispatch(genericInfoACreator(WebApi.employees.patch.data(), EMPLOYEES, CAN_EDIT_EMPLOYEE))
+    };
+  },
+  //FEEDBACKS
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator(WebApi.feedbacks.get.byEmployee(0), FEEDBACKS, CAN_GET_FEEDBACKS_BY_EMPLOYEE))
+    };
+  },
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator(WebApi.feedbacks.get.byEmployeeInProject(0), FEEDBACKS, CAN_GET_FEEDBACKS_BY_EMPLOYEE_IN_PROJECT))
+    };
+  },
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator(WebApi.feedbacks.post.feedback(), FEEDBACKS, CAN_ADD_FEEDBACK))
+    };
+  },
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator(WebApi.feedbacks.put.feedback(0), FEEDBACKS, CAN_EDIT_FEEDBACK))
+    };
+  },
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator(WebApi.feedbacks.delete.deleteById(0), FEEDBACKS, CAN_DELETE_FEEDBACK))
     };
   },
 ]
