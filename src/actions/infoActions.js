@@ -75,6 +75,14 @@ import {
   CAN_ADD_FEEDBACK,
   CAN_EDIT_FEEDBACK,
   CAN_DELETE_FEEDBACK,
+  GDRIVE,
+  CAN_LOGIN_GDRIVE,
+  CAN_GENERATE_SHARE_LINK_GDRIVE,
+  CAN_GET_FOLDERS_GDRIVE,
+  CAN_DELETE_FOLDER_GDRIVE,
+  CAN_UPDATE_FOLDER_GDRIVE,
+  CAN_UPLOAD_FILE_GDRIVE,
+  CAN_CREATE_FOLDER_GDRIVE,
 
 } from "../constants";
 
@@ -439,7 +447,7 @@ const infoCreators = [
   },
   () => {
     return dispatch => {
-      dispatch(genericInfoACreator(WebApi.employees.patch.data(), EMPLOYEES, CAN_EDIT_EMPLOYEE))
+      dispatch(genericInfoACreator(WebApi.employees.patch.data(0,{}), EMPLOYEES, CAN_EDIT_EMPLOYEE))
     };
   },
   //FEEDBACKS
@@ -455,17 +463,53 @@ const infoCreators = [
   },
   () => {
     return dispatch => {
-      dispatch(genericInfoACreator(WebApi.feedbacks.post.feedback(), FEEDBACKS, CAN_ADD_FEEDBACK))
+      dispatch(genericInfoACreator(WebApi.feedbacks.post.feedback({}), FEEDBACKS, CAN_ADD_FEEDBACK))
     };
   },
   () => {
     return dispatch => {
-      dispatch(genericInfoACreator(WebApi.feedbacks.put.feedback(0), FEEDBACKS, CAN_EDIT_FEEDBACK))
+      dispatch(genericInfoACreator(WebApi.feedbacks.put.feedback(0,{}), FEEDBACKS, CAN_EDIT_FEEDBACK))
     };
   },
   () => {
     return dispatch => {
       dispatch(genericInfoACreator(WebApi.feedbacks.delete.deleteById(0), FEEDBACKS, CAN_DELETE_FEEDBACK))
+    };
+  },
+  //GDRIVE
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator(WebApi.gDrive.get.login(), GDRIVE, CAN_LOGIN_GDRIVE))
+    };
+  },
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator(WebApi.gDrive.post.generateShareLink({}), GDRIVE, CAN_GENERATE_SHARE_LINK_GDRIVE))
+    };
+  },
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator(WebApi.gDrive.post.getFolders({}), GDRIVE, CAN_GET_FOLDERS_GDRIVE))
+    };
+  },
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator(WebApi.gDrive.post.deleteFolder({}), GDRIVE, CAN_DELETE_FOLDER_GDRIVE))
+    };
+  },
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator(WebApi.gDrive.post.updateFolder({}), GDRIVE, CAN_UPDATE_FOLDER_GDRIVE))
+    };
+  },
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator(WebApi.gDrive.post.createFolder({}), GDRIVE, CAN_CREATE_FOLDER_GDRIVE))
+    };
+  },
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator(WebApi.gDrive.post.uploadFile({}), GDRIVE, CAN_UPLOAD_FILE_GDRIVE))
     };
   },
 ]

@@ -275,3 +275,12 @@ export const CAN_GET_FEEDBACKS_BY_EMPLOYEE_IN_PROJECT = 'canGetFeedbacksByEmploy
 export const CAN_ADD_FEEDBACK = 'canAddFeedback';
 export const CAN_EDIT_FEEDBACK = 'canEditFeedback';
 export const CAN_DELETE_FEEDBACK = 'canDeleteFeedback';
+
+export const GDRIVE = 'GDrive';
+export const CAN_LOGIN_GDRIVE = 'canLoginGDrive';
+export const CAN_GENERATE_SHARE_LINK_GDRIVE = 'canGenerateShareLinkGDrive';
+export const CAN_GET_FOLDERS_GDRIVE = 'canGetFoldersGDrive';
+export const CAN_DELETE_FOLDER_GDRIVE = 'canDeleteFolderGDrive';
+export const CAN_UPDATE_FOLDER_GDRIVE = 'canUpdateFolderGDrive';
+export const CAN_CREATE_FOLDER_GDRIVE = 'canCreateFolderGDrive';
+export const CAN_UPLOAD_FILE_GDRIVE = 'canUploadFileGDrive';

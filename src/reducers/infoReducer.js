@@ -73,7 +73,15 @@ import {
   CAN_EDIT_FEEDBACK,
   CAN_DELETE_FEEDBACK,
   FEEDBACKS,
-  CAN_GET_FEEDBACKS_BY_EMPLOYEE_IN_PROJECT
+  CAN_GET_FEEDBACKS_BY_EMPLOYEE_IN_PROJECT,
+  GDRIVE,
+  CAN_LOGIN_GDRIVE,
+  CAN_GENERATE_SHARE_LINK_GDRIVE,
+  CAN_GET_FOLDERS_GDRIVE,
+  CAN_DELETE_FOLDER_GDRIVE,
+  CAN_CREATE_FOLDER_GDRIVE,
+  CAN_UPLOAD_FILE_GDRIVE,
+  CAN_UPDATE_FOLDER_GDRIVE
 } from "../constants";
 import { updateObject } from "../services/methods";
 
@@ -169,6 +177,15 @@ const initialState = {
     [CAN_ADD_FEEDBACK]: new InfoState(),
     [CAN_EDIT_FEEDBACK]: new InfoState(),
     [CAN_DELETE_FEEDBACK]: new InfoState(),
+  },
+  [GDRIVE]:{
+    [CAN_LOGIN_GDRIVE]: new InfoState(),
+    [CAN_GENERATE_SHARE_LINK_GDRIVE]: new InfoState(),
+    [CAN_GET_FOLDERS_GDRIVE]: new InfoState(),
+    [CAN_DELETE_FOLDER_GDRIVE]: new InfoState(),
+    [CAN_UPDATE_FOLDER_GDRIVE]: new InfoState(),
+    [CAN_CREATE_FOLDER_GDRIVE]: new InfoState(),
+    [CAN_UPLOAD_FILE_GDRIVE]: new InfoState(),
   }
 };
 
