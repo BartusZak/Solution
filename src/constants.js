@@ -284,3 +284,19 @@ export const CAN_DELETE_FOLDER_GDRIVE = 'canDeleteFolderGDrive';
 export const CAN_UPDATE_FOLDER_GDRIVE = 'canUpdateFolderGDrive';
 export const CAN_CREATE_FOLDER_GDRIVE = 'canCreateFolderGDrive';
 export const CAN_UPLOAD_FILE_GDRIVE = 'canUploadFileGDrive';
+
+export const NOTIFICATIONS = 'Notifications';
+export const CAN_GET_ALL_NOTIFICATIONS = 'canGetAllNotifications';
+export const CAN_DELETE_NOTIFICATIONS = 'canDeleteNotifications';
+export const CAN_MARK_AS_READ_NOTIFICATION = 'canMarkAsReadNotification';
+
+export const ONEDRIVE = 'OneDrive';
+export const CAN_GET_REDIRECT_LINK_ONEDRIVE = 'canGetRedirectLinkOneDrive';
+export const CAN_SEND_QUERY_TO_AUTH_ONEDRIVE = 'canSendQueryToAuthOneDrive';
+export const CAN_REFRESH_TOKEN_ONEDRIVE = 'canRefreshTokenOneDrive';
+export const CAN_GENERATE_SHARE_LINK_ONEDRIVE = 'canGenerateShareLinkOneDrive';
+export const CAN_GET_FOLDERS_ONEDRIVE = 'canGetFoldersOneDrive';
+export const CAN_CREATE_FOLDER_ONEDRIVE = 'canCreateFolderOneDrive';
+export const CAN_DELETE_FOLDER_ONEDRIVE = 'canDeleteFolderOneDrive';
+export const CAN_UPDATE_FOLDER_ONEDRIVE = 'canUpdateFolderOneDrive';
+export const CAN_UPLOAD_FILE_ONEDRIVE = 'canUploadFileOneDrive';

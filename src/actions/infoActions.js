@@ -83,6 +83,22 @@ import {
   CAN_UPDATE_FOLDER_GDRIVE,
   CAN_UPLOAD_FILE_GDRIVE,
   CAN_CREATE_FOLDER_GDRIVE,
+  NOTIFICATIONS,
+  CAN_GET_ALL_NOTIFICATIONS,
+  CAN_DELETE_NOTIFICATIONS,
+  CAN_DELETE_ALL_NOTIFICATIONS,
+  CAN_MARK_AS_READ_NOTIFICATION,
+  CAN_MARK_ALL_AS_READ_NOTIFICATIONS,
+  ONEDRIVE,
+  CAN_GET_REDIRECT_LINK_ONEDRIVE,
+  CAN_SEND_QUERY_TO_AUTH_ONEDRIVE,
+  CAN_REFRESH_TOKEN_ONEDRIVE,
+  CAN_GENERATE_SHARE_LINK_ONEDRIVE,
+  CAN_GET_FOLDERS_ONEDRIVE,
+  CAN_CREATE_FOLDER_ONEDRIVE,
+  CAN_DELETE_FOLDER_ONEDRIVE,
+  CAN_UPDATE_FOLDER_ONEDRIVE,
+  CAN_UPLOAD_FILE_ONEDRIVE,
 
 } from "../constants";
 
@@ -512,4 +528,68 @@ const infoCreators = [
       dispatch(genericInfoACreator(WebApi.gDrive.post.uploadFile({}), GDRIVE, CAN_UPLOAD_FILE_GDRIVE))
     };
   },
+  //NOTIFICATIONS
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator(WebApi.notification.get.getAll(), NOTIFICATIONS, CAN_GET_ALL_NOTIFICATIONS))
+    };
+  },
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator(WebApi.notification.delete.delete([]), NOTIFICATIONS, CAN_DELETE_NOTIFICATIONS ))
+    };
+  },
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator(WebApi.notification.put.markAsRead(0), NOTIFICATIONS, CAN_MARK_AS_READ_NOTIFICATION))
+    };
+  },
+  //ONEDRIVE
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator(WebApi.oneDrive.get.getRedirectLink(false), ONEDRIVE, CAN_GET_REDIRECT_LINK_ONEDRIVE))
+    };
+  },
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator(WebApi.oneDrive.get.sendQuertToAuth('',{}), ONEDRIVE, CAN_SEND_QUERY_TO_AUTH_ONEDRIVE))
+    };
+  },
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator(WebApi.oneDrive.get.refreshToken(''), ONEDRIVE, CAN_REFRESH_TOKEN_ONEDRIVE))
+    };
+  },
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator(WebApi.oneDrive.post.generateShareLink({}), ONEDRIVE, CAN_GENERATE_SHARE_LINK_ONEDRIVE))
+    };
+  },
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator(WebApi.oneDrive.post.generateShareLink({}), ONEDRIVE, CAN_GET_FOLDERS_ONEDRIVE))
+    };
+  },
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator(WebApi.oneDrive.post.createFolder({}), ONEDRIVE, CAN_CREATE_FOLDER_ONEDRIVE))
+    };
+  },
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator(WebApi.oneDrive.post.deleteFolder({}), ONEDRIVE, CAN_DELETE_FOLDER_ONEDRIVE))
+    };
+  },
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator(WebApi.oneDrive.post.updateFolder({}), ONEDRIVE, CAN_UPDATE_FOLDER_ONEDRIVE))
+    };
+  },
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator(WebApi.oneDrive.post.uploadFile({}), ONEDRIVE, CAN_UPLOAD_FILE_ONEDRIVE))
+    };
+  },
+  
+  
 ]
