@@ -45,9 +45,12 @@
                 margin: 0 10px 0 0;
                 font-size: 15px;
                 border: none;
-                padding: 15px;
+                padding: 10px 15px;
                 font-family: inherit;
                 border-radius: 37px;
+                &:focus {
+                  outline: none;
+                }
             }
             .items-counter{
                 right: -13.5px;

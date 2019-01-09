@@ -162,12 +162,20 @@ $danger-hover: #d33819;
   font-size: 14px;
   min-width: 120px;
   padding: 15px;
+  max-height: 120px;
 }
 .danger-btn {
   color: $white;
   background: #d22708;
   &:hover {
     background: #d33819;
+  }
+}
+.ok-btn {
+  background-color: #82b541;
+  color: $white;
+  &:hover {
+    background-color: #93b652;
   }
 }
 .animated-icon-btn {
@@ -180,4 +188,10 @@ $danger-hover: #d33819;
       transform: rotate(-360deg);
     }
   }
+}
+.label-btn {
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  text-transform: uppercase;
 }

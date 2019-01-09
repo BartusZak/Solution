@@ -1,4 +1,4 @@
-.manual-input, input[type="text"], input[type="password"] {
+.manual-input { //input[type="text"]:not(.field), input[type="password"]:not(.field)
   // display: inline-block;
   padding: 0 10px;
   border: none;

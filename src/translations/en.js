@@ -1,5 +1,10 @@
 const translations = {
   locale: "en",
+  EmployeeSearcher: {
+    EmployeeSearcherPlaceholder: 'start typing for searching employee...',
+    Employee: 'Find employee',
+    EmptyEmployeeQuery: 'There is no employees for given parameters'
+  },
   LoginForm: {
     EnterUsername: "Enter username",
     EnterPassword: "Enter password",
@@ -190,7 +195,7 @@ const translations = {
     ActivateEmployeeInfinitive: "Activate Employee",
     DeleteEmployee: "Delete Employee",
     DeleteEmployeeInfinitive: "Delete Employee",
-    EmployeeHasBeenDeleted: "Employee has been Deleted.",    
+    EmployeeHasBeenDeleted: "Employee has been Deleted.",
     DownloadEmployeeCVInWordFormat: "Download CV.docx",
     DownloadEmployeeCVInPdfFormat: "Download CV.pdf"
   },
@@ -276,17 +281,14 @@ const translations = {
     QuarterTalkActivated: "Quarter Talk has been activated",
     QuarterTalkHeader: "Quarter talk panel",
     QuarterTalkSubHeader: "current watched user",
-    Users: "Employees",
     PlanQuarter: "Plan quarter",
     AddQuarter: "Add quarter",
     ClearHistory: "Clear history",
     EmptyQuarterTalk: "This quarter talk doesn't have any answers",
     SuccDeletedQuarter: "This quarter talk has been removed",
     SpeechState: "The course of the conversation",
-    FindUserModalTitle: "Find user to inspect",
     Next: "Next",
-    Worker: "Worker",
-    WorkerPlaceholder: "type username...",
+    Employee: "Employee",
     Deny: "Deny",
     MakeSureYouWantDeleteQuarter:
       "You are sure you want to delete this quarter?",
