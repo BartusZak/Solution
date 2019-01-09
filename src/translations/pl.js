@@ -6,7 +6,8 @@ const translations = {
     EmptyEmployeeQuery: 'Nie znaleziono pracowników o podanych parametrach'
   },
   DragAndDrop: {
-    DroppedMessage: 'Pliki zostały upuszczone'
+    DroppedMessage: 'Pliki zostały upuszczone',
+    TooManyFilesError: 'Upuszczono za dużo plików. Limit to '
   },
   LoginForm: {
     EnterUsername: "Podaj login",

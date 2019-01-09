@@ -26,11 +26,11 @@ class DragAndDrop extends React.Component {
   }
 
   validateDroppedFiles = files => {
-    const { addAlert, validators, limit, comunicatesTime } = this.props;
+    const { addAlert, validators, limit, comunicatesTime, t } = this.props;
     let isFilesOk = true;
 
     if (files.length > limit) {
-      addAlert({id: 'too many files', content: `Too many files dropped. Limit is ${limit} files`, type: 'err', time: comunicatesTime});
+      addAlert({id: 'too many files', content: t("TooManyFilesError")+limit, type: 'err', time: comunicatesTime});
       isFilesOk = false;
     }
     else {
@@ -88,7 +88,7 @@ const mapDispatchToProps = dispatch => {
 };
 
 DragAndDrop.defaultProps = {
-  limit: 10, comunicatesTime: 8000
+  limit: 2, comunicatesTime: 8000
 };
 
 export default connect(null, mapDispatchToProps)(translate("DragAndDrop")(DragAndDrop));
