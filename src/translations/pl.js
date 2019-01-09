@@ -5,6 +5,9 @@ const translations = {
     Employee: 'Znajdź pracownika',
     EmptyEmployeeQuery: 'Nie znaleziono pracowników o podanych parametrach'
   },
+  DragAndDrop: {
+    DroppedMessage: 'Pliki zostały upuszczone'
+  },
   LoginForm: {
     EnterUsername: "Podaj login",
     EnterPassword: "Podaj hasło",
