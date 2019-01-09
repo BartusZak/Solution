@@ -9,6 +9,7 @@ import { contains } from "../../services/methods";
 import SpinnerButton from "./spinner-btn/spinner-btn";
 import WebApi from "../../api/index";
 import SmallSpinner from "../common/spinner/small-spinner";
+import { useRequest } from '../../api/index';
 
 class Form extends Component {
   state = {
@@ -235,8 +236,7 @@ class Form extends Component {
       }
     };
 
-    WebApi.employees.post
-      .list(apiCommandSettings)
+    useRequest('getEmployees', apiCommandSettings)
       .then(response => {
         const formItems = [...this.state.formItems];
         let shouldShowSearchList = false;

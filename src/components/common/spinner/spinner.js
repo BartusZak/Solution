@@ -3,14 +3,14 @@ import './spinner.scss';
 
 const spinner = ({containerClass, positionClass, message, ...styles}) => {
     const spinnerContent = (
-        <div className={containerClass + " " + positionClass}>
-            <div style={{...styles}} className="load-page-spinner" />
-            {message && 
-                <p>
-                    <span>{message}</span>
-                </p>
-            }
-        </div>
+      <div className={containerClass + " " + positionClass}>
+        <div style={{...styles}} className="load-page-spinner" />
+        {message &&
+          <p>
+              <span>{message}</span>
+          </p>
+        }
+      </div>
     );
     return spinnerContent;
 }

@@ -363,11 +363,7 @@ class ProjectsContainer extends React.Component {
         clearDataOfForm(addNewProjectFormValues);
         addNewProjectFormValues[CloudId].disable = true;
         setTimeout(() => {
-          this.setState({
-            showModal: false,
-            openFirstForm: true,
-            addNewProjectFormValues: addNewProjectFormValues
-          });
+          this.setState({ showModal: false, openFirstForm: true, addNewProjectFormValues });
           projectActions.createProject(null, []);
           history.push(match.url + "/" + response.id);
         }, 1500);
@@ -383,7 +379,7 @@ class ProjectsContainer extends React.Component {
       responsiblePersons,
       isLoading
     } = this.state;
-    const { t, createProjectStatus, createProjectErrors } = this.props;
+    const { t, createProjectStatus } = this.props;
     const today = new Date();
     if (!this.state.init) {
       this.setState(
@@ -432,19 +428,12 @@ class ProjectsContainer extends React.Component {
               onBlur={this.goForClient}
             />
           ) : (
-            <Form
-              btnTitle={t("Add")}
+            <Form btnTitle={t("Add")}
               key={2}
               shouldSubmit={true}
               formItems={responsiblePersonFormValues}
               onSubmit={this.handleSubmit}
               isLoading={isLoading}
-              submitResult={{
-                status: createProjectStatus,
-                content: createProjectStatus
-                  ? t("ProjectHasBeenAdded")
-                  : createProjectErrors && createProjectErrors[0]
-              }}
             >
               <button
                 onClick={this.changeForm}

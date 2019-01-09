@@ -28,6 +28,10 @@ export const LOAD_EMPLOYEES_FAILURE = "LOAD_EMPLOYEES_FAILURE";
 export const LOAD_SKILLS_SUCCESS = "LOAD_SKILLS_SUCCESS";
 export const SKILL_ADDED = "SKILL_ADDED";
 
+export const REMOVE_SKILL = "REMOVE_SKILL";
+export const EDIT_SKILL = "EDIT_SKILL";
+export const EDIT_SKILL_ERROR = "EDIT_SKILL_ERROR";
+
 export const LANGUAGE_CHANGED = "LANGUAGE_CHANGED";
 export const LANGUAGE_CHANGE = "LANGUAGE_CHANGE";
 
@@ -169,6 +173,7 @@ export const SET_PROGRESS_BAR_VALUE = "SET_PROGRESS_BAR_VALUE";
 export const CHANGE_SHOULD_SHOW_GLOBAL = "CHANGE_SHOULD_SHOW_GLOBAL";
 
 // QUARTERTALKs
+export const EDIT_QUESTIONS_IN_QUARTER = "EDIT_QUESTIONS_IN_QUARTER";
 export const GET_QUARTERS_FOR_EMPLOYEE = "GET_QUARTERS_FOR_EMPLOYEE";
 export const GET_RESERVED_DATES = "GET_RESERVED_DATES";
 export const ADD_QUARTER_TALK = "ADD_QUARTER_TALK";
@@ -178,8 +183,6 @@ export const SET_SIGNAL_R_CONNECTION_RESULT = "SET_SIGNAL_R_CONNECTION_RESULT";
 export const connectionError =
   "Wystąpił błąd podczas konfiguracji wskaźnika postępu";
 export const GENERATE_HUB_CONNECTION = "GENERATE_HUB_CONNECTION";
-export const DELETE_QUARTER_TALK = "DELETE_QUARTER_TALK";
-export const REACTIVATE_QUARTER_TALK = "REACTIVATE_QUARTER_TALK";
 export const ADD_QUESTION = "ADD_QUESTION";
 export const DELETE_QUESTION = "DELETE_QUESTION";
 
@@ -300,3 +303,8 @@ export const CAN_CREATE_FOLDER_ONEDRIVE = 'canCreateFolderOneDrive';
 export const CAN_DELETE_FOLDER_ONEDRIVE = 'canDeleteFolderOneDrive';
 export const CAN_UPDATE_FOLDER_ONEDRIVE = 'canUpdateFolderOneDrive';
 export const CAN_UPLOAD_FILE_ONEDRIVE = 'canUploadFileOneDrive';
+
+
+export const ADD_ALERT = "[Alerts] ADD_ALERT";
+export const EDIT_ALERT = "[Alerts] EDIT_ALERT";
+export const REMOVE_ALERT = "[Alerts] REMOVE_ALERT";

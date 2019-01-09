@@ -1,5 +1,10 @@
 const translations = {
   locale: "pl",
+  EmployeeSearcher: {
+    EmployeeSearcherPlaceholder: 'zacznij pisać aby rozpocząć wyszukiwanie...',
+    Employee: 'Znajdź pracownika',
+    EmptyEmployeeQuery: 'Nie znaleziono pracowników o podanych parametrach'
+  },
   LoginForm: {
     EnterUsername: "Podaj login",
     EnterPassword: "Podaj hasło",
@@ -56,7 +61,9 @@ const translations = {
     Archive: "Archiwalne",
     EmployeesFTE: "FTE Pracowników",
     UnUsed: "Wolne",
-    Used: "Zajęte"
+    Used: "Zajęte",
+    Remote: "ZDALNIE",
+    Others: "INNE"
   },
   UsersList: {
     Add: "Dodaj",
@@ -276,17 +283,14 @@ const translations = {
     QuarterTalkActivated: "Aktywowano rozmowę kwartalną",
     QuarterTalkHeader: "Panel rozmów kwartalnych",
     QuarterTalkSubHeader: "aktualnie przeglądany użytkownik",
-    Users: "Pracownicy",
     PlanQuarter: "Zaplanuj rozmowę",
     AddQuarter: "Dodaj rozmowę",
     ClearHistory: "Wyczyść historię",
     EmptyQuarterTalk: "Ta rozmowa kwartalna nie posiada żadnych odpowiedzi",
     SuccDeletedQuarter: "Wybrana przez Ciebie rozmowa została usunięta",
     SpeechState: "Przebieg rozmowy",
-    FindUserModalTitle: "Znajdź użytkownika do przeglądania",
     Next: "Przejdź",
-    Worker: "Pracownik",
-    WorkerPlaceholder: "wpisz nazwę użytkownika...",
+    Employee: "Pracownik",
     Deny: "Anuluj",
     MakeSureYouWantDeleteQuarter:
       "Czy jesteś pewny, że chcesz usunąć tą rozmowę kwartalną?",
@@ -295,6 +299,8 @@ const translations = {
     AddQuestion: "Dodaj pytanie",
     QuestionMenage: "Zarządzaj pytaniami",
     ChooseQuestionHeader: "Wybierz pytania do wypełnienia",
+    CheckAll: "Zaznacz wszystkie",
+    UncheckAll: "Odznacz wszystkie",
     Start: "Rozpocznij",
     SuccDeleteQuestion: "Pomyślnie usunięto pytanie",
     Date: "Data",
@@ -306,7 +312,6 @@ const translations = {
     QuarterItemSubHeader: "przeprowadził",
     Reactivate: "Reaktywuj",
     Conduct: "przeprowadzi",
-    QuarterDeletedPrompt: "Ta rozmowa jest usunięta",
     Year: "Rok",
     PlannedDate: "Planowana data",
     PlannedHour: "Planowana godzina",
@@ -339,6 +344,15 @@ const translations = {
     DownloadTalkInDoc: "Pobierz rozmowę w formacie .doc",
     QuarterTalkDate: "Data przeprowadzenia rozmowy",
     PlannedQuarterTalkDate: "Planowana data odbycia rozmowy",
+    DeleteMarked: "Usuń zaznaczone",
+    MakeSureYouWantDeleteQuestion: "Czy jestes pewny ze chcesz usunac zaznaczone pytania ?",
+    DeletedQuarter: 'Ta rozmowa kwartalna jest usunięta',
+  },
+  EditQuestion: {
+    EditingHeaderModal: 'Aktualnie edytujesz zaznaczone pytanie',
+    Confirm: 'Potwierdź',
+    Answer: 'Odpowiedź',
+    InsertAnswer: 'wprowadź odpowiedź na pytanie'
   },
   EmployeeSkills: {
     Add: "Dodaj",
@@ -552,6 +566,7 @@ const translations = {
     Deleted: "Usunięty",
     Closed: "Zamknięty",
     Inactive: "Nieaktywny",
+    InactiveTitle: "Project jest nieaktywny ponieważ jeszcze się nie rozpoczął",
     Active: "Aktywny",
     DeleteProject: "Usuń projekt",
     ProjectTeam: "Zespół projektowy",
@@ -703,7 +718,20 @@ const translations = {
     Info1:
       "Ten proces jest permanentny. Usuwa wpis z bazy danych i wszystkich powiązanych miejsc.",
     Info2: "Cofnięcie tej akcji jest niemożliwe.",
-    SuccessfullyDeleted: "Pomyślnie usunięto umiejętność"
+    SuccessfullyDeleted: "Pomyślnie usunięto umiejętność",
+    AllSkills: "Wszystkie umiejętności",
+    AddSkillName: "wpisz nazwę nowej umiejętności...",
+    EnterSkillName: "wpisz nazwę umiejętności...",
+    SkillExists: "Ta umiejętność już istnieje",
+    SkillName: "Nazwa umiejętności"
+  },
+  SkillList: {
+    DeleteSkill: "Usuń umiejętność",
+    EditSkill: "Edytuj umiejętność",
+    DeleteSkillQuestion: "Czy na pewno chcesz usunąć skill ",
+    SuccessfullyDeletedSkill: "Pomyślnie usunięto skill",
+    SkillLenghtError: "Nazwa umiejętności nie może być dłuższa niż 100 znaków",
+    NoResults: "Brak wyników dla tego ciągu znaków"
   },
   FileInput: {
     ChooseFile: "Wybierz plik",

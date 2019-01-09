@@ -3,7 +3,7 @@ import './addQuarter.scss';
 import Form from '../../../components/form/form.js';
 import { connect } from 'react-redux';
 import { populateQuarterTalkACreator,
-    deleteQuestion, 
+    deleteQuestion,
     deleteQuestionACreator,
     addQuestionACreator, addQuestion,
     addQuarterTalkACreator,
@@ -33,7 +33,8 @@ class AddQuarter extends Component{
         itemsDeletedCount: 0,
         newQuestionName: {value: "", error: "", inputTitle: this.props.t("Question")},
         isAddingNewQuestion: false, isPostingNewQuestion: false, shouldPutAddedQuestionInForm: false,
-        isDeletingQuestion: false
+        isDeletingQuestion: false,
+        checkAll: true
     }
 
     additionalFormItems = [
@@ -52,12 +53,13 @@ class AddQuarter extends Component{
                 {name: "4", id: 4}
             ]
         }
-    ];          
+    ];
     functionsToUseForQuestions = [
-        {name: "search", searchBy: "question", count: true}, 
+        {name: "search", searchBy: "question", count: true},
         {name: "sort", sortBy: "question"},
-        {name: "filter", filterBy: "isChecked", posibleValues: [{value: true, description: this.props.t("Choosen")}, 
-            {value: false, description: this.props.t("NotChoosen")}]}
+        {name: "filter", filterBy: "isChecked", posibleValues: [{value: true, description: this.props.t("Choosen")},
+            {value: false, description: this.props.t("NotChoosen")}]},
+        {name: "checkAll"}
     ];
 
     quarterToPopulateId = this.props.history.location.state && this.props.history.location.state.quarterToPopulateId;
@@ -68,7 +70,7 @@ class AddQuarter extends Component{
 
     getQuestions = () => {
         this.props.getQuarterQuestionsACreator().then(response => {
-            this.setState({addQuarterQuestions: this.createStartFormData(response), 
+            this.setState({addQuarterQuestions: this.createStartFormData(response),
                 isLoadingQuestions: false, itemsDeletedCount: response.length})
         }).catch(() => this.setState({isLoadingQuestions: false}));
     }
@@ -93,7 +95,7 @@ class AddQuarter extends Component{
         })
         if(!this.quarterToPopulateId)
             addQuarterFormItems = addQuarterFormItems.concat(this.additionalFormItems);
-        
+
         deleteQuestionClearData();
         this.setState({addQuarterFormItems, showSelectQuestionsModal: false});
     }
@@ -120,20 +122,44 @@ class AddQuarter extends Component{
                 this.setState({isAddingQuarter: false});
             }).catch(() => this.setState({isAddingQuarter: false}));
         }
-            
-        
+
+
     }
 
     togleIsCheckedState = item => {
         const addQuarterQuestions = [...this.state.addQuarterQuestions];
         const addQuarterFormItems = [...this.state.addQuarterFormItems];
+        const { checkAll }  = this.state;
         const indexOfItem = addQuarterQuestions.findIndex(i => i.id === item.id);
         addQuarterQuestions[indexOfItem].isChecked = !addQuarterQuestions[indexOfItem].isChecked;
         const itemsDeletedCount = addQuarterQuestions.filter(i => i.isChecked).length;
 
+        if(itemsDeletedCount === addQuarterQuestions.length && !checkAll){
+          this.setState({checkAll: true});
+        }
+        else if(itemsDeletedCount === 0 && checkAll){
+          this.setState({checkAll: false});
+        }
+
         this.setState({addQuarterQuestions, addQuarterFormItems, itemsDeletedCount});
     }
- 
+
+    toggleCheckAll = () => {
+      const { checkAll, addQuarterQuestions } = this.state;
+
+      if(checkAll){
+        addQuarterQuestions.map((item) =>
+        item.isChecked = false
+        );
+      }
+      else{
+        addQuarterQuestions.map((item) =>
+        item.isChecked = true
+        );
+      }
+      this.setState({checkAll: !checkAll})
+    }
+
     closeModal = () => {
         const { itemsDeletedCount } = this.state;
         const { onCloseModal, deleteQuestionClearData, deleteQuestionStatus, addQuarterTalkStatus, addQuarterTalkClear } = this.props;
@@ -142,7 +168,7 @@ class AddQuarter extends Component{
                 deleteQuestionClearData();
             if(addQuarterTalkStatus !== null)
                 addQuarterTalkClear();
-            
+
             if(itemsDeletedCount === 0)
                 onCloseModal();
             else
@@ -194,7 +220,7 @@ class AddQuarter extends Component{
                 addQuarterFormItems.unshift(this.createFormItem(questionId, newQuestionName.value));
                 newQuestionName.value = "";
                 newQuestionName.error = "";
-                this.setState({isPostingNewQuestion: false, shouldPutAddedQuestionInForm: true, 
+                this.setState({isPostingNewQuestion: false, shouldPutAddedQuestionInForm: true,
                     addQuarterFormItems, newQuestionName});
             }).catch(() => this.setState({isPostingNewQuestion: false}));
         }
@@ -210,7 +236,7 @@ class AddQuarter extends Component{
             addQuestionClearData();
             newQuestionName.value = "";
             newQuestionName.error = "";
-            this.setState({newQuestionName});           
+            this.setState({newQuestionName});
         }
         this.setState({isAddingNewQuestion: !isAddingNewQuestion});
     }
@@ -222,15 +248,15 @@ class AddQuarter extends Component{
     render(){
         const { history, addQuarterTalkStatus, addQuarterTalkErrors, getQuestionsStatus, getQuestionsErrors, clearQuestionResult,
             addQuestionStatus, addQuestionErrors, deleteQuestionStatus, deleteQuestionErrors, t } = this.props;
-        const { isDeletingQuestion, isAddingQuarter, addQuarterQuestions, isLoadingQuestions, showSelectQuestionsModal, shouldPutAddedQuestionInForm, 
-            itemsDeletedCount, addQuarterFormItems, newQuestionName, isAddingNewQuestion, isPostingNewQuestion } = this.state;
-        
+        const { isDeletingQuestion, isAddingQuarter, addQuarterQuestions, isLoadingQuestions, showSelectQuestionsModal, shouldPutAddedQuestionInForm,
+            itemsDeletedCount, addQuarterFormItems, newQuestionName, isAddingNewQuestion, isPostingNewQuestion, checkAll } = this.state;
+
         return (
             <div className="add-quarter-container">
                 <LoadHandlingWrapper errors={getQuestionsErrors} closePrompt={clearQuestionResult}
                 operationStatus={getQuestionsStatus}
                 isLoading={isLoadingQuestions}>
-                {addQuarterFormItems.length > 0 && 
+                {addQuarterFormItems.length > 0 &&
                   <React.Fragment>
                     <div className="form-container">
                         <h1>{this.quarterToPopulateId ? t("Populate") : t("AddQuarterTalk")}</h1>
@@ -251,7 +277,7 @@ class AddQuarter extends Component{
                                     addQuarterTalkErrors[0]
                             }}
                         >
-                            {isAddingNewQuestion && 
+                            {isAddingNewQuestion &&
                             <section className="input-container column-container">
                                 <label>
                                     {newQuestionName.value || ""}
@@ -260,9 +286,9 @@ class AddQuarter extends Component{
                                     <div>
                                         {isPostingNewQuestion && <SmallSpinner />}
                                         <textarea className={newQuestionName.error !== "" ? "input-error" : ""}
-                                        onChange={e => this.onChangeNewQuestion(e)} value={newQuestionName.value} 
+                                        onChange={e => this.onChangeNewQuestion(e)} value={newQuestionName.value}
                                             type="text" placeholder={t("AddQuarter")+"..."}></textarea>
-                                        {isPostingNewQuestion || 
+                                        {isPostingNewQuestion ||
                                             <i onClick={this.addQuestion}
                                             title={t("AddQuestion")}
                                             className={`fa fa-plus ${newQuestionName.error !== "" ? "unactive-plus" : "active-plus"}`}></i>
@@ -275,12 +301,12 @@ class AddQuarter extends Component{
                             </section>
                             }
                         </Form>
-                        
+
                     </div>
 
                     <div className="adding-quarter-settings">
                         <h1>{t("Options")}</h1>
-                        <Button onClick={this.togleAddingQuestionInput} title={isAddingNewQuestion ? t("Deny") : t("AddQuestion")} 
+                        <Button onClick={this.togleAddingQuestionInput} title={isAddingNewQuestion ? t("Deny") : t("AddQuestion")}
                         mainClass={`generate-raport-btn ${isAddingNewQuestion ? "btn-grey" : "btn-green"}`}>
                         <i className={`fa fa-${isAddingNewQuestion ? "times" : "plus"}`}/></Button>
 
@@ -301,7 +327,14 @@ class AddQuarter extends Component{
 
                     <div className="questions-list">
                         <List shouldAnimateList functionsToUse={this.functionsToUseForQuestions}
-                            clickItemFunction={this.chooseFunction} items={addQuarterQuestions} component={QuestionToSelect} 
+                        renderNavigationElement={() => {
+                          return (
+                            <div onClick={() => this.toggleCheckAll()} className="check-all-box">
+                             {!checkAll ? t("CheckAll") : t("UncheckAll")}
+                           </div>
+                          );
+                        }}
+                            clickItemFunction={this.chooseFunction} items={addQuarterQuestions} component={QuestionToSelect}
                         />
                     </div>
 
@@ -313,12 +346,12 @@ class AddQuarter extends Component{
                         submitResult={{
                             status: deleteQuestionStatus,
                             content: deleteQuestionStatus ? t("SuccDeleteQuestion") :
-                                deleteQuestionErrors[0]        
+                                deleteQuestionErrors[0]
                         }}
-                        
+
                     />
                 </Modal>
-                </LoadHandlingWrapper>     
+                </LoadHandlingWrapper>
             </div>
         );
     }
@@ -328,19 +361,19 @@ const mapStateToProps = state => {
     return {
       addQuarterTalkStatus: state.quarterTalks.addQuarterTalkStatus,
       addQuarterTalkErrors: state.quarterTalks.addQuarterTalkErrors,
-  
+
       getQuestionsStatus: state.quarterTalks.getQuestionsStatus,
       getQuestionsErrors: state.quarterTalks.getQuestionsErrors,
       questions: state.quarterTalks.questions,
 
-      addQuestionStatus: state.quarterTalks.addQuestionStatus, 
+      addQuestionStatus: state.quarterTalks.addQuestionStatus,
       addQuestionErrors: state.quarterTalks.addQuestionErrors,
 
       deleteQuestionStatus: state.quarterTalks.deleteQuestionStatus,
       deleteQuestionErrors: state.quarterTalks.deleteQuestionErrors
     };
   };
-  
+
   const mapDispatchToProps = dispatch => {
     return {
       addQuarterTalkACreator: (quarterTalkQuestionItems, employeeId) =>
@@ -351,13 +384,12 @@ const mapStateToProps = state => {
 
       addQuestionACreator: (question) => dispatch(addQuestionACreator(question)),
       addQuestionClearData: () => dispatch(addQuestion(null, [])),
-      
+
       deleteQuestionACreator: questionId => dispatch(deleteQuestionACreator(questionId)),
       deleteQuestionClearData: () => dispatch(deleteQuestion(null, [])),
 
       populateQuarterTalkACreator: (formItems, quarterId) => dispatch(populateQuarterTalkACreator(formItems, quarterId))
     };
   };
-  
+
   export default connect(mapStateToProps,mapDispatchToProps)(translate("Quaters")(AddQuarter));
-  

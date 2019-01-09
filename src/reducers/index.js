@@ -14,3 +14,4 @@ export * from "./progressBarReducer";
 export * from "./quarterTalks";
 export * from "./notificationReducer";
 export * from "./infoReducer";
+export * from './alertsReducer';

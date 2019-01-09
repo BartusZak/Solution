@@ -48,7 +48,6 @@ import {
   getAllSkills
 } from "../../../actions/skillsActions";
 import Skills from "../../common/skills/skills";
-import { changeOperationStatus } from "../../../actions/asyncActions";
 import ConfirmModal from "../../common/confimModal/confirmModal";
 import ServerError from "../../common/serverError/serverError";
 import WebApi from "../../../api/index";
@@ -519,12 +518,13 @@ class ProjectDetails extends Component {
   };
 
   calculateProjectStatus = (projectStatus, isDeleted) => {
+    const { t } = this.props;
     if (isDeleted === true)
       return [{ classVal: "spn-unactive", name: this.props.t("Deleted") }];
     if (projectStatus === 2)
       return [{ classVal: "spn-closed", name: this.props.t("Closed") }];
     if (projectStatus === 1)
-      return [{ classVal: "spn-closed", name: this.props.t("Inactive") }];
+      return [{ classVal: "spn-closed", name: this.props.t("Inactive"), title: t("InactiveTitle") }];
     if (projectStatus === 0)
       return [{ classVal: "spn-active", name: this.props.t("Active") }];
   };
@@ -708,7 +708,7 @@ class ProjectDetails extends Component {
             <header>
               <h1>
                 {projectStatus && (
-                  <span className={projectStatus[0].classVal}>
+                  <span className={projectStatus[0].classVal} title={projectStatus[0].title && projectStatus[0].title}>
                     {projectStatus[0].name}
                   </span>
                 )}

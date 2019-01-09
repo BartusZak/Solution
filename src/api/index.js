@@ -17,6 +17,8 @@ import ResponseParser from "./responseParser";
 import Config from "Config";
 import { loginACreator } from "../actions/persistHelpActions";
 import { Certificate } from "crypto";
+import { addAlert, removeAlert } from '../actions/alertsActions';
+import * as fromAlertSettings from './request-settings';
 const { store } = storeCreator;
 
 export const API_ENDPOINT = Config.serverUrl;
@@ -27,20 +29,21 @@ store.subscribe(listener);
 const select = state =>
   state.authReducer.tokens !== undefined ? state.authReducer.tokens.token : "";
 
-const selectLang = state =>
+export const selectLang = state =>
   state.languageReducer.language ? state.languageReducer.language : "pl";
 
+let lang = '';
 function listener() {
   // const token = `Bearer ${select(store.getState())}`;
-
-  let langHeader = "";
-
+  let langHeader = '';
   switch (selectLang(store.getState())) {
     case "pl":
       langHeader = "pl-PL";
+      lang = 'pl';
       break;
     case "en":
       langHeader = "en-US";
+      lang = 'en';
       break;
   }
 
@@ -82,17 +85,27 @@ const authValidator = response => {
   throw response;
 };
 
-const parseSuccess = response => {
+const parseSuccess = (response, key) => {
   let parser = new ResponseParser(response);
   parser.parse();
+  const succMessage = fromAlertSettings.succOperationsWhiteObject[key];
+  if (succMessage) {
+    store.dispatch(addAlert({ id: key, content: succMessage[lang], type: 'ok', time: 5000 }));
+  }
+
   return BluebirdResolve(parser);
 };
 
-const parseFailure = response => {
+const parseFailure = (response, key) => {
   if (response instanceof Error && response.request === undefined)
     throw response;
+
+  const isKeyInBlackList = fromAlertSettings.errorsBlackList.findIndex(item => item === key);
   let parser = new ResponseParser(response);
-  parser.parse();
+  if (isKeyInBlackList === -1) {
+    store.dispatch(addAlert({ id: key, content: parser.parse().message, type: 'err', time: 5000 }));
+  }
+
   throw parser;
 };
 
@@ -101,6 +114,37 @@ const params = obj => {
     params: obj
   };
 };
+
+const execute = (key, path = '', type = requestTypes.get, payload = {}) => {
+  const fullPath = `${API_ENDPOINT}/${path}`;
+
+  return axios[type](fullPath, payload)
+    .then(response => parseSuccess(response, key))
+    .catch(response => authValidator(response))
+    .catch(response => parseFailure(response, key));
+};
+
+const requestTypes = {
+  get: 'get',
+  post: 'post',
+  put: 'put',
+  patch: 'patch',
+  delete: 'delete'
+};
+const requests = {
+  //EMPLOYEES
+  getEmployees: settings => execute(fromAlertSettings.getEmployees, 'employees', requestTypes.post, settings),
+
+  //PROJECTS
+  addProject: model => execute(fromAlertSettings.getProjects, `projects/add`, requestTypes.post, model),
+
+  //QUATER TALKS
+  reactivateQuaterTalk: id => execute(fromAlertSettings.reactivateQuaterTalk, `QuarterTalks/Reactivate/${id}`, requestTypes.put),
+  deleteQuaterTalk: id => execute(fromAlertSettings.deleteQuaterTalk, `QuarterTalks/${id}`, requestTypes.delete),
+  editQuarterTalk: (id, model) => execute(fromAlertSettings.editQuarterTalk, `QuarterTalks/${id}`, requestTypes.put, model)
+};
+
+export const useRequest = (name, ...params) => requests[name](...params);
 
 const WebAround = {
   get: (path, payload) => {
@@ -285,9 +329,6 @@ const WebApi = {
       }
     },
     delete: {
-      quarter: quarterId => {
-        return WebAround.delete(`${API_ENDPOINT}/QuarterTalks/${quarterId}`);
-      },
       question: questionId => {
         return WebAround.delete(
           `${API_ENDPOINT}/QuarterTalks/Question/${questionId}`
@@ -295,11 +336,6 @@ const WebApi = {
       }
     },
     put: {
-      reactivate: quarterId => {
-        return WebAround.put(
-          `${API_ENDPOINT}/QuarterTalks/Reactivate/${quarterId}`
-        );
-      },
       populateQuarter: (model, quarterId) => {
         return WebAround.put(
           `${API_ENDPOINT}/QuarterTalks/${quarterId}`,
@@ -392,9 +428,6 @@ const WebApi = {
       }
     },
     post: {
-      list: (settings = {}) => {
-        return WebAround.post(`${API_ENDPOINT}/employees/`, settings);
-      },
       add: employee => {
         return WebAround.post(`${API_ENDPOINT}/employees/add`, employee);
       },
@@ -1080,16 +1113,6 @@ class DCMTWebApi {
   deleteAssignment(id) {
     return axios.delete(`${API_ENDPOINT}/assignments/${id}`);
     //.catch(response => authValidator(response));
-  }
-
-  getEmployees(settings = {}) {
-    return (
-      axios
-        .post(`${API_ENDPOINT}/employees`, settings)
-        .then(response => parseSuccess(response))
-        //.catch(response => authValidator(response))
-        .catch(response => parseFailure(response))
-    );
   }
 
   getEmployee(id) {
