@@ -1,5 +1,5 @@
 import WebApi from "../api";
-
+import {useRequest} from '../api/index'
 import {
   CHANGE_STATE,
   ACCOUNT,
@@ -413,7 +413,7 @@ const infoCreators = [
   },
   () => {
     return dispatch => {
-      dispatch(genericInfoACreator(WebApi.employees.post.list({limit: 0}), EMPLOYEES, CAN_SEARCH_EMPLOYEES))
+      dispatch(genericInfoACreator(useRequest('getEmployees',{limit: 0}), EMPLOYEES, CAN_SEARCH_EMPLOYEES))
     };
   },
   () => {
