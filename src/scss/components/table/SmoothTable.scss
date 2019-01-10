@@ -201,7 +201,6 @@ $activeShadow: 0 0 10px rgba($teal1, 0.5);
     height: 5vh;
     line-height: 3vh;
     color: lighten($button-element-background, 20%);
-    font-family: "Roboto";
     border: none;
     border-radius: 6px;
     font-weight: bold;
@@ -221,7 +220,6 @@ $activeShadow: 0 0 10px rgba($teal1, 0.5);
 
   label {
     color: lighten($button-element-background, 20%);
-    font-family: "Roboto";
     font-weight: bold;
     font-size: 1rem;
   }

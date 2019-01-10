@@ -9,7 +9,6 @@ import * as persistHelpActions from "../../actions/persistHelpActions";
 import Modal from "react-responsive-modal";
 import ProjectsList from "../../components/projects/ProjectsList";
 import WebApi from "../../api/";
-import "../../scss/containers/ProjectsContainer.scss";
 import { fetchFormClientsACreator } from "../../actions/persistHelpActions";
 import { ACTION_CONFIRMED } from "./../../constants";
 import { Route, Switch, withRouter } from "react-router-dom";
