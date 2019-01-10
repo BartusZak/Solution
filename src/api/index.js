@@ -141,7 +141,11 @@ const requests = {
   //QUATER TALKS
   reactivateQuaterTalk: id => execute(fromAlertSettings.reactivateQuaterTalk, `QuarterTalks/Reactivate/${id}`, requestTypes.put),
   deleteQuaterTalk: id => execute(fromAlertSettings.deleteQuaterTalk, `QuarterTalks/${id}`, requestTypes.delete),
-  editQuarterTalk: (id, model) => execute(fromAlertSettings.editQuarterTalk, `QuarterTalks/${id}`, requestTypes.put, model)
+  editQuarterTalk: (id, model) => execute(fromAlertSettings.editQuarterTalk, `QuarterTalks/${id}`, requestTypes.put, model),
+
+  //ASSIGNMENTS
+  getAssignmentByEmployee: employeeId => execute(fromAlertSettings.getAssignmentByEmployee, `/assignments/employee/${employeeId}`),  
+  getAssignmentByProject: projectId => execute(fromAlertSettings.getAssignmentByEmployee, `/assignments/project/${projectId}`),
 };
 
 export const useRequest = (name, ...params) => requests[name](...params);
@@ -186,18 +190,6 @@ const WebAround = {
 
 const WebApi = {
   assignments: {
-    get: {
-      byEmployee: employeeId => {
-        return WebAround.get(
-          `${API_ENDPOINT}/assignments/employee/${employeeId}`
-        );
-      },
-      byProject: projectId => {
-        return WebAround.get(
-          `${API_ENDPOINT}/assignments/project/${projectId}`
-        );
-      }
-    },
     post: assignmentModel => {
       return WebAround.post(`${API_ENDPOINT}/assignments/`, assignmentModel);
     },

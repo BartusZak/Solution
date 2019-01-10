@@ -579,8 +579,7 @@ export const loadAssignments = (
 
 export const loadAssignmentsACreator = employeeId => dispatch => {
   return new Promise((resolve, reject) => {
-    WebApi.assignments.get
-      .byEmployee(employeeId)
+    useRequest('getAssignmentByEmployee', employeeId)
       .then(response => {
         dispatch(
           loadAssignments(true, [], response.replyBlock.data.dtoObjects)

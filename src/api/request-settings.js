@@ -9,6 +9,10 @@ export const editQuarterTalk = 'editQuarterTalk';
 export const deleteQuaterTalk = 'deleteQuaterTalk';
 export const reactivateQuaterTalk = 'reactivateQuaterTalk';
 
+// Assignments
+export const getAssignmentByEmployee = 'getAssignmentByEmployee';
+export const getAssignmentByProject = 'getAssignmentByProject';
+
 export const errorsBlackList = [
 
 ];
