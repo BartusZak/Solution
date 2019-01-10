@@ -1,0 +1,37 @@
+@import '../../../scss/new-color-schema.scss';
+.on-drop-layout {
+  position: fixed;
+  color: $font-grey;
+  background: $white;
+  animation: 1s animate-drop;
+  box-shadow: $shadow;
+  padding: 10px;
+  border-radius: 4px;
+  max-width: 300px;
+  margin: 0 auto;
+  left: 0; right: 0;
+  z-index: 100;
+  @keyframes animate-drop {
+    0% {
+      opacity: 0;
+      top: 0;
+    }
+    50% {
+      opacity: 1;
+      top: 25px;
+    }
+    100% {
+      opacity: 0;
+      top: 0;
+    }
+  }
+}
+.not-drag-over {
+  transition: .2s;
+  transform: scale(1);
+  opacity: 1;
+}
+.drag-over {
+  transform: scale(.96);
+  opacity: .8;
+}
