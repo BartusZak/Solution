@@ -144,8 +144,33 @@ const requests = {
   editQuarterTalk: (id, model) => execute(fromAlertSettings.editQuarterTalk, `QuarterTalks/${id}`, requestTypes.put, model),
 
   //ASSIGNMENTS
-  getAssignmentByEmployee: employeeId => execute(fromAlertSettings.getAssignmentByEmployee, `/assignments/employee/${employeeId}`),  
-  getAssignmentByProject: projectId => execute(fromAlertSettings.getAssignmentByEmployee, `/assignments/project/${projectId}`),
+  getAssignmentByEmployee: employeeId => execute(fromAlertSettings.getAssignmentByEmployee, `assignments/employee/${employeeId}`),  
+  //getAssignmentByProject: projectId => execute(fromAlertSettings.getAssignmentByEmployee, `/assignments/project/${projectId}`),
+  addAssignment: model => execute(fromAlertSettings.addAssignment, `assignments`, requestTypes.post, model ),
+  deleteAssignment: id => execute(fromAlertSettings.deleteAssignment, `assignments/${id}`, requestTypes.delete ),
+  editAssignment: (id, model) => execute(fromAlertSettings.editAssignment, `assignments/${id}`, requestTypes.put, model),
+
+  //NOTIFICATIONS
+  getAllNotification: () => execute(fromAlertSettings.getAllNotification, 'notification'),  
+  deleteAllNotifications: () => execute(fromAlertSettings.deleteAllNotifications, 'notification/all', requestTypes.delete),
+  deleteNotifications: notificationsIds => {
+    const model = {
+      data: {
+        NotificationIds: notificationsIds
+      }
+    }
+    return execute(fromAlertSettings.deleteNotifications, 'notification', requestTypes.delete, model)
+  }, 
+  markNotificationAsRead: notificationId => 
+    execute(fromAlertSettings.markNotificationAsRead, `notification/markAsRead/${notificationId}`, requestTypes.put),
+  markAllNotificationAsRead: () => 
+    execute(fromAlertSettings.markAllNotificationAsRead, 'notification/markAllAsRead', requestTypes.put),
+  
+  //CLIENTS
+  addClient: model => execute(fromAlertSettings.addClient, 'clients', requestTypes.post, model),
+  deleteClient: id => execute(fromAlertSettings.deleteClient, `delete/${id}`, requestTypes.delete),
+  editInfoClient: (id, model) => execute(fromAlertSettings.editInfoClient, `clients/${id}`, requestTypes.put, model),
+  reactivateClient: id => execute(fromAlertSettings.reactivateClient, `clients/${id}/reactivate`, requestTypes.put)
 };
 
 export const useRequest = (name, ...params) => requests[name](...params);
@@ -189,49 +214,6 @@ const WebAround = {
 };
 
 const WebApi = {
-  assignments: {
-    post: assignmentModel => {
-      return WebAround.post(`${API_ENDPOINT}/assignments/`, assignmentModel);
-    },
-    delete: assignmentId => {
-      return WebAround.delete(`${API_ENDPOINT}/assignments/${assignmentId}`);
-    },
-    put: (assignmentId, assignmentModel) => {
-      return WebAround.put(
-        `${API_ENDPOINT}/assignments/${assignmentId}`,
-        assignmentModel
-      );
-    }
-  },
-  notification: {
-    get: {
-      getAll: () => {
-        return WebAround.get(`${API_ENDPOINT}/Notification`);
-      }
-    },
-    delete: {
-      delete: notificationsIds => {
-        return WebAround.delete(`${API_ENDPOINT}/Notification`, {
-          data: {
-            NotificationIds: notificationsIds
-          }
-        });
-      },
-      deleteAll: () => {
-        return WebAround.delete(`${API_ENDPOINT}/Notification/All`);
-      }
-    },
-    put: {
-      markAsRead: notificationId => {
-        return WebAround.put(
-          `${API_ENDPOINT}/Notification/MarkAsRead/${notificationId}`
-        );
-      },
-      markAllAsRead: () => {
-        return WebAround.put(`${API_ENDPOINT}/Notification/MarkAllAsRead`);
-      }
-    }
-  },
   roles: {
     get: {
       getAll: () => {

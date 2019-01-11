@@ -14,6 +14,9 @@ import {
   ADD_RESPONSIBLE_PERSON_RESULT,
   CLEAR_RESPONSE_CLOUD
 } from "../constants";
+import { useRequest } from '../api/index';
+import { editInfoClient } from "../api/request-settings";
+
 
 export const clearResponseCloud = () => {
   return {
@@ -80,8 +83,7 @@ export const loadClients = () => {
 export const deleteClient = id => {
   return dispatch => {
     dispatch(asyncStarted());
-    WebApi.clients
-      .delete(id)
+    useRequest('deleteClient', id)
       .then(response => {
         if (!response.errorOccurred()) {
           let promise = new Promise((resolve, reject) => {
@@ -102,8 +104,7 @@ export const deleteClient = id => {
 export const reactivateClient = id => {
   return dispatch => {
     dispatch(asyncStarted());
-    WebApi.clients.put
-      .reactivate(id)
+    useRequest('reactivateClient',id)
       .then(response => {
         if (!response.errorOccurred()) {
           let promise = new Promise((resolve, reject) => {
@@ -124,8 +125,7 @@ export const reactivateClient = id => {
 export const saveEdit = (id, value) => {
   return dispatch => {
     dispatch(asyncStarted());
-    WebApi.clients.put
-      .info(id, value)
+    useRequest('editInfoClient', id, value)
       .then(response => {
         if (!response.errorOccurred()) {
           dispatch(this.loadClients());
@@ -141,8 +141,7 @@ export const saveEdit = (id, value) => {
 
 export const editClient = (clientId, formData) => {
   return dispatch => {
-    WebApi.clients.put
-      .info(clientId, formData)
+    useRequest('editInfoClient', clientId, formData)
       .then(response => {
         if (!response.errorOccurred()) {
           dispatch(addClientResult(response));
@@ -161,8 +160,7 @@ export const editClient = (clientId, formData) => {
 
 export const addClient = formData => {
   return dispatch => {
-    WebApi.clients
-      .post(formData)
+    useRequest('addClient', formData)
       .then(response => {
         if (!response.errorOccurred()) {
           dispatch(addClientResult(response));

@@ -230,8 +230,7 @@ export const addEmployeeToProjectACreator = (
     assignedCapacity: assignedCapacity / 10,
     responsibilities: responsibilites
   };
-  WebApi.assignments
-    .post(assignmentModel)
+  useRequest("addAssignment", assignmentModel)
     .then(response => {
       dispatch(addEmployeeToProject(true, []));
       dispatch(getProjectACreator(projectId, onlyActiveAssignments));
@@ -272,8 +271,7 @@ export const editEmployeeAssignmentACreator = (
     assignedCapacity: assignedCapacity / 10,
     responsibilities: responsibilites
   };
-  WebApi.assignments
-    .put(assignmentId, assignmentModel)
+  useRequest("editAssignment", assignmentId, assignmentModel)
     .then(response => {
       dispatch(editEmployeeAssignment(true, []));
       dispatch(getProjectACreator(projectId, onlyActiveAssignments));
@@ -302,8 +300,7 @@ export const deleteEmployeeAssignmentACreator = (
   projectId,
   onlyActiveAssignments
 ) => dispatch => {
-  WebApi.assignments
-    .delete(assignmentId)
+  useRequest("deleteAssignment", assignmentId)
     .then(response => {
       dispatch(deleteEmployeeAssignment(true, []));
       dispatch(getProjectACreator(projectId, onlyActiveAssignments));

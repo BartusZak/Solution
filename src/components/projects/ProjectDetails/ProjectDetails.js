@@ -1327,19 +1327,6 @@ class ProjectDetails extends Component {
                 this.deleteEmployeeAssignment()
               }
             />
-
-            {addEmployeeToProjectStatus !== null &&
-              addEmployeeToProjectStatus !== undefined && (
-                <OperationStatusPrompt
-                  operationPromptContent={
-                    addEmployeeToProjectStatus
-                      ? this.state.editingEmployeeAssignment ? t("AssignmentSaved") : this.state.deletingEmployeeAssignment ? t("AssignmentDeleted") : t("EmployeeAdded")
-                      : addEmployeeToProjectErrors &&
-                        addEmployeeToProjectErrors[0]
-                  }
-                  operationPrompt={addEmployeeToProjectStatus}
-                />
-              )}
           </Aux>
         )}
 

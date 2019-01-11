@@ -8,6 +8,7 @@ import {
 import { resolve } from 'url';
 import WebApi from "../api";
 import { errorCatcher } from '../services/errorsHandler';
+import { useRequest } from '../api/index';
 
 
 export const getNotification = (notifications, getNotificationStatus, getNotificationErrors) => {
@@ -21,7 +22,8 @@ export const getNotification = (notifications, getNotificationStatus, getNotific
   
 export const getNotificationACreator = () => (dispatch) => {
     return new Promise((resolve, reject) => {
-        WebApi.notification.get.getAll().then(response => {
+        useRequest('getAllNotification')
+        .then(response => {
             dispatch(getNotification(response.replyBlock.data.dtoObjects, true, []));
             resolve();
         }).catch(error => {
@@ -40,7 +42,8 @@ export const deleteNotification = (deleteNotificationStatus, deleteNotificationE
   
 export const deleteNotificationACreator = notificationsIds => dispatch => {
     return new Promise((resolve, reject) => {
-        WebApi.notification.delete.delete(notificationsIds).then(() => {
+        useRequest('deleteNotifications',notificationsIds)
+        .then(() => {
             dispatch(deleteNotification(true, []));
             dispatch(getNotificationACreator());
             resolve();
@@ -60,13 +63,13 @@ export const markNotificationAsRead = (markNotificationAsReadStatus, markNotific
   
 export const markNotificationAsReadACreator = notificationId => dispatch => {
     return new Promise((resolve, reject) => {
-        WebApi.notification.put.markAsRead(notificationId).then(() => {
+        useRequest('markNotificationAsRead',notificationId)
+        .then(() => {
             dispatch(markNotificationAsRead(true, []));
             dispatch(getNotificationACreator());
             resolve();
         }).catch(error => {
             dispatch(markNotificationAsRead(false, errorCatcher(error)));
-
             reject();
         })
     })
@@ -81,7 +84,8 @@ export const deleteAllNotifications = (deleteAllNotificationsStatus, deleteAllNo
   
 export const deleteAllNotificationsACreator = () => dispatch => {
     return new Promise((resolve, reject) => {
-        WebApi.notification.delete.deleteAll().then(() => {
+        useRequest('deleteAllNotifications')
+        .then(() => {
             dispatch(deleteAllNotifications(true, []));
             dispatch(getNotificationACreator());
             resolve();
@@ -101,7 +105,8 @@ export const markAllNotificationsAsRead = (markAllNotificationsAsReadStatus, mar
   
 export const markAllNotificationsAsReadACreator = () => dispatch => {
     return new Promise((resolve, reject) => {
-        WebApi.notification.put.markAllAsRead().then(() => {
+        useRequest('markAllNotificationAsRead')
+        .then(() => {
             dispatch(markAllNotificationsAsRead(true, []));
             dispatch(getNotificationACreator());
             resolve();
