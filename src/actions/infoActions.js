@@ -1,200 +1,595 @@
 import WebApi from "../api";
-
+import {useRequest} from '../api/index'
 import {
-  ACCOUNT_CAN_SEARCH_USERS_ACCOUNTS,
-  ACCOUNT_CAN_CHANGE_USERS_ROLES,
-  ACCOUNT_CAN_SEARCH_AD,
-  ACCOUNT_CAN_ADD_USER,
-  ACCOUNT_CAN_REACTIVATE_USER,
-  ACCOUNT_CAN_DELETE_USER,
-  ACCOUNT_CAN_DELETE_USER_REQUEST,
-  PROJECT_CAN_SEARCH_PROJECTS,
-  CLIENT_GET_LIST_OF_CLIENTS,
-  CLIENT_POST_CLIENT,
-  CLIENT_DELETE_CLIENT,
-  CLIENT_EDIT_CLIENT,
-  CLIENT_REACTIVATE_CLIENT
+  CHANGE_STATE,
+  ACCOUNT,
+  CAN_SEARCH_USER_ACCOUNT,
+  CAN_EDIT_USERS_ROLES,
+  CAN_SEARCH_AD,
+  CAN_ADD_USER,
+  CAN_REACTIVATE_USER,
+  CAN_DELETE_USER,
+  CAN_DELETE_USER_REQUEST,
+  PROJECTS,
+  CAN_SEARCH_PROJECTS,
+  CAN_ADD_PROJECT,
+  CAN_EDIT_PROJECT,
+  CLIENT,
+  CAN_GET_LIST_OF_CLIENTS,
+  CAN_ADD_CLIENT,
+  CAN_DELETE_CLIENT,
+  CAN_EDIT_CLIENT,
+  CAN_REACTIVATE_CLIENT,
+  CAN_GET_PROJECT,
+  CAN_ADD_PROJECT_OWNERS,
+  CAN_DELETE_PROJECT_OWNERS,
+  CAN_CLOSE_PROJECT,
+  CAN_REACTIVATE_PROJECT,
+  CAN_SET_PROJECT_SKILLS,
+  CAN_GET_SUGGESTED_EMPLOYEES,
+  CAN_DELETE_PROJECT,
+  ASSIGNMENTS,
+  CAN_GET_EMPLOYEE_ASSIGNMENTS,
+  CAN_GET_PROJECT_ASSIGNMENTS,
+  CAN_ADD_ASSIGNMENT,
+  CAN_EDIT_ASSIGNMENT,
+  CAN_DELETE_ASSIGNMENT,
+  CERTIFICATES,
+  CAN_EDIT_CERTIFICATE,
+  CAN_GET_EMPLOYEE_CERTIFICATES,
+  CAN_ADD_CERTIFICATE,
+  CAN_DELETE_CERTIFICATE,
+  CAN_REACTIVATE_CLOUD,
+  CAN_ADD_CLOUD,
+  CAN_EDIT_CLOUD,
+  CAN_DELETE_CLOUD,
+  CLOUDS,
+  CAN_IMPORT_CV,
+  CV_IMPORT,
+  EDUCATION,
+  CAN_GET_EDUCATION,
+  CAN_ADD_EDUCATION,
+  CAN_EDIT_EDUCATION,
+  CAN_DELETE_EDUCATION,
+  CAN_GET_EMPLOYEE,
+  EMPLOYEES,
+  CAN_GET_EMPLOYEE_CAPACITY,
+  CAN_GET_EMPLOYEES_AND_MANAGERS,
+  CAN_GET_EMPLOYEE_ONBOARDS,
+  CAN_GET_EMPLO_CONTACT,
+  CAN_GET_EMPLO_SKILLS,
+  CAN_SEARCH_EMPLOYEES,
+  CAN_ADD_EMPLOYEE,
+  CAN_ADD_EMPLOYEE_ONBOARD,
+  CAN_DELETE_EMPLOYEE,
+  CAN_SET_EMPLOYEE_SKILLS,
+  CAN_SET_EMPLOYEE_F_LANGUAGES,
+  CAN_SET_EMPLOYEE_SKYPE,
+  CAN_EDIT_EMPLOYEE_ONBOARD,
+  CAN_REACTIVATE_EMPLOYEE,
+  CAN_DELETE_EMPLOYEE_ONBOARD,
+  CAN_EDIT_EMPLOYEE,
+  FEEDBACKS,
+  CAN_GET_FEEDBACKS_BY_EMPLOYEE,
+  CAN_GET_FEEDBACKS_BY_EMPLOYEE_IN_PROJECT,
+  CAN_ADD_FEEDBACK,
+  CAN_EDIT_FEEDBACK,
+  CAN_DELETE_FEEDBACK,
+  GDRIVE,
+  CAN_LOGIN_GDRIVE,
+  CAN_GENERATE_SHARE_LINK_GDRIVE,
+  CAN_GET_FOLDERS_GDRIVE,
+  CAN_DELETE_FOLDER_GDRIVE,
+  CAN_UPDATE_FOLDER_GDRIVE,
+  CAN_UPLOAD_FILE_GDRIVE,
+  CAN_CREATE_FOLDER_GDRIVE,
+  NOTIFICATIONS,
+  CAN_GET_ALL_NOTIFICATIONS,
+  CAN_DELETE_NOTIFICATIONS,
+  CAN_DELETE_ALL_NOTIFICATIONS,
+  CAN_MARK_AS_READ_NOTIFICATION,
+  CAN_MARK_ALL_AS_READ_NOTIFICATIONS,
+  ONEDRIVE,
+  CAN_GET_REDIRECT_LINK_ONEDRIVE,
+  CAN_SEND_QUERY_TO_AUTH_ONEDRIVE,
+  CAN_REFRESH_TOKEN_ONEDRIVE,
+  CAN_GENERATE_SHARE_LINK_ONEDRIVE,
+  CAN_GET_FOLDERS_ONEDRIVE,
+  CAN_CREATE_FOLDER_ONEDRIVE,
+  CAN_DELETE_FOLDER_ONEDRIVE,
+  CAN_UPDATE_FOLDER_ONEDRIVE,
+  CAN_UPLOAD_FILE_ONEDRIVE,
+
 } from "../constants";
 
 export const infoActionCreator = () => {
   return dispatch => {
-    dispatch(accountPostUsersListACreator());
-    dispatch(accountPatchChangeUsersRolesACreator());
-    dispatch(accountGetSearchADACreator());
-    dispatch(accountPostAddUserACreator());
-    dispatch(accountPatchReactivateUserACreator());
-    dispatch(accountDeleteUserACreator());
-    dispatch(accountDeleteUserRequestsACreator());
 
-    dispatch(projectsPostProjectsListACreator());
+    infoCreators.forEach(creator => {
+      dispatch(creator())
+    });
 
-    dispatch(clientGetListOfClientsACreator());
-    dispatch(clientAddClientACreator());
-    dispatch(clientDeleteClientACreator());
-    dispatch(clientEditClientACreator());
-    dispatch(clientReactivateClientACreator());
   };
 };
 
-export const genericChangeTypeStatusLoading = (type, status, loading) => {
+
+export const genericChangeTypeStatusLoading = (controllerKey, requestKey, status, loading) => {
   return {
-    type,
-    status,
-    loading
+    type: CHANGE_STATE,
+    controllerKey,
+    requestKey,
+    value:{
+      status,
+      loading
+    }
   };
 };
 
-export const genericInfoACreator = (Api, type) => {
+
+export const genericInfoACreator = (Api, controllerKey, requestKey) => {
   return dispatch => {
-    dispatch(genericChangeTypeStatusLoading(type, false, true));
+    dispatch(genericChangeTypeStatusLoading(controllerKey, requestKey, false, true));
     Api.then(response => {
       !response.errorOccurred() &&
-        dispatch(genericChangeTypeStatusLoading(type, true, false));
+        dispatch(genericChangeTypeStatusLoading(controllerKey, requestKey, true, false));
     }).catch(error => {
       if (error.replyBlock.status === 400) {
-        dispatch(genericChangeTypeStatusLoading(type, true, false));
+        dispatch(genericChangeTypeStatusLoading(controllerKey, requestKey, true, false));
       } else {
-        dispatch(genericChangeTypeStatusLoading(type, false, false));
+        dispatch(genericChangeTypeStatusLoading(controllerKey, requestKey, false, false));
       }
     });
   };
 };
 
-//ACCOUNT
-export const accountPostUsersListACreator = () => {
-  return dispatch => {
-    dispatch(
-      genericInfoACreator(
-        WebApi.users.post.list({ Limit: 1, Page: 1 }),
-        ACCOUNT_CAN_SEARCH_USERS_ACCOUNTS
-      )
-    );
-  };
-};
 
-export const accountPatchChangeUsersRolesACreator = () => {
-  return dispatch => {
-    dispatch(
-      genericInfoACreator(
-        WebApi.users.patch.roles(),
-        ACCOUNT_CAN_CHANGE_USERS_ROLES
-      )
-    );
-  };
-};
+const infoCreators = [
+  //ACCOUNT
+  ()=>{
+    return dispatch => { dispatch(
+      genericInfoACreator( WebApi.users.post.list({ Limit: 0, Page: 0 }), ACCOUNT, CAN_SEARCH_USER_ACCOUNT )
+    )}
+  },
+  () => {
+    return dispatch => {
+      dispatch(
+        genericInfoACreator( WebApi.users.patch.roles(),ACCOUNT, CAN_EDIT_USERS_ROLES)
+      )}
+  },
+  () => {
+    return dispatch => {
+      dispatch(
+        genericInfoACreator(WebApi.users.get.adSearch(), ACCOUNT, CAN_SEARCH_AD)
+      );
+    };
+  },
+  () => {
+    return dispatch => {
+      dispatch(
+        genericInfoACreator(WebApi.users.post.add(), ACCOUNT, CAN_ADD_USER)
+      );
+    };
+  },
+  () => {
+    return dispatch => {
+      dispatch(
+        genericInfoACreator(
+          WebApi.users.patch.reactivate(), ACCOUNT, CAN_REACTIVATE_USER)
+      );
+    };
+  },
+  () => {
+    return dispatch => {
+      dispatch(
+        genericInfoACreator(WebApi.users.delete.user(), ACCOUNT, CAN_DELETE_USER)
+      );
+    };
+  },
+  () => {
+    return dispatch => {
+      dispatch(
+        genericInfoACreator(WebApi.users.delete.request(), ACCOUNT, CAN_DELETE_USER_REQUEST)
+      );
+    };
+  },
+  //PROJECTS
+  () => {
+    return dispatch => {
+      dispatch(
+        genericInfoACreator( WebApi.projects.post.list({ Limit: 0, Page: 0 }), PROJECTS, CAN_SEARCH_PROJECTS)
+      );
+  }},
+  () => {
+    return dispatch => {
+      dispatch(
+        genericInfoACreator(WebApi.projects.post.add({}),PROJECTS, CAN_ADD_PROJECT)
+      );
+    };
+  },
+  () => {
+    return dispatch => {
+      dispatch(
+        genericInfoACreator(WebApi.projects.put.project(0,{}), PROJECTS, CAN_EDIT_PROJECT)
+      );
+    };
+  },
+  () => {
+    return dispatch => {
+      dispatch(
+        genericInfoACreator(WebApi.projects.get.projects(0), PROJECTS, CAN_GET_PROJECT)
+      );
+    };
+  },
+  () => {
+    return dispatch => {
+      dispatch(
+        genericInfoACreator(WebApi.projects.put.owner(0,[]), PROJECTS, CAN_ADD_PROJECT_OWNERS)
+      );
+    };
+  },
+  () => {
+    return dispatch => {
+      dispatch(
+        genericInfoACreator(WebApi.projects.delete.owner([0]), PROJECTS, CAN_DELETE_PROJECT_OWNERS)
+      );
+    };
+  },
+  () => {
+    return dispatch => {
+      dispatch(
+        genericInfoACreator(WebApi.projects.put.closeProject(0), PROJECTS, CAN_CLOSE_PROJECT)
+      );
+    };
+  },
+  () => {
+    return dispatch => {
+      dispatch(
+        genericInfoACreator(WebApi.projects.put.reactivateProject(0), PROJECTS, CAN_REACTIVATE_PROJECT)
+      );
+    };
+  },
+  () => {
+    return dispatch => {
+      dispatch(
+        genericInfoACreator(WebApi.projects.put.skills(0,[]), PROJECTS, CAN_SET_PROJECT_SKILLS)
+      );
+    };
+  },
+  () => {
+    return dispatch => {
+      dispatch(
+        genericInfoACreator(WebApi.projects.delete.deleteProject(0), PROJECTS, CAN_DELETE_PROJECT)
+      );
+    };
+  },
+  () => {
+    return dispatch => {
+      dispatch(
+        genericInfoACreator(WebApi.projects.get.suggestEmployees(0), PROJECTS, CAN_GET_SUGGESTED_EMPLOYEES)
+      );
+    };
+  },
+  //CLIENT
+  () => {
+    return dispatch => {
+      dispatch(
+        genericInfoACreator(WebApi.clients.get.all(), CLIENT, CAN_GET_LIST_OF_CLIENTS)
+      );
+    };
+  },
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator(WebApi.clients.post(), CLIENT, CAN_ADD_CLIENT))
+    };
+  },
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator(WebApi.clients.delete(), CLIENT, CAN_DELETE_CLIENT))
+    };
+  },
+  () => {
+    return dispatch => {
+      dispatch(
+        genericInfoACreator(WebApi.clients.put.info(), CLIENT, CAN_EDIT_CLIENT)
+      );
+    };
+  },
+  () => {
+    return dispatch => {
+      dispatch(
+        genericInfoACreator(
+          WebApi.clients.put.reactivate(),CLIENT, CAN_REACTIVATE_CLIENT
+        )
+      );
+    }
+  },
+  //ASSIGNMENTS
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator(WebApi.assignments.get.byEmployee(0), ASSIGNMENTS, CAN_GET_EMPLOYEE_ASSIGNMENTS))
+    };
+  },
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator(WebApi.assignments.get.byProject(0), ASSIGNMENTS, CAN_GET_PROJECT_ASSIGNMENTS))
+    };
+  },
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator(WebApi.assignments.post({}), ASSIGNMENTS, CAN_ADD_ASSIGNMENT))
+    };
+  },
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator(WebApi.assignments.put(0, {}), ASSIGNMENTS, CAN_EDIT_ASSIGNMENT))
+    };
+  },
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator(WebApi.assignments.delete(), ASSIGNMENTS, CAN_DELETE_ASSIGNMENT))
+    };
+  },
 
-export const accountGetSearchADACreator = () => {
-  return dispatch => {
-    dispatch(
-      genericInfoACreator(WebApi.users.get.adSearch(), ACCOUNT_CAN_SEARCH_AD)
-    );
-  };
-};
+   //CERTIFICATES
+   () => {
+    return dispatch => {
+      dispatch(genericInfoACreator(WebApi.certificates.get.byEmployee(0), CERTIFICATES, CAN_GET_EMPLOYEE_CERTIFICATES))
+    };
+  },
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator(WebApi.certificates.post.add({}), CERTIFICATES, CAN_ADD_CERTIFICATE))
+    };
+  },
+  () => {
+    return dispatch => {CERTIFICATES
+      dispatch(genericInfoACreator(WebApi.certificates.put.update(0,{}), CERTIFICATES, CAN_EDIT_CERTIFICATE))
+    };
+  },
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator(WebApi.certificates.delete.deleteById(), CERTIFICATES, CAN_DELETE_CERTIFICATE))
+    };
+  },
 
-export const accountPostAddUserACreator = () => {
-  return dispatch => {
-    dispatch(
-      genericInfoACreator(WebApi.users.post.add(), ACCOUNT_CAN_ADD_USER)
-    );
-  };
-};
+  //CLOUDS
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator(WebApi.clouds.reactivate(0), CLOUDS, CAN_REACTIVATE_CLOUD))
+    };
+  },
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator(WebApi.clouds.post(), CLOUDS, CAN_ADD_CLOUD))
+    };
+  },
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator(WebApi.clouds.edit(0), CLOUDS, CAN_EDIT_CLOUD))
+    };
+  },
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator(WebApi.clouds.delete(0), CLOUDS, CAN_DELETE_CLOUD))
+    };
+  },
 
-export const accountPatchReactivateUserACreator = () => {
-  return dispatch => {
-    dispatch(
-      genericInfoACreator(
-        WebApi.users.patch.reactivate(),
-        ACCOUNT_CAN_REACTIVATE_USER
-      )
-    );
-  };
-};
-
-export const accountDeleteUserACreator = () => {
-  return dispatch => {
-    dispatch(
-      genericInfoACreator(WebApi.users.delete.user(), ACCOUNT_CAN_DELETE_USER)
-    );
-  };
-};
-
-export const accountDeleteUserRequestsACreator = () => {
-  return dispatch => {
-    dispatch(
-      genericInfoACreator(
-        WebApi.users.delete.request(),
-        ACCOUNT_CAN_DELETE_USER_REQUEST
-      )
-    );
-  };
-};
-
-//PROJECTS
-export const projectsPostProjectsListACreator = () => {
-  return dispatch => {
-    dispatch(
-      genericChangeTypeStatusLoading(PROJECT_CAN_SEARCH_PROJECTS, false, true)
-    );
-    WebApi.projects.post
-      .list({ Limit: 1, Page: 1 })
-      .then(response => {
-        !response.errorOccurred() &&
-          dispatch(
-            genericChangeTypeStatusLoading(
-              PROJECT_CAN_SEARCH_PROJECTS,
-              true,
-              false
-            )
-          );
-      })
-      .catch(error => {
-        dispatch(
-          genericChangeTypeStatusLoading(
-            PROJECT_CAN_SEARCH_PROJECTS,
-            false,
-            false
-          )
-        );
-      });
-  };
-};
-
-//CLIENT
-export const clientGetListOfClientsACreator = () => {
-  return dispatch => {
-    dispatch(
-      genericInfoACreator(WebApi.clients.get.all(), CLIENT_GET_LIST_OF_CLIENTS)
-    );
-  };
-};
-
-export const clientAddClientACreator = () => {
-  return dispatch => {
-    dispatch(genericInfoACreator(WebApi.clients.post(), CLIENT_POST_CLIENT));
-  };
-};
-
-export const clientDeleteClientACreator = () => {
-  return dispatch => {
-    dispatch(genericInfoACreator(WebApi.clients.post(), CLIENT_DELETE_CLIENT));
-  };
-};
-
-export const clientEditClientACreator = () => {
-  return dispatch => {
-    dispatch(
-      genericInfoACreator(WebApi.clients.put.info(), CLIENT_EDIT_CLIENT)
-    );
-  };
-};
-
-export const clientReactivateClientACreator = () => {
-  return dispatch => {
-    dispatch(
-      genericInfoACreator(
-        WebApi.clients.put.reactivate(),
-        CLIENT_REACTIVATE_CLIENT
-      )
-    );
-  };
-};
+  //CV IMPORT
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator(WebApi.CvImport.post(new FormData()), CV_IMPORT, CAN_IMPORT_CV))
+    };
+  },
+  //EMPLOYEES
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator(WebApi.employees.get.byEmployee(0), EMPLOYEES, CAN_GET_EMPLOYEE))
+    };
+  },
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator(WebApi.employees.get.capacity(0), EMPLOYEES, CAN_GET_EMPLOYEE_CAPACITY))
+    };
+  },
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator(WebApi.employees.get.employeesAndManagers(), EMPLOYEES, CAN_GET_EMPLOYEES_AND_MANAGERS))
+    };
+  },
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator(WebApi.employees.get.onBoards(0), EMPLOYEES, CAN_GET_EMPLOYEE_ONBOARDS))
+    };
+  },
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator(WebApi.employees.get.emplo.contact(0), EMPLOYEES, CAN_GET_EMPLO_CONTACT))
+    };
+  },
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator(WebApi.employees.get.emplo.skills(0), EMPLOYEES, CAN_GET_EMPLO_SKILLS))
+    };
+  },
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator(useRequest('getEmployees',{limit: 0}), EMPLOYEES, CAN_SEARCH_EMPLOYEES))
+    };
+  },
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator(WebApi.employees.post.add({}), EMPLOYEES, CAN_ADD_EMPLOYEE))
+    };
+  },
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator(WebApi.employees.post.addOnBoard({}), EMPLOYEES, CAN_ADD_EMPLOYEE_ONBOARD))
+    };
+  },
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator(WebApi.employees.deleteOnBoard(0), EMPLOYEES, CAN_DELETE_EMPLOYEE_ONBOARD))
+    };
+  },
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator(WebApi.employees.delete(0), EMPLOYEES, CAN_DELETE_EMPLOYEE))
+    };
+  },
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator(WebApi.employees.put.skills(0,[]), EMPLOYEES, CAN_SET_EMPLOYEE_SKILLS))
+    };
+  },
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator(WebApi.employees.put.foreignLanguages(0,[]), EMPLOYEES, CAN_SET_EMPLOYEE_F_LANGUAGES))
+    };
+  },
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator(WebApi.employees.put.updateSkype(0,0), EMPLOYEES, CAN_SET_EMPLOYEE_SKYPE))
+    };
+  },
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator(WebApi.employees.put.updateOnBoard({},0), EMPLOYEES, CAN_EDIT_EMPLOYEE_ONBOARD))
+    };
+  },
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator(WebApi.employees.patch.reactivate(0), EMPLOYEES, CAN_REACTIVATE_EMPLOYEE))
+    };
+  },
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator(WebApi.employees.patch.data(0,{}), EMPLOYEES, CAN_EDIT_EMPLOYEE))
+    };
+  },
+  //FEEDBACKS
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator(WebApi.feedbacks.get.byEmployee(0), FEEDBACKS, CAN_GET_FEEDBACKS_BY_EMPLOYEE))
+    };
+  },
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator(WebApi.feedbacks.get.byEmployeeInProject(0), FEEDBACKS, CAN_GET_FEEDBACKS_BY_EMPLOYEE_IN_PROJECT))
+    };
+  },
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator(WebApi.feedbacks.post.feedback({}), FEEDBACKS, CAN_ADD_FEEDBACK))
+    };
+  },
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator(WebApi.feedbacks.put.feedback(0,{}), FEEDBACKS, CAN_EDIT_FEEDBACK))
+    };
+  },
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator(WebApi.feedbacks.delete.deleteById(0), FEEDBACKS, CAN_DELETE_FEEDBACK))
+    };
+  },
+  //GDRIVE
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator(WebApi.gDrive.get.login(), GDRIVE, CAN_LOGIN_GDRIVE))
+    };
+  },
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator(WebApi.gDrive.post.generateShareLink({}), GDRIVE, CAN_GENERATE_SHARE_LINK_GDRIVE))
+    };
+  },
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator(WebApi.gDrive.post.getFolders({}), GDRIVE, CAN_GET_FOLDERS_GDRIVE))
+    };
+  },
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator(WebApi.gDrive.post.deleteFolder({}), GDRIVE, CAN_DELETE_FOLDER_GDRIVE))
+    };
+  },
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator(WebApi.gDrive.post.updateFolder({}), GDRIVE, CAN_UPDATE_FOLDER_GDRIVE))
+    };
+  },
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator(WebApi.gDrive.post.createFolder({}), GDRIVE, CAN_CREATE_FOLDER_GDRIVE))
+    };
+  },
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator(WebApi.gDrive.post.uploadFile({}), GDRIVE, CAN_UPLOAD_FILE_GDRIVE))
+    };
+  },
+  //NOTIFICATIONS
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator(WebApi.notification.get.getAll(), NOTIFICATIONS, CAN_GET_ALL_NOTIFICATIONS))
+    };
+  },
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator(WebApi.notification.delete.delete([]), NOTIFICATIONS, CAN_DELETE_NOTIFICATIONS ))
+    };
+  },
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator(WebApi.notification.put.markAsRead(0), NOTIFICATIONS, CAN_MARK_AS_READ_NOTIFICATION))
+    };
+  },
+  //ONEDRIVE
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator(WebApi.oneDrive.get.getRedirectLink(false), ONEDRIVE, CAN_GET_REDIRECT_LINK_ONEDRIVE))
+    };
+  },
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator(WebApi.oneDrive.get.sendQuertToAuth('',{}), ONEDRIVE, CAN_SEND_QUERY_TO_AUTH_ONEDRIVE))
+    };
+  },
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator(WebApi.oneDrive.get.refreshToken(''), ONEDRIVE, CAN_REFRESH_TOKEN_ONEDRIVE))
+    };
+  },
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator(WebApi.oneDrive.post.generateShareLink({}), ONEDRIVE, CAN_GENERATE_SHARE_LINK_ONEDRIVE))
+    };
+  },
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator(WebApi.oneDrive.post.generateShareLink({}), ONEDRIVE, CAN_GET_FOLDERS_ONEDRIVE))
+    };
+  },
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator(WebApi.oneDrive.post.createFolder({}), ONEDRIVE, CAN_CREATE_FOLDER_ONEDRIVE))
+    };
+  },
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator(WebApi.oneDrive.post.deleteFolder({}), ONEDRIVE, CAN_DELETE_FOLDER_ONEDRIVE))
+    };
+  },
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator(WebApi.oneDrive.post.updateFolder({}), ONEDRIVE, CAN_UPDATE_FOLDER_ONEDRIVE))
+    };
+  },
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator(WebApi.oneDrive.post.uploadFile({}), ONEDRIVE, CAN_UPLOAD_FILE_ONEDRIVE))
+    };
+  },
+  
+  
+]

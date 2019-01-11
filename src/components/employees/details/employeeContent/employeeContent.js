@@ -161,7 +161,7 @@ const employeeContent = ({
           !employee.isDeleted && (
             <React.Fragment>
               <FteBar
-                capacityLeft={employee.baseCapacity}
+                capacityLeft={employee.capacity}
                 editCapacity={editCapacity}
                 employeeErrors={employeeErrors}
                 canEditFteBar={

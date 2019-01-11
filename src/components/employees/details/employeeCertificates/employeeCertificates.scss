@@ -16,11 +16,10 @@
       display: inline-block;
       margin-right: 5px;
       font-size: 1.5rem;
-      
+
     }
 
     table {
-      font-family: arial, sans-serif;
       border-collapse: collapse;
       width: 100%;
       transition: 0.5 all ease-in-out;
@@ -40,7 +39,7 @@
               }
           }
       }
-     
+
       .detail-table-header{
           color: white;
           padding: 15px;
@@ -70,9 +69,9 @@
                   font-size: .7rem;
                   width: 100px;
               }
-                  
+
           }
-         
+
       }
       @keyframes header-anim {
           0%{
@@ -95,7 +94,7 @@
       .detail-table-header:hover{
           background-color: lightcoral !important;
       }
-      
+
       .detail-team-list{
           position: relative;
           padding-top: 30px;
@@ -127,12 +126,12 @@
                   color: green;
                   margin-right: 10px;
               }
-            
+
               #ed-date{
                   color: red;
               }
           }
-          
+
       }
       .detail-team-list li:nth-of-type(1){
           width: 100%;
@@ -142,11 +141,11 @@
           border: 1px solid transparent;
           @media(max-width: 764px){
               margin-top: 20px;
-          }                
+          }
           @media(max-width: 480px){
               margin: 60px 0 20px 0;
               line-height: 15px;
-              
+
           }
           b{
               color: tomato;
@@ -191,11 +190,11 @@
           text-align: left;
           padding: 10px;
       }
-      
+
       tr:nth-child(even) {
           background-color: #dddddd;
       }
-  
+
   }
 
     h2 {

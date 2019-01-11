@@ -8,14 +8,16 @@
 @import "./components/common/Logo";
 @import "./components/common/Flags";
 @import "./components/common/modals/ResultModal";
-@import "./components/projects/Skill";
 @import "./components/projects/Owner";
 @import "./components/stats/StatsContainer";
 @import './new-color-schema.scss';
 body {
-  font-family: "Roboto Condensed", sans-serif;
+  font-family: "Roboto", sans-serif;
   min-height: 100vh;
   background: $content-background;
+}
+button, input, textarea {
+  font-family: inherit;
 }
 .clickable {
   cursor: pointer
@@ -104,33 +106,6 @@ input[type="checkbox"] {
   }
 }
 
-::selection {
-  background: #ffb97c; /* WebKit/Blink Browsers */
-}
-
-.button-group {
-  button {
-    margin-right: 15px;
-  }
-}
-
-path.c3-shape {
-  cursor: default !important;
-}
-
-.text-just {
-  display: block;
-  text-align: justify;
-}
-
-.text-right {
-  text-align: right;
-}
-
-.text-bold {
-  font-weight: 900;
-}
-
 a,
 a:visited {
   text-decoration: none;
@@ -198,16 +173,6 @@ a:visited {
     color: rgb(166, 50, 147);
   }
 }
-
-.internum {
-  padding: 25px;
-}
-
-.scroll-container {
-  height: 73.3vh;
-  overflow-y: auto;
-}
-
 .result-block {
   width: 100%;
   text-align: center;
@@ -311,14 +276,6 @@ a:visited {
   }
 }
 
-.Modal-assignment {
-  height: auto;
-}
-
-.full-screen-loader {
-  position: relative;
-}
-
 .api-error-message {
   color: red;
   background: white;
@@ -330,11 +287,7 @@ a:visited {
 .Modal-add-project {
   height: 550px;
 }
-
-.react-datepicker-popper {
-  z-index: 200;
-}
-
+// That styles are for fancy form component
 .input-data-list, .empty-data-list {
   position: absolute;
   width: 100%;
@@ -429,7 +382,6 @@ a:visited {
   cursor: pointer;
   font-weight: 500;
   text-transform: uppercase;
-  font-family: inherit;
   margin: 30px auto 0 auto;
   display: block;
   &:focus {
@@ -448,7 +400,6 @@ a:visited {
     border: none;
     background: none;
     padding-left: 10px;
-    font-family: inherit;
     width: 85%;
     &:focus {
       outline: none;
