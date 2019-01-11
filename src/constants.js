@@ -304,6 +304,19 @@ export const CAN_DELETE_FOLDER_ONEDRIVE = 'canDeleteFolderOneDrive';
 export const CAN_UPDATE_FOLDER_ONEDRIVE = 'canUpdateFolderOneDrive';
 export const CAN_UPLOAD_FILE_ONEDRIVE = 'canUploadFileOneDrive';
 
+export const QUARTERTALKS = 'QuarterTalks'
+export const CAN_GET_QUARTERS_FOR_EMPLOYEE = "canGetQuartersForEmployee";
+export const CAN_ADD_QUARTER_TALK = "canAddQuarterTalk";
+export const CAN_PLAN_QUARTER_TALK = "canPlanQuarterTalk";
+export const CAN_GET_QUESTIONS = "canGetQuestions";
+export const CAN_ADD_QUESTION = "canAddQuestion";
+export const CAN_DELETE_QUESTION = "canDeleteQuestion";
+export const CAN_REACTIVATE_QUARTER_TALK = "canReactivateQuarterTalk"
+export const CAN_DELETE_QUARTER_TALK = "canDeleteQuarterTalk"
+export const CAN_EDIT_QUARTER_TALK = "canEditQuarterTalk"
+export const CAN_GENERATE_QUARTER_TALK_DOC = "canGenerateQuarterTalkDoc"
+export const CAN_GET_QUARTER_TALK_RESERVED_DATES = "canGetQuarterTalkReservedDates"
+
 
 export const ADD_ALERT = "[Alerts] ADD_ALERT";
 export const EDIT_ALERT = "[Alerts] EDIT_ALERT";

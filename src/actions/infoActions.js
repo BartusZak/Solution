@@ -99,6 +99,19 @@ import {
   CAN_DELETE_FOLDER_ONEDRIVE,
   CAN_UPDATE_FOLDER_ONEDRIVE,
   CAN_UPLOAD_FILE_ONEDRIVE,
+  QUARTERTALKS,
+  CAN_EDIT_QUESTIONS_IN_QUARTER_TALK,
+  CAN_REACTIVATE_QUARTER_TALK,
+  CAN_DELETE_QUARTER_TALK,
+  CAN_EDIT_QUARTER_TALK,
+  CAN_GET_QUESTIONS,
+  CAN_GET_QUARTERS_FOR_EMPLOYEE,
+  CAN_GENERATE_QUARTER_TALK_DOC,
+  CAN_DELETE_QUESTION,
+  CAN_ADD_QUESTION,
+  CAN_ADD_QUARTER_TALK,
+  CAN_PLAN_QUARTER_TALK,
+  CAN_GET_QUARTER_TALK_RESERVED_DATES,
 
 } from "../constants";
 
@@ -590,6 +603,49 @@ const infoCreators = [
       dispatch(genericInfoACreator(WebApi.oneDrive.post.uploadFile({}), ONEDRIVE, CAN_UPLOAD_FILE_ONEDRIVE))
     };
   },
-  
-  
+  //QUARTERTALKS
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator( useRequest('reactivateQuaterTalk', 0), QUARTERTALKS,CAN_REACTIVATE_QUARTER_TALK ))};
+  },
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator( useRequest('deleteQuaterTalk', 0), QUARTERTALKS, CAN_DELETE_QUARTER_TALK))};
+  },  
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator( useRequest('editQuarterTalk', 0, {}), QUARTERTALKS, CAN_EDIT_QUARTER_TALK))};
+  },  
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator( useRequest('getQuestions'), QUARTERTALKS, CAN_GET_QUESTIONS))};
+  },  
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator( useRequest('getQuarterForEmployee',0 ), QUARTERTALKS, CAN_GET_QUARTERS_FOR_EMPLOYEE))};
+  }, 
+   () => {
+    return dispatch => {
+      dispatch(genericInfoACreator( useRequest('generateQuarterTalkDoc',0), QUARTERTALKS, CAN_GENERATE_QUARTER_TALK_DOC))};
+  },  
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator( useRequest('deleteQuestion',0), QUARTERTALKS,CAN_DELETE_QUESTION ))};
+  },  
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator( useRequest('addQuestion',{}), QUARTERTALKS, CAN_ADD_QUESTION))};
+  },  
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator( useRequest('createQuarterTalk',{}), QUARTERTALKS, CAN_ADD_QUARTER_TALK))};
+  },
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator( useRequest('planQuarterTalk',{}, false), QUARTERTALKS, CAN_PLAN_QUARTER_TALK))};
+  },
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator( useRequest('getQuarterTalksReservedDates', {}, false), QUARTERTALKS, CAN_GET_QUARTER_TALK_RESERVED_DATES))};
+  },
 ]

@@ -97,7 +97,21 @@ import {
   CAN_DELETE_FOLDER_ONEDRIVE,
   CAN_UPDATE_FOLDER_ONEDRIVE,
   CAN_UPLOAD_FILE_ONEDRIVE,
-  ONEDRIVE
+  ONEDRIVE,
+  QUARTERTALKS,
+  CAN_EDIT_QUESTIONS_IN_QUARTER_TALK,
+  CAN_GET_QUARTERS_FOR_EMPLOYEE,
+  CAN_GET_RESERVED_DATES,
+  CAN_ADD_QUARTER_TALK,
+  CAN_PLAN_QUARTER_TALK,
+  CAN_GET_QUESTIONS,
+  CAN_ADD_QUESTION,
+  CAN_DELETE_QUESTION,
+  CAN_GET_QUARTER_TALK_RESERVED_DATES,
+  CAN_EDIT_QUARTER_TALK,
+  CAN_DELETE_QUARTER_TALK,
+  CAN_GENERATE_QUARTER_TALK_DOC,
+  CAN_REACTIVATE_QUARTER_TALK
 } from "../constants";
 import { updateObject } from "../services/methods";
 
@@ -218,8 +232,21 @@ const initialState = {
     [CAN_DELETE_FOLDER_ONEDRIVE]: new InfoState(),
     [CAN_UPDATE_FOLDER_ONEDRIVE]: new InfoState(),
     [CAN_UPLOAD_FILE_ONEDRIVE]: new InfoState(),
+  },
+  [QUARTERTALKS]:{
+    [CAN_GET_QUARTERS_FOR_EMPLOYEE]: new InfoState(),
+    [CAN_GET_RESERVED_DATES]: new InfoState(),
+    [CAN_ADD_QUARTER_TALK]: new InfoState(),
+    [CAN_PLAN_QUARTER_TALK]: new InfoState(),
+    [CAN_GET_QUESTIONS]: new InfoState(),
+    [CAN_ADD_QUESTION]: new InfoState(),
+    [CAN_GET_QUARTER_TALK_RESERVED_DATES]: new InfoState(),
+    [CAN_EDIT_QUARTER_TALK]: new InfoState(),
+    [CAN_DELETE_QUARTER_TALK]: new InfoState(),
+    [CAN_GENERATE_QUARTER_TALK_DOC]: new InfoState(),
+    [CAN_REACTIVATE_QUARTER_TALK]: new InfoState(),
+    [CAN_DELETE_QUESTION]: new InfoState(),
   }
-
 };
 
 export const infoReducer = (state = initialState, action) => {

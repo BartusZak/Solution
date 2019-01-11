@@ -141,7 +141,15 @@ const requests = {
   //QUATER TALKS
   reactivateQuaterTalk: id => execute(fromAlertSettings.reactivateQuaterTalk, `QuarterTalks/Reactivate/${id}`, requestTypes.put),
   deleteQuaterTalk: id => execute(fromAlertSettings.deleteQuaterTalk, `QuarterTalks/${id}`, requestTypes.delete),
-  editQuarterTalk: (id, model) => execute(fromAlertSettings.editQuarterTalk, `QuarterTalks/${id}`, requestTypes.put, model)
+  editQuarterTalk: (id, model) => execute(fromAlertSettings.editQuarterTalk, `QuarterTalks/${id}`, requestTypes.put, model),
+  getQuestions: () => execute(fromAlertSettings.getQuestions, 'QuarterTalks/questions', requestTypes.get),
+  getQuarterForEmployee: employeeId =>   execute(fromAlertSettings.getQuarterTalkForEmployee, `QuarterTalks/ForEmployee/${employeeId}`, requestTypes.get),
+  generateQuarterTalkDoc: quarterId => execute(fromAlertSettings.generateQuarterTalkDoc, `QuarterTalks/GenerateDocx/${quarterId}`, requestTypes.get),
+  deleteQuestion: id => execute(fromAlertSettings.deleteQuestion, `QuarterTalks/Question/${id}`, requestTypes.delete),
+  addQuestion: model => execute(fromAlertSettings.addQuestion, `QuarterTalks/Question`, requestTypes.post, model),
+  createQuarterTalk: model => execute(fromAlertSettings.createQuarterTalk, `QuarterTalks`, requestTypes.post, model),
+  planQuarterTalk: (model, shouldSync) => execute(fromAlertSettings.planQuarterTalk, `QuarterTalks/Planned?syncCalendar=${shouldSync}`, requestTypes.post, model),
+  getQuarterTalksReservedDates: (model, checkOutlook) => execute(fromAlertSettings.getQuarterTalksReservedDates, `QuarterTalks/GetReservedDates?checkOutlook=${checkOutlook}`, requestTypes.post, model),
 };
 
 export const useRequest = (name, ...params) => requests[name](...params);

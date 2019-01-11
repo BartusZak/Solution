@@ -8,7 +8,14 @@ export const getProjects = 'getProjects';
 export const editQuarterTalk = 'editQuarterTalk';
 export const deleteQuaterTalk = 'deleteQuaterTalk';
 export const reactivateQuaterTalk = 'reactivateQuaterTalk';
-
+export const getQuestions = 'getQuestions';
+export const getQuarterTalkForEmployee = 'getQuarterTalkForEmployee';
+export const generateQuarterTalkDoc = 'generateQuarterTalkDoc';
+export const deleteQuestion = 'deleteQuestion';
+export const addQuestion = 'addQuestion';
+export const createQuarterTalk = 'createQuarterTalk';
+export const planQuarterTalk = 'planQuarterTalk';
+export const getQuarterTalksReservedDates = 'getQuarterTalksReservedDates';
 export const errorsBlackList = [
 
 ];
