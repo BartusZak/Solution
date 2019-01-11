@@ -1,10 +1,11 @@
 import React from 'react'
 import './quarterListItem.scss';
 import QuarterDetalilsItem from '../quarterDetailsItem/quarterDetailsItem';
+import Spinner from '../../../common/spinner/spinner.js';
 import { translate } from "react-translate";
 
-const quarterListItem = ({index, item, clickItemFunction, currentWatchedItemId, isDetailItemFromEmployeeDetails, answers, t}) => (
-    <div className={`single-quarter ${item.isDeleted ? "deleted-quarter" : ""} ${index === currentWatchedItemId ? "current-watched-item" : ""}`} onClick={e => clickItemFunction(e)}>
+const quarterListItem = ({index, item, clickItemFunction, currentWatchedItemId, isDetailItemFromEmployeeDetails, answers, t, reactivatingQuarterId}) => (
+    <div className={`single-quarter ${index === currentWatchedItemId ? "current-watched-item" : ""}`} onClick={e => clickItemFunction(e, 'redirectIntoQuarter')}>
         <p>
             <i title={t("PeopleToTalkWith")} className="fa fa-user"></i>
             <span title={t("PeopleToTalkWith")}>{item.questionerId}</span>
@@ -39,10 +40,12 @@ const quarterListItem = ({index, item, clickItemFunction, currentWatchedItemId, 
             ))
         }
         {item.isDeleted &&
-            <div className="backdrop-prompt">
-                <p>{t("QuarterDeletedPrompt")}</p>
-                <span onClick={e => clickItemFunction(e, t("Reactivate"))}>{t("Reactivate")}</span>
-            </div>
+          <div className="backdrop-prompt">
+            {isDetailItemFromEmployeeDetails ? <b>{t("DeletedQuarter")}</b> :
+              <span onClick={e => clickItemFunction(e, "reactivate")}>{t("Reactivate")}</span>
+            }
+            { reactivatingQuarterId === item.id && <Spinner fontSize="2px" positionClass="abs-spinner" /> }
+          </div>
         }
 
     </div>

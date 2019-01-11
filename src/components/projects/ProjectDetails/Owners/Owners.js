@@ -7,6 +7,7 @@ import { translate } from "react-translate";
 import SmallSpinner from "../../../common/spinner/small-spinner";
 import ConfirmModal from "../../../common/confimModal/confirmModal";
 import "./Owners.scss";
+import { useRequest } from '../../../../api/index';
 
 function getIndex(value, arr, prop) {
   for (var i = 0; i < arr.length; i++) {
@@ -56,12 +57,7 @@ class Owners extends PureComponent {
   }
 
   componentDidMount() {
-    WebApi.employees.post
-      .list({
-        pageNumber: 1,
-        limit: 1000,
-        isDeleted: false
-      })
+    useRequest('getEmployees', {pageNumber: 1, limit: 1000, isDeleted: false})
       .then(response => {
         let employeesArray = response.extractData().results;
         let index;

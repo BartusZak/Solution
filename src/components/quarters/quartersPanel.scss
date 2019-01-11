@@ -6,12 +6,6 @@
         transform: scale(1.1);
       }
     }
-    .btn-brown {
-      &:hover i {
-        transition: all .8s;
-        transform: rotate(-360deg) scale(1.2);
-      }
-    }
     .recent-watched{
         display: flex;
         flex-flow: wrap;
@@ -24,7 +18,7 @@
         }
         .last-watched-person{
             cursor: pointer;
-            margin: 0 10px;
+            margin: 0 10px 10px 0;
             transition: .5s;
             border-bottom: 3px solid transparent;
             display: inherit;
@@ -72,29 +66,33 @@
             }
         }
     }
-    & > nav{
-        padding-top: 30px;
+    .quarter-talks-navigation{
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      flex-flow: wrap;
+      margin: 20px 0 10px 0;
+      .btns-nav-wrapper {
+        margin-left: auto;
         display: flex;
         flex-flow: wrap;
-        @media(min-width: 900px){
-            .btn-brown{
-                margin-left: auto;
-            }
-            button {
-                margin-right: 15px;
-            }
+        button {
+          margin-left: 15px;
         }
-        @media(max-width: 899px){
-            button{
-                margin: 10px;
-                padding: 10px 5px;
-            }
+      }
+      .fields-wrapper-col {
+        width: 400px;
+      }
+      @media(max-width: 1024px) {
+        justify-content: center;
+        .btns-nav-wrapper {
+          margin: 20px auto 0 auto;
+          justify-content: center;
+          button {
+            margin: 0 7.5px 15px 7.5px;
+          }
         }
-    }
-    .quarters-content {
-        @media(min-width: 800px){
-            padding: 15px;
-        }
-    }
+      }
 
+    }
 }

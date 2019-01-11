@@ -1,4 +1,4 @@
-.manual-input, input[type="text"], input[type="password"] {
+.manual-input { //input[type="text"]:not(.field), input[type="password"]:not(.field)
   // display: inline-block;
   padding: 0 10px;
   border: none;
@@ -6,7 +6,6 @@
   height: calc(1.3525rem + 2px) !important;
   outline: none;
   border: 1.2px solid gray;
-  font-family: "Roboto Condensed", sans-serif;
   margin: 0;
   margin-bottom: 0.5em;
   margin-right: 0.5em;

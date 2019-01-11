@@ -1,0 +1,11 @@
+@import '../../../../scss/new-color-schema.scss';
+.type-ahead-spinner {
+  width: 20px;
+  top: 8px;
+  right: 8px;
+  height: 20px;
+}
+div.empty-data-list {
+  padding: 10px;
+  color: $input-error;
+}

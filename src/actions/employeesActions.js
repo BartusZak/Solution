@@ -37,6 +37,7 @@ import { errorCatcher } from "../services/errorsHandler";
 import { populateSkillArrayWithConstData } from "../services/methods";
 import moment from "moment";
 import { useRequest } from '../api/index';
+
 export const loadEmployeesSuccess = employees => {
   return {
     type: LOAD_EMPLOYEES_SUCCESS,
@@ -142,29 +143,32 @@ const clearUpdateSkypeAfterTime = delay => {
   };
 };
 
-export const loadEmployees = (page = 1, limit = 25, other = {}) => {
-  return dispatch => {
+export const loadEmployees = (page = 1, limit = 25, other = {}) => dispatch => {
+  return new Promise((resolve, reject) => {
     const settings = Object.assign(
       {},
       { Limit: limit, PageNumber: page, isDeleted: null },
       other
     );
-
     dispatch(asyncStarted());
-    WebApi.employees.post
-      .list(settings)
+    useRequest('getEmployees', settings)
       .then(response => {
         if (!response.errorOccurred()) {
-          dispatch(loadEmployeesSuccess(response.extractData()));
+          const data = response.extractData();
+          dispatch(loadEmployeesSuccess(data));
+          resolve(data.results);
         }
         dispatch(asyncEnded());
       })
       .catch(error => {
         dispatch(loadEmployeesFailure(error));
         dispatch(asyncEnded());
+        reject();
       });
-  };
-};
+
+  })
+}
+
 
 export const changeLoadEmployeeFeedbacksStatus = (
   loadEmployeeFeedbacksStatus,

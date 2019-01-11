@@ -1,0 +1,43 @@
+$main: #006064;
+$stroke: #2b2b2b;
+.check {
+  cursor: pointer;
+  svg {
+    position: relative;
+    z-index: 1;
+    fill: none;
+    stroke-linecap: round;
+    stroke: $stroke;
+    stroke-width: 1.5;
+    transition: all .2s ease;
+    path {
+      stroke-dasharray: 60;
+      stroke-dashoffset: 0;
+    }
+    polyline {
+      stroke-dasharray: 22;
+      stroke-dashoffset: 66;
+    }
+  }
+  &:hover {
+    svg {
+      stroke: $main;
+    }
+  }
+}
+.checked {
+  svg {
+    stroke: $main;
+    path {
+      stroke-dashoffset: 60;
+      transition: .3s;
+    }
+    polyline {
+      stroke-dashoffset: 42;
+      transition: .2s;
+      transition-delay: .15s;
+    }
+  }
+}
+
+

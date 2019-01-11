@@ -93,6 +93,7 @@ class List extends React.PureComponent {
                         }
                     </div>
                     }
+                    {this.props.children}
                     {renderNavigationElement && renderNavigationElement()}
                 </div>
             );
@@ -179,14 +180,14 @@ class List extends React.PureComponent {
         return (
             <React.Fragment>
                 <nav onClick={closeFiltersFunction} className="list-nav">
-                    {listTitle &&
-                        <div>{listTitle}
-                            {isDoingRequest &&
-                                <span><SmallSpinner /></span>
-                            }
-                        </div>
-                    }
-                    {this.putModifieListOptionsInDom(functionsToUse, modifiedItems.length)}
+                  {listTitle &&
+                    <div>{listTitle}
+                        {isDoingRequest &&
+                            <span><SmallSpinner /></span>
+                        }
+                    </div>
+                  }
+                  {this.putModifieListOptionsInDom(functionsToUse, modifiedItems.length)}
                 </nav>
                 <div className={`${listClass} ${shouldAnimateList ? "animated-list" : ""}`}>
                     {modifiedItems.length > 0 ?
