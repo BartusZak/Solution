@@ -1,4 +1,5 @@
 export const getProjects = 'getProjects';
+export const getEmployeesBySkill = 'getEmployeesBySkill';
 
 export const errorsBlackList = [
 

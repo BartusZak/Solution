@@ -1,0 +1,29 @@
+.employees-for-skill-container {
+  & > .header {
+    margin-top: 40px;
+    color: black;
+    font-size: 22px;
+  }
+
+  & > .employees-for-skill-list-container {
+    width: 100%;
+    max-height: 750px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    display: flex;
+    flex-flow: row;
+    flex-wrap: wrap;
+    justify-content: center;
+
+
+    .employee-card-container {
+      width: 200px;
+      height: 300px;
+      border: 1px solid black;
+      text-align: center;
+      margin: 10px;
+    }
+  }
+
+
+}

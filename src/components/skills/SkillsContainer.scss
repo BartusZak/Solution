@@ -1,9 +1,20 @@
 .skills-panel-container {
   width: 100%;
+  height: 100%;
+  background: white;
+  padding: 1em;
   display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  .right-panel-container {
+    min-width: 65%;
+    height: 100%;
+  }
+
   .left-panel-container {
-    width: 30%;
-    padding-bottom: 30px;
+    min-width: 30%;
+    max-width: 30%;
     position: relative;
     .correct-operation {
       top: 10px;
@@ -13,9 +24,8 @@
       padding: 30px;
       text-align: center;
     }
-    header {
+    & > header {
       width: 100%;
-      padding-top: 30px;
       span {
         font-size: 22px;
         position: relative;
@@ -111,6 +121,7 @@
         justify-content: space-between;
         position: relative;
         transition: 0.5s;
+        cursor: pointer;
 
         &:hover {
           background-color: rgba(214, 214, 214, 0.479);
@@ -254,4 +265,5 @@
 
     }
   }
+
 }

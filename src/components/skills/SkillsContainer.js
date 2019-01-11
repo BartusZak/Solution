@@ -3,6 +3,7 @@ import { translate } from "react-translate";
 import { sortStrings, getRandomColor } from "../../services/methods";
 import { connect } from "react-redux";
 import { getAllSkillsACreator } from "../../actions/skillsActions";
+import { getEmployeesBySkillACreator } from '../../actions/employeesActions';
 import SkillList from "./skillList/skillList";
 import Spinner from "../common/LoaderCircular";
 import "./SkillsContainer.scss";
@@ -11,6 +12,7 @@ import { validateInput } from "../../services/validation";
 import { addNewSkillACreator, addNewSkill } from "../../actions/skillsActions";
 import SmallSpinner from "../common/spinner/small-spinner";
 import CorrectOperation from "../common/correctOperation/correctOperation";
+import EmployeesForSkill from './employeesForSkill/EmployeesForSkill';
 
 const createColorIcons = currentSkills => {
   const skillsWithColors = [];
@@ -35,7 +37,9 @@ class SkillsContainer extends Component {
     newSkillNameError: "",
     isAddingSkillSpinner: false,
     showNewAddingTemplate: false,
-    newAddSkillColor: getRandomColor()
+    newAddSkillColor: getRandomColor(),
+    choosenSkillId: null,
+    choosenSkillName: null
   };
   componentDidMount() {
     this.props.getAllSkillsACreator([]);
@@ -193,6 +197,16 @@ class SkillsContainer extends Component {
       }
     }
   };
+
+  skillChoosen = (skillId, skillName) => {
+    this.setState({
+      choosenSkillId: skillId,
+      choosenSkillName: skillName
+    })
+
+    this.props.getEmployeesBySkillACreator(skillId);
+  }
+
   render() {
     const {
       isLoading,
@@ -222,7 +236,7 @@ class SkillsContainer extends Component {
     );
 
     return (
-      <div className="content-container skills-panel-container">
+      <div className="skills-panel-container">
         {isLoading ? (
           <Spinner />
         ) : loadSkillsStatus === false ? (
@@ -278,12 +292,17 @@ class SkillsContainer extends Component {
                 newSkillNameError={newSkillNameError}
                 skills={searchedSkills}
                 showNewAddingTemplate={showNewAddingTemplate && newSkillName}
+                skillChoosen={this.skillChoosen}
               />
             </div>
-
-            <div className="right-panel-container" />
           </React.Fragment>
         )}
+        <div className="right-panel-container">
+          <EmployeesForSkill
+            employeesBySkill={this.props.employeesBySkill}
+            choosenSkill={this.state.choosenSkillName}
+          />
+        </div>
       </div>
     );
   }
@@ -301,7 +320,9 @@ const mapStateToProps = state => {
     addNewSkillErrors: state.skillsReducer.addNewSkillErrors,
 
     editedSkill: state.skillsReducer.editedSkill,
-    editedSkillError: state.skillsReducer.editedSkillError
+    editedSkillError: state.skillsReducer.editedSkillError,
+
+    employeesBySkill: state.employeesReducer.employeesBySkill
   };
 };
 
@@ -310,7 +331,8 @@ const mapDispatchToProps = dispatch => {
     getAllSkillsACreator: currentSkills =>
       dispatch(getAllSkillsACreator(currentSkills)),
     addNewSkillACreator: name => dispatch(addNewSkillACreator(name)),
-    addNewSkill: (status, errors) => dispatch(addNewSkill(status, errors))
+    addNewSkill: (status, errors) => dispatch(addNewSkill(status, errors)),
+    getEmployeesBySkillACreator: (skillId) => dispatch(getEmployeesBySkillACreator(skillId))
   };
 };
 

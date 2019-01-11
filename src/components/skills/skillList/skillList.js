@@ -166,7 +166,7 @@ class SkillList extends Component {
             </li>}
             {skills.map((skill, index) => (
               <React.Fragment key={skill.skill.name}>
-               <li onMouseEnter={() => this.handleHover(index)} onMouseLeave={() => this.handleHover(index)}>
+               <li onMouseEnter={() => this.handleHover(index)} onMouseLeave={() => this.handleHover(index)} onClick={() => {this.props.skillChoosen(skill.skill.id, skill.skill.name)}}>
                     <span>
                       {this.checkEditingIndex(index)
                       ?

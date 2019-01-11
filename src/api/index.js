@@ -128,6 +128,7 @@ const execute = (key, path = '', type = 'get', payload = {}) => {
 
 const requests = {
   addProject: projectModel => execute(fromAlertSettings.getProjects, `projects/add`, 'post', projectModel),
+  getEmployeesBySkill: skillId => execute(fromAlertSettings.getEmployeesBySkill, `employees/forSkill/${skillId}`)
 };
 
 export const useRequest = (name, ...params) => requests[name](...params);
