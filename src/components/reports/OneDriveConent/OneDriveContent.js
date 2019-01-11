@@ -1,8 +1,8 @@
 import React from 'react'
 import '../OneDriveContent.scss';
-import { connect } from 'react-redux'; 
+import { connect } from 'react-redux';
 import { authOneDriveACreator, sendCodeToGetTokenACreator, createFolderACreator,
-    deleteFolderACreator, deleteFolder, updateFolderACreator, 
+    deleteFolderACreator, deleteFolder, updateFolderACreator,
     getFolderACreator, uploadFileACreator,
     generateShareLinkACreator, generateShareLink
 } from '../../../actions/oneDriveActions';
@@ -18,6 +18,7 @@ import { invalidTokenError, notRecognizedError, oldTokenComunicate } from '../..
 import { refreshPage, doSomethingAfterDelay } from '../../../services/methods';
 import GenerateLinkModal from '../modals/generateLinkModal';
 import { translate } from 'react-translate';
+import DragAndDrop from '../../common/drag-and-drop/drag-and-drop';
 const startPath = "/drive/root:";
 const tryToEditAndAddFolderError = "Nie można jednocześnie edytować i dodwać folderów";
 
@@ -50,19 +51,19 @@ class OneDriveContent extends React.PureComponent {
 
         folderToGenerateShareLink: null
     }
-    
+
 
     componentDidMount(){
         const { search, oneDriveToken, authCodeStatus, sendCodeToGetToken,
             authOneDrive, addList, changeIntoTeamsView, getFoldersStatus,
             getFoldersErrors, generateReportStatus } = this.props;
-        const didODriveTokenIsCreated = authCodeStatus === null || 
+        const didODriveTokenIsCreated = authCodeStatus === null ||
             authCodeStatus === undefined;
-    
+
         if(search === "" && didODriveTokenIsCreated){
             authOneDrive();
         }
-            
+
         else if(search !== "" && didODriveTokenIsCreated){
             this.setState({isPreparingForLogingIn: false, isTakingCodeFromApi: true}, () => {
                 sendCodeToGetToken(window.location.href);
@@ -78,22 +79,22 @@ class OneDriveContent extends React.PureComponent {
         if(nextProps.authErrors !== this.props.authErrors){
             if(nextProps.authStatus === true)
                 window.location.href = nextProps.authRedirectLink;
-            else 
+            else
                 this.setState({isPreparingForLogingIn: false});
         }
         else if(nextProps.getFoldersErrors !== this.props.getFoldersErrors){
             this.setState({isPreparingForLogingIn: false,
-                isTakingCodeFromApi: false, isAddingFolder: false, 
-                showAddingFolderInput: false, currentOpenedFolderToEditId: "", 
+                isTakingCodeFromApi: false, isAddingFolder: false,
+                showAddingFolderInput: false, currentOpenedFolderToEditId: "",
                 folderIsLoadingId: "", isGoingBack: false, isUploadingFile: false,
                 isDeletingOrEditingFolder: false});
         }
-        else if(nextProps.updateFolderErrors !== this.props.updateFolderErrors || 
+        else if(nextProps.updateFolderErrors !== this.props.updateFolderErrors ||
             nextProps.deleteFolderErrors !== this.props.deleteFolderErrors)
             this.setState({isDeletingOrEditingFolder: false});
         else if(nextProps.uploadFileStatus === false)
             this.setState({isUploadingFile: false});
-        
+
     }
 
     componentDidUpdate(prevProps){
@@ -116,7 +117,7 @@ class OneDriveContent extends React.PureComponent {
         const validationResult = this.checkForCorrectInputValue(newFolderName);
         if(!validationResult){
             this.setState({isAddingFolder: true, newFolderNameError: validationResult});
-            this.props.createFolder(this.state.newFolderName, 
+            this.props.createFolder(this.state.newFolderName,
                 this.props.path, this.props.oneDriveToken);
         }
         else
@@ -129,15 +130,15 @@ class OneDriveContent extends React.PureComponent {
     }
 
     checkForCorrectInputValue = (value, oldValue) => {
-        const validationResult = validateInput(value, false, 
+        const validationResult = validateInput(value, false,
             3,30, "folderName", "nazwa folderu");
-        
+
         if(oldValue){
             const checkForEqualNames = value === oldValue ? "Nie zmieniono wartości" : "";
             if(checkForEqualNames)
                 return checkForEqualNames
         }
-        
+
         if(validationResult)
             return validationResult;
 
@@ -158,21 +159,21 @@ class OneDriveContent extends React.PureComponent {
         else{
             const { editFolderName, currentOpenedFolderToEditId } = this.state;
             this.setState({editFolderError: "", isDeletingOrEditingFolder: true});
-            this.props.updateFolder(editFolderName, this.state.currentOpenedFolderToEditId, 
-                this.props.oneDriveToken, this.props.path);     
+            this.props.updateFolder(editFolderName, this.state.currentOpenedFolderToEditId,
+                this.props.oneDriveToken, this.props.path);
         }
     }
     openFolder = folder => {
-        this.setState({folderIsLoadingId: folder.id, 
-            newFolderName: "", newFolderNameError: "", 
+        this.setState({folderIsLoadingId: folder.id,
+            newFolderName: "", newFolderNameError: "",
             editFolderError: "", editFolderName: "", currentOpenedFolderToEditId: ""});
         const nextPath = this.props.path + "/" + folder.name;
         this.props.getFolder(this.props.oneDriveToken, nextPath);
     }
 
     goToFolderBefore = () => {
-        this.setState({isGoingBack: true, 
-            newFolderName: "", newFolderNameError: "", 
+        this.setState({isGoingBack: true,
+            newFolderName: "", newFolderNameError: "",
             editFolderError: "", editFolderName: "", currentOpenedFolderToEditId: ""});
         const { path } = {...this.props};
         const lastIndexOfKey = path.lastIndexOf("/");
@@ -189,22 +190,22 @@ class OneDriveContent extends React.PureComponent {
             this.state.fileToUpload, this.props.folders);
     }
     enableFolderEdit = (currentOpenedFolderToEditId, editFolderName) => {
-        this.setState({currentOpenedFolderToEditId:currentOpenedFolderToEditId, 
+        this.setState({currentOpenedFolderToEditId:currentOpenedFolderToEditId,
             editFolderName: editFolderName});
     }
     showDeleteFolderModal = folderId => {
-        this.setState({showDeleteFolderModal: true, 
+        this.setState({showDeleteFolderModal: true,
             folderToDeleteId: folderId});
     }
     onFileClick = fileName => {
-        this.setState({currentOpenedFileDetailId: 
-            fileName === this.state.currentOpenedFileDetailId ? 
+        this.setState({currentOpenedFileDetailId:
+            fileName === this.state.currentOpenedFileDetailId ?
             null : fileName})
     }
 
     chooseFolderToCreateShareLink = (file, e) => {
-        e.stopPropagation();        
-        
+        e.stopPropagation();
+
         this.setState({folderToGenerateShareLink: file});
         const { oneDriveToken, generateShareLinkACreator } = this.props;
         generateShareLinkACreator(oneDriveToken, file.id);
@@ -235,184 +236,188 @@ class OneDriveContent extends React.PureComponent {
 
     render(){
         const { isPreparingForLogingIn, isTakingCodeFromApi, currentOpenedFileDetailId,
-            showAddingFolderInput, isAddingFolder, folderNameError, 
-            showDeleteFolderModal, folderToDeleteId, isDeletingOrEditingFolder, 
-            currentOpenedFolderToEditId, editFolderName, editFolderError, 
+            showAddingFolderInput, isAddingFolder, folderNameError,
+            showDeleteFolderModal, folderToDeleteId, isDeletingOrEditingFolder,
+            currentOpenedFolderToEditId, editFolderName, editFolderError,
             folderIsLoadingId, isGoingBack, fileToUpload, isUploadingFile,
             newFolderName, newFolderNameError, folderToGenerateShareLink } = this.state;
 
-        const { folders, getFoldersStatus, getFoldersErrors, path, 
-            createFolderStatus, createFolderErrors, deleteFolderStatus, 
-            deleteFolderErrors, updateFolderStatus, updateFolderErrors, 
-            uploadFileStatus, uploadFileErrors, chooseFolder, choosenFolder, 
+        const { folders, getFoldersStatus, getFoldersErrors, path,
+            createFolderStatus, createFolderErrors, deleteFolderStatus,
+            deleteFolderErrors, updateFolderStatus, updateFolderErrors,
+            uploadFileStatus, uploadFileErrors, chooseFolder, choosenFolder,
             extendDetailName, extendId, authCodeStatus, authErrors, authStatus,
             changeSortBy, driveSortType, generateShareLinkStatus, generateShareLinkErrors,
             generatedShareLink, t } = this.props;
         return (
-            <div className="drive-content-container">
-                {authCodeStatus && getFoldersStatus && !isPreparingForLogingIn &&
-                    <FilePicker sortList={null}
-                    fileToUpload={fileToUpload} uploadFile={this.uploadFile}
-                    handleAddFile={e => this.handleAddFile(e)} isUploadingFile={isUploadingFile}/>
-                }
-                {(isPreparingForLogingIn || isTakingCodeFromApi || isGoingBack) ? <Spinner fontSize="7px" 
-                message={t("LoadingAccountDataPrompt")} /> : 
-                    getFoldersStatus !== null && 
-                    
-                    getFoldersStatus &&
+          <div className="drive-content-container">
+            {authCodeStatus && getFoldersStatus && !isPreparingForLogingIn &&
+                <FilePicker sortList={null}
+                fileToUpload={fileToUpload} uploadFile={this.uploadFile}
+                handleAddFile={e => this.handleAddFile(e)} isUploadingFile={isUploadingFile}/>
+            }
+            {(isPreparingForLogingIn || isTakingCodeFromApi || isGoingBack) ? <Spinner fontSize="7px"
+            message={t("LoadingAccountDataPrompt")} /> :
+                getFoldersStatus !== null &&
 
-                    <div className="navigation-folders-container">
-                        <div className="add-folder-container">
-                            <Button onClick={!showAddingFolderInput ? this.openAddingFolderBtn : null} disable={isAddingFolder}
-                            title={!showAddingFolderInput ? t("AddFolder") : ""}
-                            mainClass={`${showAddingFolderInput ? "" : "not-opened-btn"} generate-raport-btn btn-green`}>
-                                {showAddingFolderInput && 
-                                    <input className={`${newFolderNameError ? "input-error" : null}`}
-                                    value={newFolderName}
-                                    onKeyPress={e => this.onKeyPress(e)}
-                                    onChange={e => this.onChangeNewFolderName(e)}
-                                    type="text" placeholder={t("WriteFolderName")} />
-                                }
-                                <span onClick={this.addFolder}>
-                                    <i className="fa fa-folder"/>
-                                    {showAddingFolderInput && t("Create")} 
-                                </span>
-                                { isAddingFolder && <SmallSpinner /> } 
-                                { showAddingFolderInput && !isAddingFolder && 
-                                <i onClick={this.closeAddingFolderInput} className="fa fa-times"/> }
-                            </Button>
+                getFoldersStatus &&
 
-                            {newFolderNameError && !editFolderError &&
-                                <p className="validation-error">
-                                {newFolderNameError}</p>
+                <div className="navigation-folders-container">
+                    <div className="add-folder-container">
+                        <Button onClick={!showAddingFolderInput ? this.openAddingFolderBtn : null} disable={isAddingFolder}
+                        title={!showAddingFolderInput ? t("AddFolder") : ""}
+                        mainClass={`${showAddingFolderInput ? "" : "not-opened-btn"} generate-raport-btn btn-green`}>
+                            {showAddingFolderInput &&
+                                <input className={`${newFolderNameError ? "input-error" : null}`}
+                                value={newFolderName}
+                                onKeyPress={e => this.onKeyPress(e)}
+                                onChange={e => this.onChangeNewFolderName(e)}
+                                type="text" placeholder={t("WriteFolderName")} />
                             }
-                            {editFolderError && !newFolderNameError && 
-                                <p className="validation-error">
-                                {editFolderError}</p> 
-                            } 
-                        </div>
-                        
-                        {path !== startPath && 
-                            <Button 
-                            onClick={(this.goToFolderBefore)}
-                            mainClass="generate-raport-btn btn-transparent" title={t("Back")}>
-                                <i className="fa fa-long-arrow-alt-left"></i>
-                            </Button> 
-                        } 
+                            <span onClick={this.addFolder}>
+                                <i className="fa fa-folder"/>
+                                {showAddingFolderInput && t("Create")}
+                            </span>
+                            { isAddingFolder && <SmallSpinner /> }
+                            { showAddingFolderInput && !isAddingFolder &&
+                            <i onClick={this.closeAddingFolderInput} className="fa fa-times"/> }
+                        </Button>
 
-                        <h3>{t("ActualPath")}: <span>{path}</span></h3>       
-
-                        {folders.length === 0 ? 
-                            <p className="empty-files-list">
-                                {t("ThisFolderIsEmpty")}
-                            </p> : 
-
-                            <FilesList 
-                            chooseFolderToCreateShareLink={this.chooseFolderToCreateShareLink}
-                            driveSortType={driveSortType}
-                            sortList={() => changeSortBy(folders, driveSortType, path)}
-                            extendDetailName={extendDetailName}
-                            extendId={extendId}
-                            chooseFolder={chooseFolder}
-                            choosenFolder={choosenFolder}
-                            folderIsLoadingId={folderIsLoadingId}
-                            folders={folders}
-                            editFolderName={editFolderName}
-                            currentOpenedFileDetailId={currentOpenedFileDetailId}
-                            currentOpenedFolderToEditId={currentOpenedFolderToEditId}
-                            onEditFolder={this.onEditFolder}
-                            editFolderError={editFolderError}
-                            onChangeFolderName={this.onChangeFolderName}
-                            isDeletingOrEditingFolder={isDeletingOrEditingFolder}
-                            openFolder={this.openFolder}
-
-                            enableFolderEdit={this.enableFolderEdit}
-                            showDeleteFolderModal={this.showDeleteFolderModal}
-                            closeEditingFolderName={() => this.setState({currentOpenedFolderToEditId: "", 
-                            editFolderError: ""})}
-                            onFileClick={this.onFileClick}
-                            />
+                        {newFolderNameError && !editFolderError &&
+                            <p className="validation-error">
+                            {newFolderNameError}</p>
                         }
-
+                        {editFolderError && !newFolderNameError &&
+                            <p className="validation-error">
+                            {editFolderError}</p>
+                        }
                     </div>
-                }
 
-                {getFoldersStatus === false && 
-                    <p className="one-d-error">
-                        {getFoldersErrors[0] === notRecognizedError ? 
-                        oldTokenComunicate : getFoldersErrors[0]}
-                        <span onClick={refreshPage}>{t("Refresh")}</span>
-                    </p>
-                }
-                
-                <ConfirmModal 
-                open={showDeleteFolderModal} 
-                content="Delete project modal"
-                onClose={this.closeDeleteFolderModal} 
-                header={t("AreYouSureToDelete")}
-                operation={this.deleteFolder} 
-                operationName={t("Delete")}
-                denyName={t("Deny")}
-                >
-                    {isDeletingOrEditingFolder &&
-                        <Spinner fontSize="3px" positionClass="abs-spinner"/>
+                    {path !== startPath &&
+                        <Button
+                        onClick={(this.goToFolderBefore)}
+                        mainClass="generate-raport-btn btn-transparent" title={t("Back")}>
+                            <i className="fa fa-long-arrow-alt-left"></i>
+                        </Button>
                     }
-                </ConfirmModal>
-                
 
-                {createFolderStatus !== null && 
-                    <OperationStatusPrompt
-                    key={0} 
-                    operationPromptContent={createFolderStatus ? 
-                        t("SuccCreatedFolder") : createFolderErrors[0]}
-                    operationPrompt={createFolderStatus}
-                    />
-                }
+                    <h3>{t("ActualPath")}: <span>{path}</span></h3>
+                    <DragAndDrop validators={{filesFormats: ['jpg', 'jpeg', 'png']}} renderContent={() => {
 
-                {deleteFolderStatus !== null && 
-                    <OperationStatusPrompt
-                    key={1} 
-                    closePrompt={this.closeDeleteFolderModal}
-                    operationPromptContent={deleteFolderStatus ? 
-                        t("SuccDeletedFolder") : deleteFolderErrors[0]}
-                    operationPrompt={deleteFolderStatus}
-                    />
-                }
+                      if (folders.length === 0) {
+                        return <p className="empty-files-list">{t("ThisFolderIsEmpty")}</p>;
+                      }
 
-                {updateFolderStatus !== null && 
-                    <OperationStatusPrompt 
-                    key={2} 
-                    operationPromptContent={updateFolderStatus ? 
-                        t("SuccEditedFolder") : updateFolderErrors[0]}
-                    operationPrompt={updateFolderStatus}
-                    />
+                      return (
+                        <FilesList
+                        chooseFolderToCreateShareLink={this.chooseFolderToCreateShareLink}
+                        driveSortType={driveSortType}
+                        sortList={() => changeSortBy(folders, driveSortType, path)}
+                        extendDetailName={extendDetailName}
+                        extendId={extendId}
+                        chooseFolder={chooseFolder}
+                        choosenFolder={choosenFolder}
+                        folderIsLoadingId={folderIsLoadingId}
+                        folders={folders}
+                        editFolderName={editFolderName}
+                        currentOpenedFileDetailId={currentOpenedFileDetailId}
+                        currentOpenedFolderToEditId={currentOpenedFolderToEditId}
+                        onEditFolder={this.onEditFolder}
+                        editFolderError={editFolderError}
+                        onChangeFolderName={this.onChangeFolderName}
+                        isDeletingOrEditingFolder={isDeletingOrEditingFolder}
+                        openFolder={this.openFolder}
+
+                        enableFolderEdit={this.enableFolderEdit}
+                        showDeleteFolderModal={this.showDeleteFolderModal}
+                        closeEditingFolderName={() => this.setState({currentOpenedFolderToEditId: "",
+                        editFolderError: ""})}
+                        onFileClick={this.onFileClick}
+                        />
+                      );
+
+                    }}>
+                    </DragAndDrop>
+                </div>
+            }
+
+            {getFoldersStatus === false &&
+                <p className="one-d-error">
+                    {getFoldersErrors[0] === notRecognizedError ?
+                    oldTokenComunicate : getFoldersErrors[0]}
+                    <span onClick={refreshPage}>{t("Refresh")}</span>
+                </p>
+            }
+
+            <ConfirmModal
+            open={showDeleteFolderModal}
+            content="Delete project modal"
+            onClose={this.closeDeleteFolderModal}
+            header={t("AreYouSureToDelete")}
+            operation={this.deleteFolder}
+            operationName={t("Delete")}
+            denyName={t("Deny")}
+            >
+                {isDeletingOrEditingFolder &&
+                    <Spinner fontSize="3px" positionClass="abs-spinner"/>
                 }
-            
-                {uploadFileStatus !== null && 
-                    <OperationStatusPrompt 
-                    key={3} 
-                    operationPromptContent={uploadFileStatus ? 
-                        t("SuccAddedFile") : uploadFileErrors[0]}
-                    operationPrompt={uploadFileStatus}
-                    />
-                }
-                
-                {authStatus === false && 
-                    <OperationStatusPrompt 
-                    key={5} 
-                    operationPromptContent={authErrors[0]}
-                    operationPrompt={false}
-                    />
-                }
-                <GenerateLinkModal copyLink={this.copyLink} 
-                path={path}
-                isOneDrive={true}
-                fileToShare={folderToGenerateShareLink}
-                generateShareLinkStatus={generateShareLinkStatus}
-                generateShareLinkErrors={generateShareLinkErrors} generatedShareLink={generatedShareLink}
-                closeModal={this.closeShareLinkModal}
-                shouldOpenModal={folderToGenerateShareLink !== null} />
-            </div>
+            </ConfirmModal>
+
+
+            {createFolderStatus !== null &&
+                <OperationStatusPrompt
+                key={0}
+                operationPromptContent={createFolderStatus ?
+                    t("SuccCreatedFolder") : createFolderErrors[0]}
+                operationPrompt={createFolderStatus}
+                />
+            }
+
+            {deleteFolderStatus !== null &&
+                <OperationStatusPrompt
+                key={1}
+                closePrompt={this.closeDeleteFolderModal}
+                operationPromptContent={deleteFolderStatus ?
+                    t("SuccDeletedFolder") : deleteFolderErrors[0]}
+                operationPrompt={deleteFolderStatus}
+                />
+            }
+
+            {updateFolderStatus !== null &&
+                <OperationStatusPrompt
+                key={2}
+                operationPromptContent={updateFolderStatus ?
+                    t("SuccEditedFolder") : updateFolderErrors[0]}
+                operationPrompt={updateFolderStatus}
+                />
+            }
+
+            {uploadFileStatus !== null &&
+                <OperationStatusPrompt
+                key={3}
+                operationPromptContent={uploadFileStatus ?
+                    t("SuccAddedFile") : uploadFileErrors[0]}
+                operationPrompt={uploadFileStatus}
+                />
+            }
+
+            {authStatus === false &&
+                <OperationStatusPrompt
+                key={5}
+                operationPromptContent={authErrors[0]}
+                operationPrompt={false}
+                />
+            }
+            <GenerateLinkModal copyLink={this.copyLink}
+            path={path}
+            isOneDrive={true}
+            fileToShare={folderToGenerateShareLink}
+            generateShareLinkStatus={generateShareLinkStatus}
+            generateShareLinkErrors={generateShareLinkErrors} generatedShareLink={generatedShareLink}
+            closeModal={this.closeShareLinkModal}
+            shouldOpenModal={folderToGenerateShareLink !== null} />
+        </div>
+
         );
     }
 }
@@ -434,14 +439,14 @@ const mapStateToProps = state => {
         deleteFolderStatus: state.oneDriveReducer.deleteFolderStatus,
         deleteFolderErrors: state.oneDriveReducer.deleteFolderErrors,
 
-        updateFolderStatus: state.oneDriveReducer.updateFolderStatus, 
+        updateFolderStatus: state.oneDriveReducer.updateFolderStatus,
         updateFolderErrors: state.oneDriveReducer.updateFolderErrors,
 
         uploadFileStatus: state.oneDriveReducer.uploadFileStatus,
         uploadFileErrors: state.oneDriveReducer.uploadFileErrors,
 
-        generateShareLinkStatus: state.oneDriveReducer.generateShareLinkStatus, 
-        generateShareLinkErrors: state.oneDriveReducer.generateShareLinkErrors, 
+        generateShareLinkStatus: state.oneDriveReducer.generateShareLinkStatus,
+        generateShareLinkErrors: state.oneDriveReducer.generateShareLinkErrors,
         generatedShareLink: state.oneDriveReducer.generatedShareLink
 
     };
@@ -461,6 +466,5 @@ const mapStateToProps = state => {
         generateShareLinkClear: (status, errors, link) => dispatch(generateShareLink(status, errors, link))
     };
   };
-  
+
   export default connect(mapStateToProps, mapDispatchToProps)(translate("ReportsCloudView")(OneDriveContent));
-  
