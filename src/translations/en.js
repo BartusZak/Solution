@@ -9,6 +9,27 @@ const translations = {
     DroppedMessage: 'Files succesfully dropped',
     TooManyFilesError: 'Too many files dropped. Limit is '
   },
+  ProjectForm: {
+    firstPhaseTitle: 'Populate project details form',
+    secondPhaseTitle: 'Populate client form',
+    name: 'name',
+    description: 'description',
+    startDate: 'start date',
+    endDate: 'end date',
+    client: 'client',
+    cloud: 'cloud',
+    responsiblePerson: 'responsible person',
+    EmptyResponsiblePersonsInSelect: 'responsible person is not selected...'
+  },
+  ResponsiblePersonForm: {
+    client: 'client',
+    firstName: 'first name',
+    lastName: 'last name',
+    email: 'email adress',
+    phoneNumber: 'phone number',
+    modalHeaderAdd: 'Add new responsible person',
+    modalHeaderEdit: 'Edit responsible person'
+  },
   LoginForm: {
     EnterUsername: "Enter username",
     EnterPassword: "Enter password",

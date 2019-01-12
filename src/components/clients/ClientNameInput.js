@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { validateInput } from "../../services/validation";
-import Aux from "../../services/auxilary";
 
 class ClientNameInput extends Component {
   state = { value: this.props.value, errors: null };
@@ -26,13 +25,13 @@ class ClientNameInput extends Component {
     let { value, errors } = this.state;
     let { handleGetValueFromInput } = this.props;
     return (
-      <Aux>
+      <React.Fragment>
         <input
           value={value}
           onChange={e => this.onInputChange(e, handleGetValueFromInput)}
         />
         {errors && <div className="client-name-input-error">{errors}</div>}
-      </Aux>
+      </React.Fragment>
     );
   }
 }

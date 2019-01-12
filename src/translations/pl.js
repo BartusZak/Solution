@@ -9,6 +9,27 @@ const translations = {
     DroppedMessage: 'Pliki zostały upuszczone',
     TooManyFilesError: 'Upuszczono za dużo plików. Limit to '
   },
+  ProjectForm: {
+    firstPhaseTitle: 'Uzupełnij szczegóły projektu',
+    secondPhaseTitle: 'Wypełnij formularz dotyczący klienta',
+    name: 'nazwa',
+    description: 'opis',
+    startDate: 'data rozpoczęcia',
+    endDate: 'data zakończenia',
+    client: 'klient',
+    cloud: 'chmura',
+    responsiblePerson: 'osoba odpowiedzialna',
+    EmptyResponsiblePersonsInSelect: 'nie wybrano osoby odpowiedzialnej...'
+  },
+  ResponsiblePersonForm: {
+    client: 'klient',
+    firstName: 'imię',
+    lastName: 'nazwisko',
+    email: 'adres email',
+    phoneNumber: 'numer telefonu',
+    modalHeaderAdd: 'Dodaj nową osobę odpowiedzialną',
+    modalHeaderEdit: 'Edytuj dane osoby odpowiedzialnej'
+  },
   LoginForm: {
     EnterUsername: "Podaj login",
     EnterPassword: "Podaj hasło",

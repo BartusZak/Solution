@@ -5,15 +5,29 @@ import {
   ADD_CLOUD_RESULT,
   ADD_RESPONSIBLE_PERSON_RESULT,
   CLEAR_RESPONSE_CLOUD,
-  LOGOUT
+  LOGOUT,
+  LOAD_SLIM_CLIENTS_SUCC,
+  LOAD_SLIM_CLIENTS_FAIL,
+  UPDATE_SLIM_CLIENT
 } from "../constants";
 
 const initialState = {
-  clients: []
+  clients: [],
+  clientsSlim: [],
+  clientsSlimResult: {status: null}
 };
 
 export const clientsReducer = (state = initialState, action) => {
   switch (action.type) {
+    case LOAD_SLIM_CLIENTS_SUCC:
+      return { ...state, clientsSlim: [...action.clientsSlim], clientsSlimResult: {status: true} };
+    case LOAD_SLIM_CLIENTS_FAIL:
+      return { ...state, clientsSlim: [...action.clientsSlim], clientsSlimResult: {status: false} };
+    case UPDATE_SLIM_CLIENT:
+      return { ...state, clientsSlim: state.clientsSlim.map(slimClient => {
+          return action.slimClient.id === slimClient.id ? { ...action.payload.slimClient } : slimClient
+        })
+      };
     case CLEAR_RESPONSE_CLOUD:
       return {
         ...state,

@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import Modal from "react-responsive-modal";
 import AddClientModal from "./AddClientModal";
 import Button from "../../common/button/button";
-import Aux from "../../../services/auxilary";
 import { translate } from "react-translate";
 
 class AddEditClient extends Component {
@@ -14,7 +13,7 @@ class AddEditClient extends Component {
   handleButtonClick = () => {
     this.setState({ showAddClientModal: true });
   };
-  handleCloseAddClientModal = () => {     
+  handleCloseAddClientModal = () => {
     const { addClientResult } = this.props;
     this.setState({ showAddClientModal: false });
     if (addClientResult) {

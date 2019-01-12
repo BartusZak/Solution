@@ -22,7 +22,7 @@ class EmployeeSearcher extends React.PureComponent {
     return this.props.loadEmployees(page, limit, config);
   }
 
-  employeeValidators = { required: true, minLength: 2, maxLength: 15 };
+  employeeValidators = { minLength: 2, maxLength: 15 };
 
   render(){
       const { t, loadEmployees, emitEmployeeClick } = this.props;

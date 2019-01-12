@@ -4,7 +4,7 @@ import {
   asyncEnded,
   setActionConfirmationResult,
   setActionConfirmationResultWithoutEnding
-  
+
 } from "./asyncActions";
 import {
   LOAD_CLIENTS_SUCCESS,
@@ -12,8 +12,13 @@ import {
   ADD_CLIENT_RESULT,
   ADD_CLOUD_RESULT,
   ADD_RESPONSIBLE_PERSON_RESULT,
-  CLEAR_RESPONSE_CLOUD
+  CLEAR_RESPONSE_CLOUD,
+  LOAD_SLIM_CLIENTS_SUCC,
+  LOAD_SLIM_CLIENTS_FAIL,
+  UPDATE_SLIM_CLIENT
 } from "../constants";
+
+import { useRequest } from '../api/index';
 
 export const clearResponseCloud = () => {
   return {
@@ -57,6 +62,24 @@ export const addResponsiblePersonResult = resultBlock => {
     resultBlock
   };
 };
+
+export const loadSlimClientsFail = () => ({ type: LOAD_SLIM_CLIENTS_FAIL, clientsSlim: [] });
+
+export const loadSlimClientsSucc = clientsSlim => ({ type: LOAD_SLIM_CLIENTS_SUCC, clientsSlim });
+
+export const updateSlimClient = slimClient => ({ type: UPDATE_SLIM_CLIENT, slimClient })
+
+export const getClientsSlim = () => dispatch => new Promise((resolve, reject) => {
+  useRequest('getClientsSlim')
+  .then(response => {
+    dispatch(loadSlimClientsSucc(response.extractData()));
+    resolve();
+  })
+  .catch(() => {
+    dispatch(loadSlimClientsFail());
+    reject();
+  });
+});
 
 export const loadClients = () => {
   return dispatch => {

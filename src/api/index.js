@@ -132,16 +132,23 @@ const requestTypes = {
   delete: 'delete'
 };
 const requests = {
+  //CLIENTS
+  getClientsSlim: settings => execute(fromAlertSettings.getClientsSlim, 'Clients?lessDetailed=true'),
+
   //EMPLOYEES
   getEmployees: settings => execute(fromAlertSettings.getEmployees, 'employees', requestTypes.post, settings),
 
   //PROJECTS
-  addProject: model => execute(fromAlertSettings.getProjects, `projects/add`, requestTypes.post, model),
+  addProject: model => execute(fromAlertSettings.addProject, `projects/add`, requestTypes.post, model),
+
+  //RESPINSIBLE PERSON
+  createResponsiblePerson: model => execute(fromAlertSettings.createResponsiblePerson, 'responsiblepersons', requestTypes.post, model),
+  editResponsiblePerson: (model, id) => execute(fromAlertSettings.editResponsiblePerson, `responsiblepersons/${id}`, requestTypes.put, model),
 
   //QUATER TALKS
   reactivateQuaterTalk: id => execute(fromAlertSettings.reactivateQuaterTalk, `QuarterTalks/Reactivate/${id}`, requestTypes.put),
   deleteQuaterTalk: id => execute(fromAlertSettings.deleteQuaterTalk, `QuarterTalks/${id}`, requestTypes.delete),
-  editQuarterTalk: (id, model) => execute(fromAlertSettings.editQuarterTalk, `QuarterTalks/${id}`, requestTypes.put, model)
+  editQuarterTalk: (id, model) => execute(fromAlertSettings.editQuarterTalk, `QuarterTalks/${id}`, requestTypes.put, model),
 };
 
 export const useRequest = (name, ...params) => requests[name](...params);

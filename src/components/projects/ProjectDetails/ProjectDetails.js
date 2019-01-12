@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import "./ProjectDetails.scss";
-import Aux from "../../../services/auxilary";
 import ProjectInformationsCart from "./ProjectInformationsCart/ProjectInformationsCart";
 import {
   cutNotNeededKeysFromArray,
@@ -704,7 +703,7 @@ class ProjectDetails extends Component {
       >
         {isLoadingProject && <Spinner message={t("LoadingProjectMessage")} fontSize="7px" />}
         {loadProjectStatus && (
-          <Aux>
+          <React.Fragment>
             <header>
               <h1>
                 {projectStatus && (
@@ -1340,7 +1339,7 @@ class ProjectDetails extends Component {
                   operationPrompt={addEmployeeToProjectStatus}
                 />
               )}
-          </Aux>
+          </React.Fragment>
         )}
 
         {loadProjectStatus === false && (

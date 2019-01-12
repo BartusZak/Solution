@@ -19,7 +19,7 @@ import { validateInput } from "../../services/validation";
 import ContactList from "../../components/common/contactList/contactList";
 import { translate } from "react-translate";
 import { clearDataOfForm } from "../../services/methods";
-
+import ProjectForm from './project-form/project-form';
 const ClientId = 2;
 const CloudId = 3;
 
@@ -453,6 +453,8 @@ class ProjectsContainer extends React.Component {
             </Form>
           )}
         </Modal>
+
+        <ProjectForm />
       </div>
     );
   };

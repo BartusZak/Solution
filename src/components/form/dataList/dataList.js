@@ -11,7 +11,7 @@ const dataList = props => (
         type={props.type} placeholder={props.placeholder}/>
         <datalist id={props.identity} className="select-input">
             {props.dataToMap && props.dataToMap.length > 0 && props.dataToMap.map(i => {
-                return (<option value={i.name}  
+                return (<option value={i.name}
                 id={i.id}  key={i.id}>
                 {i.name}
                 </option>);
@@ -19,7 +19,7 @@ const dataList = props => (
         </datalist>
 
     </div>
-      
+
 );
 
 dataList.defaultProps = {
