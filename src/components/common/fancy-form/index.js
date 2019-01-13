@@ -34,8 +34,8 @@ export class InputSettings {
 
 export const validatorsFunctions = {
   required: (value, expectedValue, title) => value === '' ? translateMessage('required', title, expectedValue) : '',
-  minLength: (value, limit, title) => (value.length > 0 && value.length <= limit) ? translateMessage('minLength', title, limit) : '',
-  maxLength: (value, limit, title) => value.length > limit ? translateMessage('maxLength', title, limit) : '',
+  minLength: (value, limit, title) =>  value.trim().length <= limit ? translateMessage('minLength', title, limit) : '',
+  maxLength: (value, limit, title) => value.trim().length > limit ? translateMessage('maxLength', title, limit) : '',
   cannotBeLike: (value, notLikeValue, title) => value === notLikeValue ? translateMessage('cannotBeLike', title, notLikeValue) : '',
   filesFormats: (fileFormat, formats, title) => checkIsFileFormatValid(fileFormat, formats, translateMessage('filesFormats', title, formats)),
   regexp: (value, patternKey, title) => patterns[patternKey].test(value) ? '' : translateMessage(patternKey, title)
@@ -71,11 +71,16 @@ export const checkIsFileFormatValid = (fileFormat, formats, message) => {
 }
 
 export const runSingleValidation = (value, validators, label) => {
-  for(let vk in validators) {
-      const expectedVal = validators[vk];
-      const error = validatorsFunctions[vk](value, expectedVal, label);
-      if (error) return error;
+  if (validators) {
+    if (validators.required || value) {
+      for(let vk in validators) {
+        const expectedVal = validators[vk];
+        const error = validatorsFunctions[vk](value, expectedVal, label);
+        if (error) return error;
+      }
+    }
   }
+
   return '';
 }
 
@@ -83,10 +88,10 @@ export const runOnSubmitValidation = (values, formKeys, settings) => {
   const errors = {};
   let isFormInvalid = false;
   formKeys.forEach(key => {
-      errors[key] = runSingleValidation(values[key], settings[key].validators, settings[key].label);
-      if (errors[key]) {
-          isFormInvalid = true;
-      }
+    errors[key] = runSingleValidation(values[key], settings[key].validators, settings[key].label);
+    if (errors[key]) {
+        isFormInvalid = true;
+    }
   });
   return { isFormInvalid, errors };
 }

@@ -25,9 +25,9 @@ class ProjectForm extends React.PureComponent {
   };
   phaseFirstSettings = {
     name: new InputSettings(this.props.t("name"), this.validationConfig ),
-    description: new InputSettings(this.props.t("description"), this.validationConfig, 'textarea' ),
+    description: new InputSettings(this.props.t("description"), { minLength: 3, maxLength: 255, regexp: 'text' }, 'textarea' ),
     startDate: new InputSettings(this.props.t("startDate"), { required: true }, 'date-picker' ),
-    endDate: new InputSettings(this.props.t("endDate"), { required: true }, 'date-picker' ),
+    estimatedEndDate: new InputSettings(this.props.t("endDate"), { required: true }, 'date-picker' ),
   };
   phaseSecondSettings = {
     client: new InputSettings(this.props.t("client"), this.validationConfig, 'type-and-select', true ),
@@ -39,7 +39,7 @@ class ProjectForm extends React.PureComponent {
     openResonsiblePersonForm: false,
     responsiblePersonFormMode: 'add',
     phase: this.phases.phaseFirstInitValues,
-    phaseFirstInitValues: { name: '', description: '', startDate: moment(), endDate: moment() },
+    phaseFirstInitValues: { name: '', description: '', startDate: moment(), estimatedEndDate: moment() },
     phaseSecondInitValues: { client: '', cloud: '', responsiblePerson: '' },
     runSubmitingFirstPhase: false,
     clientsMapped: [],
@@ -121,16 +121,13 @@ class ProjectForm extends React.PureComponent {
   startEditingResponsiblePerson = () => this.setState({openResonsiblePersonForm: true, responsiblePersonFormMode: 'edit'});
 
   addOrEditProject = formData => {
-    const { projectId, clientsSlim } = this.props;
-    const project = { ...this.state.phaseFirstInitValues, ...formData };
-    project.startDate = moment(project.startDate).format(dFormat);
-    project.endDate = moment(project.endDate).format(dFormat);
+    const { firstName, lastName, email, phoneNumber } = this.state.personToEdit;
 
-    const client = clientsSlim.find(c => c.name === project.client);
-    if (client) {
-      const person = client.responsiblePersons.find(p => `${p.firstName} ${p.lastName}` === project.responsiblePerson);
-    }
-    // Tu sie zastanowic czy przypadkiem tego nie trzeba zabezpieczyc
+    const { projectId, onSubmitSucc } = this.props;
+    const project = { ...this.state.phaseFirstInitValues, ...formData, responsiblePerson: { firstName, lastName, email,
+      phoneNumber: phoneNumber ? phoneNumber : '223 223 223' } };
+    project.startDate = moment(project.startDate).format(dFormat);
+    project.estimatedEndDate = moment(project.estimatedEndDate).format(dFormat);
 
     this.setState({isSubmitting: true});
 
@@ -138,22 +135,22 @@ class ProjectForm extends React.PureComponent {
       setTimeout(() => this.setState({isSubmitting: false}), 1500);
     }
     else {
-      addProject(project)
-        .then(() => {
-          this.setState({isSubmitting: false});
-        })
-        .catch(() => this.setState({isSubmitting: false}));
+      addProject(project,
+          projectId => onSubmitSucc(projectId),
+          () => this.setState({isSubmitting: false})
+      );
     }
   }
 
   updateViewAfterAddPerson = person => {
+    // Finish edit form and adding person / edit mechanics
     const responsiblePerson = `${person.firstName} ${person.lastName}`;
-    // Jezeli dodalo nowego klienta to wybrac go i dodana osobe do kontaktu
-    // Jezeli klienta nie dodano do wybrac osobe do kontaktu jako dodana
+    console.log(person);
     this.setState({openResonsiblePersonForm: false});
   }
 
   updateViewAfterEditPerson = person => {
+    console.log(person);
     this.setState({openResonsiblePersonForm: false});
   }
 
@@ -166,7 +163,7 @@ class ProjectForm extends React.PureComponent {
 
   render() {
     const { phase, phaseFirstInitValues, phaseSecondInitValues, runSubmitingFirstPhase,
-      isFetchingClients, clientsMapped, cloudsMapped, personsMapped, openResonsiblePersonForm,
+      clientsMapped, cloudsMapped, personsMapped, openResonsiblePersonForm,
       responsiblePersonInitValues, responsiblePersonFormMode, isSubmitting, personToEdit } = this.state;
     const { close, t, clientsSlim } = this.props;
     if (openResonsiblePersonForm) {
@@ -184,7 +181,7 @@ class ProjectForm extends React.PureComponent {
     }
     else {
       return (
-        <FancyModal isLoading={isSubmitting} phases={this.phases} currentPhase={phase} handleClick={this.changePhaseAndRunSubmit} title={this.phasesTitles[phase]}>
+        <FancyModal close={close} isLoading={isSubmitting} phases={this.phases} currentPhase={phase} handleClick={this.changePhaseAndRunSubmit} title={this.phasesTitles[phase]}>
           {phase === this.phases.phaseFirstInitValues &&
             <FancyForm
               key={1}

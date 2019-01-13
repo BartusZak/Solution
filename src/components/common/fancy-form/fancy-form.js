@@ -8,8 +8,8 @@ import Button from '../button/button';
 import moment from 'moment';
 
 import './fancy-form.scss';
+export const dFormat = "YYYY/MM/DD";
 const now = moment();
-export const dFormat = "DD/MM/YYYY";
 const defaultDatePickerConfig = {
   startDate: now,
   minDate: now,
@@ -30,7 +30,6 @@ class FancyForm extends React.PureComponent {
             values: {...props.initialValues},
             errors: {},
             settings: {...props.settings},
-
             isFormDirty: false,
             isFormInvalid: false
         };

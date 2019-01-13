@@ -653,58 +653,11 @@ export const clearProjectState = () => {
   };
 };
 
-// export const createProject = (createProjectStatus, createProjectErrors) => {
-//   return { type: CREATE_PROJECT, createProjectStatus, createProjectErrors };
-// };
-
-// export const createProjectACreator = (firstArray, secondArray) => dispatch => {
-//   return new Promise((resolve, reject) => {
-//     const model = {
-//       name: firstArray[0].value,
-//       description: firstArray[1].value,
-//       client: firstArray[3].value ? firstArray[3].value : firstArray[2].value,
-//       responsiblePerson: {
-//         firstName: secondArray[1].value,
-//         lastName: secondArray[2].value,
-//         email: secondArray[0].value,
-//         phoneNumber: secondArray[3].value
-//       },
-//       startDate: firstArray[4].value,
-//       estimatedEndDate: firstArray[5].value
-//     };
-//     useRequest('addProject', model)
-//       .then(response => {
-//         dispatch(createProject(true, []));
-//         resolve(response.replyBlock.data.dtoObject);
-//       })
-//       .catch(error => {
-//         dispatch(createProject(false, errorCatcher(error)));
-//         reject(error);
-//       });
-//   });
-// };
-// {
-//   "name": "string",
-//   "description": "string",
-//   "client": "string",
-//   "cloud": "string",
-//   "responsiblePerson": {
-//     "firstName": "string",
-//     "lastName": "string",
-//     "email": "string",
-//     "phoneNumber": "string"
-//   },
-//   "startDate": "2019-01-11T22:52:23.213Z",
-//   "estimatedEndDate": "2019-01-11T22:52:23.213Z",
-//   "parentId": 0
-// }
-export const addProject = model => new Promise((resolve, reject) => {
-  console.log(model);
+export const addProject = (model, succ, err) => {
   useRequest('addProject', model)
-    .then(response => {
-      resolve();
-    }).catch(() => resolve());
-})
+    .then(response => succ(response.extractData().id))
+    .catch(() => err());
+}
 
 export const createProjectPhase = (createProjectPhaseStatus, createProjectPhaseErrors) => {
   return { type: CREATE_PROJECT_PHASE, createProjectPhaseStatus, createProjectPhaseErrors };

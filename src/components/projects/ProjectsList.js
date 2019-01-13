@@ -9,7 +9,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import DatePicker from "react-datepicker";
 import PropTypes from "prop-types";
 import { translate } from "react-translate";
-import { push } from "react-router-redux";
+import { withRouter } from 'react-router-dom';
 import binaryPermissioner from "./../../api/binaryPermissioner";
 import specialPermissioner from "./../../api/specialPermissioner";
 import "../../scss/components/projects/ProjectsList.scss";
@@ -19,6 +19,7 @@ import {
   editProjectPromise,
   getContactPersonDataACreator
 } from "../../actions/projectsActions";
+import ProjectForm from './project-form/project-form';
 
 class ProjectsList extends Component {
   constructor(props) {
@@ -27,7 +28,8 @@ class ProjectsList extends Component {
       showEditProjectModal: false,
       project: {},
       responseBlock: {},
-      loading: false
+      loading: false,
+      openProjectForm: false
     };
   }
   componentWillReceiveProps(nextProps) {
@@ -54,7 +56,8 @@ class ProjectsList extends Component {
   };
 
   render() {
-    const { t } = this.props;
+    const { openProjectForm } = this.state;
+    const { t, match, history } = this.props;
     const construct = {
       rowClass: "project-block",
       tableClass: "projects-list-container",
@@ -97,9 +100,7 @@ class ProjectsList extends Component {
       operators: [
         {
           pretty: t("Add"),
-          click: () => {
-            this.props.openAddProjectModal();
-          },
+          click: () => this.setState({openProjectForm: true}),
           comparator: () =>
             binaryPermissioner(false)(0)(0)(0)(1)(1)(1)(this.props.binPem)
         }
@@ -244,7 +245,7 @@ class ProjectsList extends Component {
               icon: { icon: "sign-in-alt", iconType: "fas" },
               title: t("SeeMore"),
               click: object => {
-                this.props.push(`/main/projects/${object.id}`);
+                history.push(`${match.url}/${object.id}`);
               },
               comparator: object => {
                 return (
@@ -289,6 +290,13 @@ class ProjectsList extends Component {
             closeEditProjectModal={this.clearEditModalData}
           />
         </Modal>
+
+        {openProjectForm &&
+          <ProjectForm onSubmitSucc={projectId => {
+            this.setState({openProjectForm: false}, () => history.push(match.url + "/" + projectId)) ;
+          }}
+            close={() => this.setState({openProjectForm: false})} />
+        }
       </div>
     );
   }
@@ -317,7 +325,6 @@ function mapDispatchToProps(dispatch) {
 ProjectsList.propTypes = {
   projects: PropTypes.arrayOf(PropTypes.object),
   pageChange: PropTypes.func.isRequired,
-  openAddProjectModal: PropTypes.func.isRequired,
   currentPage: PropTypes.number.isRequired,
   totalPageCount: PropTypes.number.isRequired,
   loading: PropTypes.bool.isRequired,
@@ -327,4 +334,4 @@ ProjectsList.propTypes = {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(translate("ProjectsList")(ProjectsList));
+)(translate("ProjectsList")(withRouter(ProjectsList)));
