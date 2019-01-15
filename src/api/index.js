@@ -139,7 +139,8 @@ const requests = {
   getEmployees: settings => execute(fromAlertSettings.getEmployees, 'employees', requestTypes.post, settings),
 
   //PROJECTS
-  addProject: model => execute(fromAlertSettings.addProject, `projects/add`, requestTypes.post, model),
+  addProject: model => execute(fromAlertSettings.addProject, 'projects/add', requestTypes.post, model),
+  editProject: (model, id) => execute(fromAlertSettings.editProject, `projects/${id}`, requestTypes.put, model),
 
   //RESPINSIBLE PERSON
   createResponsiblePerson: model => execute(fromAlertSettings.createResponsiblePerson, 'responsiblepersons', requestTypes.post, model),

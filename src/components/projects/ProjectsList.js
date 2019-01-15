@@ -1,62 +1,29 @@
-import React, { Component } from "react";
+import React from "react";
 import Icon from "../common/Icon";
 import SmoothTable from "../common/SmoothTable";
 import { setActionConfirmation } from "./../../actions/asyncActions";
 import { connect } from "react-redux";
-import Modal from "react-responsive-modal";
-import WebApi from "../../api";
-import "react-datepicker/dist/react-datepicker.css";
-import DatePicker from "react-datepicker";
 import PropTypes from "prop-types";
 import { translate } from "react-translate";
 import { withRouter } from 'react-router-dom';
 import binaryPermissioner from "./../../api/binaryPermissioner";
 import specialPermissioner from "./../../api/specialPermissioner";
-import "../../scss/components/projects/ProjectsList.scss";
 import { bindActionCreators } from "redux";
-import ProjectDetailsBlock from "../projects/modals/ProjectDetailsBlock";
-import {
-  editProjectPromise,
-  getContactPersonDataACreator
-} from "../../actions/projectsActions";
 import ProjectForm from './project-form/project-form';
 
-class ProjectsList extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      showEditProjectModal: false,
-      project: {},
-      responseBlock: {},
-      loading: false,
-      openProjectForm: false
-    };
-  }
-  componentWillReceiveProps(nextProps) {
-    if (
-      nextProps.editProjectErrors !== this.props.editProjectErrors &&
-      nextProps.editProjectStatus
-    ) {
-      setTimeout(() => {
-        this.props.pageChange();
-      }, 3000);
-    }
-  }
-
-  handleGetProject = project => {
-    this.setState({ project: project, showEditProjectModal: true });
-  };
-
-  handleCloseModal = () => {
-    this.setState({ showEditProjectModal: false });
-  };
-
-  clearEditModalData = () => {
-    this.setState({ showEditProjectModal: false });
+import "../../scss/components/projects/ProjectsList.scss";
+class ProjectsList extends React.Component {
+  state = {
+    showEditProjectModal: false,
+    project: {},
+    projectToEdit: null,
+    responseBlock: {},
+    loading: false,
+    openProjectForm: false
   };
 
   render() {
-    const { openProjectForm } = this.state;
+    const { openProjectForm, projectToEdit } = this.state;
     const { t, match, history } = this.props;
     const construct = {
       rowClass: "project-block",
@@ -228,9 +195,7 @@ class ProjectsList extends Component {
             {
               icon: { icon: "pen-square", iconType: "fas" },
               title: t("EditProject"),
-              click: object => {
-                this.handleGetProject(object);
-              },
+              click: project => this.setState({projectToEdit: project}),
               comparator: object => {
                 return (
                   specialPermissioner().projects.isOwner(
@@ -272,30 +237,11 @@ class ProjectsList extends Component {
           data={this.props.projects}
           construct={construct}
         />
-        <Modal
-          open={this.state.showEditProjectModal}
-          classNames={{ modal: "Modal Modal-projects" }}
-          contentLabel="Edit projects details"
-          onClose={this.handleCloseModal}
-        >
-          <ProjectDetailsBlock
-            shouldOnlyEdit={true}
-            editProjectStatus={this.props.editProjectStatus}
-            editProjectErrors={this.props.editProjectErrors}
-            project={this.state.project}
-            getContactPersonDataACreator={
-              this.props.getContactPersonDataACreator
-            }
-            editProject={this.props.editProjectPromise}
-            closeEditProjectModal={this.clearEditModalData}
-          />
-        </Modal>
 
-        {openProjectForm &&
-          <ProjectForm onSubmitSucc={projectId => {
-            this.setState({openProjectForm: false}, () => history.push(match.url + "/" + projectId)) ;
-          }}
-            close={() => this.setState({openProjectForm: false})} />
+        {(openProjectForm || projectToEdit) &&
+          <ProjectForm projectToEdit={projectToEdit}
+            onSubmitSucc={projectId =>  this.setState({openProjectForm: false} , () => history.push(match.url + "/" + projectId))}
+            close={() => this.setState({openProjectForm: false, projectToEdit: null})} />
         }
       </div>
     );
@@ -305,18 +251,12 @@ class ProjectsList extends Component {
 function mapStateToProps(state) {
   return {
     binPem: state.authReducer.binPem,
-    login: state.authReducer.login,
-    editProjectStatus: state.projectsReducer.editProjectStatus,
-    editProjectErrors: state.projectsReducer.editProjectErrors
+    login: state.authReducer.login
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    getContactPersonDataACreator: clientId =>
-      dispatch(getContactPersonDataACreator(clientId)),
-    editProjectPromise: (projectToSend, projectId) =>
-      dispatch(editProjectPromise(projectToSend, projectId)),
     setActionConfirmation: (confirmationInProgress, toConfirm) =>
       dispatch(setActionConfirmation(confirmationInProgress, toConfirm))
   };

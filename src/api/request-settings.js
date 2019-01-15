@@ -4,6 +4,7 @@ export const getClientsSlim = 'getClientsSlim';
 
 // Projects
 export const addProject = 'addProject';
+export const editProject = 'editProject';
 
 // Reponsible person
 export const createResponsiblePerson = 'createResponsiblePerson';
@@ -20,6 +21,7 @@ export const errorsBlackList = [
 export const succOperationsWhiteObject = {
   // Projects
   addProject: {pl: 'Projekt został pomyślnie dodany', en: 'Project has been succesfully added'},
+  editProject: {pl: 'Projekt został pomyślnie edytowany', en: 'Project has been succesfully modified'},
 
   // Reponsible person
   createResponsiblePerson: {pl: 'Osoba odpowiedzialna została pomyślnie dodana', en: 'Responsible person has been succesfully added'},

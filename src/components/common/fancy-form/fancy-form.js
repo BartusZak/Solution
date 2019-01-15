@@ -9,10 +9,13 @@ import moment from 'moment';
 
 import './fancy-form.scss';
 export const dFormat = "YYYY/MM/DD";
+export const minDate = "1994/01/01";
+export const maxDate = "2100/01/01";
+
 const now = moment();
 const defaultDatePickerConfig = {
-  startDate: now,
-  minDate: now,
+  minDate: moment(minDate),
+  maxDate: moment(maxDate),
   dateFormat: dFormat,
   peekNextMonth: true,
   showMonthDropdown: true,

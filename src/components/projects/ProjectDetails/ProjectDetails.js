@@ -8,7 +8,6 @@ import {
 import SmallSpinner from "../../common/spinner/small-spinner";
 import Modal from "react-responsive-modal";
 import Table from "../../common/table/table";
-import ProjectDetailsBlock from "../modals/ProjectDetailsBlock";
 import moment from "moment";
 import Form from "../../form/form";
 import ProgressPicker from "../../common/progressPicker/progressPicker";
@@ -24,7 +23,6 @@ import * as projectsActions from "../../../actions/projectsActions";
 import {
   createProjectPhaseACreator,
   getProjectDataACreator,
-  getContactPersonDataACreator,
   getProjectACreator,
   addEmployeeToProjectACreator,
   addEmployeeToProject,
@@ -33,7 +31,6 @@ import {
   deleteEmployeeAssignmentACreator,
   getProject,
   changeProjectSkillsACreator,
-  editProjectACreator,
   addSkillsToProjectACreator,
   addSkillsToProject,
   editProject,
@@ -285,36 +282,11 @@ class ProjectDetails extends Component {
   };
 
   goForClient = () => {
-    const { getContactPersonDataACreator, project, clients } = this.props;
+    const { project, clients } = this.props;
     const matchedClient = clients.find(client => client.name === project.client);
     if (matchedClient) {
       const clientId = matchedClient.id
       this.setState({ isLoading: true });
-      getContactPersonDataACreator(clientId)
-      .then(response => {
-        if (response.length > 0) {
-          let responsiblePersons = [];
-          const responsiblePersonFormValues = [
-            ...this.state.responsiblePersonFormValues
-          ];
-
-          responsiblePersons = responsiblePersons.concat(response);
-
-          responsiblePersonFormValues[0].value = response[0].email;
-          responsiblePersonFormValues[1].value = response[0].firstName;
-          responsiblePersonFormValues[2].value = response[0].lastName;
-          responsiblePersonFormValues[3].value = response[0].phoneNumber;
-
-          this.setState({
-            responsiblePersons: responsiblePersons,
-            responsiblePersonFormValues: responsiblePersonFormValues
-          });
-        }
-          this.setState({ isLoading: false });
-        })
-        .catch(error => {
-          this.setState({ isLoading: false });
-        });
     }
   };
 
@@ -1222,7 +1194,7 @@ class ProjectDetails extends Component {
             </Form>
             )}
           </Modal>
-
+{/*
             <Modal
               key={1}
               open={this.state.editModal}
@@ -1232,17 +1204,12 @@ class ProjectDetails extends Component {
             >
               <ProjectDetailsBlock
                 showAllAssignments={showAllAssignments}
-                editProjectStatus={this.props.editProjectStatus}
-                editProjectErrors={this.props.editProjectErrors}
                 responsiblePerson={project.responsiblePerson}
                 project={project}
-                getContactPersonDataACreator={
-                  this.props.getContactPersonDataACreator
-                }
                 editProject={this.props.editProject}
                 closeEditProjectModal={this.clearEditModalData}
               />
-            </Modal>
+            </Modal> */}
 
             <ConfirmModal
               open={this.state.deleteProjectModal}
@@ -1384,9 +1351,6 @@ const mapStateToProps = state => {
     changeProjectSkillsStatus: state.projectsReducer.changeProjectSkillsStatus,
     changeProjectSkillsErrors: state.projectsReducer.changeProjectSkillsErrors,
 
-    editProjectStatus: state.projectsReducer.editProjectStatus,
-    editProjectErrors: state.projectsReducer.editProjectErrors,
-
     loadedSkills: state.skillsReducer.loadedSkills,
     loadSkillsStatus: state.skillsReducer.loadSkillsStatus,
     loadSkillsErrors: state.skillsReducer.loadSkillsErrors,
@@ -1408,10 +1372,6 @@ const mapDispatchToProps = dispatch => {
       dispatch(getContactPersonDataACreator(clientId)),
     getProject: (projectId, showAllAssignments) =>
       dispatch(getProjectACreator(projectId, showAllAssignments)),
-    editProject: (projectId, projectToSend, showAllAssignments) =>
-      dispatch(
-        editProjectACreator(projectId, projectToSend, showAllAssignments)
-      ),
     getProjectDataACreator: (projectId, showAllAssignments) => dispatch(getProjectDataACreator(projectId, showAllAssignments)),
     editProjectClearData: (status, errors) =>
       dispatch(editProject(status, errors)),

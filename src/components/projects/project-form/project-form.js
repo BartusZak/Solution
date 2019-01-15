@@ -4,7 +4,7 @@ import { orderBy } from '../../../services/transform-data-service';
 import { translate } from 'react-translate';
 import { connect } from 'react-redux';
 import { getClientsSlim } from '../../../actions/clientsActions';
-import { addProject } from '../../../actions/projectsActions';
+import { addProject, editProject } from '../../../actions/projectsActions';
 import { InputSettings } from '../../common/fancy-form/index';
 import DataList from '../../common/fancy-form/fancy-data-list';
 import Select from '../../common/fancy-form/select';
@@ -14,7 +14,6 @@ import ResponsiblePersonForm from '../responsible-person-form/responsible-person
 
 import './project-form.scss';
 class ProjectForm extends React.PureComponent {
-  validationConfig = { required: true, minLength: 3, maxLength: 255, regexp: 'text' };
   phases = {
     phaseFirstInitValues: 'phaseFirstInitValues',
     phaseSecondInitValues: 'phaseSecondInitValues'
@@ -24,30 +23,43 @@ class ProjectForm extends React.PureComponent {
     phaseSecondInitValues: this.props.t("secondPhaseTitle")
   };
   phaseFirstSettings = {
-    name: new InputSettings(this.props.t("name"), this.validationConfig ),
-    description: new InputSettings(this.props.t("description"), { minLength: 3, maxLength: 255, regexp: 'text' }, 'textarea' ),
+    name: new InputSettings(this.props.t("name"), { required: true, minLength: 3, maxLength: 255 } ),
+    description: new InputSettings(this.props.t("description"), { minLength: 3, maxLength: 255 }, 'textarea' ),
     startDate: new InputSettings(this.props.t("startDate"), { required: true }, 'date-picker' ),
     estimatedEndDate: new InputSettings(this.props.t("endDate"), { required: true }, 'date-picker' ),
   };
   phaseSecondSettings = {
-    client: new InputSettings(this.props.t("client"), this.validationConfig, 'type-and-select', true ),
-    cloud: new InputSettings(this.props.t("cloud"), { minLength: 3, maxLength: 150 }, 'type-and-select', true ),
+    client: new InputSettings(this.props.t("client"), {required: true, minLength: 3, maxLength: 255, regexp: 'text'}, 'type-and-select', true ),
+    cloud: new InputSettings(this.props.t("cloud"), { minLength: 3, maxLength: 150, regexp: 'text' }, 'type-and-select', true ),
     responsiblePerson: new InputSettings(this.props.t("responsiblePerson"), { required: true }, 'select', true )
   };
 
-  state = {
-    openResonsiblePersonForm: false,
-    responsiblePersonFormMode: 'add',
-    phase: this.phases.phaseFirstInitValues,
-    phaseFirstInitValues: { name: '', description: '', startDate: moment(), estimatedEndDate: moment() },
-    phaseSecondInitValues: { client: '', cloud: '', responsiblePerson: '' },
-    runSubmitingFirstPhase: false,
-    clientsMapped: [],
-    cloudsMapped: [],
-    personsMapped: [],
-    isSubmitting: false,
-    personToEdit: null
-  };
+  constructor(props) {
+    super(props);
+    let phaseFirstInitValues = { name: '', description: '', startDate: moment(), estimatedEndDate: moment() };
+    let phaseSecondInitValues = { client: '', cloud: '', responsiblePerson: '' };
+    let personToEdit = null;
+    if (props.projectToEdit) {
+      const { name, description, startDate, estimatedEndDate, client, cloud } = props.projectToEdit;
+      phaseFirstInitValues = { name, description, startDate: moment(startDate), estimatedEndDate: moment(estimatedEndDate) };
+      phaseSecondInitValues.client = client;
+      phaseSecondInitValues.cloud = cloud ? cloud : '';
+    }
+
+    this.state = {
+      openResonsiblePersonForm: false,
+      responsiblePersonFormMode: 'add',
+      phase: this.phases.phaseFirstInitValues,
+      phaseFirstInitValues,
+      phaseSecondInitValues,
+      runSubmitingFirstPhase: false,
+      clientsMapped: [],
+      cloudsMapped: [],
+      personsMapped: [],
+      isSubmitting: false,
+      personToEdit
+    }
+  }
 
   componentDidMount() {
     this.props.getClientsSlim();
@@ -69,6 +81,11 @@ class ProjectForm extends React.PureComponent {
       const cloudsDescription = client.clouds.length > 0 ? client.clouds.length + ' clouds' : '';
       return { displayValue: cloudsDescription, value: client.name };
     });
+    const { projectToEdit } = this.props;
+    if (projectToEdit) {
+      const client = clients.find(c => c.name === projectToEdit.client);
+      this.injectPersonsInField(client.responsiblePersons, client.name);
+    }
     this.setState({clientsMapped: orderBy(clientsMapped, 'value')});
   }
 
@@ -122,8 +139,7 @@ class ProjectForm extends React.PureComponent {
 
   addOrEditProject = formData => {
     const { firstName, lastName, email, phoneNumber } = this.state.personToEdit;
-
-    const { projectId, onSubmitSucc } = this.props;
+    const { projectToEdit, onSubmitSucc, editProject } = this.props;
     const project = { ...this.state.phaseFirstInitValues, ...formData, responsiblePerson: { firstName, lastName, email,
       phoneNumber: phoneNumber ? phoneNumber : '223 223 223' } };
     project.startDate = moment(project.startDate).format(dFormat);
@@ -131,9 +147,8 @@ class ProjectForm extends React.PureComponent {
 
     this.setState({isSubmitting: true});
 
-    if (projectId) {
-      setTimeout(() => this.setState({isSubmitting: false}), 1500);
-    }
+    if (projectToEdit)
+      editProject({...projectToEdit, ...project}, () => this.setState({isSubmitting: false}));
     else {
       addProject(project,
           projectId => onSubmitSucc(projectId),
@@ -257,7 +272,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    getClientsSlim: () => dispatch(getClientsSlim())
+    getClientsSlim: () => dispatch(getClientsSlim()),
+    editProject: (project, cb) => dispatch(editProject(project, cb))
   };
 };
 
