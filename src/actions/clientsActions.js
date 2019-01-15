@@ -80,12 +80,7 @@ export const createResponsiblePerson = model => dispatch => new Promise((resolve
 
 export const editResponsiblePerson = (model, id) => dispatch => new Promise((resolve, reject) => {
   useRequest('editResponsiblePerson', model, id)
-  .then(response => {
-    console.log(response);
-    dispatch(getClientsSlim())
-    .then(() => resolve())
-    .catch(() => reject());
-  })
+  .then(() => resolve())
   .catch(() => reject());
 })
 

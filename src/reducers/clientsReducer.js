@@ -21,7 +21,6 @@ export const clientsReducer = (state = initialState, action) => {
     case PUT_SLIM_CLIENTS:
       return { ...state, clientsSlim: {...action.clientsSlim} };
     case ADD_SLIM_CLIENT:
-    console.log(action.client);
       return { ...state, clientsSlim: {...state.clientsSlim, [action.client.name]: action.client }}
     case UPDATE_SLIM_CLIENT:
       return { ...state, clientsSlim: {...state.clientsSlim, [action.clientName]: action.client} };

@@ -1,6 +1,5 @@
 import React from 'react';
 import moment from 'moment';
-import { orderBy } from '../../../services/transform-data-service';
 import { translate } from 'react-translate';
 import { connect } from 'react-redux';
 import { getClientsSlim, updateSlimClient, addSlimClient } from '../../../actions/clientsActions';
@@ -43,7 +42,6 @@ class ProjectForm extends React.PureComponent {
       phaseSecondInitValues.client = client;
       phaseSecondInitValues.cloud = cloud ? cloud : '';
     }
-
     this.state = {
       phase: this.phases.phaseFirstInitValues,
       phaseFirstInitValues,
@@ -115,7 +113,6 @@ class ProjectForm extends React.PureComponent {
   updateViewAfterAddPerson = ({ client: clientName, firstName, lastName, email, phoneNumber, id }, createdClient) => {
     const responsiblePerson = { firstName, lastName, email, phoneNumber, id };
     const phaseSecondInitValues = {...this.state.phaseSecondInitValues, responsiblePerson: `${firstName} ${lastName}`};
-    console.log(createdClient);
     if (createdClient) {
       const client = { id: createdClient.id, name: createdClient.name,
         responsiblePersons: [ responsiblePerson ], clouds: [] };
@@ -129,11 +126,21 @@ class ProjectForm extends React.PureComponent {
     }
 
     this.setState({openResonsiblePersonForm: false, watchedClient: clientName, phaseSecondInitValues,
-      personToEdit: {client: clientName, firstName, lastName, email, phoneNumber}})
+      personToEdit: {client: clientName, firstName, lastName, email, phoneNumber, id}})
   }
 
-  updateViewAfterEditPerson = person => {
-    this.setState({openResonsiblePersonForm: false});
+  updateViewAfterEditPerson = ({ client: clientName, firstName, lastName, email, phoneNumber }, id) => {
+    const { clientsSlim, updateSlimClient } = this.props;
+    const phaseSecondInitValues = {...this.state.phaseSecondInitValues,
+      responsiblePerson: `${firstName} ${lastName}`};
+
+    const responsiblePersons = [...clientsSlim[clientName].responsiblePersons];
+    const index = responsiblePersons.findIndex(p => p.id === id);
+    responsiblePersons[index] = { client: clientName, firstName, lastName, email, phoneNumber, id };
+    const client = {...clientsSlim[clientName], responsiblePersons };
+    updateSlimClient(clientName, client);
+    this.setState({openResonsiblePersonForm: false, phaseSecondInitValues,
+      personToEdit: { client: clientName, firstName, lastName, email, phoneNumber, id }});
   }
 
   render() {
