@@ -52,27 +52,28 @@ class ProjectForm extends React.PureComponent {
       runSubmitingFirstPhase: false,
       openResonsiblePersonForm: false,
       watchedClient: '',
+      lastEditedPersonIndex: 0
     }
   }
 
-  componentDidMount = () => {
-    this.props.getClientsSlim();
-  }
+  componentDidMount = () => this.props.getClientsSlim();
 
-  componentDidUpdate = (prevProps) => {
+  componentDidUpdate = prevProps => {
     if (this.state.runSubmitingFirstPhase) {
       this.setState({runSubmitingFirstPhase: false});
     }
     const { clientsSlim, projectToEdit } = this.props;
     if (prevProps.clientsSlim !== clientsSlim && projectToEdit) {
-      if (clientsSlim[projectToEdit.client]) {
-        const { responsiblePersons } = clientsSlim[projectToEdit.client];
+      const { watchedClient, lastEditedPersonIndex, phaseSecondInitValues } = this.state;
+      const clientName = watchedClient ? watchedClient : projectToEdit.client;
+      if (clientsSlim[clientName]) {
+        const { responsiblePersons } = clientsSlim[clientName];
         if (responsiblePersons.length > 0) {
-          const { firstName, lastName, email, client, phoneNumber, id } = responsiblePersons[0];
-          this.setState({ phaseSecondInitValues: {...this.state.phaseSecondInitValues, responsiblePerson: `${firstName} ${lastName}`},
-            personToEdit: { firstName, lastName, email, client, phoneNumber, id } });
+          const personToEdit = {...responsiblePersons[lastEditedPersonIndex]};
+          this.setState({ phaseSecondInitValues: {...phaseSecondInitValues,
+            responsiblePerson: personToEdit.id}, personToEdit });
         }
-        this.setState({watchedClient: projectToEdit.client});
+        this.setState({watchedClient: clientName});
       }
     }
   }
@@ -92,11 +93,8 @@ class ProjectForm extends React.PureComponent {
   startEditingResponsiblePerson = () => this.setState({openResonsiblePersonForm: true, responsiblePersonFormMode: 'edit'});
 
   addOrEditProject = formData => {
-    const { firstName, lastName, email, phoneNumber } = this.state.personToEdit;
     const { projectToEdit, onSubmitSucc, editProject } = this.props;
-    const project = { ...this.state.phaseFirstInitValues, ...formData,
-        responsiblePerson: { firstName, lastName, email, phoneNumber } };
-
+    const project = { ...this.state.phaseFirstInitValues, ...formData, responsiblePerson: {...this.state.personToEdit} };
     project.startDate = moment(project.startDate).format(dFormat);
     project.estimatedEndDate = moment(project.estimatedEndDate).format(dFormat);
     this.setState({isSubmitting: true});
@@ -112,10 +110,9 @@ class ProjectForm extends React.PureComponent {
 
   updateViewAfterAddPerson = ({ client: clientName, firstName, lastName, email, phoneNumber, id }, createdClient) => {
     const responsiblePerson = { firstName, lastName, email, phoneNumber, id };
-    const phaseSecondInitValues = {...this.state.phaseSecondInitValues, responsiblePerson: `${firstName} ${lastName}`};
+    const phaseSecondInitValues = {...this.state.phaseSecondInitValues, responsiblePerson: id };
     if (createdClient) {
-      const client = { id: createdClient.id, name: createdClient.name,
-        responsiblePersons: [ responsiblePerson ], clouds: [] };
+      const client = { id: createdClient.id, name: createdClient.name, responsiblePersons: [ responsiblePerson ], clouds: [] };
       this.props.addSlimClient(client);
     }
     else {
@@ -126,21 +123,21 @@ class ProjectForm extends React.PureComponent {
     }
 
     this.setState({openResonsiblePersonForm: false, watchedClient: clientName, phaseSecondInitValues,
-      personToEdit: {client: clientName, firstName, lastName, email, phoneNumber, id}})
+      personToEdit: {...responsiblePerson, client: clientName } })
   }
 
-  updateViewAfterEditPerson = ({ client: clientName, firstName, lastName, email, phoneNumber }, id) => {
-    const { clientsSlim, updateSlimClient } = this.props;
-    const phaseSecondInitValues = {...this.state.phaseSecondInitValues,
-      responsiblePerson: `${firstName} ${lastName}`};
+  updateViewAfterEditPerson = (personToEdit, id) => {
+    const { clientsSlim, updateSlimClient, projectToEdit } = this.props;
+    const { client: clientName } = personToEdit;
+    const phaseSecondInitValues = {...this.state.phaseSecondInitValues, responsiblePerson: id };
 
     const responsiblePersons = [...clientsSlim[clientName].responsiblePersons];
     const index = responsiblePersons.findIndex(p => p.id === id);
-    responsiblePersons[index] = { client: clientName, firstName, lastName, email, phoneNumber, id };
+    responsiblePersons[index] = { ...personToEdit, id };
     const client = {...clientsSlim[clientName], responsiblePersons };
-    updateSlimClient(clientName, client);
-    this.setState({openResonsiblePersonForm: false, phaseSecondInitValues,
-      personToEdit: { client: clientName, firstName, lastName, email, phoneNumber, id }});
+    this.setState({lastEditedPersonIndex: index,
+      openResonsiblePersonForm: false, phaseSecondInitValues, personToEdit: { ...personToEdit, id }},
+      () => updateSlimClient(clientName, client));
   }
 
   render() {
@@ -200,7 +197,7 @@ class ProjectForm extends React.PureComponent {
                         else {
                           const { responsiblePersons } = clientsSlim[value];
                           if (responsiblePersons.length > 0) {
-                            newValues.responsiblePerson = `${responsiblePersons[0].firstName} ${responsiblePersons[0].lastName}`;
+                            newValues.responsiblePerson = responsiblePersons[0].id
                             this.setState({personToEdit: responsiblePersons[0]});
                           }
                         }
