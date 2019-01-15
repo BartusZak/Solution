@@ -7,29 +7,24 @@ import {
   CLEAR_RESPONSE_CLOUD,
   LOGOUT,
   PUT_SLIM_CLIENTS,
-  UPDATE_SLIM_CLIENT,
-  ADD_SLIM_CLIENT
+  ADD_SLIM_CLIENT,
+  UPDATE_SLIM_CLIENT
 } from "../constants";
 
 const initialState = {
   clients: [],
-  clientsSlim: []
+  clientsSlim: {}
 };
 
 export const clientsReducer = (state = initialState, action) => {
   switch (action.type) {
     case PUT_SLIM_CLIENTS:
-      return { ...state, clientsSlim: [...action.clientsSlim] };
-    case UPDATE_SLIM_CLIENT:
-      return { ...state, clientsSlim: state.clientsSlim.map(slimClient => {
-          return action.clientName === slimClient.name ?
-            { ...slimClient, responsiblePersons: [...slimClient.responsiblePersons, action.responsiblePerson] } : slimClient
-        })
-      };
+      return { ...state, clientsSlim: {...action.clientsSlim} };
     case ADD_SLIM_CLIENT:
-      return {
-        ...state, clientsSlim: [...state.clientsSlim, action.slimClient]
-      };
+    console.log(action.client);
+      return { ...state, clientsSlim: {...state.clientsSlim, [action.client.name]: action.client }}
+    case UPDATE_SLIM_CLIENT:
+      return { ...state, clientsSlim: {...state.clientsSlim, [action.clientName]: action.client} };
     case CLEAR_RESPONSE_CLOUD:
       return {
         ...state,

@@ -1,18 +1,23 @@
 import React from 'react';
 
-const fancyTypeAndSelect = ({listName, listData, ...rest}) => (
+const fancyTypeAndSelect = ({listName, listData, valueKey, displayValueKey, ...rest}) => (
   <div className="data-list-container">
       <input {...rest} list={listName} autoComplete="off"/>
       <datalist id={listName}>
-          {listData.length > 0 && listData.map(({displayValue, value}) => (
-              <option key={value} value={value} id={value}>
-                {displayValue}
+          {listData.map(item => (
+              <option key={item[valueKey]} value={item[valueKey]} id={item[valueKey]}>
+                {item[displayValueKey]}
               </option>
             ))
           }
       </datalist>
   </div>
 );
+
+fancyTypeAndSelect.defaultProps = {
+  valueKey: 'value',
+  displayValueKey: 'displayValue'
+}
 
 export default fancyTypeAndSelect;
 

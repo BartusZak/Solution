@@ -84,6 +84,7 @@ class FancyForm extends React.PureComponent {
 
     handleChangeFromEvent = (e, key) => this.putChanges(e.target.value, key);
     handleDateChange = (date, key) => this.putChanges(date, key);
+    handleChangeValues = values => { this.detectInitialValuesChanges(values); }
 
     checkSubmitedData = () => {
         const { values, formKeys, settings } = this.state;
@@ -128,7 +129,7 @@ class FancyForm extends React.PureComponent {
                 <form className={formClass} onSubmit={this.handleSubmit}>
                     {formKeys.map(key => {
                         if (settings[key].needsSlot && this.props[this.slots[key]])
-                            return this.props[this.slots[key]](key, values, this.handleChangeFromEvent, settings[key], errors);
+                            return this.props[this.slots[key]](key, values, this.handleChangeFromEvent, settings[key], errors, this.handleChangeValues);
 
                         else {
                             return (

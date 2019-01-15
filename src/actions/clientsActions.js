@@ -13,12 +13,13 @@ import {
   ADD_CLOUD_RESULT,
   ADD_RESPONSIBLE_PERSON_RESULT,
   CLEAR_RESPONSE_CLOUD,
-  UPDATE_SLIM_CLIENT,
+  PUT_SLIM_CLIENTS,
   ADD_SLIM_CLIENT,
-  PUT_SLIM_CLIENTS
+  UPDATE_SLIM_CLIENT
 } from "../constants";
 
 import { useRequest } from '../api/index';
+import { transformArrayIntoObject } from '../services/transform-data-service';
 
 export const clearResponseCloud = () => {
   return {
@@ -63,34 +64,19 @@ export const addResponsiblePersonResult = resultBlock => {
   };
 };
 
-export const addSlimClient = slimClient => ({ type: ADD_SLIM_CLIENT, slimClient });
-
+export const addSlimClient = client => ({ type: ADD_SLIM_CLIENT, client });
+export const updateSlimClient = (clientName, client) => ({ type: UPDATE_SLIM_CLIENT, clientName, client });
 export const putSlimClients = clientsSlim => ({type: PUT_SLIM_CLIENTS, clientsSlim });
-
-export const updateSlimClient = (clientName, responsiblePerson) => ({ type: UPDATE_SLIM_CLIENT, clientName, responsiblePerson });
 
 export const getClientsSlim = () => dispatch =>
   useRequest('getClientsSlim')
-    .then(res => dispatch(putSlimClients(res.extractData())))
+  .then(res => dispatch(putSlimClients(transformArrayIntoObject('name', res.extractData()))));
 
 export const createResponsiblePerson = model => dispatch => new Promise((resolve, reject) => {
   useRequest('createResponsiblePerson', model)
-  .then(res => {
-    const { client: createdClient, responsiblePerson } = res.extractData();
-    const { client, firstName, lastName, email, phoneNumber } = responsiblePerson;
-
-    if (createdClient) {
-      const newClient = {...createdClient, responsiblePersons: [ { client, firstName, lastName, email, phoneNumber } ] };
-      dispatch(addSlimClient(newClient));
-    }
-    else {
-      dispatch(updateSlimClient(client, responsiblePerson));
-    }
-    resolve({client, responsiblePerson});
-  })
+  .then(res => resolve(res.extractData()))
   .catch(() => reject());
 });
-
 
 export const editResponsiblePerson = (model, id) => dispatch => new Promise((resolve, reject) => {
   useRequest('editResponsiblePerson', model, id)
@@ -102,7 +88,6 @@ export const editResponsiblePerson = (model, id) => dispatch => new Promise((res
   })
   .catch(() => reject());
 })
-
 
 export const loadClients = () => {
   return dispatch => {
@@ -298,37 +283,6 @@ export const editCloud = (cloudId, name, fields, clientId) => {
       });
   };
 };
-
-// export const editResponsiblePerson = (
-//   responsiblePersonId,
-//   firstName,
-//   lastName,
-//   email,
-//   phoneNumber,
-//   client
-// ) => {
-//   return dispatch => {
-//     WebApi.responsiblePerson
-//       .edit(
-//         responsiblePersonId,
-//         firstName,
-//         lastName,
-//         email,
-//         phoneNumber,
-//         client
-//       )
-//       .then(response => {
-//         if (!response.errorOccurred()) {
-//           dispatch(addResponsiblePersonResult(response));
-//           dispatch(this.loadClients());
-//         }
-//       })
-//       .catch(error => {
-//         dispatch(addResponsiblePersonResult(error));
-//         throw error;
-//       });
-//   };
-// };
 
 export const deleteResponsiblePerson = id => {
   return dispatch => {

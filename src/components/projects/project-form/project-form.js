@@ -3,11 +3,10 @@ import moment from 'moment';
 import { orderBy } from '../../../services/transform-data-service';
 import { translate } from 'react-translate';
 import { connect } from 'react-redux';
-import { getClientsSlim } from '../../../actions/clientsActions';
+import { getClientsSlim, updateSlimClient, addSlimClient } from '../../../actions/clientsActions';
 import { addProject, editProject } from '../../../actions/projectsActions';
 import { InputSettings } from '../../common/fancy-form/index';
-import DataList from '../../common/fancy-form/fancy-data-list';
-import Select from '../../common/fancy-form/select';
+import FancyDataList from '../../common/fancy-form/fancy-data-list';
 import FancyModal from '../../common/fancy-modal/fancy-modal';
 import FancyForm, { dFormat } from '../../common/fancy-form/fancy-form';
 import ResponsiblePersonForm from '../../shared/responsible-person-form/responsible-person-form';
@@ -46,44 +45,38 @@ class ProjectForm extends React.PureComponent {
     }
 
     this.state = {
-      openResonsiblePersonForm: false,
-      responsiblePersonFormMode: 'add',
       phase: this.phases.phaseFirstInitValues,
       phaseFirstInitValues,
       phaseSecondInitValues,
-      runSubmitingFirstPhase: false,
-      clientsMapped: [],
-      cloudsMapped: [],
-      personsMapped: [],
       isSubmitting: false,
-      personToEdit: null
+      personToEdit: null,
+      responsiblePersonFormMode: 'add',
+      runSubmitingFirstPhase: false,
+      openResonsiblePersonForm: false,
+      watchedClient: '',
     }
   }
 
-  componentDidMount() {
+  componentDidMount = () => {
     this.props.getClientsSlim();
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate = (prevProps) => {
     if (this.state.runSubmitingFirstPhase) {
       this.setState({runSubmitingFirstPhase: false});
     }
-    if (prevProps.clientsSlim !== this.props.clientsSlim) {
-      this.injectClientsInField(this.props.clientsSlim);
+    const { clientsSlim, projectToEdit } = this.props;
+    if (prevProps.clientsSlim !== clientsSlim && projectToEdit) {
+      if (clientsSlim[projectToEdit.client]) {
+        const { responsiblePersons } = clientsSlim[projectToEdit.client];
+        if (responsiblePersons.length > 0) {
+          const { firstName, lastName, email, client, phoneNumber, id } = responsiblePersons[0];
+          this.setState({ phaseSecondInitValues: {...this.state.phaseSecondInitValues, responsiblePerson: `${firstName} ${lastName}`},
+            personToEdit: { firstName, lastName, email, client, phoneNumber, id } });
+        }
+        this.setState({watchedClient: projectToEdit.client});
+      }
     }
-  }
-
-  injectClientsInField = clients => {
-    const clientsMapped = clients.map(client => {
-      const cloudsDescription = client.clouds.length > 0 ? client.clouds.length + ' clouds' : '';
-      return { displayValue: cloudsDescription, value: client.name };
-    });
-    const { projectToEdit } = this.props;
-    if (projectToEdit) {
-      const client = clients.find(c => c.name === projectToEdit.client);
-      this.injectPersonsInField(client.responsiblePersons, client.name);
-    }
-    this.setState({clientsMapped: orderBy(clientsMapped, 'value')});
   }
 
   changePhaseAndSave = (formData, phase, phaseNameToCopyPopulatedValues) => this.setState({phase, [phaseNameToCopyPopulatedValues]: formData});
@@ -97,53 +90,18 @@ class ProjectForm extends React.PureComponent {
   };
 
   saveSecondPhaseData = formData => this.setState({phaseSecondInitValues: formData});
-
-  onSelectClient = e => {
-    const { value: clientName } = e.target;
-    const client = this.props.clientsSlim.find(c => c.name === clientName);
-
-    if (client) {
-      this.injectCloudsInField(client.clouds);
-      this.injectPersonsInField(client.responsiblePersons, clientName);
-    }
-    else {
-      this.setState({personsMapped: [], cloudsMapped: [], personsMapped: [], personToEdit: null,
-        phaseSecondInitValues: { client: clientName, cloud: '', responsiblePerson: '' } });
-    }
-  }
-
-  injectCloudsInField = clouds => {
-    const cloudsMapped = clouds.map(c => ({ displayValue: c.name, value: c.name }) );
-    this.setState({cloudsMapped: orderBy(cloudsMapped, 'value')});
-  }
-
-  injectPersonsInField = (persons, clientName) => {
-    const phaseSecondInitValues = {...this.state.phaseSecondInitValues, client: clientName, responsiblePerson: '' };
-    if (persons.length > 0) {
-      const personsMapped = orderBy(persons.map(p => ({ displayValue: `${p.firstName} ${p.lastName}`, value: p.id, key: p.id })), 'displayValue');
-      const firstPerson = personsMapped[0];
-      const personToEdit = persons.find(p => p.id === firstPerson.key); personToEdit['client'] = clientName;
-
-      this.setState({personsMapped, personToEdit, phaseSecondInitValues: {...phaseSecondInitValues, responsiblePerson: personToEdit.id} });
-    }
-    else {
-      this.setState({personsMapped: [], personToEdit: null, phaseSecondInitValues});
-    }
-  }
-
   startAddingResponsiblePerson = () => this.setState({openResonsiblePersonForm: true, responsiblePersonFormMode: 'add'});
   startEditingResponsiblePerson = () => this.setState({openResonsiblePersonForm: true, responsiblePersonFormMode: 'edit'});
 
   addOrEditProject = formData => {
     const { firstName, lastName, email, phoneNumber } = this.state.personToEdit;
     const { projectToEdit, onSubmitSucc, editProject } = this.props;
-    const project = { ...this.state.phaseFirstInitValues, ...formData, responsiblePerson: { firstName, lastName, email,
-      phoneNumber: phoneNumber ? phoneNumber : '223 223 223' } };
+    const project = { ...this.state.phaseFirstInitValues, ...formData,
+        responsiblePerson: { firstName, lastName, email, phoneNumber } };
+
     project.startDate = moment(project.startDate).format(dFormat);
     project.estimatedEndDate = moment(project.estimatedEndDate).format(dFormat);
-
     this.setState({isSubmitting: true});
-
     if (projectToEdit)
       editProject({...projectToEdit, ...project}, () => this.setState({isSubmitting: false}));
     else {
@@ -154,33 +112,41 @@ class ProjectForm extends React.PureComponent {
     }
   }
 
-  updateViewAfterAddPerson = () => {
-    // {isClientAdded, responsiblePerson}
-    // const { id, firstName, lastName, client } = responsiblePerson;
-    // const phaseSecondInitValues = {...this.state.phaseSecondInitValues, responsiblePerson: `${firstName} ${lastName}`};
-    // if (isClientAdded)
-    //   phaseSecondInitValues.client = client;
+  updateViewAfterAddPerson = ({ client: clientName, firstName, lastName, email, phoneNumber, id }, createdClient) => {
+    const responsiblePerson = { firstName, lastName, email, phoneNumber, id };
+    const phaseSecondInitValues = {...this.state.phaseSecondInitValues, responsiblePerson: `${firstName} ${lastName}`};
+    console.log(createdClient);
+    if (createdClient) {
+      const client = { id: createdClient.id, name: createdClient.name,
+        responsiblePersons: [ responsiblePerson ], clouds: [] };
+      this.props.addSlimClient(client);
+    }
+    else {
+      const { clientsSlim, updateSlimClient } = this.props;
+      const { responsiblePersons } = clientsSlim[clientName];
+      const client = {...clientsSlim[clientName], responsiblePersons: [responsiblePerson, ...responsiblePersons] };
+      this.props.updateSlimClient(clientName, client);
+    }
 
-    // this.setPersonToEdit(id, client);
-    this.setState({openResonsiblePersonForm: false, phaseSecondInitValues});
+    this.setState({openResonsiblePersonForm: false, watchedClient: clientName, phaseSecondInitValues,
+      personToEdit: {client: clientName, firstName, lastName, email, phoneNumber}})
   }
 
   updateViewAfterEditPerson = person => {
     this.setState({openResonsiblePersonForm: false});
   }
 
-  setPersonToEdit = (personId, clientName) => {
-    const client = this.props.clientsSlim.find(client => client.name === clientName);
-    const personToEdit = client.responsiblePersons.find(p => p.id === +personId);
-    personToEdit['client'] = clientName;
-    this.setState({personToEdit});
-  }
-
   render() {
-    const { phase, phaseFirstInitValues, phaseSecondInitValues, runSubmitingFirstPhase,
-      clientsMapped, cloudsMapped, personsMapped, openResonsiblePersonForm,
-      responsiblePersonInitValues, responsiblePersonFormMode, isSubmitting, personToEdit } = this.state;
+    const { phase, phaseFirstInitValues, phaseSecondInitValues, runSubmitingFirstPhase, openResonsiblePersonForm,
+      responsiblePersonFormMode, isSubmitting, personToEdit, watchedClient } = this.state;
     const { close, t, clientsSlim } = this.props;
+
+    const clientsKeys = Object.keys(clientsSlim);
+    const countOfClients = clientsKeys.length;
+    const clouds = clientsSlim[watchedClient] ? clientsSlim[watchedClient].clouds : [];
+    const responsiblePersons = clientsSlim[watchedClient] ? clientsSlim[watchedClient].responsiblePersons : [];
+    const responsiblePersonsCount = responsiblePersons.length;
+
     if (openResonsiblePersonForm) {
       return (
         <ResponsiblePersonForm
@@ -188,8 +154,7 @@ class ProjectForm extends React.PureComponent {
           afterSuccEdit={this.updateViewAfterEditPerson}
           backIntoProjectForm={() => this.setState({openResonsiblePersonForm: false})}
           close={close}
-          clientsMapped={clientsMapped}
-          personToEdit={personToEdit}
+          personToEdit={{...personToEdit, client: watchedClient}}
           shouldEdit={responsiblePersonFormMode === 'edit'}
           />
       );
@@ -211,45 +176,84 @@ class ProjectForm extends React.PureComponent {
               isSubmitting={isSubmitting}
               onSubmit={formData => this.addOrEditProject(formData)}
               initialValues={phaseSecondInitValues}
-              renderClient={(key, values, handleChangeFromEvent, setting, errors) => (
+              renderClient={(key, values, handleChangeFromEvent, setting, errors, handleChangeValues) => (
                 <section key={key} className="fields-wrapper-col">
-                  <label className="field-label">{setting.label} ({clientsMapped.length}) *</label>
-                  <DataList
-                    {...setting.componentProps}
-                    listData={clientsMapped}
-                    value={values[key]}
-                    listName={key}
-                    onChange={e => this.onSelectClient(e)} />
+                  <label className="field-label">{setting.label} ({countOfClients}) *</label>
+                  <div className="data-list-container">
+                    <input {...setting.componentProps} value={values[key]}
+                      onChange={e => {
+                        const { value } = e.target;
+                        const newValues = {...values, client: value};
+                        if (!clientsSlim[value]) {
+                          const { cloud, responsiblePerson } = newValues;
+                          if (cloud) newValues.cloud = '';
+                          if (responsiblePerson) newValues.responsiblePerson = '';
+                          this.setState({personToEdit: null});
+                        }
+                        else {
+                          const { responsiblePersons } = clientsSlim[value];
+                          if (responsiblePersons.length > 0) {
+                            newValues.responsiblePerson = `${responsiblePersons[0].firstName} ${responsiblePersons[0].lastName}`;
+                            this.setState({personToEdit: responsiblePersons[0]});
+                          }
+                        }
+                        handleChangeValues(newValues);
+                        this.setState({watchedClient: value});
+                      }}
+                      list={key} />
+                    <datalist id={key}>
+                      {clientsKeys.map(name => (
+                        <option key={name} id={name} value={name}>
+                          {clientsSlim[name].clouds.length > 0 && `${clientsSlim[name].clouds.length} clouds ` }
+                          {clientsSlim[name].responsiblePersons.length > 0 && `${clientsSlim[name].responsiblePersons.length} persons` }
+                        </option>
+                      ))}
+                    </datalist>
+                  </div>
                   <p className="field-error">{errors[key]}</p>
                 </section>
               )}
               renderCloud={(key, values, handleChangeFromEvent, setting, errors) => (
                 <section key={key} className="fields-wrapper-col">
-                  <label className="field-label">{setting.label} ({cloudsMapped.length})</label>
-                  <DataList {...setting.componentProps} listData={cloudsMapped} value={values[key]} listName={key} onChange={e => handleChangeFromEvent(e, key)} />
+                  <label className="field-label">{setting.label} ({clouds.length})</label>
+                  <FancyDataList
+                    {...setting.componentProps}
+                    listData={clouds} value={values[key]}
+                    valueKey="name"
+                    displayValueKey="name"
+                    listName={key}
+                    onChange={e => handleChangeFromEvent(e, key)} />
                   <p className="field-error">{errors[key]}</p>
                 </section>
               )}
               renderResponsiblePerson={(key, values, handleChangeFromEvent, setting, errors) => (
                 <section key={key} className="fields-wrapper-col responsible-persons-select">
-                  <label className="field-label">{setting.label} ({personsMapped.length}) *</label>
-                  <Select
-                  {...setting.componentProps}
-                  className=""
-                  value={values[key]}
-                  onChange={e => {
-                    this.setPersonToEdit(e.target.value, values.client);
-                    handleChangeFromEvent(e, key);
-                  }}
-                  listData={personsMapped}
-                  placeholder={t("EmptyResponsiblePersonsInSelect")}>
+                  <label className="field-label">{setting.label} ({responsiblePersonsCount}) *</label>
+                  <div className="field-block">
+                    <select {...setting.componentProps} className=""
+                      value={values[key]} onChange={e => {
+                        handleChangeFromEvent(e, key);
+                        this.setState({personToEdit: responsiblePersons.find(p => p.id === +e.target.value)});
+                    }}>
+                      {responsiblePersonsCount > 0 ? responsiblePersons.map(person => (
+                        <option key={person.id} value={person.id}>
+                          {person.firstName} {person.lastName}
+                        </option>
+                      )) :
+                        <option value="" disabled>
+                          {setting.componentProps.placeholder}
+                        </option>
+                      }
+                    </select>
                     <div className="field-toolbox">
-                      <i onClick={this.startAddingResponsiblePerson} className="fa fa-plus-circle clickable" />
+                      { (!errors.client && values.client) &&
+                        <i onClick={this.startAddingResponsiblePerson} className="fa fa-plus-circle clickable" />
+                      }
                       { personToEdit &&
                         <i onClick={this.startEditingResponsiblePerson} className="fa fa-edit clickable" />
                       }
                     </div>
-                  </Select>
+                  </div>
                   <p className="field-error">{errors[key]}</p>
                 </section>
               )}
@@ -272,7 +276,9 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     getClientsSlim: () => dispatch(getClientsSlim()),
-    editProject: (project, cb) => dispatch(editProject(project, cb))
+    editProject: (project, cb) => dispatch(editProject(project, cb)),
+    updateSlimClient: (clientName, slimClient) => dispatch(updateSlimClient(clientName, slimClient)),
+    addSlimClient: client => dispatch(addSlimClient(client))
   };
 };
 

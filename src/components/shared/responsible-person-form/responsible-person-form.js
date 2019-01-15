@@ -9,22 +9,21 @@ import { InputSettings } from '../../common/fancy-form/index';
 import './responsible-person-form.scss';
 class ResponsiblePersonForm extends React.Component {
   responsiblePersonInitValues = { client: '', firstName: '', lastName: '', email: '', phoneNumber: '' };
-
+  responsiblePersonSettings;
   constructor(props) {
-    super();
-    const { t, personToEdit, clientsMapped, shouldEdit } = props;
-    const { client, firstName, lastName, email, phoneNumber } = {...personToEdit};
-    const clientFieldConfig = {className: "field", disabled: shouldEdit};
+    super(props);
+    const { t, personToEdit, shouldEdit } = props;
+    const { client, firstName, lastName, email, phoneNumber } = personToEdit;
+    this.responsiblePersonSettings = {
+      client: new InputSettings(t("client"), { required: true, minLength: 2, maxLength: 150 }, 'input', false, [], { className: "field", disabled: true } ),
+      firstName: new InputSettings(t("firstName"), { required: true, minLength: 2, maxLength: 150 } ),
+      lastName: new InputSettings(t("lastName"), { required: true, minLength: 3, maxLength: 150 } ),
+      email: new InputSettings(t("email"), { required: true, minLength: 3, maxLength: 50  } ),
+      phoneNumber: new InputSettings(t("phoneNumber"), { required: true } ),
+    };
     this.state = {
-      initValues: shouldEdit ? { client, firstName, lastName, email, phoneNumber: phoneNumber ? phoneNumber : '' } : {...this.responsiblePersonInitValues, client: client ? client : '' },
+      initValues: shouldEdit ? { client, firstName, lastName, email, phoneNumber } : {...this.responsiblePersonInitValues, client },
       isSubmitting: false,
-      responsiblePersonSettings: {
-        client: new InputSettings(t("client"), { required: true, minLength: 2, maxLength: 150 }, 'type-and-select', false, [...clientsMapped], clientFieldConfig ),
-        firstName: new InputSettings(t("firstName"), { required: true, minLength: 2, maxLength: 150 } ),
-        lastName: new InputSettings(t("lastName"), { required: true, minLength: 3, maxLength: 150 } ),
-        email: new InputSettings(t("email"), { required: true, minLength: 3, maxLength: 50  } ),
-        phoneNumber: new InputSettings(t("phoneNumber"), { required: true } ),
-      }
     }
   }
 
@@ -36,6 +35,7 @@ class ResponsiblePersonForm extends React.Component {
     if (shouldEdit) {
       editResponsiblePerson(formData, personToEdit.id)
       .then(addedPerson => {
+        console.log("Siema???")
         this.setState({isSubmitting: false});
         afterSuccEdit(formData);
       })
@@ -43,16 +43,16 @@ class ResponsiblePersonForm extends React.Component {
     }
     else {
       createResponsiblePerson(formData)
-      .then(createdPerson => {
-        this.setState({isSubmitting: false});
-        afterSuccAdd(createdPerson);
+      .then(({responsiblePerson, client}) => {
+        console.log(responsiblePerson, client);
+        afterSuccAdd(responsiblePerson, client);
       })
       .catch(() => this.setState({isSubmitting: false}));
     }
   }
 
   render() {
-    const { initValues, isSubmitting, responsiblePersonSettings } = this.state;
+    const { initValues, isSubmitting } = this.state;
     const { backIntoProjectForm, close, shouldEdit, t } = this.props;
     return (
       <FancyModal isLoading={isSubmitting} close={close} renderHeader={() => (
@@ -65,9 +65,7 @@ class ResponsiblePersonForm extends React.Component {
           onSubmit={formData => this.handleSubmit(formData)}
           isSubmitting={isSubmitting}
           initialValues={initValues}
-          settings={responsiblePersonSettings} />
-
-
+          settings={this.responsiblePersonSettings} />
       </FancyModal>
 
     );

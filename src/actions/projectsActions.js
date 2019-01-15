@@ -642,9 +642,11 @@ export const addProject = (model, succ, err) =>
     .then(response => succ(response.extractData().id))
     .catch(() => err());
 
-export const editProject = (project, err) => dispatch =>
+export const editProject = (project, err) => dispatch => {
   useRequest('editProject', project, project.id)
   .then(() => dispatch(updateProject(project)))
   .catch(() => err());
+}
+
 
 export const updateProject = project => ({ type: UPDATE_PROJECT, project });
