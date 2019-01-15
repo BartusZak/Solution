@@ -10,7 +10,7 @@ import DataList from '../../common/fancy-form/fancy-data-list';
 import Select from '../../common/fancy-form/select';
 import FancyModal from '../../common/fancy-modal/fancy-modal';
 import FancyForm, { dFormat } from '../../common/fancy-form/fancy-form';
-import ResponsiblePersonForm from '../responsible-person-form/responsible-person-form';
+import ResponsiblePersonForm from '../../shared/responsible-person-form/responsible-person-form';
 
 import './project-form.scss';
 class ProjectForm extends React.PureComponent {
@@ -38,7 +38,6 @@ class ProjectForm extends React.PureComponent {
     super(props);
     let phaseFirstInitValues = { name: '', description: '', startDate: moment(), estimatedEndDate: moment() };
     let phaseSecondInitValues = { client: '', cloud: '', responsiblePerson: '' };
-    let personToEdit = null;
     if (props.projectToEdit) {
       const { name, description, startDate, estimatedEndDate, client, cloud } = props.projectToEdit;
       phaseFirstInitValues = { name, description, startDate: moment(startDate), estimatedEndDate: moment(estimatedEndDate) };
@@ -57,7 +56,7 @@ class ProjectForm extends React.PureComponent {
       cloudsMapped: [],
       personsMapped: [],
       isSubmitting: false,
-      personToEdit
+      personToEdit: null
     }
   }
 
@@ -69,10 +68,8 @@ class ProjectForm extends React.PureComponent {
     if (this.state.runSubmitingFirstPhase) {
       this.setState({runSubmitingFirstPhase: false});
     }
-    const { clientsSlim, clientsSlimResult } = this.props;
-    const isSlimClientsChanged = prevProps.clientsSlimResult !== clientsSlimResult;
-    if (isSlimClientsChanged && clientsSlimResult.status) {
-      this.injectClientsInField(clientsSlim);
+    if (prevProps.clientsSlim !== this.props.clientsSlim) {
+      this.injectClientsInField(this.props.clientsSlim);
     }
   }
 
@@ -157,19 +154,22 @@ class ProjectForm extends React.PureComponent {
     }
   }
 
-  updateViewAfterAddPerson = person => {
-    // Finish edit form and adding person / edit mechanics
-    const responsiblePerson = `${person.firstName} ${person.lastName}`;
-    console.log(person);
-    this.setState({openResonsiblePersonForm: false});
+  updateViewAfterAddPerson = () => {
+    // {isClientAdded, responsiblePerson}
+    // const { id, firstName, lastName, client } = responsiblePerson;
+    // const phaseSecondInitValues = {...this.state.phaseSecondInitValues, responsiblePerson: `${firstName} ${lastName}`};
+    // if (isClientAdded)
+    //   phaseSecondInitValues.client = client;
+
+    // this.setPersonToEdit(id, client);
+    this.setState({openResonsiblePersonForm: false, phaseSecondInitValues});
   }
 
   updateViewAfterEditPerson = person => {
-    console.log(person);
     this.setState({openResonsiblePersonForm: false});
   }
 
-  setPersonToEditOnSelect = (personId, clientName) => {
+  setPersonToEdit = (personId, clientName) => {
     const client = this.props.clientsSlim.find(client => client.name === clientName);
     const personToEdit = client.responsiblePersons.find(p => p.id === +personId);
     personToEdit['client'] = clientName;
@@ -238,7 +238,7 @@ class ProjectForm extends React.PureComponent {
                   className=""
                   value={values[key]}
                   onChange={e => {
-                    this.setPersonToEditOnSelect(e.target.value, values.client);
+                    this.setPersonToEdit(e.target.value, values.client);
                     handleChangeFromEvent(e, key);
                   }}
                   listData={personsMapped}
@@ -265,8 +265,7 @@ class ProjectForm extends React.PureComponent {
 
 const mapStateToProps = state => {
   return {
-    clientsSlim: state.clientsReducer.clientsSlim,
-    clientsSlimResult: state.clientsReducer.clientsSlimResult
+    clientsSlim: state.clientsReducer.clientsSlim
   };
 };
 

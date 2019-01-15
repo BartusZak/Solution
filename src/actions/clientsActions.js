@@ -13,9 +13,9 @@ import {
   ADD_CLOUD_RESULT,
   ADD_RESPONSIBLE_PERSON_RESULT,
   CLEAR_RESPONSE_CLOUD,
-  LOAD_SLIM_CLIENTS_SUCC,
-  LOAD_SLIM_CLIENTS_FAIL,
-  UPDATE_SLIM_CLIENT
+  UPDATE_SLIM_CLIENT,
+  ADD_SLIM_CLIENT,
+  PUT_SLIM_CLIENTS
 } from "../constants";
 
 import { useRequest } from '../api/index';
@@ -63,23 +63,46 @@ export const addResponsiblePersonResult = resultBlock => {
   };
 };
 
-export const loadSlimClientsFail = () => ({ type: LOAD_SLIM_CLIENTS_FAIL, clientsSlim: [] });
+export const addSlimClient = slimClient => ({ type: ADD_SLIM_CLIENT, slimClient });
 
-export const loadSlimClientsSucc = clientsSlim => ({ type: LOAD_SLIM_CLIENTS_SUCC, clientsSlim });
+export const putSlimClients = clientsSlim => ({type: PUT_SLIM_CLIENTS, clientsSlim });
 
-export const updateSlimClient = slimClient => ({ type: UPDATE_SLIM_CLIENT, slimClient })
+export const updateSlimClient = (clientName, responsiblePerson) => ({ type: UPDATE_SLIM_CLIENT, clientName, responsiblePerson });
 
-export const getClientsSlim = () => dispatch => new Promise((resolve, reject) => {
+export const getClientsSlim = () => dispatch =>
   useRequest('getClientsSlim')
-  .then(response => {
-    dispatch(loadSlimClientsSucc(response.extractData()));
-    resolve();
+    .then(res => dispatch(putSlimClients(res.extractData())))
+
+export const createResponsiblePerson = model => dispatch => new Promise((resolve, reject) => {
+  useRequest('createResponsiblePerson', model)
+  .then(res => {
+    const { client: createdClient, responsiblePerson } = res.extractData();
+    const { client, firstName, lastName, email, phoneNumber } = responsiblePerson;
+
+    if (createdClient) {
+      const newClient = {...createdClient, responsiblePersons: [ { client, firstName, lastName, email, phoneNumber } ] };
+      dispatch(addSlimClient(newClient));
+    }
+    else {
+      dispatch(updateSlimClient(client, responsiblePerson));
+    }
+    resolve({client, responsiblePerson});
   })
-  .catch(() => {
-    dispatch(loadSlimClientsFail());
-    reject();
-  });
+  .catch(() => reject());
 });
+
+
+export const editResponsiblePerson = (model, id) => dispatch => new Promise((resolve, reject) => {
+  useRequest('editResponsiblePerson', model, id)
+  .then(response => {
+    console.log(response);
+    dispatch(getClientsSlim())
+    .then(() => resolve())
+    .catch(() => reject());
+  })
+  .catch(() => reject());
+})
+
 
 export const loadClients = () => {
   return dispatch => {
@@ -276,36 +299,36 @@ export const editCloud = (cloudId, name, fields, clientId) => {
   };
 };
 
-export const editResponsiblePerson = (
-  responsiblePersonId,
-  firstName,
-  lastName,
-  email,
-  phoneNumber,
-  client
-) => {
-  return dispatch => {
-    WebApi.responsiblePerson
-      .edit(
-        responsiblePersonId,
-        firstName,
-        lastName,
-        email,
-        phoneNumber,
-        client
-      )
-      .then(response => {
-        if (!response.errorOccurred()) {
-          dispatch(addResponsiblePersonResult(response));
-          dispatch(this.loadClients());
-        }
-      })
-      .catch(error => {
-        dispatch(addResponsiblePersonResult(error));
-        throw error;
-      });
-  };
-};
+// export const editResponsiblePerson = (
+//   responsiblePersonId,
+//   firstName,
+//   lastName,
+//   email,
+//   phoneNumber,
+//   client
+// ) => {
+//   return dispatch => {
+//     WebApi.responsiblePerson
+//       .edit(
+//         responsiblePersonId,
+//         firstName,
+//         lastName,
+//         email,
+//         phoneNumber,
+//         client
+//       )
+//       .then(response => {
+//         if (!response.errorOccurred()) {
+//           dispatch(addResponsiblePersonResult(response));
+//           dispatch(this.loadClients());
+//         }
+//       })
+//       .catch(error => {
+//         dispatch(addResponsiblePersonResult(error));
+//         throw error;
+//       });
+//   };
+// };
 
 export const deleteResponsiblePerson = id => {
   return dispatch => {

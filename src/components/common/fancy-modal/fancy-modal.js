@@ -1,8 +1,9 @@
 import React from 'react';
 import './fancy-modal.scss';
 import Button from '../../common/button/button';
+import { translate } from 'react-translate';
 
-const fancyModal = ({positionClass, renderHeader, handleClick, phases, currentPhase, title, isLoading, children, close}) => {
+const FancyModal = ({positionClass, renderHeader, handleClick, phases, currentPhase, title, isLoading, children, close, t}) => {
   const phasesArray = phases ? Object.keys(phases) : [];
   return (
     <React.Fragment>
@@ -12,7 +13,7 @@ const fancyModal = ({positionClass, renderHeader, handleClick, phases, currentPh
             {phasesArray.length > 0 &&
               <div className="fancy-modal-header">
                 {phasesArray.map((phase, index) => (
-                  <Button key={phase} title={`Step ${index+1}`} onClick={() => handleClick(phase)}
+                  <Button key={phase} title={`${t("Step")} ${index+1}`} onClick={() => handleClick(phase)}
                     mainClass={`label-btn ${phase === currentPhase ? 'dcmt-btn-light' : ''}`}
                   />
                 ))}
@@ -37,9 +38,9 @@ const fancyModal = ({positionClass, renderHeader, handleClick, phases, currentPh
   );
 }
 
-fancyModal.defaultProps = {
+FancyModal.defaultProps = {
   positionClass: 'm-w-h-center',
   phases: {},
 };
 
-export default fancyModal;
+export default translate("FancyModal")(FancyModal);

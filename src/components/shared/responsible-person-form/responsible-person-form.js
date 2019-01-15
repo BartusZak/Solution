@@ -3,7 +3,7 @@ import FancyForm from '../../common/fancy-form/fancy-form';
 import FancyModal from '../../common/fancy-modal/fancy-modal';
 import { translate } from 'react-translate';
 import { connect } from 'react-redux';
-import { createResponsiblePerson, editResponsiblePerson } from '../../../actions/responsiblePersonActions';
+import { createResponsiblePerson, editResponsiblePerson } from '../../../actions/clientsActions';
 import { InputSettings } from '../../common/fancy-form/index';
 
 import './responsible-person-form.scss';
@@ -35,7 +35,7 @@ class ResponsiblePersonForm extends React.Component {
     this.setState({isSubmitting: true});
     if (shouldEdit) {
       editResponsiblePerson(formData, personToEdit.id)
-      .then(() => {
+      .then(addedPerson => {
         this.setState({isSubmitting: false});
         afterSuccEdit(formData);
       })
@@ -43,9 +43,9 @@ class ResponsiblePersonForm extends React.Component {
     }
     else {
       createResponsiblePerson(formData)
-      .then(() => {
+      .then(createdPerson => {
         this.setState({isSubmitting: false});
-        afterSuccAdd(formData);
+        afterSuccAdd(createdPerson);
       })
       .catch(() => this.setState({isSubmitting: false}));
     }

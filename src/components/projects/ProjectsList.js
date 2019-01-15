@@ -14,13 +14,18 @@ import ProjectForm from './project-form/project-form';
 import "../../scss/components/projects/ProjectsList.scss";
 class ProjectsList extends React.Component {
   state = {
-    showEditProjectModal: false,
     project: {},
     projectToEdit: null,
     responseBlock: {},
     loading: false,
     openProjectForm: false
   };
+
+  componentDidUpdate = prevProps => {
+    if (prevProps.projects !== this.props.projects) {
+      this.setState({projectToEdit: null, openProjectForm: false});
+    }
+  }
 
   render() {
     const { openProjectForm, projectToEdit } = this.state;
@@ -240,7 +245,7 @@ class ProjectsList extends React.Component {
 
         {(openProjectForm || projectToEdit) &&
           <ProjectForm projectToEdit={projectToEdit}
-            onSubmitSucc={projectId =>  this.setState({openProjectForm: false} , () => history.push(match.url + "/" + projectId))}
+            onSubmitSucc={projectId => this.setState({openProjectForm: false} , () => history.push(match.url + "/" + projectId))}
             close={() => this.setState({openProjectForm: false, projectToEdit: null})} />
         }
       </div>

@@ -5,6 +5,9 @@ const translations = {
     Employee: 'Znajdź pracownika',
     EmptyEmployeeQuery: 'Nie znaleziono pracowników o podanych parametrach'
   },
+  FancyModal: {
+    Step: 'Krok'
+  },
   DragAndDrop: {
     DroppedMessage: 'Pliki zostały upuszczone',
     TooManyFilesError: 'Upuszczono za dużo plików. Limit to '
