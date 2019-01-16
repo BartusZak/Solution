@@ -52,6 +52,9 @@
   display: flex;
   align-items: center;
   position: relative;
+  select, input, textarea {
+    font-size: 16px;
+  }
   select {
     -webkit-appearance: none;
     -moz-appearance: none;
@@ -110,6 +113,9 @@
   &:focus {
     outline: none;
   }
+}
+select.field, input.field, textarea.field {
+  font-size: 16px;
 }
 .field-label {
   color: $dcmt;

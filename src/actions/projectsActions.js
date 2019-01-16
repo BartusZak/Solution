@@ -17,7 +17,7 @@ import {
   ADD_PROJECT_OWNER_TO_PROJECT,
   EDIT_EMPLOYEE_ASSIGNMENT,
   DELETE_EMPLOYEE_ASSIGNMENT,
-  UPDATE_PROJECT
+  UPDATE_PROJECT,
 } from "../constants";
 import axios from "axios";
 import WebApi from "../api";
@@ -642,11 +642,10 @@ export const addProject = (model, succ, err) =>
     .then(response => succ(response.extractData().id))
     .catch(() => err());
 
-export const editProject = (project, err) => dispatch => {
+export const editProject = (project, succ, err) => dispatch => {
   useRequest('editProject', project, project.id)
-  .then(() => dispatch(updateProject(project)))
+  .then(() => { succ(); dispatch(updateProject(project)); } )
   .catch(() => err());
 }
-
 
 export const updateProject = project => ({ type: UPDATE_PROJECT, project });

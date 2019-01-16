@@ -17,7 +17,7 @@ import {
   ADD_PROJECT_OWNER_TO_PROJECT,
   EDIT_EMPLOYEE_ASSIGNMENT,
   DELETE_EMPLOYEE_ASSIGNMENT,
-  UPDATE_PROJECT
+  UPDATE_PROJECT,
 } from "../constants";
 import { updateObject } from "../services/methods";
 const initialState = {
@@ -86,7 +86,8 @@ export const projectsReducer = (state = initialState, action) => {
         ...state,
         projects: state.projects.map(p => {
           return p.id === action.project.id ? {...action.project} : p;
-        })
+        }),
+        project: state.project ? {...state.project, ...action.project} : null
       };
     case ADD_PROJECT_OWNER_TO_PROJECT:
       return updateObject(state, {

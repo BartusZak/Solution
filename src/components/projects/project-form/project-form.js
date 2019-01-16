@@ -99,7 +99,10 @@ class ProjectForm extends React.PureComponent {
     project.estimatedEndDate = moment(project.estimatedEndDate).format(dFormat);
     this.setState({isSubmitting: true});
     if (projectToEdit)
-      editProject({...projectToEdit, ...project}, () => this.setState({isSubmitting: false}));
+      editProject({...projectToEdit, ...project},
+        () => onSubmitSucc(),
+        () => this.setState({isSubmitting: false})
+      );
     else {
       addProject(project,
           projectId => onSubmitSucc(projectId),
@@ -280,7 +283,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     getClientsSlim: () => dispatch(getClientsSlim()),
-    editProject: (project, cb) => dispatch(editProject(project, cb)),
+    editProject: (project, succ, err) => dispatch(editProject(project, succ, err)),
     updateSlimClient: (clientName, slimClient) => dispatch(updateSlimClient(clientName, slimClient)),
     addSlimClient: client => dispatch(addSlimClient(client))
   };

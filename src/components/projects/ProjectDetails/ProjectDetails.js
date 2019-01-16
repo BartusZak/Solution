@@ -56,6 +56,7 @@ import NotFound404 from "../../notFound404/NotFound404";
 import Spinner from '../../common/spinner/spinner';
 import ContactList from "../../../components/common/contactList/contactList";
 import { clearDataOfForm } from "../../../services/methods";
+import ProjectForm from '../project-form/project-form';
 
 class ProjectDetails extends Component {
   workerNames = [
@@ -79,7 +80,7 @@ class ProjectDetails extends Component {
     currentOpenedRow: -1,
     matches: false,
     isDeleted: false,
-    editModal: false,
+    editProject: false,
     deleteProjectModal: false,
     addEmployeModal: false,
     shareProjectModal: false,
@@ -500,10 +501,6 @@ class ProjectDetails extends Component {
       return [{ classVal: "spn-active", name: this.props.t("Active") }];
   };
 
-  clearEditModalData = () => {
-    this.props.editProjectClearData(null, []);
-    this.setState({ editModal: false });
-  };
   componentWillUnmount() {
     this.props.clearProjectData(null, null, [], [], []);
   }
@@ -699,12 +696,8 @@ class ProjectDetails extends Component {
                     this.props.login
                   )) && (
                   <React.Fragment>
-                    <button
-                      onClick={() =>
-                        this.setState({ editModal: !this.state.editModal })
-                      }
-                      className="option-btn normal-btn"
-                    >
+                    <button onClick={() =>this.setState({ editProject: true })}
+                      className="option-btn normal-btn">
                       {t("EditProject")}
                     </button>
                     {loading && <Spinner fontSize="1.77px" position="relative" positionClass="" />}
@@ -1194,22 +1187,15 @@ class ProjectDetails extends Component {
             </Form>
             )}
           </Modal>
-{/*
-            <Modal
-              key={1}
-              open={this.state.editModal}
-              classNames={{ modal: "Modal Modal-add-project" }}
-              contentLabel="Edit project modal"
-              onClose={this.clearEditModalData}
-            >
-              <ProjectDetailsBlock
-                showAllAssignments={showAllAssignments}
-                responsiblePerson={project.responsiblePerson}
-                project={project}
-                editProject={this.props.editProject}
-                closeEditProjectModal={this.clearEditModalData}
-              />
-            </Modal> */}
+
+          {this.state.editProject &&
+            <ProjectForm projectToEdit={project}
+              onSubmitSucc={() => {
+                console.log("SIema");
+                this.setState({editProject: false});
+              }}
+              close={() => this.setState({editProject: false})} />
+          }
 
             <ConfirmModal
               open={this.state.deleteProjectModal}
@@ -1373,8 +1359,6 @@ const mapDispatchToProps = dispatch => {
     getProject: (projectId, showAllAssignments) =>
       dispatch(getProjectACreator(projectId, showAllAssignments)),
     getProjectDataACreator: (projectId, showAllAssignments) => dispatch(getProjectDataACreator(projectId, showAllAssignments)),
-    editProjectClearData: (status, errors) =>
-      dispatch(editProject(status, errors)),
     clearProjectData: (project, status, errors, personKeys, overViewKeys) =>
       dispatch(getProject(project, status, errors, personKeys, overViewKeys)),
     addEmployeeToProject: (

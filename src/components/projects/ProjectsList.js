@@ -245,7 +245,10 @@ class ProjectsList extends React.Component {
 
         {(openProjectForm || projectToEdit) &&
           <ProjectForm projectToEdit={projectToEdit}
-            onSubmitSucc={projectId => this.setState({openProjectForm: false} , () => history.push(match.url + "/" + projectId))}
+            onSubmitSucc={projectId => {
+              this.setState({openProjectForm: false});
+              if (projectId) history.push(match.url + "/" + projectId);
+            }}
             close={() => this.setState({openProjectForm: false, projectToEdit: null})} />
         }
       </div>
