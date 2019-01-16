@@ -1,13 +1,21 @@
 import React from 'react';
 
-const Select = ({listData, ...rest}) => (
+const Select = ({listData, children, placeholder, ...rest}) => (
+  <div className="field-block">
     <select {...rest}>
-        {listData.map(item => (
-            <option key={item}>
-                {item}
-            </option>
-        ))}
+      {listData.length === 0 ?
+        <option value="" disabled>{placeholder}</option> :
+
+        listData.map(({displayValue, value, key}) => (
+          <option key={key} value={value}>
+              {displayValue}
+          </option>
+        ))
+      }
     </select>
+    {children}
+  </div>
+
 );
 
 export default Select;

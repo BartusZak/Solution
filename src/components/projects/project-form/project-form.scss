@@ -1,0 +1,24 @@
+
+.fancy-modal {
+  min-width: 480px;
+}
+.responsible-persons-select {
+  i.field-icon {
+    font-size: 20px;
+  }
+  div.field-block select {
+    width: 100%;
+  }
+  .field-toolbox {
+    i {
+      margin-right: 10px;
+    }
+    .fa-edit {
+      margin-left: 5px;
+    }
+    .fa-plus-circle {
+      margin-top: 2px;
+    }
+
+  }
+}

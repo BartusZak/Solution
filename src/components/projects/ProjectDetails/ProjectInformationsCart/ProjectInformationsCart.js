@@ -1,12 +1,11 @@
 import React from 'react'
 import './ProjectInformationsCart.scss';
-import Aux from '../../../../services/auxilary';
 import { contains } from '../../../../services/methods';
 
 const projectInformationsCart = props => {
     const { t } = props;
     return (
-    <Aux>
+    <React.Fragment>
         <h4>{props.headerTitle}</h4>
         <ul className="project-overview">
         {props.items.keys.map((i, index) => {
@@ -24,33 +23,33 @@ const projectInformationsCart = props => {
                         field && props.items.names[index] &&
                         <span>{t(props.items.names[index])}: </span>
                     }
-                    
-                    {field && 
 
-                    props.items.names[index] && t(props.items.names[index]) === t("ParentName") ?  
+                    {field &&
+
+                    props.items.names[index] && t(props.items.names[index]) === t("ParentName") ?
                     <b className="clickable" onClick={ () => props.pushIntoRoute(props.match.path.slice(0,-3) + props.originalObject.parentId) }>
-                    {                       
+                    {
                      (props.dateKeys &&
-                     contains(i, props.dateKeys) ? 
-                     field.slice(0, 10) : 
+                     contains(i, props.dateKeys) ?
+                     field.slice(0, 10) :
                      field)
-                    }                       
+                    }
                     </b> : field &&
                     <b>
-                        {                       
+                        {
                          (props.dateKeys &&
-                         contains(i, props.dateKeys) ? 
-                         field.slice(0, 10) : 
+                         contains(i, props.dateKeys) ?
+                         field.slice(0, 10) :
                          field)
-                        }                       
+                        }
                     </b>
                     }
-                    
+
                 </li>
             );
         })}
         </ul>
-    </Aux>
+    </React.Fragment>
     );
 
 };

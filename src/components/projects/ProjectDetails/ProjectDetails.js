@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import "./ProjectDetails.scss";
-import Aux from "../../../services/auxilary";
 import ProjectInformationsCart from "./ProjectInformationsCart/ProjectInformationsCart";
 import {
   cutNotNeededKeysFromArray,
@@ -9,7 +8,6 @@ import {
 import SmallSpinner from "../../common/spinner/small-spinner";
 import Modal from "react-responsive-modal";
 import Table from "../../common/table/table";
-import ProjectDetailsBlock from "../modals/ProjectDetailsBlock";
 import moment from "moment";
 import Form from "../../form/form";
 import ProgressPicker from "../../common/progressPicker/progressPicker";
@@ -25,7 +23,6 @@ import * as projectsActions from "../../../actions/projectsActions";
 import {
   createProjectPhaseACreator,
   getProjectDataACreator,
-  getContactPersonDataACreator,
   getProjectACreator,
   addEmployeeToProjectACreator,
   addEmployeeToProject,
@@ -34,7 +31,6 @@ import {
   deleteEmployeeAssignmentACreator,
   getProject,
   changeProjectSkillsACreator,
-  editProjectACreator,
   addSkillsToProjectACreator,
   addSkillsToProject,
   editProject,
@@ -60,6 +56,7 @@ import NotFound404 from "../../notFound404/NotFound404";
 import Spinner from '../../common/spinner/spinner';
 import ContactList from "../../../components/common/contactList/contactList";
 import { clearDataOfForm } from "../../../services/methods";
+import ProjectForm from '../project-form/project-form';
 
 class ProjectDetails extends Component {
   workerNames = [
@@ -83,7 +80,7 @@ class ProjectDetails extends Component {
     currentOpenedRow: -1,
     matches: false,
     isDeleted: false,
-    editModal: false,
+    editProject: false,
     deleteProjectModal: false,
     addEmployeModal: false,
     shareProjectModal: false,
@@ -286,36 +283,11 @@ class ProjectDetails extends Component {
   };
 
   goForClient = () => {
-    const { getContactPersonDataACreator, project, clients } = this.props;
+    const { project, clients } = this.props;
     const matchedClient = clients.find(client => client.name === project.client);
     if (matchedClient) {
       const clientId = matchedClient.id
       this.setState({ isLoading: true });
-      getContactPersonDataACreator(clientId)
-      .then(response => {
-        if (response.length > 0) {
-          let responsiblePersons = [];
-          const responsiblePersonFormValues = [
-            ...this.state.responsiblePersonFormValues
-          ];
-
-          responsiblePersons = responsiblePersons.concat(response);
-
-          responsiblePersonFormValues[0].value = response[0].email;
-          responsiblePersonFormValues[1].value = response[0].firstName;
-          responsiblePersonFormValues[2].value = response[0].lastName;
-          responsiblePersonFormValues[3].value = response[0].phoneNumber;
-
-          this.setState({
-            responsiblePersons: responsiblePersons,
-            responsiblePersonFormValues: responsiblePersonFormValues
-          });
-        }
-          this.setState({ isLoading: false });
-        })
-        .catch(error => {
-          this.setState({ isLoading: false });
-        });
     }
   };
 
@@ -529,10 +501,6 @@ class ProjectDetails extends Component {
       return [{ classVal: "spn-active", name: this.props.t("Active") }];
   };
 
-  clearEditModalData = () => {
-    this.props.editProjectClearData(null, []);
-    this.setState({ editModal: false });
-  };
   componentWillUnmount() {
     this.props.clearProjectData(null, null, [], [], []);
   }
@@ -704,7 +672,7 @@ class ProjectDetails extends Component {
       >
         {isLoadingProject && <Spinner message={t("LoadingProjectMessage")} fontSize="7px" />}
         {loadProjectStatus && (
-          <Aux>
+          <React.Fragment>
             <header>
               <h1>
                 {projectStatus && (
@@ -728,12 +696,8 @@ class ProjectDetails extends Component {
                     this.props.login
                   )) && (
                   <React.Fragment>
-                    <button
-                      onClick={() =>
-                        this.setState({ editModal: !this.state.editModal })
-                      }
-                      className="option-btn normal-btn"
-                    >
+                    <button onClick={() =>this.setState({ editProject: true })}
+                      className="option-btn normal-btn">
                       {t("EditProject")}
                     </button>
                     {loading && <Spinner fontSize="1.77px" position="relative" positionClass="" />}
@@ -1224,26 +1188,14 @@ class ProjectDetails extends Component {
             )}
           </Modal>
 
-            <Modal
-              key={1}
-              open={this.state.editModal}
-              classNames={{ modal: "Modal Modal-add-project" }}
-              contentLabel="Edit project modal"
-              onClose={this.clearEditModalData}
-            >
-              <ProjectDetailsBlock
-                showAllAssignments={showAllAssignments}
-                editProjectStatus={this.props.editProjectStatus}
-                editProjectErrors={this.props.editProjectErrors}
-                responsiblePerson={project.responsiblePerson}
-                project={project}
-                getContactPersonDataACreator={
-                  this.props.getContactPersonDataACreator
-                }
-                editProject={this.props.editProject}
-                closeEditProjectModal={this.clearEditModalData}
-              />
-            </Modal>
+          {this.state.editProject &&
+            <ProjectForm projectToEdit={project}
+              onSubmitSucc={() => {
+                console.log("SIema");
+                this.setState({editProject: false});
+              }}
+              close={() => this.setState({editProject: false})} />
+          }
 
             <ConfirmModal
               open={this.state.deleteProjectModal}
@@ -1340,7 +1292,7 @@ class ProjectDetails extends Component {
                   operationPrompt={addEmployeeToProjectStatus}
                 />
               )}
-          </Aux>
+          </React.Fragment>
         )}
 
         {loadProjectStatus === false && (
@@ -1385,9 +1337,6 @@ const mapStateToProps = state => {
     changeProjectSkillsStatus: state.projectsReducer.changeProjectSkillsStatus,
     changeProjectSkillsErrors: state.projectsReducer.changeProjectSkillsErrors,
 
-    editProjectStatus: state.projectsReducer.editProjectStatus,
-    editProjectErrors: state.projectsReducer.editProjectErrors,
-
     loadedSkills: state.skillsReducer.loadedSkills,
     loadSkillsStatus: state.skillsReducer.loadSkillsStatus,
     loadSkillsErrors: state.skillsReducer.loadSkillsErrors,
@@ -1409,13 +1358,7 @@ const mapDispatchToProps = dispatch => {
       dispatch(getContactPersonDataACreator(clientId)),
     getProject: (projectId, showAllAssignments) =>
       dispatch(getProjectACreator(projectId, showAllAssignments)),
-    editProject: (projectId, projectToSend, showAllAssignments) =>
-      dispatch(
-        editProjectACreator(projectId, projectToSend, showAllAssignments)
-      ),
     getProjectDataACreator: (projectId, showAllAssignments) => dispatch(getProjectDataACreator(projectId, showAllAssignments)),
-    editProjectClearData: (status, errors) =>
-      dispatch(editProject(status, errors)),
     clearProjectData: (project, status, errors, personKeys, overViewKeys) =>
       dispatch(getProject(project, status, errors, personKeys, overViewKeys)),
     addEmployeeToProject: (
