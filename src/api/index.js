@@ -411,11 +411,6 @@ const WebApi = {
           `${API_ENDPOINT}/employees/${employeeId}/capacity`
         );
       },
-      capacityRefactor: employeeId => {
-        return WebAround.get(
-          `${API_ENDPOINT}/employees/${employeeId}/capacityRefactor`
-        );
-      },
       employeesAndManagers: () => {
         return WebAround.get(
           `${API_ENDPOINT}/sharedEmployees/getEmployeesAndManagers`
