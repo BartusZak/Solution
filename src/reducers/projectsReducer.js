@@ -82,12 +82,14 @@ const initialState = {
 export const projectsReducer = (state = initialState, action) => {
   switch (action.type) {
     case UPDATE_PROJECT:
+      const responsiblePerson = {...action.project.responsiblePerson};
+      responsiblePerson.client = action.project.client;
       return {
         ...state,
         projects: state.projects.map(p => {
           return p.id === action.project.id ? {...action.project} : p;
         }),
-        project: state.project ? {...state.project, ...action.project} : null
+        project: state.project ? {...state.project, ...action.project, responsiblePerson} : null
       };
     case ADD_PROJECT_OWNER_TO_PROJECT:
       return updateObject(state, {
