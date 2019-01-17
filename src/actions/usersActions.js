@@ -1,6 +1,6 @@
 import { LOAD_USERS_SUCCESS, ASYNC_STARTED, ASYNC_ENDED, LOAD_USERS_FAIL, CHANGE_ROLES_GET_STATUS, GET_ROLES, SEND_ROLES_RESULT } from "../constants";
 import axios from "axios";
-import WebApi from "../api";
+import WebApi, { useRequest } from "../api";
 import { asyncStarted, asyncEnded } from "./asyncActions";
 import { clearAccountRequest } from './authActions';
 import { errorCatcher } from '../services/errorsHandler';
@@ -32,15 +32,11 @@ export const loadUsers = (page = 1, limit = 25, other = {isDeleted: false}) => {
         other
       );
       dispatch(asyncStarted());
-      WebApi.users.post[("isNotActivated" in other ? ["listOfRequests"] : ["list"])](settings)
+      ("isNotActivated" in other ?
+      useRequest('searchRequestsUsers', settings)
         .then(response => {
           if(!response.errorOccurred()){
-            if ("isNotActivated" in other) {
               dispatch(loadUsersSuccess(response.extractData(), response, "isNotActivated"));
-            }
-            else {
-              dispatch(loadUsersSuccess(response.extractData(), response, "isActivated"));
-            }
           }
           dispatch(asyncEnded());
         })
@@ -48,7 +44,19 @@ export const loadUsers = (page = 1, limit = 25, other = {isDeleted: false}) => {
           dispatch(loadUsersFail(error));
           dispatch(asyncEnded());
           throw error;
-        });
+        }) :
+      useRequest('searchUsers', settings)
+        .then(response => {
+          if(!response.errorOccurred()){
+              dispatch(loadUsersSuccess(response.extractData(), response, "isActivated"));
+          }
+          dispatch(asyncEnded());
+        })
+        .catch(error => {
+          dispatch(loadUsersFail(error));
+          dispatch(asyncEnded());
+          throw error;
+        }))
     };
 };
 

@@ -6,6 +6,7 @@ import ResultBlock from "./../../common/ResultBlock";
 import PropTypes from "prop-types";
 import { translate } from "react-translate";
 import WebApi from "api/index";
+import { useRequest } from "../../../api";
 
 class EditUserDetails extends Component {
   constructor(props) {
@@ -25,8 +26,7 @@ class EditUserDetails extends Component {
         disabledButton: !this.props.disabledButton
       },
       () => {
-        WebApi.users.patch
-          .roles(id, roles)
+        useRequest('editUserRoles', id, roles)
           .then(response => {
             this.props.pageChange(this.props.currentPage, this.props.settings),
               this.setState({
@@ -42,8 +42,7 @@ class EditUserDetails extends Component {
               "userNotFoundError" in
               error.replyBlock.data.errorObjects[0].errors
             ) {
-              WebApi.users.post
-                .add(id, roles)
+              useRequest('addUser', id, roles)
                 .then(response => {
                   this.setState({
                     responseBlock: response,

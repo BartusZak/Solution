@@ -134,18 +134,34 @@ const requestTypes = {
 const requests = {
   //EMPLOYEES
   getEmployees: settings => execute(fromAlertSettings.getEmployees, 'employees', requestTypes.post, settings),
+  getEmployeeById: id => execute(fromAlertSettings.getEmployeeById, `employees/${id}`),
+  getEmployeeCapacity: id => execute(fromAlertSettings.getEmployeeCapacity, `employees/${id}/capacity`),
+  getEmployeesAndManagers: () => execute(fromAlertSettings.getEmployeesAndManagers, `sharedEmployees/getEmployeesAndManagers`),
+  getOnBoardsByEmployeeId : employeeId => execute(fromAlertSettings.getOnBoardsByEmployeeId, `employees/getOnBoardsByEmployeeId/${employeeId}`),
+  getEmployeeContact: employeeId => execute(fromAlertSettings.getEmployeeContact, `employees/billenniumemplocontact`, requestTypes.get, params({ employeeId })),
+  getEmployeeSkills: employeeId => execute(fromAlertSettings.getEmployeeSkills, `employees/billenniumemploskills`, requestTypes.get, params({ employeeId })),
+  addEmployee: model => execute(fromAlertSettings.addEmployee, `employees/add`, requestTypes.post, model),
+  addOnBoardEmployee: model => execute(fromAlertSettings.addOnBoardEmployee, `employees/addToOnBoard`, requestTypes.post, model),
+  deleteOnBoardEmployee: id => execute(fromAlertSettings.deleteOnBoardEmployee, `employees/deleteOnBoard/${id}`, requestTypes.delete),
+  deleteEmployee: id => execute(fromAlertSettings.deleteEmployee, `employees/${id}`, requestTypes.delete),
+  editSkills: (id, skillsArray) => execute(fromAlertSettings.editSkills, `employees/${id}`, requestTypes.put, skillsArray),
+  editForeignLanguages: (id, languagesArray) => execute(fromAlertSettings.editForeignLanguages, `employees/foreignLanguages/${id}`, requestTypes.put, languagesArray),
+  editSkype: (employeeId, skypeId) => execute(fromAlertSettings.editSkype, `employees/UpdateSkype`, requestTypes.put, {employeeId, skypeId}),
+  editOnBoardEmployee: (onBoardId, model) => execute(fromAlertSettings.editOnBoardEmployee, `employees/editOnBoard/${onBoardId}`, requestTypes.patch, model),
+  editEmployee: (id, model) => execute(fromAlertSettings.editEmployee, `employees/${id}`, requestTypes.patch, model),
+  reactivateEmployee: id => execute(fromAlertSettings.reactivateEmployee, `employees/reactivate/${id}`, requestTypes.patch),
 
   //PROJECTS
-  addProject: model => execute(fromAlertSettings.getProjects, `projects/add`, requestTypes.post, model),
+  addProject: model => execute(fromAlertSettings.addProject, `projects/add`, requestTypes.post, model),
 
   //QUATER TALKS
-  reactivateQuaterTalk: id => execute(fromAlertSettings.reactivateQuaterTalk, `QuarterTalks/Reactivate/${id}`, requestTypes.put),
-  deleteQuaterTalk: id => execute(fromAlertSettings.deleteQuaterTalk, `QuarterTalks/${id}`, requestTypes.delete),
-  editQuarterTalk: (id, model) => execute(fromAlertSettings.editQuarterTalk, `QuarterTalks/${id}`, requestTypes.put, model),
+  reactivateQuaterTalk: id => execute(fromAlertSettings.reactivateQuaterTalk, `quarterTalks/reactivate/${id}`, requestTypes.put),
+  deleteQuaterTalk: id => execute(fromAlertSettings.deleteQuaterTalk, `quarterTalks/${id}`, requestTypes.delete),
+  editQuarterTalk: (id, model) => execute(fromAlertSettings.editQuarterTalk, `quarterTalks/${id}`, requestTypes.put, model),
 
   //ASSIGNMENTS
   getAssignmentByEmployee: employeeId => execute(fromAlertSettings.getAssignmentByEmployee, `assignments/employee/${employeeId}`),  
-  //getAssignmentByProject: projectId => execute(fromAlertSettings.getAssignmentByEmployee, `/assignments/project/${projectId}`),
+  getAssignmentByProject: projectId => execute(fromAlertSettings.getAssignmentByEmployee, `/assignments/project/${projectId}`),
   addAssignment: model => execute(fromAlertSettings.addAssignment, `assignments`, requestTypes.post, model ),
   deleteAssignment: id => execute(fromAlertSettings.deleteAssignment, `assignments/${id}`, requestTypes.delete ),
   editAssignment: (id, model) => execute(fromAlertSettings.editAssignment, `assignments/${id}`, requestTypes.put, model),
@@ -161,16 +177,50 @@ const requests = {
     }
     return execute(fromAlertSettings.deleteNotifications, 'notification', requestTypes.delete, model)
   }, 
-  markNotificationAsRead: notificationId => 
-    execute(fromAlertSettings.markNotificationAsRead, `notification/markAsRead/${notificationId}`, requestTypes.put),
-  markAllNotificationAsRead: () => 
-    execute(fromAlertSettings.markAllNotificationAsRead, 'notification/markAllAsRead', requestTypes.put),
+  markNotificationAsRead: notificationId => execute(fromAlertSettings.markNotificationAsRead, `notification/markAsRead/${notificationId}`, requestTypes.put),
+  markAllNotificationAsRead: () =>  execute(fromAlertSettings.markAllNotificationAsRead, 'notification/markAllAsRead', requestTypes.put),
   
   //CLIENTS
+  getClients: () => execute(fromAlertSettings.getClients, 'clients?lessDetailed=false'),
   addClient: model => execute(fromAlertSettings.addClient, 'clients', requestTypes.post, model),
   deleteClient: id => execute(fromAlertSettings.deleteClient, `delete/${id}`, requestTypes.delete),
   editInfoClient: (id, model) => execute(fromAlertSettings.editInfoClient, `clients/${id}`, requestTypes.put, model),
-  reactivateClient: id => execute(fromAlertSettings.reactivateClient, `clients/${id}/reactivate`, requestTypes.put)
+  reactivateClient: id => execute(fromAlertSettings.reactivateClient, `clients/${id}/reactivate`, requestTypes.put),
+
+  //CERTIFICATES
+  getCertificates: employeeId => execute(fromAlertSettings.getCertificates, `certificates/employee/${employeeId}`),
+  addCertificate: model => execute(fromAlertSettings.addCertificate, `certificates`, requestTypes.post, model),
+  editCertificate: (id, model) => execute(fromAlertSettings.editCertificate, `certificates/${-1}`, requestTypes.put, model),
+  deleteCertificate: id => execute(fromAlertSettings.deleteCertificate, `certificates/${-1}`, requestTypes.delete),
+
+  //FEEDBACKS
+  getFeedbacksByEmployee: employeeId => execute(fromAlertSettings.getFeedbacksByEmployee, `feedbacks/employee/${employeeId}?isDeleted=false`),
+  getFeedbacksbyEmployeeInProject: (employeeId, projectId) => 
+    execute(fromAlertSettings.getFeedbacksbyEmployeeInProject, `feedbacks/employeeInProject/${employeeId}?projectId=${projectId}&isDeleted=false`),
+  addFeedback: model => execute(fromAlertSettings.addFeedback, `feedbacks`, requestTypes.post, model),
+  editFeedback: (id,model) => execute(fromAlertSettings.editFeedback, `feedbacks/${id}`, requestTypes.put, model),
+  deleteFeedback: id => execute(fromAlertSettings.deleteFeedback, `feedbacks/${id}`, requestTypes.delete),
+
+  //SHARED EMPLOYEES
+  getSharedEmployeesForManager: managerId => execute(fromAlertSettings.getSharedEmployeesForManager, `sharedEmployees/forManager/${managerId}`),
+  addSharedEmployee: model => execute(fromAlertSettings.addSharedEmployee, `sharedEmployees`, requestTypes.post, model),
+  deleteSharedEmployee: id => execute(fromAlertSettings.deleteSharedEmployee, `sharedEmployees/${id}`, requestTypes.delete),
+
+  //USERS
+  getUserById: id => execute(fromAlertSettings.getUserById, `account/${id}`),
+  getUserByAdSearch: query => execute(fromAlertSettings.getUserByAdSearch, `account/searchAD/${query}`),
+  addUser: (id, roles) => execute(fromAlertSettings.addUser, `account/add`, requestTypes.post, {id, roles}),
+  searchUsers: (settings = {}) => execute(fromAlertSettings.searchUsers, `account`, requestTypes.post, settings),
+  searchRequestsUsers: (settings = {}) => execute(fromAlertSettings.searchRequestsUsers, `account/requests`, requestTypes.post, settings),
+  // login: (login, password) => execute(fromAlertSettings.login, `account/login`, requestTypes.post, {login, password})
+  //   .then(response => response.data.dtoObject),
+  // logout: () => execute(fromAlertSettings.logout, `account/logout`, requestTypes.post),
+  // token: refreshToken => execute(fromAlertSettings.token, `account/login`, requestTypes.post, refreshToken),
+  deleteUser: id => execute(fromAlertSettings.deleteUser, `account/${id}`, requestTypes.delete),
+  deleteUserRequest: id => execute(fromAlertSettings.deleteUserRequest, `account/requests`, requestTypes.delete, params({ id })),
+  editUserRoles: (id, roles) => execute(fromAlertSettings.editUserRoles, `account`, requestTypes.patch, {id, roles}),
+  reactivateUser: id => execute(fromAlertSettings.reactivateUser, `account/reactivate/${id}`, requestTypes.patch)
+  
 };
 
 export const useRequest = (name, ...params) => requests[name](...params);
@@ -338,36 +388,7 @@ const WebApi = {
       }
     }
   },
-  certificates: {
-    get: {
-      byEmployee: employeeId => {
-        return WebAround.get(
-          `${API_ENDPOINT}/certificates/employee/${employeeId}`
-        );
-      }
-    },
-    post: {
-      add: certificateModel => {
-        return WebAround.post(`${API_ENDPOINT}/certificates`, certificateModel);
-      }
-    },
-    put: {
-      update: (certificateId, certificateModel) => {
-        return WebAround.put(
-          `${API_ENDPOINT}/certificates/${certificateId}`,
-          certificateModel
-        );
-      }
-    },
-    delete: {
-      deleteById: certificateId => {
-        return WebAround.delete(
-          `${API_ENDPOINT}/certificates/${certificateId}`
-        );
-      }
-    }
-  },
-  employees: {
+  employees: { // deleteOnBoardEmployee, deleteEmployee
     get: {
       byEmployee: employeeId => {
         return WebAround.get(`${API_ENDPOINT}/employees/${employeeId}`);
@@ -452,65 +473,30 @@ const WebApi = {
       }
     }
   },
-  sharedEmployees: {
-    get: {
-      forManager: managerId => {
-        return WebAround.get(
-          `${API_ENDPOINT}/sharedEmployees/forManager/${managerId}`
-        );
-      }
-    },
-    post: {
-      add: sharedEmployeeModel => {
-        return WebAround.post(
-          `${API_ENDPOINT}/sharedEmployees`,
-          sharedEmployeeModel
-        );
-      }
-    },
-    delete: {
-      deleteById: sharedEmployeeId => {
-        return WebAround.delete(
-          `${API_ENDPOINT}/sharedEmployees/${sharedEmployeeId}`
-        );
-      }
-    }
-  },
-  feedbacks: {
-    get: {
-      all: () => {},
-      byFeedback: feedbackId => {},
-      byAuthor: authorId => {},
-      byEmployee: employeeId => {
-        return WebAround.get(
-          `${API_ENDPOINT}/feedbacks/employee/${employeeId}?isDeleted=false`
-        );
-      },
-      byEmployeeInProject: (employeeId, projectId) => {
-        return WebAround.get(
-          `${API_ENDPOINT}/feedbacks/employeeInProject/${employeeId}?projectId=${projectId}&isDeleted=false`
-        );
-      },
-      byProject: projectId => {}
-    },
-    post: {
-      feedback: model => {
-        return WebAround.post(`${API_ENDPOINT}/feedbacks`, model);
-      },
-    },
-    put: {
-      feedback: (feedbackId, model) => {
-        return WebAround.put(`${API_ENDPOINT}/feedbacks/${feedbackId}`, model);
-      }
-    },
-    delete: {
-      deleteById: feedbackId => {
-        return WebAround.delete(
-          `${API_ENDPOINT}/feedbacks/${feedbackId}`
-        );
-      }
-    }
-  },
+  // sharedEmployees: {
+  //   get: {
+  //     forManager: managerId => {
+  //       return WebAround.get(
+  //         `${API_ENDPOINT}/sharedEmployees/forManager/${managerId}`
+  //       );
+  //     }
+  //   },
+  //   post: {
+  //     add: sharedEmployeeModel => {
+  //       return WebAround.post(
+  //         `${API_ENDPOINT}/sharedEmployees`,
+  //         sharedEmployeeModel
+  //       );
+  //     }
+  //   },
+  //   delete: {
+  //     deleteById: sharedEmployeeId => {
+  //       return WebAround.delete(
+  //         `${API_ENDPOINT}/sharedEmployees/${sharedEmployeeId}`
+  //       );
+  //     }
+  //   }
+  // },
   foreignLanguages: {
     get: {
       all: () => {},
@@ -832,7 +818,7 @@ const WebApi = {
       }
     }
   },
-  users: {
+  users: { 
     get: {
       byUser: userId => {
         return WebAround.get(`${API_ENDPOINT}/account/${userId}`);

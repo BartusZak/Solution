@@ -9,7 +9,7 @@ import Modal from "react-responsive-modal";
 import UserSelector from "../../components/users/modals/UserSelector";
 import UsersList from "../../components/users/UsersList";
 import { ACTION_CONFIRMED } from "./../../constants";
-import WebApi from "../../api/";
+import WebApi, { useRequest } from "../../api/";
 
 class UsersContainer extends React.Component {
   constructor(props) {
@@ -34,8 +34,7 @@ class UsersContainer extends React.Component {
     if (this.validatePropsForUserDeletion(nextProps)) {
       this.props.async.setActionConfirmationProgress(true);
 
-      WebApi.users.delete
-        .user(this.props.toConfirm.id)
+      useRequest('deleteUser', this.props.toConfirm.id)
         .then(response => {
           this.props.async.setActionConfirmationResult(response);
           this.pageChange(
@@ -49,8 +48,7 @@ class UsersContainer extends React.Component {
     }
     if (this.validatePropsForUserRequestDeletion(nextProps)) {
       this.props.async.setActionConfirmationProgress(true);
-      WebApi.users.delete
-        .request(this.props.toConfirm.id)
+      useRequest('deleteUserRequest', this.props.toConfirm.id)
         .then(response => {
           this.props.async.setActionConfirmationResult(response);
           this.pageChange(
@@ -65,8 +63,7 @@ class UsersContainer extends React.Component {
     if (this.validatePropsForUserReactivation(nextProps)) {
       this.props.async.setActionConfirmationProgress(true);
 
-      WebApi.users.patch
-        .reactivate(this.props.toConfirm.id)
+      useRequest('reactivateUser', this.props.toConfirm.id)
         .then(response => {
           this.props.async.setActionConfirmationResult(response);
           this.pageChange(

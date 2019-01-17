@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import StageOne from "./StageOne";
 import StageTwo from "./StageTwo";
-import WebApi from "../../../api";
+import WebApi, { useRequest } from "../../../api";
 import PropTypes from "prop-types";
 
 const initialState = {
@@ -35,8 +35,7 @@ class UserSelector extends Component {
     // if (!user) {
     //   return Promise.resolve({ options: [] });
     // }
-    return WebApi.users.get
-      .adSearch(user)
+    return useRequest('getUserByAdSearch', user)
       .then(response => {
         this.setState({
           errorBlock: response
@@ -59,8 +58,7 @@ class UserSelector extends Component {
   };
 
   doAddUser = newUser => {
-    WebApi.users.post
-      .add(newUser.id, newUser.roles)
+    useRequest('addUser', newUser.id, newUser.roles)
       .then(response => {
         this.setState({
           errorBlock: response,
