@@ -1,86 +1,65 @@
-import axios from "axios";
+import axios from 'axios';
 // import * as jwtDecode from "jwt-decode";
-import { resolve as BluebirdResolve } from "bluebird/js/browser/bluebird.core.min.js";
-import * as usersMocks from "./mock/users";
-import * as projectsMocks from "./mock/projects";
-import redux from "redux";
-import storeCreator from "./../store";
-import storage from "redux-persist/lib/storage";
-import { push } from "react-router-redux";
-import { logout } from "./../actions/authActions";
+import { resolve as BluebirdResolve } from 'bluebird/js/browser/bluebird.core.min.js';
+import * as usersMocks from './mock/users';
+import * as projectsMocks from './mock/projects';
+import redux from 'redux';
+import storeCreator from './../store';
+import storage from 'redux-persist/lib/storage';
+import { push } from 'react-router-redux';
+import { logout } from './../actions/authActions';
 import {
   refreshToken,
   authOneDrive,
   getFolderACreator
-} from "../actions/oneDriveActions";
-import ResponseParser from "./responseParser";
-import Config from "Config";
-import { loginACreator } from "../actions/persistHelpActions";
-import { Certificate } from "crypto";
+} from '../actions/oneDriveActions';
+import ResponseParser from './responseParser';
+import Config from 'Config';
+import { loginACreator } from '../actions/persistHelpActions';
+import { Certificate } from 'crypto';
 import { addAlert, removeAlert } from '../actions/alertsActions';
 import * as fromAlertSettings from './request-settings';
 const { store } = storeCreator;
 
 export const API_ENDPOINT = Config.serverUrl;
+export const AZURE_AD_REDIRECT_URI = Config.azureAdRedirectUri;
 
 store.subscribe(listener);
 ``;
 
 const select = state =>
-  state.authReducer.tokens !== undefined ? state.authReducer.tokens.token : "";
+  state.authReducer.tokens !== undefined ? state.authReducer.tokens.token : '';
 
 export const selectLang = state =>
-  state.languageReducer.language ? state.languageReducer.language : "pl";
+  state.languageReducer.language ? state.languageReducer.language : 'pl';
 
 let lang = '';
 function listener() {
   // const token = `Bearer ${select(store.getState())}`;
   let langHeader = '';
   switch (selectLang(store.getState())) {
-    case "pl":
-      langHeader = "pl-PL";
+    case 'pl':
+      langHeader = 'pl-PL';
       lang = 'pl';
       break;
-    case "en":
-      langHeader = "en-US";
+    case 'en':
+      langHeader = 'en-US';
       lang = 'en';
       break;
   }
 
   axios.defaults.withCredentials = true;
   // axios.defaults.headers.common["Authorization"] = token;
-  axios.defaults.headers.common["Accept-Language"] = langHeader;
+  axios.defaults.headers.common['Accept-Language'] = langHeader;
 }
 
 const authValidator = response => {
-  if(response.response.status === 401 || response.response === undefined){
-    store.dispatch(logout());
-    store.dispatch(push("/"));
+  if (response.status) {
+    if (response.response.status === 401 || response.response === undefined) {
+      store.dispatch(logout());
+      store.dispatch(push('/'));
+    }
   }
-  // if (response.response) {
-  //   if (response.response.status === 401 || response.response === undefined) {
-  //     store.dispatch(logout());
-  //     store.dispatch(push("/"));
-  //   } else {
-  //     if (response.response.config.url.search("onedrive") !== -1) {
-  //       const oneDriveToken = JSON.parse(response.response.config.data).token;
-  //       const startPath = "/drive/root:";
-  //       store
-  //         .dispatch(refreshToken(oneDriveToken))
-  //         .then(response => {
-  //           dispatch(getFolderACreator(response, startPath));
-  //         })
-  //         .catch(error => {
-  //           store.dispatch(authOneDriveACreator());
-  //         });
-  //     } else if (response.response.config.url.search("GDrive") !== -1) {
-  //       dispatch(loginACreator());
-  //     }
-  //   }
-  // } else {
-  //   store.dispatch(logout());
-  //   store.dispatch(push("/"));
-  // }
 
   throw response;
 };
@@ -90,20 +69,49 @@ const parseSuccess = (response, key) => {
   parser.parse();
   const succMessage = fromAlertSettings.succOperationsWhiteObject[key];
   if (succMessage) {
-    store.dispatch(addAlert({ id: key, content: succMessage[lang], type: 'ok', time: 5000 }));
+    store.dispatch(
+      addAlert({ id: key, content: succMessage[lang], type: 'ok', time: 5000 })
+    );
   }
 
   return BluebirdResolve(parser);
 };
 
 const parseFailure = (response, key) => {
-  if (response instanceof Error && response.request === undefined)
+  if (response instanceof Error && response.request === undefined) {
     throw response;
+  }
 
-  const isKeyInBlackList = fromAlertSettings.errorsBlackList.findIndex(item => item === key);
+  const isKeyInBlackList = fromAlertSettings.errorsBlackList.findIndex(
+    item => item === key
+  );
+
   let parser = new ResponseParser(response);
+
+  const failMessage =
+    fromAlertSettings.failOperationsWhiteObject['networkError'];
+
   if (isKeyInBlackList === -1) {
-    store.dispatch(addAlert({ id: key, content: parser.parse().message, type: 'err', time: 5000 }));
+    if (!response.status) {
+      // network error
+      store.dispatch(
+        addAlert({
+          id: 'networkError',
+          content: failMessage[lang],
+          type: 'err',
+          time: 5000
+        })
+      );
+    } else {
+      store.dispatch(
+        addAlert({
+          id: key,
+          content: parser.parse().message,
+          type: 'err',
+          time: 5000
+        })
+      );
+    }
   }
 
   throw parser;
@@ -132,24 +140,80 @@ const requestTypes = {
   delete: 'delete'
 };
 const requests = {
+  //Login
+  login: () =>
+    execute(
+      fromAlertSettings.login,
+      `account/login?redirectUrl=${AZURE_AD_REDIRECT_URI}`
+    ),
+  loginAzureAD: code =>
+    execute(fromAlertSettings.loginAzureAD, `signin-oidc?code=${code}`),
+
   //CLIENTS
-  getClientsSlim: settings => execute(fromAlertSettings.getClientsSlim, 'Clients?lessDetailed=true'),
+  getClientsSlim: settings =>
+    execute(fromAlertSettings.getClientsSlim, 'Clients?lessDetailed=true'),
 
   //EMPLOYEES
-  getEmployees: settings => execute(fromAlertSettings.getEmployees, 'employees', requestTypes.post, settings),
+  getEmployees: settings =>
+    execute(
+      fromAlertSettings.getEmployees,
+      'employees',
+      requestTypes.post,
+      settings
+    ),
 
   //PROJECTS
-  addProject: model => execute(fromAlertSettings.addProject, 'projects/add', requestTypes.post, model),
-  editProject: (model, id) => execute(fromAlertSettings.editProject, `projects/${id}`, requestTypes.put, model),
+  addProject: model =>
+    execute(
+      fromAlertSettings.addProject,
+      'projects/add',
+      requestTypes.post,
+      model
+    ),
+  editProject: (model, id) =>
+    execute(
+      fromAlertSettings.editProject,
+      `projects/${id}`,
+      requestTypes.put,
+      model
+    ),
 
   //RESPINSIBLE PERSON
-  createResponsiblePerson: model => execute(fromAlertSettings.createResponsiblePerson, 'responsiblepersons', requestTypes.post, model),
-  editResponsiblePerson: (model, id) => execute(fromAlertSettings.editResponsiblePerson, `responsiblepersons/${id}`, requestTypes.put, model),
+  createResponsiblePerson: model =>
+    execute(
+      fromAlertSettings.createResponsiblePerson,
+      'responsiblepersons',
+      requestTypes.post,
+      model
+    ),
+  editResponsiblePerson: (model, id) =>
+    execute(
+      fromAlertSettings.editResponsiblePerson,
+      `responsiblepersons/${id}`,
+      requestTypes.put,
+      model
+    ),
 
   //QUATER TALKS
-  reactivateQuaterTalk: id => execute(fromAlertSettings.reactivateQuaterTalk, `QuarterTalks/Reactivate/${id}`, requestTypes.put),
-  deleteQuaterTalk: id => execute(fromAlertSettings.deleteQuaterTalk, `QuarterTalks/${id}`, requestTypes.delete),
-  editQuarterTalk: (id, model) => execute(fromAlertSettings.editQuarterTalk, `QuarterTalks/${id}`, requestTypes.put, model),
+  reactivateQuaterTalk: id =>
+    execute(
+      fromAlertSettings.reactivateQuaterTalk,
+      `QuarterTalks/Reactivate/${id}`,
+      requestTypes.put
+    ),
+  deleteQuaterTalk: id =>
+    execute(
+      fromAlertSettings.deleteQuaterTalk,
+      `QuarterTalks/${id}`,
+      requestTypes.delete
+    ),
+  editQuarterTalk: (id, model) =>
+    execute(
+      fromAlertSettings.editQuarterTalk,
+      `QuarterTalks/${id}`,
+      requestTypes.put,
+      model
+    )
 };
 
 export const useRequest = (name, ...params) => requests[name](...params);
@@ -417,7 +481,8 @@ const WebApi = {
         );
       },
       onBoards: employeeId => {
-        return WebAround.get(`${API_ENDPOINT}/employees/GetOnBoardsByEmployeeId/${employeeId}`
+        return WebAround.get(
+          `${API_ENDPOINT}/employees/GetOnBoardsByEmployeeId/${employeeId}`
         );
       },
       emplo: {
@@ -440,11 +505,16 @@ const WebApi = {
         return WebAround.post(`${API_ENDPOINT}/employees/add`, employee);
       },
       addOnBoard: onBoardModel => {
-        return WebAround.post(`${API_ENDPOINT}/employees/addToOnBoard`, onBoardModel);
+        return WebAround.post(
+          `${API_ENDPOINT}/employees/addToOnBoard`,
+          onBoardModel
+        );
       }
     },
     deleteOnBoard: onBoardId => {
-      return WebAround.delete(`${API_ENDPOINT}/employees/DeleteOnBoard/${onBoardId}`);
+      return WebAround.delete(
+        `${API_ENDPOINT}/employees/DeleteOnBoard/${onBoardId}`
+      );
     },
     delete: employeeId => {
       return WebAround.delete(`${API_ENDPOINT}/employees/${employeeId}`);
@@ -469,7 +539,10 @@ const WebApi = {
         });
       },
       updateOnBoard: (onBoardModel, onBoardId) => {
-        return WebAround.patch(`${API_ENDPOINT}/Employees/EditOnBoard/${onBoardId}`, onBoardModel);
+        return WebAround.patch(
+          `${API_ENDPOINT}/Employees/EditOnBoard/${onBoardId}`,
+          onBoardModel
+        );
       }
     },
     patch: {
@@ -530,7 +603,7 @@ const WebApi = {
     post: {
       feedback: model => {
         return WebAround.post(`${API_ENDPOINT}/feedbacks`, model);
-      },
+      }
     },
     put: {
       feedback: (feedbackId, model) => {
@@ -539,9 +612,7 @@ const WebApi = {
     },
     delete: {
       deleteById: feedbackId => {
-        return WebAround.delete(
-          `${API_ENDPOINT}/feedbacks/${feedbackId}`
-        );
+        return WebAround.delete(`${API_ENDPOINT}/feedbacks/${feedbackId}`);
       }
     }
   },
@@ -677,10 +748,8 @@ const WebApi = {
           `${API_ENDPOINT}/reports/recentAndFavorites?numberOfReports=${numberOfReports}`
         ),
       reportZip: fileName => {
-        return WebAround.get(
-          `${API_ENDPOINT}/reports/reportzip/${fileName}`
-          )
-        },
+        return WebAround.get(`${API_ENDPOINT}/reports/reportzip/${fileName}`);
+      }
     },
     post: {
       report: (model, hyperlinksOnGDrive, hyperlinksOnOneDrive) => {
@@ -873,6 +942,17 @@ const WebApi = {
       },
       adSearch: query => {
         return WebAround.get(`${API_ENDPOINT}/account/searchAD/${query}`);
+      },
+      login: () => {
+        return axios.get(
+          `${API_ENDPOINT}/account/login?redirectUrl=${AZURE_AD_REDIRECT_URI}`
+        );
+        // .then(response => response.data.dtoObject);
+      },
+      loginAzureAd: code => {
+        return axios
+          .get(`${API_ENDPOINT}/signin-oidc?code=` + code)
+          .then(response => response.data.dtoObject);
       }
     },
     post: {
@@ -887,11 +967,6 @@ const WebApi = {
           id: userId,
           roles
         });
-      },
-      login: (login, password) => {
-        return axios
-          .post(`${API_ENDPOINT}/account/login`, { login, password })
-          .then(response => response.data.dtoObject);
       },
       logout: () => {
         return axios.post(`${API_ENDPOINT}/account/logout`);
@@ -1215,7 +1290,7 @@ class DCMTWebApi {
 class DCMTMockApi extends DCMTWebApi {
   pretendResponse(dtoObject, simulateError) {
     const status = simulateError ? 400 : 200;
-    const statusText = simulateError ? "Internal Server Error" : "OK";
+    const statusText = simulateError ? 'Internal Server Error' : 'OK';
     return {
       data: {
         dtoObject,
@@ -1229,8 +1304,8 @@ class DCMTMockApi extends DCMTWebApi {
 
   auth(username, password) {
     return BluebirdResolve({
-      email: "jane.doe@kappa.com",
-      extra: "Jane Doe"
+      email: 'jane.doe@kappa.com',
+      extra: 'Jane Doe'
     });
   }
 
