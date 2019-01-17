@@ -12,9 +12,11 @@ const translations = {
     DroppedMessage: 'Files succesfully dropped',
     TooManyFilesError: 'Too many files dropped. Limit is '
   },
-  ProjectForm: {
-    firstPhaseTitle: 'Populate project details form',
-    secondPhaseTitle: 'Populate client form',
+  PhaseProjectForm: {
+    firstStepTitleForPhases: 'Populate project phase details',
+    secondStepTitleForPhases: 'Populate client details for project phase',
+    firstStepTitleForProjects: 'Populate project details',
+    secondStepTitleForProjects: 'Populate client informations',
     name: 'name',
     description: 'description',
     startDate: 'start date',
