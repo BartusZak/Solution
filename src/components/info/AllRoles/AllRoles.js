@@ -6,7 +6,48 @@ import * as infoActions from "../../../actions/infoActions";
 import ApiEndPoint from "./ApiEndPoint/ApiEndPoint";
 
 import "./AllRoles.scss";
-import { ACCOUNT, CAN_SEARCH_USER_ACCOUNT, CAN_EDIT_USERS_ROLES, CAN_SEARCH_AD, CAN_ADD_USER, CAN_REACTIVATE_USER, CAN_DELETE_USER, CAN_DELETE_USER_REQUEST, CAN_SEARCH_PROJECTS, CAN_ADD_PROJECT, CAN_EDIT_PROJECT, CAN_GET_LIST_OF_CLIENTS, CAN_ADD_CLIENT, CAN_DELETE_CLIENT, CAN_EDIT_CLIENT, CAN_REACTIVATE_CLIENT, CAN_GET_PROJECT, CAN_ADD_PROJECT_OWNERS, CAN_DELETE_PROJECT_OWNERS, CAN_CLOSE_PROJECT, CAN_REACTIVATE_PROJECT, CAN_SET_PROJECT_SKILLS, CAN_DELETE_PROJECT, CAN_GET_SUGGESTED_EMPLOYEES, CAN_GET_EMPLOYEE_ASSIGNMENTS, CAN_GET_PROJECT_ASSIGNMENTS, CAN_ADD_ASSIGNMENT, CAN_EDIT_ASSIGNMENT, CAN_DELETE_ASSIGNMENT, ASSIGNMENTS, CLIENT, PROJECTS, CERTIFICATES, CAN_GET_EMPLOYEE_CERTIFICATES, CAN_EDIT_CERTIFICATE, CAN_DELETE_CERTIFICATE, CAN_ADD_CERTIFICATE, CAN_ADD_CLOUD, CAN_EDIT_CLOUD, CAN_REACTIVATE_CLOUD, CLOUDS, CAN_DELETE_CLOUD, CAN_IMPORT_CV, CV_IMPORT, CAN_ADD_EDUCATION, CAN_EDIT_EDUCATION, CAN_GET_EDUCATION, CAN_DELETE_EDUCATION, EDUCATION, EMPLOYEES, CAN_GET_EMPLOYEE, CAN_GET_EMPLOYEE_CAPACITY, CAN_GET_EMPLOYEE_CAPACITY_REFACTOR, CAN_GET_EMPLOYEES_AND_MANAGERS, CAN_GET_EMPLOYEE_ONBOARDS, CAN_GET_EMPLO_CONTACT, CAN_GET_EMPLO_SKILLS, CAN_SEARCH_EMPLOYEES, CAN_ADD_EMPLOYEE, CAN_ADD_EMPLOYEE_ONBOARD, CAN_DELETE_EMPLOYEE_ONBOARD, CAN_DELETE_EMPLOYEE, CAN_SET_EMPLOYEE_SKILLS, CAN_SET_EMPLOYEE_F_LANGUAGES, CAN_SET_EMPLOYEE_SKYPE, CAN_EDIT_EMPLOYEE_ONBOARD, CAN_REACTIVATE_EMPLOYEE, CAN_GET_FEEDBACKS_BY_EMPLOYEE_IN_PROJECT, CAN_ADD_FEEDBACK, CAN_DELETE_FEEDBACK, FEEDBACKS, CAN_GET_FEEDBACKS_BY_EMPLOYEE, GDRIVE, CAN_LOGIN_GDRIVE, CAN_GENERATE_SHARE_LINK_GDRIVE, CAN_GET_FOLDERS_GDRIVE, CAN_DELETE_FOLDER_GDRIVE, CAN_UPDATE_FOLDER_GDRIVE, CAN_CREATE_FOLDER_GDRIVE, CAN_UPLOAD_FILE_GDRIVE, CAN_DELETE_NOTIFICATIONS, CAN_GET_ALL_NOTIFICATIONS, CAN_MARK_AS_READ_NOTIFICATION, NOTIFICATIONS, ONEDRIVE, CAN_GET_REDIRECT_LINK_ONEDRIVE, CAN_SEND_QUERY_TO_AUTH_ONEDRIVE, CAN_REFRESH_TOKEN_ONEDRIVE, CAN_GENERATE_SHARE_LINK_ONEDRIVE, CAN_GET_FOLDERS_ONEDRIVE, CAN_CREATE_FOLDER_ONEDRIVE, CAN_DELETE_FOLDER_ONEDRIVE, CAN_UPDATE_FOLDER_ONEDRIVE, CAN_UPLOAD_FILE_ONEDRIVE, CAN_EDIT_QUARTER_TALK, CAN_GET_QUARTERS_FOR_EMPLOYEE, CAN_GET_RESERVED_DATES, CAN_ADD_QUARTER_TALK, CAN_PLAN_QUARTER_TALK, CAN_ADD_QUESTION, CAN_DELETE_QUESTION, CAN_REACTIVATE_QUARTER_TALK, CAN_DELETE_QUARTER_TALK, CAN_EDIT_QUESTIONS_IN_QUARTER_TALK, CAN_GENERATE_QUARTER_TALK_DOC, CAN_GET_QUARTER_TALK_RESERVED_DATES, QUARTERTALKS, CAN_GET_QUESTIONS } from "../../../constants";
+import { ACCOUNT, CAN_SEARCH_USER_ACCOUNT, CAN_EDIT_USERS_ROLES, CAN_SEARCH_AD, CAN_ADD_USER, CAN_REACTIVATE_USER, CAN_DELETE_USER, CAN_DELETE_USER_REQUEST, CAN_SEARCH_PROJECTS, CAN_ADD_PROJECT, CAN_EDIT_PROJECT, CAN_GET_LIST_OF_CLIENTS, CAN_ADD_CLIENT, CAN_DELETE_CLIENT, CAN_EDIT_CLIENT, CAN_REACTIVATE_CLIENT, CAN_GET_PROJECT, CAN_ADD_PROJECT_OWNERS, CAN_DELETE_PROJECT_OWNERS, CAN_CLOSE_PROJECT, CAN_REACTIVATE_PROJECT, CAN_SET_PROJECT_SKILLS, CAN_DELETE_PROJECT, CAN_GET_SUGGESTED_EMPLOYEES, CAN_GET_EMPLOYEE_ASSIGNMENTS, CAN_GET_PROJECT_ASSIGNMENTS, CAN_ADD_ASSIGNMENT, CAN_EDIT_ASSIGNMENT, CAN_DELETE_ASSIGNMENT, ASSIGNMENTS, CLIENT, PROJECTS, CERTIFICATES, CAN_GET_EMPLOYEE_CERTIFICATES, CAN_EDIT_CERTIFICATE, CAN_DELETE_CERTIFICATE, CAN_ADD_CERTIFICATE, CAN_ADD_CLOUD, CAN_EDIT_CLOUD, CAN_REACTIVATE_CLOUD, CLOUDS, CAN_DELETE_CLOUD, CAN_IMPORT_CV, CV_IMPORT, CAN_ADD_EDUCATION, CAN_EDIT_EDUCATION, CAN_GET_EDUCATION, CAN_DELETE_EDUCATION, EDUCATION, EMPLOYEES, CAN_GET_EMPLOYEE, CAN_GET_EMPLOYEE_CAPACITY, CAN_GET_EMPLOYEE_CAPACITY_REFACTOR, CAN_GET_EMPLOYEES_AND_MANAGERS, CAN_GET_EMPLOYEE_ONBOARDS, CAN_GET_EMPLO_CONTACT, CAN_GET_EMPLO_SKILLS, CAN_SEARCH_EMPLOYEES, CAN_ADD_EMPLOYEE, CAN_ADD_EMPLOYEE_ONBOARD, CAN_DELETE_EMPLOYEE_ONBOARD, CAN_DELETE_EMPLOYEE, CAN_SET_EMPLOYEE_SKILLS, CAN_SET_EMPLOYEE_F_LANGUAGES, CAN_SET_EMPLOYEE_SKYPE, CAN_EDIT_EMPLOYEE_ONBOARD, CAN_REACTIVATE_EMPLOYEE, CAN_GET_FEEDBACKS_BY_EMPLOYEE_IN_PROJECT, CAN_ADD_FEEDBACK, CAN_DELETE_FEEDBACK, FEEDBACKS, CAN_GET_FEEDBACKS_BY_EMPLOYEE, GDRIVE, CAN_LOGIN_GDRIVE, CAN_GENERATE_SHARE_LINK_GDRIVE, CAN_GET_FOLDERS_GDRIVE, CAN_DELETE_FOLDER_GDRIVE, CAN_UPDATE_FOLDER_GDRIVE, CAN_CREATE_FOLDER_GDRIVE, CAN_UPLOAD_FILE_GDRIVE, CAN_DELETE_NOTIFICATIONS, CAN_GET_ALL_NOTIFICATIONS, CAN_MARK_AS_READ_NOTIFICATION, NOTIFICATIONS, ONEDRIVE, CAN_GET_REDIRECT_LINK_ONEDRIVE, CAN_SEND_QUERY_TO_AUTH_ONEDRIVE, CAN_REFRESH_TOKEN_ONEDRIVE, CAN_GENERATE_SHARE_LINK_ONEDRIVE, CAN_GET_FOLDERS_ONEDRIVE, CAN_CREATE_FOLDER_ONEDRIVE, CAN_DELETE_FOLDER_ONEDRIVE, CAN_UPDATE_FOLDER_ONEDRIVE, CAN_UPLOAD_FILE_ONEDRIVE, CAN_EDIT_QUARTER_TALK, CAN_GET_QUARTERS_FOR_EMPLOYEE, CAN_GET_RESERVED_DATES, CAN_ADD_QUARTER_TALK, CAN_PLAN_QUARTER_TALK, CAN_ADD_QUESTION, CAN_DELETE_QUESTION, CAN_REACTIVATE_QUARTER_TALK, CAN_DELETE_QUARTER_TALK, CAN_EDIT_QUESTIONS_IN_QUARTER_TALK, CAN_GENERATE_QUARTER_TALK_DOC, CAN_GET_QUARTER_TALK_RESERVED_DATES, QUARTERTALKS, CAN_GET_QUESTIONS,REPORTS,
+  CAN_GENERATE_REPORT,
+  CAN_GET_RECENT_AND_FAVORITES_REPORTS,
+  CAN_UNFAVORITE_REPORT,
+  CAN_GENERATE_CV_PDF,
+  CAN_GENERATE_CV_WORD,
+  CAN_GET_TEAMS,
+  CAN_GET_FEEDBACK,
+  CAN_GET_CV,
+  CAN_GET_DEVELOPERS_EXCEL_REPORT,
+  CAN_GET_ZIP_REPORT,
+  RESPONSIBLE_PERSON,
+  CAN_GET_RESPONSIBLE_PERSON_BY_CLIENTID,
+  CAN_GET_RESPONSIBLEPERSON_BY_ID,
+  CAN_EDIT_RESPONSIBLE_PERSON,
+  CAN_ADD_RESPONSIBLE_PERSON,
+  CAN_DELETE_RESPONSIBLE_PERSON,
+  CAN_REACTIVATE_RESPONSIBLE_PERSON,
+  SKILLS,
+  CAN_GET_ALL_SKILLS,
+  CAN_GET_SKILL_BY_ID,
+  CAN_ADD_SKILL,
+  CAN_DELETE_SKILL,
+  CAN_EDIT_SKILL,
+  CAN_GET_STATS,
+  ROLES,
+  CAN_GET_ALL_ROLES,
+  CAN_ADD_ROLE,
+  CAN_EDIT_ROLE,
+  CAN_DELETE_ROLE,
+  SHARE_PROJECTS,
+  CAN_SHARE_PROJECT,
+  CAN_GET_MANAGERS_SHARED_PROJECT,
+  CAN_GET_ALREADY_SHARED_MANAGERS,
+  CAN_CANCEL_SHARE_PROJECT,
+  WORK_EXPERIENCE,
+  CAN_ADD_WORK_EXPERIENCE,
+  CAN_GET_WORK_EXPERIENCE,
+  CAN_EDIT_WORK_EXPERIENCE,
+  CAN_DELETE_WORK_EXPERIENCE,
+  CAN_GET_WORK_EXPERIENCE_BY_EMPLOYEEID, 
+  STATS} from "../../../constants";
 
 class AllRoles extends PureComponent {
   state = {};
@@ -16,7 +57,7 @@ class AllRoles extends PureComponent {
   };
 
   render() {
-    const { account, projects, client,assignments, certificates, clouds, cvImport, education, employees, feedbacks, gdrive, notifications, oneDrive, quarterTalks, t } = this.props;
+    const { account, projects, client,assignments, certificates, clouds, cvImport, education, employees, feedbacks, gdrive, notifications, oneDrive, quarterTalks, reports, responsiblePerson, skills, stats, roles, shareProjects, workExperience, t } = this.props;
     const AccountRequests = [
       {
         text: t("SearchingUsersAccounts"),
@@ -401,7 +442,168 @@ class AllRoles extends PureComponent {
         values: quarterTalks[CAN_GET_QUESTIONS]
       },
     ]
+
+    const ReportsRequests = [
+      {
+        text: t('generateReport'),
+        values: reports[CAN_GENERATE_REPORT]
+      },
+      {
+        text: t('generateCv'),
+        values: reports[CAN_GENERATE_CV_PDF]
+      },
+      {
+        text: t('generateCvWord'),
+        values: reports[CAN_GENERATE_CV_WORD]
+      },
+      {
+        text: t('getFeedback'),
+        values: reports[CAN_GET_FEEDBACK]
+      },
+      {
+        text: t('getCv'),
+        values: reports[CAN_GET_CV]
+      },
+      {
+        text: t('getTeams'),
+        values: reports[CAN_GET_TEAMS]
+      },
+      {
+        text: t('getReportExcel'),
+        values: reports[CAN_GET_DEVELOPERS_EXCEL_REPORT]
+      },
+      {
+        text: t('getReportZip'),
+        values: reports[CAN_GET_ZIP_REPORT]
+      },
+      {
+        text: t('getRecentReports'),
+        values: reports[CAN_GET_RECENT_AND_FAVORITES_REPORTS]
+      },
+      {
+        text: t('unfavoriteReport'),
+        values: reports[CAN_UNFAVORITE_REPORT]
+      }
+    ]
     
+    const ResponsiblePersonRequests = [
+      {
+        text: t('getResponsiblePersonByClientId'),
+        values: responsiblePerson[CAN_GET_RESPONSIBLE_PERSON_BY_CLIENTID]
+      },
+      {
+        text: t('getResponsiblePersonById'),
+        values: responsiblePerson[CAN_GET_RESPONSIBLEPERSON_BY_ID]
+      },
+      {
+        text: t('editResponsiblePerson'),
+        values: responsiblePerson[CAN_EDIT_RESPONSIBLE_PERSON]
+      },
+      {
+        text: t('addResponsiblePerson'),
+        values: responsiblePerson[CAN_ADD_RESPONSIBLE_PERSON]
+      },
+      {
+        text: t('deleteResponsiblePerson'),
+        values: responsiblePerson[CAN_DELETE_RESPONSIBLE_PERSON]
+      },
+      {
+        text: t('reactivateResponsiblePerson'),
+        values: responsiblePerson[CAN_REACTIVATE_RESPONSIBLE_PERSON]
+      }
+    ]
+
+    const SkillsRequests = [
+      {
+        text: t('getAllSkills'),
+        values: skills[CAN_GET_ALL_SKILLS]
+      },
+      {
+        text: t('getSkillById'),
+        values: skills[CAN_GET_SKILL_BY_ID]
+      },
+      {
+        text: t('addSkill'),
+        values: skills[CAN_ADD_SKILL]
+      },
+      {
+        text: t('deleteSkill'),
+        values: skills[CAN_DELETE_SKILL]
+      },
+      {
+        text: t('editSkill'),
+        values: skills[CAN_EDIT_SKILL]
+      }
+    ]
+
+    const StatsRequests = [
+      {
+        text: t('getStats'),
+        values: stats[CAN_GET_STATS]
+      },
+    ]
+
+    const RolesRequests = [
+      {
+        text: t('getAllRoles'),
+        values: roles[CAN_GET_ALL_ROLES]
+      },
+      {
+        text: t('addRole'),
+        values: roles[CAN_ADD_ROLE]
+      },
+      {
+        text: t('editRole'),
+        values: roles[CAN_EDIT_ROLE]
+      },
+      {
+        text: t('deleteRole'),
+        values: roles[CAN_DELETE_ROLE]
+      }
+    ]
+
+    const ShareProjectsRequests = [
+      {
+        text: t('shareProject'),
+        values: shareProjects[CAN_SHARE_PROJECT]
+      },
+      {
+        text: t('getManagersSharedProject'),
+        values: shareProjects[CAN_GET_MANAGERS_SHARED_PROJECT]
+      },
+      {
+        text: t('getAlreadySharedManagers'),
+        values: shareProjects[CAN_GET_ALREADY_SHARED_MANAGERS]
+      },
+      {
+        text: t('cancelShareProject'),
+        values: shareProjects[CAN_CANCEL_SHARE_PROJECT]
+      }
+    ]
+
+    const WorkExperienceRequests = [
+      {
+        text: t('addWorkExperience'),
+        values: workExperience[CAN_ADD_WORK_EXPERIENCE]
+      },
+      {
+        text: t('getWorkExperience'),
+        values: workExperience[CAN_GET_WORK_EXPERIENCE]
+      },
+      {
+        text: t('editWorkExperience'),
+        values: workExperience[CAN_EDIT_WORK_EXPERIENCE]
+      },
+      {
+        text: t('deleteWorkExperience'),
+        values: workExperience[CAN_DELETE_WORK_EXPERIENCE]
+      },
+      {
+        text: t('getWorkExperienceByEmployeeId'),
+        values: workExperience[CAN_GET_WORK_EXPERIENCE_BY_EMPLOYEEID]
+      }
+    ]
+
     const template = [
       {
         text: t(''),
@@ -424,6 +626,13 @@ class AllRoles extends PureComponent {
         <ApiEndPoint name="Notifications" endPoints={NotificationsRequests} />
         <ApiEndPoint name="OneDrive" endPoints={OneDriveRequests} />
         <ApiEndPoint name="QuarterTalks" endPoints={QuarterTalksRequests} />
+        <ApiEndPoint name="Reports" endPoints={ReportsRequests} />
+        <ApiEndPoint name="Responsible Persons" endPoints={ResponsiblePersonRequests} />
+        <ApiEndPoint name="Skills" endPoints={SkillsRequests} />
+        <ApiEndPoint name="Stats" endPoints={StatsRequests} />
+        <ApiEndPoint name="Roles" endPoints={RolesRequests} />
+        <ApiEndPoint name="Share Projects" endPoints={ShareProjectsRequests} />
+        <ApiEndPoint name="Work Experience" endPoints={WorkExperienceRequests} />
       </div>
     );
   }
@@ -444,6 +653,13 @@ function mapStateToProps(state) {
     notifications: state.infoReducer[NOTIFICATIONS],
     oneDrive: state.infoReducer[ONEDRIVE],
     quarterTalks: state.infoReducer[QUARTERTALKS],
+    reports: state.infoReducer[REPORTS],
+    responsiblePerson: state.infoReducer[RESPONSIBLE_PERSON],
+    skills: state.infoReducer[SKILLS],
+    stats: state.infoReducer[STATS],
+    roles: state.infoReducer[ROLES],
+    shareProjects: state.infoReducer[SHARE_PROJECTS],
+    workExperience: state.infoReducer[WORK_EXPERIENCE]
   };
 }
 function mapDispatchToProps(dispatch) {

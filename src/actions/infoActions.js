@@ -112,6 +112,48 @@ import {
   CAN_ADD_QUARTER_TALK,
   CAN_PLAN_QUARTER_TALK,
   CAN_GET_QUARTER_TALK_RESERVED_DATES,
+  REPORTS,
+  CAN_GENERATE_REPORT,
+  CAN_GET_RECENT_AND_FAVORITES_REPORTS,
+  CAN_UNFAVORITE_REPORT,
+  CAN_GENERATE_CV_PDF,
+  CAN_GENERATE_CV_WORD,
+  CAN_GET_TEAMS,
+  CAN_GET_FEEDBACK,
+  CAN_GET_CV,
+  CAN_GET_DEVELOPERS_EXCEL_REPORT,
+  CAN_GET_ZIP_REPORT,
+  RESPONSIBLE_PERSON,
+  CAN_GET_RESPONSIBLE_PERSON_BY_CLIENTID,
+  CAN_GET_RESPONSIBLEPERSON_BY_ID,
+  CAN_EDIT_RESPONSIBLE_PERSON,
+  CAN_ADD_RESPONSIBLE_PERSON,
+  CAN_DELETE_RESPONSIBLE_PERSON,
+  CAN_REACTIVATE_RESPONSIBLE_PERSON,
+  SKILLS,
+  CAN_GET_ALL_SKILLS,
+  CAN_GET_SKILL_BY_ID,
+  CAN_ADD_SKILL,
+  CAN_DELETE_SKILL,
+  CAN_EDIT_SKILL,
+  CAN_GET_STATS,
+  ROLES,
+  CAN_GET_ALL_ROLES,
+  CAN_ADD_ROLE,
+  CAN_EDIT_ROLE,
+  CAN_DELETE_ROLE,
+  SHARE_PROJECTS,
+  CAN_SHARE_PROJECT,
+  CAN_GET_MANAGERS_SHARED_PROJECT,
+  CAN_GET_ALREADY_SHARED_MANAGERS,
+  CAN_CANCEL_SHARE_PROJECT,
+  WORK_EXPERIENCE,
+  CAN_ADD_WORK_EXPERIENCE,
+  CAN_GET_WORK_EXPERIENCE,
+  CAN_EDIT_WORK_EXPERIENCE,
+  CAN_DELETE_WORK_EXPERIENCE,
+  CAN_GET_WORK_EXPERIENCE_BY_EMPLOYEEID,
+  STATS
 
 } from "../constants";
 
@@ -647,5 +689,194 @@ const infoCreators = [
   () => {
     return dispatch => {
       dispatch(genericInfoACreator( useRequest('getQuarterTalksReservedDates', {}, false), QUARTERTALKS, CAN_GET_QUARTER_TALK_RESERVED_DATES))};
+  },
+
+  //REPORTS
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator( useRequest('generateReport', {}, false, false), REPORTS, CAN_GENERATE_REPORT))
+    }
+  },
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator( useRequest('generateCv', 0), REPORTS, CAN_GENERATE_CV_PDF))
+    }
+  },
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator( useRequest('generateCvWord', 0), REPORTS, CAN_GENERATE_CV_WORD))
+    }
+  },
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator( useRequest('getFeedback', 0), REPORTS, CAN_GET_FEEDBACK ))
+    }
+  },
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator( useRequest('getCv', 0), REPORTS, CAN_GET_CV))
+    }
+  },
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator( useRequest('getTeams'), REPORTS, CAN_GET_TEAMS))
+    }
+  },
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator( useRequest('getReportExcel', 0), REPORTS, CAN_GET_DEVELOPERS_EXCEL_REPORT))
+    }
+  },
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator( useRequest('getReportZip', 0), REPORTS, CAN_GET_ZIP_REPORT))
+    }
+  },
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator( useRequest('getRecentReports', 0), REPORTS, CAN_GET_RECENT_AND_FAVORITES_REPORTS))
+    }
+  },
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator( useRequest('unfavoriteReport', 0), REPORTS, CAN_UNFAVORITE_REPORT))
+    }
+  },
+
+  //RESPONSIBLE PERSON
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator( useRequest('getResponsiblePersonByClientId', 0), RESPONSIBLE_PERSON, CAN_GET_RESPONSIBLE_PERSON_BY_CLIENTID))
+    }
+  },
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator( useRequest('getResponsiblePersonById', 0), RESPONSIBLE_PERSON, CAN_GET_RESPONSIBLEPERSON_BY_ID))
+    }
+  },
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator( useRequest('editResponsiblePerson', {}, 0), RESPONSIBLE_PERSON, CAN_EDIT_RESPONSIBLE_PERSON))
+    }
+  },
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator( useRequest('addResponsiblePerson', {}), RESPONSIBLE_PERSON, CAN_ADD_RESPONSIBLE_PERSON))
+    }
+  },
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator( useRequest('deleteResponsiblePerson', 0), RESPONSIBLE_PERSON, CAN_DELETE_RESPONSIBLE_PERSON))
+    }
+  },
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator( useRequest('reactivateResponsiblePerson', 0), RESPONSIBLE_PERSON, CAN_REACTIVATE_RESPONSIBLE_PERSON))
+    }
+  },
+
+  //SKILLS
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator( useRequest('getAllSkills'), SKILLS, CAN_GET_ALL_SKILLS))
+    }
+  },
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator( useRequest('getSkillById', 0), SKILLS, CAN_GET_SKILL_BY_ID))
+    }
+  },
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator( useRequest('addSkill', {}), SKILLS, CAN_ADD_SKILL))
+    }
+  },
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator( useRequest('deleteSkill', 0), SKILLS, CAN_DELETE_SKILL))
+    }
+  },
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator( useRequest('editSkill', 0, {}), SKILLS, CAN_EDIT_SKILL))
+    }
+  },
+
+  //STATS
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator( useRequest('getStats'), STATS, CAN_GET_STATS))
+    }
+  },
+
+  //ROLES
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator( useRequest('getAllRoles'), ROLES, CAN_GET_ALL_ROLES))
+    }
+  },
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator( useRequest('addRole', {}), ROLES, CAN_ADD_ROLE))
+    }
+  },
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator( useRequest('editRole', 0, {}), ROLES, CAN_EDIT_ROLE))
+    }
+  },
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator( useRequest('deleteRole', 0), ROLES, CAN_DELETE_ROLE))
+    }
+  },
+
+  //SHARE PROJECT
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator( useRequest('shareProject', 0, {}), SHARE_PROJECTS, CAN_SHARE_PROJECT))
+    }
+  },
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator( useRequest('getManagersSharedProject', 0), SHARE_PROJECTS, CAN_GET_MANAGERS_SHARED_PROJECT))
+    }
+  },
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator( useRequest('getAlreadySharedManagers', 0), SHARE_PROJECTS, CAN_GET_ALREADY_SHARED_MANAGERS))
+    }
+  },
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator( useRequest('cancelShareProject', 0, 0), SHARE_PROJECTS, CAN_CANCEL_SHARE_PROJECT))
+    }
+  },
+  
+  //WORK EXPERIENCE
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator( useRequest('addWorkExperience', {}), WORK_EXPERIENCE, CAN_ADD_WORK_EXPERIENCE))
+    }
+  },
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator( useRequest('getWorkExperience', 0), WORK_EXPERIENCE, CAN_GET_WORK_EXPERIENCE))
+    }
+  },
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator( useRequest('editWorkExperience', 0, {}), WORK_EXPERIENCE, CAN_EDIT_WORK_EXPERIENCE))
+    }
+  },
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator( useRequest('deleteWorkExperience', 0), WORK_EXPERIENCE, CAN_DELETE_WORK_EXPERIENCE))
+    }
+  },
+  () => {
+    return dispatch => {
+      dispatch(genericInfoACreator( useRequest('getWorkExperienceByEmployeeId', 0), WORK_EXPERIENCE, CAN_GET_WORK_EXPERIENCE_BY_EMPLOYEEID))
+    }
   },
 ]
