@@ -94,9 +94,7 @@ class PhaseProjectForm extends React.PureComponent {
 
     this.setState({isSubmitting: true});
     if (isPhaseForm) {
-      if (parentId) {
-        project.parentId = parentId
-      }
+      project.parentId = parentId
       addProjectPhase(project,
         () => onSubmitSucc(),
         () => this.setState({isSubmitting: false}));
