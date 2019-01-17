@@ -15,7 +15,8 @@ import {
   authSuccess,
   authAccountRequest,
   authAccountAlreadyRequested,
-  authStart
+  authStart,
+  authStop
 } from '../actions/authActions';
 import { useRequest } from '../api/index';
 
@@ -70,8 +71,24 @@ class AzureADAuthentication extends PureComponent {
           history.push('/main');
         }
       })
-      .catch(() => {
-        authAccountAlreadyRequested();
+      .catch(error => {
+        if (!error.status) {
+          const failMessage =
+            succOperationsWhiteObject['azureADAuthentication'];
+          store.dispatch(
+            addAlert({
+              id: 'loginAzureAD',
+              content: failMessage[lang],
+              type: 'err',
+              time: 5000
+            })
+          );
+          authStop();
+        } else {
+          const data = error.extractData();
+          console.log(data);
+          authAccountAlreadyRequested();
+        }
       });
 
     return <Redirect to="/" />;

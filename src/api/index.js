@@ -92,7 +92,8 @@ const parseFailure = (response, key) => {
     fromAlertSettings.failOperationsWhiteObject['networkError'];
 
   if (isKeyInBlackList === -1) {
-    if (!response.status) {
+    //400 ERROR NOT HANDLED
+    if (!response.response.status) {
       // network error
       store.dispatch(
         addAlert({

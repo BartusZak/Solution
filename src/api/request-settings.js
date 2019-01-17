@@ -19,7 +19,7 @@ export const editQuarterTalk = 'editQuarterTalk';
 export const deleteQuaterTalk = 'deleteQuaterTalk';
 export const reactivateQuaterTalk = 'reactivateQuaterTalk';
 
-export const errorsBlackList = [];
+export const errorsBlackList = ['loginAzureAD'];
 
 export const succOperationsWhiteObject = {
   //Login
