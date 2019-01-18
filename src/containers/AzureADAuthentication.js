@@ -38,9 +38,7 @@ class AzureADAuthentication extends PureComponent {
     } = this.props;
 
     authStart();
-
     let queryStringValues = queryString.parse(location.search);
-
     useRequest('loginAzureAD', queryStringValues.code)
       .then(response => {
         const data = response.extractData();

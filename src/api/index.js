@@ -35,7 +35,6 @@ export const selectLang = state =>
 
 let lang = '';
 function listener() {
-  // const token = `Bearer ${select(store.getState())}`;
   let langHeader = '';
   switch (selectLang(store.getState())) {
     case 'pl':
@@ -49,7 +48,6 @@ function listener() {
   }
 
   axios.defaults.withCredentials = true;
-  // axios.defaults.headers.common["Authorization"] = token;
   axios.defaults.headers.common['Accept-Language'] = langHeader;
 }
 
@@ -68,6 +66,7 @@ const parseSuccess = (response, key) => {
   let parser = new ResponseParser(response);
   parser.parse();
   const succMessage = fromAlertSettings.succOperationsWhiteObject[key];
+
   if (succMessage) {
     store.dispatch(
       addAlert({ id: key, content: succMessage[lang], type: 'ok', time: 5000 })

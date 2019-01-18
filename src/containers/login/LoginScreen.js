@@ -1,12 +1,9 @@
 import React from 'react';
-import '../../scss/LoginForm.scss';
-import colors from '../../scss/ColorSchema.scss';
-import LoginForm from '../login/LoginForm';
-import Logo from 'components/common/Logo';
-import { connect } from 'react-redux';
-import { push } from 'react-router-redux';
-import { authSuccess } from 'actions/authActions';
 import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
+
+import colors from '../../scss/ColorSchema.scss';
+import Logo from 'components/common/Logo';
 import LoginContainer from './LoginContainer';
 
 class LoginScreen extends React.Component {
@@ -24,20 +21,11 @@ class LoginScreen extends React.Component {
   render() {
     return (
       <div className="login-screen">
-        {/* <Logo size="vector_cut" container /> */}
-        <LoginContainer languageSwitch={this.props.languageSwitch} />
-        {/* <LoginForm languageSwitch={this.props.languageSwitch} /> */}
+        <Logo size="vector_cut" container />
+        <LoginContainer />
       </div>
     );
   }
 }
 
-export default connect(
-  null,
-  dispatch => ({
-    login: credentials => {
-      dispatch(authSuccess());
-      dispatch(push('/main'));
-    }
-  })
-)(withRouter(LoginScreen));
+export default connect()(withRouter(LoginScreen));
