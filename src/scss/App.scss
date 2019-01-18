@@ -12,10 +12,11 @@
 @import './new-color-schema.scss';
 @import "./components/common/Button";
 @import './fancy-form-motive.scss';
+@import './position-styles.scss';
 body {
   font-family: "Roboto", sans-serif;
   min-height: 100vh;
-  background: $content-background;
+  background: $white;
 }
 button, input, textarea {
   font-family: inherit;
@@ -288,7 +289,6 @@ a:visited {
 .Modal-add-project {
   height: 550px;
 }
-// That styles are for fancy form component
 
 .spinner-new {
   position: absolute;
@@ -336,5 +336,38 @@ a:visited {
   100% {
     opacity: 1;
     transform: translateX(0);
+  }
+}
+.dcmt-light-color {
+  color: $dcmt-light;
+}
+.dcmt-color {
+  color: $dcmt;
+}
+.detail-label {
+  display: flex;
+  flex-flow: column;
+  span:first-of-type {
+    margin-bottom: 5px;
+    font-size: 14px;
+  }
+  span:last-of-type {
+    color: $font-grey;
+    font-size: 16px;
+  }
+}
+.important-par {
+  color: $dark-font;
+  font-size: 18px;
+}
+.user-avatar-medium {
+  width: 50px;
+  height: 50px;
+  border-radius: 50px;
+  img {
+    border-radius: 50px;
+    width: 100%;
+    object-fit: cover;
+    height: 100%;
   }
 }

@@ -209,3 +209,24 @@ button.dcmt-btn-light {
     color: $font-grey;
   }
 }
+.dcmt-main-btn {
+  padding: 12px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  i {
+    margin-right: 12px;
+  }
+}
+.dcmt-light-btn {
+  color: $white;
+  background: $dcmt-light;
+}
+.dcmt-grey-btn {
+  background: $modal-header-bg;
+  color: $dark-font;
+}
+.dcmt-danger-btn {
+  background: $input-error;
+  color: $white;
+}

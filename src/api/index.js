@@ -94,7 +94,7 @@ const requestTypes = {
 };
 const requests = {
   //CLIENTS
-  getClientsSlim: settings => execute(fromAlertSettings.getClientsSlim, 'Clients?lessDetailed=true'),
+  getClientsSlim: () => execute(fromAlertSettings.getClientsSlim, 'Clients?lessDetailed=true'),
 
   //EMPLOYEES
   getEmployees: settings => execute(fromAlertSettings.getEmployees, 'employees', requestTypes.post, settings),

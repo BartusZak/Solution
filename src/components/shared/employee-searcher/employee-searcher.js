@@ -25,35 +25,41 @@ class EmployeeSearcher extends React.PureComponent {
   employeeValidators = { minLength: 2, maxLength: 15 };
 
   render(){
-      const { t, loadEmployees, emitEmployeeClick } = this.props;
+      const { t, emitEmployeeClick, placeholder } = this.props;
       return (
         <TypeAhead label={t("Employee")}
-          placeholder={t("EmployeeSearcherPlaceholder")}
+          placeholder={t(placeholder)}
           requestFunction={value => this.getEmployees(value)}
           validators={this.employeeValidators}
           renderDataList={(dataList, resetAll, isListEmpty) => {
             if(isListEmpty === false) {
               return (
-                <ul className="input-data-list">
-                  {dataList.map(item => (
-                    <li onClick={() => {
-                      resetAll();
-                      emitEmployeeClick(item.id);
-                    }}
-                      key={item.id}>
-                      {item.fullName}
-                    </li>
-                  ))}
-                  <li className="list-footer">
+                <div className="input-data-list">
+                  <ul>
+                    {dataList.map(item => (
+                      <li onClick={() => {
+                        resetAll();
+                        emitEmployeeClick(item.id);
+                      }}
+                        key={item.id}>
+                        {item.fullName}
+                      </li>
+                    ))}
+                  </ul>
+                  <div className="list-footer">
                     <Button title="CLOSE" onClick={resetAll} mainClass="label-btn main"/>
-                  </li>
-                </ul>
+                  </div>
+                </div>
               );
             }
             else if(isListEmpty) return <div onClick={resetAll} className="empty-data-list">{t("EmptyEmployeeQuery")}</div>;
           }}/>
       );
   }
+}
+
+EmployeeSearcher.defaultProps = {
+  placeholder: 'EmployeeSearcherPlaceholder'
 }
 
 const mapDispatchToProps = dispatch => {
@@ -63,4 +69,3 @@ const mapDispatchToProps = dispatch => {
 }
 
 export default connect(null, mapDispatchToProps)(translate("EmployeeSearcher")(EmployeeSearcher));
-

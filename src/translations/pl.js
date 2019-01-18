@@ -2,6 +2,7 @@ const translations = {
   locale: "pl",
   EmployeeSearcher: {
     EmployeeSearcherPlaceholder: 'zacznij pisać aby rozpocząć wyszukiwanie...',
+    EmployeeSearcherOwnersPlaceholder: 'zacznij pisac, aby dodać nowego właściciela projektu',
     Employee: 'Znajdź pracownika',
     EmptyEmployeeQuery: 'Nie znaleziono pracowników o podanych parametrach'
   },

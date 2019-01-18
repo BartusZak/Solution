@@ -1,5 +1,4 @@
 import React from "react";
-import Icon from "../common/Icon";
 import SmoothTable from "../common/SmoothTable";
 import { setActionConfirmation } from "./../../actions/asyncActions";
 import { connect } from "react-redux";
@@ -8,7 +7,6 @@ import { translate } from "react-translate";
 import { withRouter } from 'react-router-dom';
 import binaryPermissioner from "./../../api/binaryPermissioner";
 import specialPermissioner from "./../../api/specialPermissioner";
-import { bindActionCreators } from "redux";
 import PhaseProjectForm from './phase-project-form/phase-project-form';
 
 import "../../scss/components/projects/ProjectsList.scss";

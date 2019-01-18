@@ -11,13 +11,16 @@
   z-index: 10;
 }
 .input-data-list {
-  max-height: 350px;
-  li {
-    padding: 10px;
-    &:not(:last-of-type) {
-      cursor: pointer;
-      &:hover {
-        background: $hover;
+  ul {
+    max-height: 350px;
+    overflow-y: auto;
+    li {
+      padding: 10px;
+      &:not(:last-of-type) {
+        cursor: pointer;
+        &:hover {
+          background: $hover;
+        }
       }
     }
   }
@@ -25,6 +28,7 @@
     button {
       display: block;
       margin-left: auto;
+      padding: 10px;
     }
   }
 }
@@ -43,6 +47,24 @@
   box-sizing: border-box;
   height: 40px;
   color: $input-error;
+}
+div.circle-searcher {
+  border-radius: 50px;
+  input, select {
+    padding-left: 12.5px;
+  }
+  div.spinner-new {
+    border: 2px solid $white;
+    border-top-color: transparent;
+    border-right-color: transparent;
+  }
+  .field-icon {
+    border-radius: 50%;
+    background-color: $dcmt-light;
+    i {
+      color: $white;
+    }
+  }
 }
 .field-block {
   border: 1px solid $input-border;

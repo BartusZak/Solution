@@ -1,3 +1,15 @@
+@import '../../../scss//new-color-schema.scss';
 .project-details-wrapper {
-  display: grid;
+  padding: 35px 30px 30px 15px;
+  box-sizing: border-box;
+  display: flex;
+  min-height: 94vh;
+  justify-content: space-between;
+  .important-par {
+    padding-bottom: 20px;
+  }
+  .project-wrapper-right {
+    width: 58%;
+    background: red;
+  }
 }

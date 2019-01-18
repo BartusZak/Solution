@@ -12,7 +12,7 @@ import PlanQuarter from './planQuarter/planQuarter';
 import AuthWithOutlook from './authWithOutlookComponent/authWithOutlookComponent';
 import { translate } from 'react-translate';
 import { API_ENDPOINT } from '../../api';
-import EmployeeSearcher from '../employees/employee-searcher/employee-searcher.js';
+import EmployeeSearcher from '../shared/employee-searcher/employee-searcher';
 const linkTypes = {
     "plan": "/employees/plan/",
     "addquarter": "/employees/addquarter/",
