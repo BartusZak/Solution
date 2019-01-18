@@ -371,3 +371,9 @@ a:visited {
     height: 100%;
   }
 }
+.box-circle {
+  box-shadow: $shadow;
+  border-radius: 10px;
+  background: $white;
+  color: $dark-font;
+}

@@ -2,3 +2,12 @@
   display: flex;
   flex-flow: column;
 }
+.flex-row-center {
+  display: flex;
+  align-items: center;
+}
+.flex-between-c {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}

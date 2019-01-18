@@ -11,7 +11,7 @@ const { Provider } = AheadClassContext;
 const projectInformations = ({project, t}) => {
   const { name, description, responsiblePerson, owners, status, isDeleted, startDate, estimatedEndDate, client, cloud } = project;
   return (
-    <div className="project-wrapper-left flex-column">
+    <div className="project-informations-wrapper flex-column">
     <h2 className="project-name flex-column">
       <span className="project-name-label">about</span>
       {name}

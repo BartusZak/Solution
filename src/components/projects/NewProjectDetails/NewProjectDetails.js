@@ -3,11 +3,10 @@ import { connect } from 'react-redux';
 import { translate } from 'react-translate';
 import { getProject } from '../../../actions/projectsActions';
 import ProjectInformations from './project-informations/project-informations';
+import ProjectData from './project-data/project-data';
+
 import './NewProjectDetails.scss';
 class NewProjectDetails extends React.Component {
-  state = {
-  }
-
   componentDidMount = () => this.props.getProject(this.props.match.params.id);
 
   render() {
@@ -21,9 +20,7 @@ class NewProjectDetails extends React.Component {
 
           <ProjectInformations project={project} t={t} />
 
-          <div className="project-wrapper-right">
-
-          </div>
+          <ProjectData project={project} t={t} />
 
         </div>
       );

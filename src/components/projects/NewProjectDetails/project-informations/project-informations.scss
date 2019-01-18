@@ -1,6 +1,9 @@
-@import '../../../../scss//new-color-schema.scss';
-.project-wrapper-left {
-  width: 35%;
+@import '../../../../scss/new-color-schema.scss';
+.project-informations-wrapper {
+  width: 30%;
+  .important-par {
+    padding-bottom: 20px;
+  }
   .project-name {
     font-size: 24px;
     color: $font-grey;
