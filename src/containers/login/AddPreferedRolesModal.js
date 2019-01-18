@@ -24,7 +24,7 @@ class AddPreferedRoles extends React.Component {
       });
     }
 
-    if (nextProps.userId && nextProps.userId === prevProps.userId) {
+    if (nextProps.login && nextProps.login === prevProps.login) {
       this.props.closeModal();
     }
   }
@@ -38,7 +38,7 @@ class AddPreferedRoles extends React.Component {
       }),
       () => {
         const userRoles = {
-          id: this.props.userId,
+          id: this.props.login,
           roles: []
         };
 
@@ -63,7 +63,7 @@ class AddPreferedRoles extends React.Component {
     e.preventDefault();
 
     const userRoles = {
-      id: this.props.userId,
+      id: this.props.login,
       roles: []
     };
 
@@ -159,7 +159,8 @@ const mapStateToProps = state => {
     roles: state.usersReducer.roles,
     loadRolesErrors: state.usersReducer.loadRolesErrors,
     loadRolesStatus: state.usersReducer.loadRolesStatus,
-    resultBlockAddRoles: state.usersReducer.resultBlockAddRoles
+    resultBlockAddRoles: state.usersReducer.resultBlockAddRoles,
+    login: state.authReducer.login
   };
 };
 

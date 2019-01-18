@@ -93,7 +93,7 @@ const parseFailure = (response, key) => {
 
   if (isKeyInBlackList === -1) {
     //400 ERROR NOT HANDLED
-    if (!response.response.status) {
+    if (!response.response) {
       // network error
       store.dispatch(
         addAlert({

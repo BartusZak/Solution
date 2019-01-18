@@ -4,19 +4,17 @@ import { bindActionCreators } from 'redux';
 import { translate } from 'react-translate';
 
 import Button from '../../components/common/button/button';
-import { authStart, authStop } from '../../actions/authActions';
+import {
+  authStart,
+  authStop,
+  clearAccountRequest
+} from '../../actions/authActions';
 import { useRequest } from '../../api/index';
-// import FancyModal from '../../components/common/fancy-modal';
 import FancyModal from '../../components/common/fancy-modal/fancy-modal';
 import AddPreferedRolesModal from './AddPreferedRolesModal';
 
 class LoginContainer extends Component {
-  state = { loadingModal: true, showFancyModal: false };
-
-  componentDidMount = () => {
-    const { accountRequest } = this.props;
-    this.setState({ showFancyModal: accountRequest });
-  };
+  state = {};
 
   handleLogin = () => {
     const { authStart, authStop } = this.props;
@@ -33,21 +31,21 @@ class LoginContainer extends Component {
   };
 
   render() {
-    const { t, loading, loadingModal, showModal } = this.props;
+    const { t, loading, accountRequest } = this.props;
 
     return (
       <React.Fragment>
-        {showModal ? (
+        {accountRequest ? (
           <FancyModal
-            isLoading={loadingModal}
-            close={false}
+            isLoading={false}
+            close={() => clearAccountRequest()}
             renderHeader={() => (
               <h3 className="fancy-modal-title title-padding">
                 {t('ChooseRoles')}
               </h3>
             )}
           >
-            <AddPreferedRolesModal />
+            <AddPreferedRolesModal closeModal={clearAccountRequest()} />
           </FancyModal>
         ) : null}
 
@@ -74,7 +72,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     authStart: bindActionCreators(authStart, dispatch),
-    authStop: bindActionCreators(authStop, dispatch)
+    authStop: bindActionCreators(authStop, dispatch),
+    clearAccountRequest: bindActionCreators(clearAccountRequest, dispatch)
   };
 };
 

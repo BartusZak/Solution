@@ -91,8 +91,7 @@ export const authReducer = (state = initialState, action) => {
     case types.AUTH_ERROR_ACCOUNT_ALREADY_REQUESTED:
       return {
         ...state,
-        loading: false,
-        accountRequest: true
+        loading: false
       };
     case types.AUTH_CLEAR_ACCOUNT_REQUEST:
       return {
