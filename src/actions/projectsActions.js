@@ -1,6 +1,5 @@
 import {
   LOAD_PROJECTS_SUCCESS,
-  GET_PROJECT,
   names,
   overViewNames,
   ADD_EMPLOYEE_TO_PROJECT,
@@ -17,6 +16,7 @@ import {
   EDIT_EMPLOYEE_ASSIGNMENT,
   DELETE_EMPLOYEE_ASSIGNMENT,
   UPDATE_PROJECT,
+  SET_PROJECT_DATA,
   ADD_PHASE
 } from "../constants";
 import WebApi from "../api";
@@ -102,90 +102,92 @@ export const loadProjects = (
   };
 };
 
-export const getProject = (
-  project,
-  loadProjectStatus,
-  loadProjectErrors,
-  responsiblePersonKeys,
-  overViewKeys
-) => {
-  return {
-    type: GET_PROJECT,
-    project,
-    loadProjectStatus,
-    loadProjectErrors,
-    responsiblePersonKeys,
-    overViewKeys
-  };
-};
-
-export const getProjectDataACreator = (projectId, onlyActiveAssignments) => dispatch => {
-  return new Promise((resolve, reject) => {
-    WebApi.projects.get
-    .projects(projectId, onlyActiveAssignments)
-    .then(response => {
-      const responsiblePersonKeys = { keys: cutNotNeededKeysFromArray(
-          Object.keys(response.replyBlock.data.dtoObject.responsiblePerson), [0] ),
-        names: names
-      };
-      const overViewKeys = {
-        keys: cutNotNeededKeysFromArray(
-          Object.keys(response.replyBlock.data.dtoObject),
-          [0, 1, 2, 4, 8, 9, 10, 11, 12, 13, 14, 15, 16]
-        ),
-        names: overViewNames
-      };
-      dispatch(getProject(response.replyBlock.data.dtoObject, true, [], responsiblePersonKeys,
-          overViewKeys, []));
-      resolve();
-    })
-    .catch(error => {
-      dispatch(getProject(null, false, errorCatcher(error), [], []));
-      reject();
-    });
-  })
-}
 
 
-export const getProjectACreator = (projectId, onlyActiveAssignments) => {
-  return dispatch => {
-    dispatch(asyncStarted());
-    WebApi.projects.get
-      .projects(projectId, onlyActiveAssignments)
-      .then(response => {
-        const responsiblePersonKeys = {
-          keys: cutNotNeededKeysFromArray(
-            Object.keys(response.replyBlock.data.dtoObject.responsiblePerson),
-            [0]
-          ),
-          names: names
-        };
-        const overViewKeys = {
-          keys: cutNotNeededKeysFromArray(
-            Object.keys(response.replyBlock.data.dtoObject),
-            [0, 1, 2, 4, 8, 9, 10, 11, 12, 13, 14, 15, 16]
-          ),
-          names: overViewNames
-        };
-        dispatch(
-          getProject(
-            response.replyBlock.data.dtoObject,
-            true,
-            [],
-            responsiblePersonKeys,
-            overViewKeys,
-            []
-          )
-        );
+// export const getProject = (
+//   project,
+//   loadProjectStatus,
+//   loadProjectErrors,
+//   responsiblePersonKeys,
+//   overViewKeys
+// ) => {
+//   return {
+//     type: GET_PROJECT,
+//     project,
+//     loadProjectStatus,
+//     loadProjectErrors,
+//     responsiblePersonKeys,
+//     overViewKeys
+//   };
+// };
 
-        dispatch(asyncEnded());
-      })
-      .catch(error => {
-        dispatch(getProject(null, false, errorCatcher(error), [], []));
-        dispatch(asyncEnded());
-      });
-  };
-};
+// export const getProjectDataACreator = (projectId, onlyActiveAssignments) => dispatch => {
+//   return new Promise((resolve, reject) => {
+//     WebApi.projects.get
+//     .projects(projectId, onlyActiveAssignments)
+//     .then(response => {
+//       const responsiblePersonKeys = { keys: cutNotNeededKeysFromArray(
+//           Object.keys(response.replyBlock.data.dtoObject.responsiblePerson), [0] ),
+//         names: names
+//       };
+//       const overViewKeys = {
+//         keys: cutNotNeededKeysFromArray(
+//           Object.keys(response.replyBlock.data.dtoObject),
+//           [0, 1, 2, 4, 8, 9, 10, 11, 12, 13, 14, 15, 16]
+//         ),
+//         names: overViewNames
+//       };
+//       dispatch(getProject(response.replyBlock.data.dtoObject, true, [], responsiblePersonKeys,
+//           overViewKeys, []));
+//       resolve();
+//     })
+//     .catch(error => {
+//       dispatch(getProject(null, false, errorCatcher(error), [], []));
+//       reject();
+//     });
+//   })
+// }
+
+
+// export const getProjectACreator = (projectId, onlyActiveAssignments) => {
+//   return dispatch => {
+//     dispatch(asyncStarted());
+//     WebApi.projects.get
+//       .projects(projectId, onlyActiveAssignments)
+//       .then(response => {
+//         const responsiblePersonKeys = {
+//           keys: cutNotNeededKeysFromArray(
+//             Object.keys(response.replyBlock.data.dtoObject.responsiblePerson),
+//             [0]
+//           ),
+//           names: names
+//         };
+//         const overViewKeys = {
+//           keys: cutNotNeededKeysFromArray(
+//             Object.keys(response.replyBlock.data.dtoObject),
+//             [0, 1, 2, 4, 8, 9, 10, 11, 12, 13, 14, 15, 16]
+//           ),
+//           names: overViewNames
+//         };
+//         dispatch(
+//           getProject(
+//             response.replyBlock.data.dtoObject,
+//             true,
+//             [],
+//             responsiblePersonKeys,
+//             overViewKeys,
+//             []
+//           )
+//         );
+
+//         dispatch(asyncEnded());
+//       })
+//       .catch(error => {
+//         dispatch(getProject(null, false, errorCatcher(error), [], []));
+//         dispatch(asyncEnded());
+//       });
+//   };
+// };
 
 export const addEmployeeToProject = (
   addEmployeeToProjectStatus,
@@ -580,6 +582,19 @@ export const getSuggestEmployeesACreator = projectId => {
   };
 };
 
+export const setProjectData = (project, projectResult ) => ({ type: SET_PROJECT_DATA, project, projectResult });
+export const updateProject = project => ({ type: UPDATE_PROJECT, project });
+export const addPhase = phase => ({ type: ADD_PHASE, phase });
+
+export const getProject = id => dispatch => {
+  useRequest('getProject', id)
+    .then(res => {
+      dispatch(setProjectData(res.extractData(),  { status: true, loading: false }));
+    }).catch(err => {
+      dispatch(setProjectData(null, { status: false, loading: false }))
+    })
+}
+
 export const addProject = (model, succ, err) =>
   useRequest('addProject', model)
     .then(response => succ(response.extractData().id))
@@ -601,5 +616,3 @@ export const addProjectPhase = (model, succ, err) => dispatch =>
    })
   .catch(() => err());
 
-export const updateProject = project => ({ type: UPDATE_PROJECT, project });
-export const addPhase = phase => ({ type: ADD_PHASE, phase });

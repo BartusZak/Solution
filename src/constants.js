@@ -51,7 +51,6 @@ export const CHANGE_OPERATION_STATE = "CHANGE_OPERATION_STATE";
 
 // PROJECTS
 
-export const GET_PROJECT = "GET_PROJECT";
 export const names = [
   "FirstName",
   "Surname",
@@ -77,6 +76,7 @@ export const GET_FEEDBACKS = "GET_FEEDBACKS";
 export const DELETE_FEEDBACK = "DELETE_FEEDBACK";
 export const EDIT_FEEDBACK = "EDIT_FEEDBACK";
 export const UPDATE_PROJECT = "[Projects] UPDATE_PROJECT";
+export const SET_PROJECT_DATA = "[Projects] SET_PROJECT_DATA";
 export const ADD_PHASE = "[Projects] ADD_PHASE";
 export const CHANGE_PROJECT_SKILLS = "CHANGE_PROJECT_SKILLS";
 export const CHANGE_PROJECT_STATE = "CHANGE_PROJECT_STATE";

@@ -1,7 +1,7 @@
 import {
   LOAD_PROJECTS_SUCCESS,
   LOGOUT,
-  GET_PROJECT,
+  SET_PROJECT_DATA,
   ADD_EMPLOYEE_TO_PROJECT,
   ADD_FEEDBACK,
   GET_FEEDBACKS,
@@ -26,9 +26,7 @@ const initialState = {
   clients: [],
   resultBlock: null,
 
-  project: null,
-  loadProjectStatus: null,
-  loadProjectErrors: [],
+  project: null, projectResult: {status: null, loading: true},
 
   responsiblePersonKeys: [],
   overViewKeys: [],
@@ -93,6 +91,10 @@ export const projectsReducer = (state = initialState, action) => {
         addProjectOwnerToProjectStatus: action.addProjectOwnerToProjectStatus,
         addProjectOwnerToProjectErrors: action.addProjectOwnerToProjectErrors
       });
+    case SET_PROJECT_DATA:
+      return {
+        ...state, project: action.project, projectResult: action.projectResult
+      }
     case LOAD_PROJECTS_SUCCESS:
       return updateObject(state, {
         projects: action.projects.results,
@@ -106,14 +108,6 @@ export const projectsReducer = (state = initialState, action) => {
         currentPage: 1,
         totalPageCount: 1
       };
-    case GET_PROJECT:
-      return updateObject(state, {
-        project: action.project,
-        loadProjectStatus: action.loadProjectStatus,
-        loadProjectErrors: action.loadProjectErrors,
-        responsiblePersonKeys: action.responsiblePersonKeys,
-        overViewKeys: action.overViewKeys
-      });
     case ADD_EMPLOYEE_TO_PROJECT:
       return updateObject(state, {
         addEmployeeToProjectStatus: action.addEmployeeToProjectStatus,

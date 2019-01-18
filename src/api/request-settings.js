@@ -3,6 +3,7 @@ export const getEmployees = 'getEmployees';
 export const getClientsSlim = 'getClientsSlim';
 
 // Projects
+export const getProject = 'getProject';
 export const addProject = 'addProject';
 export const editProject = 'editProject';
 export const addProjectPhase = 'addProjectPhase';
