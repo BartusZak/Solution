@@ -9,7 +9,7 @@ import { withRouter } from 'react-router-dom';
 import binaryPermissioner from "./../../api/binaryPermissioner";
 import specialPermissioner from "./../../api/specialPermissioner";
 import { bindActionCreators } from "redux";
-import ProjectForm from './project-form/project-form';
+import PhaseProjectForm from './phase-project-form/phase-project-form';
 
 import "../../scss/components/projects/ProjectsList.scss";
 class ProjectsList extends React.Component {
@@ -244,7 +244,7 @@ class ProjectsList extends React.Component {
         />
 
         {(openProjectForm || projectToEdit) &&
-          <ProjectForm projectToEdit={projectToEdit}
+          <PhaseProjectForm projectToEdit={projectToEdit}
             onSubmitSucc={projectId => {
               this.setState({openProjectForm: false});
               if (projectId) history.push(match.url + "/" + projectId);

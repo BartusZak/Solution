@@ -1,40 +1,26 @@
 import axios from "axios";
-// import * as jwtDecode from "jwt-decode";
 import { resolve as BluebirdResolve } from "bluebird/js/browser/bluebird.core.min.js";
 import * as usersMocks from "./mock/users";
 import * as projectsMocks from "./mock/projects";
-import redux from "redux";
 import storeCreator from "./../store";
-import storage from "redux-persist/lib/storage";
 import { push } from "react-router-redux";
 import { logout } from "./../actions/authActions";
-import {
-  refreshToken,
-  authOneDrive,
-  getFolderACreator
-} from "../actions/oneDriveActions";
 import ResponseParser from "./responseParser";
 import Config from "Config";
-import { loginACreator } from "../actions/persistHelpActions";
-import { Certificate } from "crypto";
-import { addAlert, removeAlert } from '../actions/alertsActions';
+import { addAlert } from '../actions/alertsActions';
 import * as fromAlertSettings from './request-settings';
 const { store } = storeCreator;
 
 export const API_ENDPOINT = Config.serverUrl;
-
-store.subscribe(listener);
-``;
-
-const select = state =>
-  state.authReducer.tokens !== undefined ? state.authReducer.tokens.token : "";
-
 export const selectLang = state =>
   state.languageReducer.language ? state.languageReducer.language : "pl";
 
+store.subscribe(listener);
+
+
+
 let lang = '';
 function listener() {
-  // const token = `Bearer ${select(store.getState())}`;
   let langHeader = '';
   switch (selectLang(store.getState())) {
     case "pl":
@@ -48,7 +34,6 @@ function listener() {
   }
 
   axios.defaults.withCredentials = true;
-  // axios.defaults.headers.common["Authorization"] = token;
   axios.defaults.headers.common["Accept-Language"] = langHeader;
 }
 
@@ -57,30 +42,6 @@ const authValidator = response => {
     store.dispatch(logout());
     store.dispatch(push("/"));
   }
-  // if (response.response) {
-  //   if (response.response.status === 401 || response.response === undefined) {
-  //     store.dispatch(logout());
-  //     store.dispatch(push("/"));
-  //   } else {
-  //     if (response.response.config.url.search("onedrive") !== -1) {
-  //       const oneDriveToken = JSON.parse(response.response.config.data).token;
-  //       const startPath = "/drive/root:";
-  //       store
-  //         .dispatch(refreshToken(oneDriveToken))
-  //         .then(response => {
-  //           dispatch(getFolderACreator(response, startPath));
-  //         })
-  //         .catch(error => {
-  //           store.dispatch(authOneDriveACreator());
-  //         });
-  //     } else if (response.response.config.url.search("GDrive") !== -1) {
-  //       dispatch(loginACreator());
-  //     }
-  //   }
-  // } else {
-  //   store.dispatch(logout());
-  //   store.dispatch(push("/"));
-  // }
 
   throw response;
 };
@@ -141,6 +102,7 @@ const requests = {
   //PROJECTS
   addProject: model => execute(fromAlertSettings.addProject, 'projects/add', requestTypes.post, model),
   editProject: (model, id) => execute(fromAlertSettings.editProject, `projects/${id}`, requestTypes.put, model),
+  addProjectPhase: model => execute(fromAlertSettings.addProjectPhase, 'projects/add', requestTypes.post, model),
 
   //RESPINSIBLE PERSON
   createResponsiblePerson: model => execute(fromAlertSettings.createResponsiblePerson, 'responsiblepersons', requestTypes.post, model),

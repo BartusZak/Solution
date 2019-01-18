@@ -12,9 +12,11 @@ const translations = {
     DroppedMessage: 'Pliki zostały upuszczone',
     TooManyFilesError: 'Upuszczono za dużo plików. Limit to '
   },
-  ProjectForm: {
-    firstPhaseTitle: 'Uzupełnij szczegóły projektu',
-    secondPhaseTitle: 'Wypełnij formularz dotyczący klienta',
+  PhaseProjectForm: {
+    firstStepTitleForPhases: 'Wypełnij szczegóły fazy projektu',
+    secondStepTitleForPhases: 'Uzupełnij informacje o kliencie dla fazy projektu',
+    firstStepTitleForProjects: 'Uzupełnij szczegóły projektu',
+    secondStepTitleForProjects: 'Wypełnij informacje o kliencie',
     name: 'nazwa',
     description: 'opis',
     startDate: 'data rozpoczęcia',
