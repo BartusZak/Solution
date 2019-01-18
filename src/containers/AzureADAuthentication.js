@@ -44,7 +44,6 @@ class AzureADAuthentication extends PureComponent {
     useRequest('loginAzureAD', queryStringValues.code)
       .then(response => {
         const data = response.extractData();
-        debugger;
         if (!data.roles) {
           const warnMessage = warnOperationsWhiteObject['choosePreferedRoles'];
           store.dispatch(
