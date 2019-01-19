@@ -1,8 +1,8 @@
 export const calculateProjectState = (statusCode, isDeleted, t) => {
-  if (isDeleted) return "Deleted"
-  if (statusCode === closed) return "Closed";
-  if (statusCode === inactive) return "Inactive";
-  if (statusCode === active) return "Active";
+  if (isDeleted) return "deleted"
+  if (statusCode === closed) return "closed";
+  if (statusCode === inactive) return "inactive";
+  if (statusCode === active) return "active";
 }
 export const closed = 2;
 export const inactive = 1;

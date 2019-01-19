@@ -309,5 +309,4 @@ export const ADD_ALERT = "[Alerts] ADD_ALERT";
 export const EDIT_ALERT = "[Alerts] EDIT_ALERT";
 export const REMOVE_ALERT = "[Alerts] REMOVE_ALERT";
 
-
-// RESPONSIBLE PERSON
+export const dFormat = "YYYY/MM/DD";

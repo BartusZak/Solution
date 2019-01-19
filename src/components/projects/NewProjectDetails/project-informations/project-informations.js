@@ -10,16 +10,15 @@ const { Provider } = AheadClassContext;
 
 const projectInformations = ({project, t}) => {
   const { name, description, responsiblePerson, owners, status, isDeleted, startDate, estimatedEndDate, client, cloud } = project;
+  const projectState = calculateProjectState(status, isDeleted, t);
   return (
     <div className="project-informations-wrapper flex-column">
     <h2 className="project-name flex-column">
-      <span className="project-name-label">about</span>
+      <span className={`project-state-label ${projectState}`}>{projectState}</span>
       {name}
     </h2>
 
-    <article className="project-description">
-      {description}
-    </article>
+    <article className="project-description">{description}</article>
 
     <div className="project-details">
       <div className="detail-label">
@@ -34,18 +33,14 @@ const projectInformations = ({project, t}) => {
         <span className="dcmt-light-color">client</span>
         <span>{client}</span>
       </div>
-      <div className="detail-label">
-        <span className="dcmt-light-color">status</span>
-        <span>{calculateProjectState(status, isDeleted, t)}</span>
-      </div>
     </div>
 
     <div className="project-operations">
-      <Button title="EDIT PROJECT" mainClass="dcmt-main-btn dcmt-light-btn">
+      <Button title="EDIT PROJECT" mainClass="dcmt-main-btn dcmt-light-btn animated-icon-btn">
         <i className="fa fa-edit"></i>
       </Button>
 
-      <Button title="ADD PHASE" mainClass="dcmt-main-btn dcmt-light-btn">
+      <Button title="ADD PHASE" mainClass="dcmt-main-btn dcmt-light-btn animated-icon-btn">
         <i className="fa fa-plus"></i>
       </Button>
       <Button title="SHARE PROJECT" mainClass="label-btn dcmt-light-color" />
@@ -85,10 +80,10 @@ const projectInformations = ({project, t}) => {
       <EmployeeSearcher placeholder="EmployeeSearcherOwnersPlaceholder" />
     </Provider>
 
-    <div className="project-owners">
+    <div className="project-owners flex-row-center carousel element-scroll">
 
       {owners.map(({id, fullName}) => (
-        <div key={id} className="owner">
+        <div key={id} className="owner flex-row-center">
           <div className="user-avatar-medium">
             <img src="https://dev.dcmtbillennium.com/ProfiledPhotos/bploszynski.jpg" />
           </div>
@@ -102,22 +97,21 @@ const projectInformations = ({project, t}) => {
     </div>
 
     <div className="project-operations">
-      {isDeleted || status !== active &&
-        <Button title="ACTIVATE PROJECT" mainClass="dcmt-main-btn dcmt-light-btn">
+      {(isDeleted || status !== active) &&
+        <Button title="ACTIVATE PROJECT" mainClass="dcmt-main-btn dcmt-light-btn animated-icon-btn">
           <i className="fa fa-check"></i>
         </Button>
       }
-      {status !== closed &&
-        <Button title="CLOSE PROJECT" mainClass="dcmt-main-btn dcmt-grey-btn">
-          <i className="fa fa-times"></i>
-        </Button>
-      }
       {!isDeleted &&
-        <Button title="DELETE PROJECT" mainClass="dcmt-main-btn dcmt-danger-btn">
+        <Button title="DELETE PROJECT" mainClass="dcmt-main-btn dcmt-danger-btn animated-icon-btn">
           <i className="fa fa-trash"></i>
         </Button>
       }
-
+      {(isDeleted || status !== closed) &&
+        <Button title="CLOSE PROJECT" mainClass="dcmt-main-btn dcmt-grey-btn animated-icon-btn">
+          <i className="fa fa-times"></i>
+        </Button>
+      }
     </div>
 
   </div>

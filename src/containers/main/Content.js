@@ -18,6 +18,7 @@ import { getNotificationACreator } from "../../actions/notificationActions";
 import { connect } from "react-redux";
 import Info from "./../../components/info/infoContainer";
 import Alerts from '../../components/common/alerts/alerts';
+import NewProjectDetails from '../../components/projects/NewProjectDetails/NewProjectDetails';
 class Content extends React.Component {
   componentDidMount() {
     this.props.getNotificationACreator().then(() => {});
@@ -37,7 +38,10 @@ class Content extends React.Component {
         <Alerts />
         <Switch>
           <Route exact path={match.url} component={StatsContainer} />
+          <Route path={match.url + "/projects/:id"} component={NewProjectDetails} />
+
           <Route path={match.url + "/projects"} component={ProjectsContainer} />
+
           <Route
             path={match.url + "/employees"}
             component={EmployeesContainer}

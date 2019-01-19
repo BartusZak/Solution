@@ -7,11 +7,18 @@ import ProjectData from './project-data/project-data';
 
 import './NewProjectDetails.scss';
 class NewProjectDetails extends React.Component {
+  state = {
+    isLoading: true
+  }
   componentDidMount = () => this.props.getProject(this.props.match.params.id);
+  componentDidUpdate = prevProps => {
+    if(prevProps.projectResult !== this.props.projectResult)
+      this.setState({isLoading: false});
+  }
 
   render() {
     const { projectResult, project, t } = this.props;
-    if (projectResult.loading)
+    if (this.state.isLoading)
       return <div className="spinner-new spinner-new-big spinner-new-center"></div>;
     else if(!projectResult.status) return null;
     else {

@@ -1,0 +1,42 @@
+@import '../../../../../scss//new-color-schema.scss';
+.project-skills-wrapper {
+  width: 300px;
+  max-height: 400px;
+  position: relative;
+  .important-par {
+    padding: 15px 0 20px 0;
+  }
+  .skill-dot {
+    width: 14px; height: 14px;
+    border-radius: 50%;
+  }
+  .skill-name {
+    font-size: 16px;
+    color: $font-grey;
+  }
+  .skill-number {
+    margin-right: 10px;
+  }
+  ul {
+    overflow-y: auto;
+    margin-bottom: 15px;
+    padding-top: 15px;
+    li {
+      margin-bottom: 30px;
+      .skill-head {
+        margin-bottom: 15px;
+        .skill-dot {
+          margin-right: 15px;
+        }
+      }
+      .skill-details .detail-label {
+        margin-right: 30px;
+      }
+    }
+  }
+  & > button.dcmt-light-btn {
+    margin-top: auto;
+    flex-shrink: 0;
+    width: 100%;
+  }
+}

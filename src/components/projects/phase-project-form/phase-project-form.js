@@ -6,9 +6,10 @@ import { getClientsSlim, updateSlimClient, addSlimClient } from '../../../action
 import { setHeaders, phases } from './index';
 import { addProject, editProject, addProjectPhase } from '../../../actions/projectsActions';
 import { InputSettings } from '../../common/fancy-form/index';
+import { dFormat } from '../../../constants';
 import FancyDataList from '../../common/fancy-form/fancy-data-list';
 import FancyModal from '../../common/fancy-modal/fancy-modal';
-import FancyForm, { dFormat } from '../../common/fancy-form/fancy-form';
+import FancyForm from '../../common/fancy-form/fancy-form';
 import ResponsiblePersonForm from '../../shared/responsible-person-form/responsible-person-form';
 
 import './phase-project-form.scss';

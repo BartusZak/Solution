@@ -25,9 +25,9 @@ import {
   asyncEnded
 } from "./asyncActions";
 import { errorCatcher } from "../services/errorsHandler";
-import { cutNotNeededKeysFromArray } from "../services/methods";
+import { cutNotNeededKeysFromArray, getRandomColor } from "../services/methods";
 import { useRequest } from '../api/index';
-
+import { removeInformationsFromDate } from '../services/transform-data-service';
 export const loadProjectsSuccess = (projects, resultBlock) => {
   return {
     type: LOAD_PROJECTS_SUCCESS,
@@ -586,14 +586,20 @@ export const setProjectData = (project, projectResult ) => ({ type: SET_PROJECT_
 export const updateProject = project => ({ type: UPDATE_PROJECT, project });
 export const addPhase = phase => ({ type: ADD_PHASE, phase });
 
-export const getProject = id => dispatch => {
+export const getProject = id => dispatch =>
   useRequest('getProject', id)
     .then(res => {
-      dispatch(setProjectData(res.extractData(),  { status: true, loading: false }));
-    }).catch(err => {
-      dispatch(setProjectData(null, { status: false, loading: false }))
-    })
-}
+      const project = res.extractData();
+      project.startDate = removeInformationsFromDate(project.startDate);
+      project.estimatedEndDate = removeInformationsFromDate(project.estimatedEndDate);
+      project.team = project.team.map(member => {
+        const newMember = { ...member, startDate: removeInformationsFromDate(member.startDate) };
+        if (newMember.endDate) newMember.endDate = removeInformationsFromDate(member.endDate);
+        return newMember;
+      });
+      project.skills = project.skills.map(skill => ({ ...skill, color: getRandomColor() }));
+      dispatch(setProjectData(project, { status: true }));
+    }).catch(() => dispatch(setProjectData(null, { status: false })))
 
 export const addProject = (model, succ, err) =>
   useRequest('addProject', model)

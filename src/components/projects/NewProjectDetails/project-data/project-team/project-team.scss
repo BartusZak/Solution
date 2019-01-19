@@ -2,41 +2,70 @@
 .project-team-wrapper {
   width: 400px;
   box-sizing: border-box;
-  max-height: 500px;
+  max-height: 400px;
   padding-bottom: 15px;
-  p.important-par {
-    padding: 15px 15px 20px 15px;
+  position: relative;
+  margin-left: 60px;
+  .name {
+    color: $font-grey;
+    margin-bottom: 5px;
+    font-weight: 300;
   }
-  ul {
-    max-height: 400px;
-    overflow-y: auto;
-    li {
-      background: $modal-header-bg;
-      padding: 0 15px;
-      margin-bottom: 5px;
-      height: 60px;
-      .team-member {
-        display: flex;
-        align-items: center;
-      }
-      .member-details {
-        margin-left: 15px;
-        display: flex;
-        flex-flow: column;
-        justify-content: space-between;
-        .name {
-          color: $font-grey;
-          margin-bottom: 5px;
-          font-weight: 500;
-        }
-        .title {
-          color: $dcmt-light;
-        }
-      }
-    }
+  .title {
+    color: $dcmt-light;
+    font-weight: 500;
+  }
+  .seniority {
+    color: $font-grey;
+    font-weight: 300;
   }
   .label-btn {
     display: block;
     margin-top: auto;
   }
+  p.important-par {
+    padding: 15px 15px 20px 15px;
+    i {
+      cursor: pointer;
+      font-size: 20px;
+    }
+    .fa-user-times {
+      margin-left: auto;
+      margin-right: 15px;
+    }
+  }
+  ul {
+    overflow-y: auto;
+    li {
+      background: $modal-header-bg;
+      padding: 15px;
+      margin-bottom: 5px;
+      display: grid;
+      grid-template-columns: 50px 50% 1fr;
+      align-items: center;
+      .user-info {
+        display: grid;
+        grid-template-rows: 1fr 1fr;
+        padding-left: 15px;
+      }
+      .dates-info {
+        margin-left: auto;
+        div.detail-row {
+          flex-flow: row;
+          justify-content: flex-end;
+          span {
+            margin-right: 5px;
+          }
+        }
+      }
+      .element-toolbox {
+        background: $modal-header-bg;
+        i {
+          color: $dcmt-light;
+        }
+      }
+    }
+  }
 }
+
+
