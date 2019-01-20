@@ -15,7 +15,7 @@ class NewProjectDetails extends React.Component {
     if(prevProps.projectResult !== this.props.projectResult)
       this.setState({isLoading: false});
   }
-
+  // dodac jak count === 0 to nrak tooltipow i widok faz na tym skonczlem
   render() {
     const { projectResult, project, t } = this.props;
     if (this.state.isLoading)

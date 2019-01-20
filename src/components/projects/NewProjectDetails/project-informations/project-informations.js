@@ -1,5 +1,5 @@
 import React from 'react';
-import { calculateProjectState, closed, inactive, active } from '../index';
+import { calculateProjectState, closed, active } from '../index';
 import Button from '../../../common/button/button';
 import EmployeeSearcher from '../../../shared/employee-searcher/employee-searcher';
 import { AheadClassContext } from '../../../common/fancy-form/type-ahead/index';
@@ -8,9 +8,9 @@ import './project-informations.scss';
 
 const { Provider } = AheadClassContext;
 
-const projectInformations = ({project, t}) => {
+const projectInformations = ({project}) => {
   const { name, description, responsiblePerson, owners, status, isDeleted, startDate, estimatedEndDate, client, cloud } = project;
-  const projectState = calculateProjectState(status, isDeleted, t);
+  const projectState = calculateProjectState(status, isDeleted);
   return (
     <div className="project-informations-wrapper flex-column">
     <h2 className="project-name flex-column">

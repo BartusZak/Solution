@@ -1,13 +1,13 @@
 @import '../../../../../scss//new-color-schema.scss';
 .project-team-wrapper {
-  width: 400px;
-  box-sizing: border-box;
-  max-height: 400px;
   padding-bottom: 15px;
   position: relative;
-  margin-left: 60px;
+  grid-area: team;
+  color: $font-grey;
+  .name, .title, .seniority {
+    font-size: 14px;
+  }
   .name {
-    color: $font-grey;
     margin-bottom: 5px;
     font-weight: 300;
   }
@@ -16,7 +16,6 @@
     font-weight: 500;
   }
   .seniority {
-    color: $font-grey;
     font-weight: 300;
   }
   .label-btn {
@@ -36,13 +35,11 @@
   }
   ul {
     overflow-y: auto;
+    margin-bottom: 15px;
     li {
       background: $modal-header-bg;
-      padding: 15px;
+      padding: 10px 15px;
       margin-bottom: 5px;
-      display: grid;
-      grid-template-columns: 50px 50% 1fr;
-      align-items: center;
       .user-info {
         display: grid;
         grid-template-rows: 1fr 1fr;
@@ -50,6 +47,10 @@
       }
       .dates-info {
         margin-left: auto;
+        @media(max-width: 400px) {
+          display: flex;
+          margin: 10px auto 0 auto;
+        }
         div.detail-row {
           flex-flow: row;
           justify-content: flex-end;
@@ -65,6 +66,8 @@
         }
       }
     }
+  }
+  @media(max-width: 450px) {
   }
 }
 

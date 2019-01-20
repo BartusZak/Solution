@@ -361,11 +361,11 @@ a:visited {
   flex-flow: column;
   span:first-of-type {
     margin-bottom: 5px;
-    font-size: 14px;
+    font-size: 12px;
   }
   span:last-of-type:not(.dcmt-light-color) {
     color: $font-grey;
-    font-size: 16px;
+    font-size: 14px;
   }
 }
 .important-par {
@@ -454,7 +454,6 @@ a:visited {
 .carousel {
   overflow-x: auto;
   overflow-y: hidden;
-  padding: 10px;
 }
 .element-scroll::-webkit-scrollbar {
   height: 7.5px;

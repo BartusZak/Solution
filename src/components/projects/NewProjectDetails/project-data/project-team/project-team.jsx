@@ -28,7 +28,9 @@ class ProjectTeam extends React.PureComponent {
           {Object.keys(markedMembers).length > 0 &&
             <i className="fa fa-user-times"></i>
           }
-          <i className="fa fa-sort"></i>
+          {teamCount !== 0 &&
+            <i className="fa fa-sort"></i>
+          }
         </p>
 
         {teamCount === 0 ?
@@ -39,7 +41,7 @@ class ProjectTeam extends React.PureComponent {
           <React.Fragment>
             <ul>
               {team.map(({employeeId, firstName, lastName, title, seniority, startDate, endDate}) => (
-                <li key={employeeId} className="element-toolbox-wrapper">
+                <li key={employeeId} className="element-toolbox-wrapper flex-row-center-wrap">
                   <div className="user-avatar-medium">
                     <img src="https://dev.dcmtbillennium.com/ProfilePhotos/bploszynski.jpg" />
                   </div>

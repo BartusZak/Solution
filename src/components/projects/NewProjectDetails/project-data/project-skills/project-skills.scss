@@ -1,8 +1,7 @@
 @import '../../../../../scss//new-color-schema.scss';
 .project-skills-wrapper {
-  width: 300px;
-  max-height: 400px;
   position: relative;
+  grid-area: skills;
   .important-par {
     padding: 15px 0 20px 0;
   }
@@ -14,8 +13,9 @@
     font-size: 16px;
     color: $font-grey;
   }
-  .skill-number {
+  span.skill-number:first-of-type {
     margin-right: 10px;
+    margin-bottom: 0;
   }
   ul {
     overflow-y: auto;

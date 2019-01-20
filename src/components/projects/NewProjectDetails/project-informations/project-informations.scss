@@ -1,16 +1,18 @@
 @import '../../../../scss/new-color-schema.scss';
 .project-informations-wrapper {
-  width: 29%;
-  margin-right: 1%;
-  .important-par {
+  p.important-par {
     padding-bottom: 20px;
+    font-size: 16px;
+    &:first-of-type {
+      margin-top: 10px;
+    }
   }
   .project-name {
     font-size: 22px;
     color: $font-grey;
     .project-state-label {
       font-size: 14px;
-      margin-bottom: 7.5px;
+      margin-bottom: 5px;
     }
     .active {
       color: $dcmt-light;
@@ -26,30 +28,33 @@
     font-size: 16px;
     font-weight: 300;
     color: $font-grey;
-    padding: 30px 0;
+    padding: 20px 0;
   }
   .project-details {
     display: flex;
     flex-flow: wrap;
+    margin-bottom: 5px;
     .detail-label {
-      margin: 0 30px 30px 0;
+      margin: 0 30px 15px 0;
     }
   }
   .project-operations {
     display: flex;
     flex-flow: wrap;
     button {
-      margin: 0 15px 30px 0;
+      margin: 0 15px 15px 0;
     }
   }
   .project-operations:last-of-type {
     margin-top: auto;
-    button {
-      margin: 0 15px 15px 0;
+  }
+  @media(min-width: 650px) {
+    .circle-searcher {
+      max-width: 400px;
     }
   }
   .project-owners {
-    margin-top: 30px;
+    margin: 30px 0;
     max-height: 150px;
     .owner {
       margin: 0 15px 30px 0;
@@ -59,6 +64,7 @@
       }
       .owner-details span {
         color: $font-grey;
+        font-size: 14px;
       }
     }
   }
