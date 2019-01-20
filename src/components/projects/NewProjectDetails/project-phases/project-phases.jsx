@@ -2,7 +2,7 @@ import React from 'react';
 import { calculateProjectState } from '../index';
 
 import './project-phases.scss';
-const projectPhases = ({phases}) => {
+const projectPhases = ({phases, projectUrlId, push}) => {
   const phasesCount = phases.length;
   return (
   <div className="phases-wrapper flex-column">
@@ -15,7 +15,8 @@ const projectPhases = ({phases}) => {
     </div> :
     <ul className="phases carousel element-scroll flex-row-center">
     {phases.map(({id, name, description, startDate, estimatedEndDate, isDeleted, status}) => (
-      <li className="phase phase-focused" key={id}>
+      <li onClick={() => push(id)}
+        className={`phase clickable ${projectUrlId === id ? 'phase-focused' : ''}`} key={id}>
         <p className="phase-name">{name}</p>
         <article className="phase-description">
           {description}

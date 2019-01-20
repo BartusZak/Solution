@@ -598,6 +598,10 @@ export const getProject = id => dispatch =>
         return newMember;
       });
       project.skills = project.skills.map(skill => ({ ...skill, color: getRandomColor() }));
+      project.projectPhases = project.projectPhases.map(phase => {
+        return { ...phase, startDate: removeInformationsFromDate(phase.startDate),
+          estimatedEndDate: removeInformationsFromDate(phase.estimatedEndDate) }
+      });
       dispatch(setProjectData(project, { status: true }));
     }).catch(() => dispatch(setProjectData(null, { status: false })))
 

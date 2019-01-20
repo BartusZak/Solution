@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { translate } from 'react-translate';
+import { withRouter } from 'react-router-dom';
 import { getProject } from '../../../actions/projectsActions';
 import ProjectInformations from './project-informations/project-informations';
 import ProjectSkills from './project-skills/project-skills';
@@ -18,7 +19,7 @@ class NewProjectDetails extends React.Component {
       this.setState({isLoading: false});
   }
   render() {
-    const { projectResult, project, t } = this.props;
+    const { projectResult, project, t, match, history } = this.props;
     if (this.state.isLoading)
       return <div className="spinner-new spinner-new-big spinner-new-center"></div>;
     else if(!projectResult.status) return null;
@@ -32,7 +33,7 @@ class NewProjectDetails extends React.Component {
           <div className="project-data-wrapper">
             <ProjectSkills skills={skills} />
             <ProjectTeam team={team} />
-            <ProjectPhases phases={phases} />
+            <ProjectPhases phases={phases} projectUrlId={match.params.id} push={history.push}/>
           </div>
 
         </div>
@@ -55,4 +56,4 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(translate("NewProjectDetails")(NewProjectDetails));
+export default connect(mapStateToProps, mapDispatchToProps)(translate("NewProjectDetails")(withRouter(NewProjectDetails)));
