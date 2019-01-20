@@ -3,7 +3,9 @@ import { connect } from 'react-redux';
 import { translate } from 'react-translate';
 import { getProject } from '../../../actions/projectsActions';
 import ProjectInformations from './project-informations/project-informations';
-import ProjectData from './project-data/project-data';
+import ProjectSkills from './project-skills/project-skills';
+import ProjectTeam from './project-team/project-team';
+import ProjectPhases from './project-phases/project-phases';
 
 import './NewProjectDetails.scss';
 class NewProjectDetails extends React.Component {
@@ -15,19 +17,23 @@ class NewProjectDetails extends React.Component {
     if(prevProps.projectResult !== this.props.projectResult)
       this.setState({isLoading: false});
   }
-  // dodac jak count === 0 to nrak tooltipow i widok faz na tym skonczlem
   render() {
     const { projectResult, project, t } = this.props;
     if (this.state.isLoading)
       return <div className="spinner-new spinner-new-big spinner-new-center"></div>;
     else if(!projectResult.status) return null;
     else {
+      const { skills, team, projectPhases: phases } = project;
       return (
         <div className="project-details-wrapper">
 
           <ProjectInformations project={project} t={t} />
 
-          <ProjectData project={project} t={t} />
+          <div className="project-data-wrapper">
+            <ProjectSkills skills={skills} />
+            <ProjectTeam team={team} />
+            <ProjectPhases phases={phases} />
+          </div>
 
         </div>
       );

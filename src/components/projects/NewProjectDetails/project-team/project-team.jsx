@@ -1,6 +1,6 @@
 import React from 'react';
-import Button from '../../../../common/button/button';
-import Checkbox from '../../../../common/checkbox/checkbox';
+import Button from '../../../common/button/button';
+import Checkbox from '../../../common/checkbox/checkbox';
 
 import './project-team.scss';
 

@@ -1,7 +1,10 @@
-@import '../../../../../scss//new-color-schema.scss';
+@import '../../../../scss//new-color-schema.scss';
 .phases-wrapper {
   grid-area: phases;
   color: $font-grey;
+  @media(max-width: 1179px) {
+    margin-top: 30px;
+  }
   p.important-par {
     padding-bottom: 25px;
     color: inherit;

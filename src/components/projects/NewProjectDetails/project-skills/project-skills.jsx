@@ -1,5 +1,5 @@
 import React from 'react';
-import Button from '../../../../common/button/button';
+import Button from '../../../common/button/button';
 import './project-skills.scss';
 
 class ProjectSkills extends React.PureComponent {

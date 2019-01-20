@@ -1,4 +1,4 @@
-@import '../../../../../scss//new-color-schema.scss';
+@import '../../../../scss//new-color-schema.scss';
 .project-team-wrapper {
   padding-bottom: 15px;
   position: relative;
@@ -66,8 +66,6 @@
         }
       }
     }
-  }
-  @media(max-width: 450px) {
   }
 }
 
