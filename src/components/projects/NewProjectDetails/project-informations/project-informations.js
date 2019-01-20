@@ -20,7 +20,7 @@ class ProjectInformations extends React.Component {
   render() {
     const { editProjectForm, addPhaseForm } = this.state;
     const { project } = this.props;
-    const { id, name, description, responsiblePerson, owners, status, isDeleted, startDate, estimatedEndDate, client, cloud } = project;
+    const { id, name, description, responsiblePerson, owners, status, isDeleted, startDate, estimatedEndDate, client, cloud, parentId } = project;
     const projectState = calculateProjectState(status, isDeleted);
 
     return (
@@ -67,17 +67,6 @@ class ProjectInformations extends React.Component {
           }
         </div>
 
-        <div className="project-operations">
-          <Button onClick={this.togleEditForm} title="EDIT PROJECT" mainClass="dcmt-main-btn dcmt-light-btn animated-icon-btn">
-            <i className="fa fa-edit"></i>
-          </Button>
-
-          <Button onClick={this.toglePhaseForm} title="ADD PHASE" mainClass="dcmt-main-btn dcmt-light-btn animated-icon-btn">
-            <i className="fa fa-plus"></i>
-          </Button>
-          <Button title="SHARE PROJECT" mainClass="label-btn dcmt-light-color" />
-        </div>
-
         <p className="important-par">Responsible person</p>
 
         <div className="project-details">
@@ -122,6 +111,20 @@ class ProjectInformations extends React.Component {
         </div>
 
         <div className="project-operations">
+          <Button onClick={this.togleEditForm} title="EDIT PROJECT" mainClass="dcmt-main-btn dcmt-light-btn animated-icon-btn">
+            <i className="fa fa-edit"></i>
+          </Button>
+
+          {!parentId &&
+            <Button onClick={this.toglePhaseForm} title="ADD PHASE" mainClass="dcmt-main-btn dcmt-light-btn animated-icon-btn">
+              <i className="fa fa-plus"></i>
+            </Button>
+          }
+
+          <Button title="SHARE PROJECT" mainClass="dcmt-main-btn dcmt-light-btn animated-icon-btn">
+            <i className="fa fa-share-alt-square"></i>
+          </Button>
+
           {(isDeleted || status !== active) &&
             <Button title="ACTIVATE PROJECT" mainClass="dcmt-main-btn dcmt-light-btn animated-icon-btn">
               <i className="fa fa-check"></i>

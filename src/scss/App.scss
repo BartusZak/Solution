@@ -15,8 +15,8 @@
 @import './position-styles.scss';
 body {
   font-family: "Roboto", sans-serif;
-  min-height: 100vh;
   background: $white;
+  min-height: 100vh;
 }
 ::-webkit-scrollbar {
   width: 10px;
@@ -24,11 +24,9 @@ body {
 }
 ::-webkit-scrollbar-track {
   background: $scroll-track;
-  border-radius: 50px;
 }
 ::-webkit-scrollbar-thumb {
   background: $dcmt;
-  border-radius: 50px;
 }
 button, input, textarea {
   font-family: inherit;
@@ -456,7 +454,9 @@ a:visited {
 .element-scroll::-webkit-scrollbar {
   height: 7.5px;
   width: 7.5px;
+  border-radius: 50px;
 }
 .element-scroll::-webkit-scrollbar-thumb {
   background: $dcmt-light;
+  border-radius: 50px;
 }

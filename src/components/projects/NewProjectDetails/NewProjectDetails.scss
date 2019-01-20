@@ -1,10 +1,8 @@
 @import '../../../scss//new-color-schema.scss';
 .project-details-wrapper {
+  padding: 30px 30px 0 30px;
   box-sizing: border-box;
-  min-height: 94vh;
-  padding: 10px;
-  @media(min-width: 1180px) {
-    padding: 35px 30px 0 15px;
+  @media(min-width: 1300px) {
     display: flex;
     justify-content: space-between;
     .project-informations-wrapper {
@@ -13,24 +11,37 @@
     }
   }
   .project-data-wrapper {
-    margin: 30px 0;
-    @media(min-width: 840px) {
-      width: 65%;
+    @media(min-width: 900px) {
       display: grid;
+      grid-gap: 30px;
+      width: 65%;
       grid-template-rows: 400px 1fr;
-      grid-gap: 30px 45px;
-      grid-template-columns: 300px 400px 1fr;
+      grid-template-columns: 400px 400px 1fr;
       grid-template-areas:
       "skills team rest"
       "phases phases phases";
-      margin: 0;
     }
+    @media(max-width: 899px) {
+      div.project-skills-wrapper {
+        margin: 15px 0 30px 0;
+      }
+      div.project-team-wrapper {
+        margin-bottom: 30px;
+      }
+      div.phases-wrapper {
+        margin: 15px 0 30px 0;
+        .phases {
+          margin: 0;
+        }
+      }
+    }
+  }
+  @media(max-width: 600px) {
+    padding: 30px 15px;
   }
 }
 .empty-list-bg {
   background: $modal-header-bg;
   border-radius: 10px;
-}
-.data-padding {
-  padding: 15px 15px 20px 15px;
+  padding: 15px;
 }

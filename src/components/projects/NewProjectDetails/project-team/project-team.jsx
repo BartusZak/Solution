@@ -34,7 +34,7 @@ class ProjectTeam extends React.PureComponent {
         </p>
 
         {teamCount === 0 ?
-          <div className="empty-list-comunicate">
+          <div className="empty-list-comunicate ">
             <p>Project team list is already empty. Click button bellow if you want add new one</p>
             <i className="fa fa-user-plus"></i>
           </div> :

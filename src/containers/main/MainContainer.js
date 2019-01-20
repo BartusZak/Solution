@@ -1,5 +1,4 @@
 import React from "react";
-import { Route, withRouter } from "react-router-dom";
 import Header from "./header/Header";
 import Content from "./Content";
 import "../../scss/containers/MainContainer.scss";
@@ -8,7 +7,7 @@ import PropTypes from "prop-types";
 import "react-responsive-modal/lib/react-responsive-modal.css";
 
 class MainContainer extends React.Component {
-  constructor(props, match) {
+  constructor(props) {
     super(props);
   }
 
@@ -19,7 +18,6 @@ class MainContainer extends React.Component {
         <div className="wrapper">
           <Header history={this.props.history} />
           <Content match={match} />
-       
         </div>
       </div>
     );

@@ -30,7 +30,7 @@ class NewProjectDetails extends React.Component {
   render() {
     const { projectResult, project, t, history } = this.props;
     if (this.state.isLoading)
-      return <div className="spinner-new spinner-new-big spinner-new-center"></div>;
+      return <div style={{position: 'fixed'}} className="spinner-new spinner-new-big spinner-new-center"></div>;
     else if(!projectResult.status) return null;
     else {
       const { skills, team, projectPhases: phases } = project;

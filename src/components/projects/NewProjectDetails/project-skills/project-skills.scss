@@ -2,6 +2,14 @@
 .project-skills-wrapper {
   position: relative;
   grid-area: skills;
+  &:not(.empty-list-bg) {
+    .important-par {
+      padding: 15px 0 20px 0;
+    }
+  }
+  @media(max-width: 899px) {
+    margin-bottom: 20px;
+  }
   .skill-dot {
     width: 14px; height: 14px;
     border-radius: 50%;
@@ -17,7 +25,6 @@
   ul {
     overflow-y: auto;
     margin-bottom: 15px;
-    padding-top: 15px;
     li {
       margin-bottom: 30px;
       .skill-head {

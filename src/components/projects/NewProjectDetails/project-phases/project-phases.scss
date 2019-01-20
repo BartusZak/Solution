@@ -2,16 +2,16 @@
 .phases-wrapper {
   grid-area: phases;
   color: $font-grey;
-  @media(max-width: 1179px) {
-    margin-top: 30px;
-  }
-  p.important-par {
-    padding-bottom: 25px;
+  .important-par {
     color: inherit;
+  }
+  &:not(.empty-list-bg) {
+    .important-par {
+      padding: 15px 0 20px 0;
+    }
   }
   .phases {
     padding-bottom: 20px;
-    box-sizing: border-box;
     .phase {
       flex-shrink: 0;
       width: 300px;

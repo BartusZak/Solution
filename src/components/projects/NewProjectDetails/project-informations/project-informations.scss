@@ -33,7 +33,6 @@
   .project-details {
     display: flex;
     flex-flow: wrap;
-    margin-bottom: 5px;
     .detail-label {
       margin: 0 30px 15px 0;
     }
@@ -41,12 +40,10 @@
   .project-operations {
     display: flex;
     flex-flow: wrap;
+    margin-top: auto;
     button {
       margin: 0 15px 15px 0;
     }
-  }
-  .project-operations:last-of-type {
-    margin-top: auto;
   }
   @media(min-width: 650px) {
     .circle-searcher {

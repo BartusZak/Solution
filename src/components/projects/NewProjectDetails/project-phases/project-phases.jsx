@@ -6,7 +6,7 @@ const projectPhases = ({phases, push}) => {
   const phasesCount = phases.length;
   return (
   <div className={`phases-wrapper flex-column ${phasesCount === 0 ? 'empty-list-bg' : ''}`}>
-    <p className="important-par data-padding">Project phases ({phasesCount})</p>
+    <p className="important-par">Project phases ({phasesCount})</p>
 
     {phasesCount === 0 ?
     <div className="empty-list-comunicate">
