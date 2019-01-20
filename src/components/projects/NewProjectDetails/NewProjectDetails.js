@@ -28,7 +28,7 @@ class NewProjectDetails extends React.Component {
   }
 
   render() {
-    const { projectResult, project, t, match, history } = this.props;
+    const { projectResult, project, t, history } = this.props;
     if (this.state.isLoading)
       return <div className="spinner-new spinner-new-big spinner-new-center"></div>;
     else if(!projectResult.status) return null;
@@ -40,7 +40,10 @@ class NewProjectDetails extends React.Component {
           <div className="project-data-wrapper">
             <ProjectSkills skills={skills} />
             <ProjectTeam team={team} />
-            <ProjectPhases phases={phases} projectUrlId={match.params.id} push={id => history.push('/main/projects/' + id)} />
+
+            {!project.parentId &&
+              <ProjectPhases phases={phases} push={id => history.push('/main/projects/' + id)} />
+            }
           </div>
         </div>
       );
