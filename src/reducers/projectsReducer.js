@@ -26,7 +26,7 @@ const initialState = {
   clients: [],
   resultBlock: null,
 
-  project: null, projectResult: {status: null}
+  project: null, projectResult: {status: null},
 
   responsiblePersonKeys: [],
   overViewKeys: [],

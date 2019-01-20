@@ -13,11 +13,20 @@ class NewProjectDetails extends React.Component {
   state = {
     isLoading: true
   }
-  componentDidMount = () => this.props.getProject(this.props.match.params.id);
+  componentDidMount = () => this.getProjectDetails();
   componentDidUpdate = prevProps => {
     if(prevProps.projectResult !== this.props.projectResult)
       this.setState({isLoading: false});
+    if(prevProps.match.params.id !== this.props.match.params.id)
+      this.getProjectDetails();
   }
+
+  getProjectDetails = () => {
+    const { getProject, match } = this.props;
+    this.setState({isLoading: true});
+    getProject(match.params.id);
+  }
+
   render() {
     const { projectResult, project, t, match, history } = this.props;
     if (this.state.isLoading)
@@ -27,15 +36,12 @@ class NewProjectDetails extends React.Component {
       const { skills, team, projectPhases: phases } = project;
       return (
         <div className="project-details-wrapper">
-
           <ProjectInformations project={project} t={t} />
-
           <div className="project-data-wrapper">
             <ProjectSkills skills={skills} />
             <ProjectTeam team={team} />
-            <ProjectPhases phases={phases} projectUrlId={match.params.id} push={history.push}/>
+            <ProjectPhases phases={phases} projectUrlId={match.params.id} push={id => history.push('/main/projects/' + id)} />
           </div>
-
         </div>
       );
     }
