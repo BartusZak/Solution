@@ -2,7 +2,7 @@ const translations = {
   locale: "en",
   EmployeeSearcher: {
     EmployeeSearcherPlaceholder: 'start typing for searching employee...',
-    EmployeeSearcherOwnersPlaceholder: 'find owner...',
+    EmployeeSearcherOwnersPlaceholder: 'dodaj owner...',
     Employee: 'Find employee',
     EmptyEmployeeQuery: 'There is no employees for given parameters'
   },

@@ -34,6 +34,7 @@ class ProjectInformations extends React.Component {
 
         {addPhaseForm &&
           <ProjectPhaseForm parentId={id} isPhaseForm
+            projectToEdit={{name: '', description: '', client, cloud, responsiblePerson}}
             onSubmitSucc={this.toglePhaseForm}
             close={this.toglePhaseForm} />
         }

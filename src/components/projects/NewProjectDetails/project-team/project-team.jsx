@@ -23,7 +23,7 @@ class ProjectTeam extends React.PureComponent {
 
     return (
       <div className="project-team-wrapper box-circle flex-column">
-        <p className="important-par flex-between-c">
+        <p className="important-par flex-between-c data-padding">
           Project team ({teamCount})
           {Object.keys(markedMembers).length > 0 &&
             <i className="fa fa-user-times"></i>

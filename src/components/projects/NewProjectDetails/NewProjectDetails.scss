@@ -26,5 +26,11 @@
       margin: 0;
     }
   }
-
+}
+.empty-list-bg {
+  background: $modal-header-bg;
+  border-radius: 10px;
+}
+.data-padding {
+  padding: 15px 15px 20px 15px;
 }

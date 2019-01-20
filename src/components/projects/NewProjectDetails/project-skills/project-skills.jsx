@@ -29,8 +29,8 @@ class ProjectSkills extends React.PureComponent {
     const { skills } = this.props;
     const skillsCount = skills.length;
     return (
-      <div className="project-skills-wrapper flex-column">
-        <p className="important-par">Project skills ({skillsCount})</p>
+      <div className={`project-skills-wrapper flex-column ${skillsCount === 0 ? 'empty-list-bg' : ''}`}>
+        <p className="important-par data-padding">Project skills ({skillsCount})</p>
 
         {skillsCount === 0 ?
           <div className="empty-list-comunicate">
