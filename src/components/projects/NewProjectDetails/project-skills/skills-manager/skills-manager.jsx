@@ -47,7 +47,7 @@ const ManagerContent = ({allSkills, allSkillsCount, status, skillsData, reloadSk
 
 class SkillsManagement extends React.Component {
   state = {
-    isLoadingAllSkills: false, skillsData: null
+    isLoadingAllSkills: true, skillsData: null
   }
 
   componentDidMount = () => {
@@ -72,7 +72,7 @@ class SkillsManagement extends React.Component {
     this.props.allSkills.forEach(({name}) => {
       skillsData[name] = { color: getRandomColor(), markerWidth: 40, skillLevel: 3, marked: false }
     });
-    this.setState({skillsData});
+    this.setState({skillsData, isLoadingAllSkills: false});
   }
 
   getSkills = () => {
@@ -94,11 +94,10 @@ class SkillsManagement extends React.Component {
       <FancyModal positionClass='skills-modal flex-column' close={close} renderHeader={() => (
         <h3 className="flex-between-c">
           Manage skills {isLoadingAllSkills || `(${allSkillsCount})`}
-          {(isLoadingAllSkills && loadAllSkillsResult.status && allSkillsCount > 0) || <i className="fa fa-sort"></i>}
+          {(!isLoadingAllSkills && loadAllSkillsResult.status && allSkillsCount > 0) && <i className="fa fa-sort"></i>}
         </h3>
       )}>
         { isLoadingAllSkills ? <div className="spinner-new spinner-new-big spinner-new-center" /> :
-          skillsData &&
           <ManagerContent
             reloadSkills={this.getSkills} handleMarking={this.handleMarking}
             allSkills={allSkills} allSkillsCount={allSkillsCount}
