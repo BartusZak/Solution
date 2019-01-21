@@ -15,7 +15,6 @@ import {
   CLEAR_RESPONSE_CLOUD
 } from "../constants";
 import { useRequest } from '../api/index';
-import { editInfoClient } from "../api/request-settings";
 
 
 export const clearResponseCloud = () => {
@@ -64,8 +63,7 @@ export const addResponsiblePersonResult = resultBlock => {
 export const loadClients = () => {
   return dispatch => {
     dispatch(asyncStarted());
-    WebApi.clients.get
-      .all()
+    useRequest('getClients')
       .then(response => {
         if (!response.errorOccurred()) {
           dispatch(loadClientsSuccess(response.extractData(), response));
@@ -179,8 +177,7 @@ export const addClient = formData => {
 
 export const addCloud = (name, fields, clientId) => {
   return dispatch => {
-    WebApi.clouds
-      .post(name, fields, clientId)
+    useRequest('addCloud', name, fields, clientId)
       .then(response => {
         if (!response.errorOccurred()) {
           dispatch(addCloudResult(response));
@@ -219,8 +216,7 @@ export const addResponsiblePerson = (
 
 export const deleteCloud = id => {
   return dispatch => {
-    WebApi.clouds
-      .delete(id)
+    useRequest('deleteCloud', id)
       .then(response => {
         if (!response.errorOccurred()) {
           dispatch(setActionConfirmationResult(response));
@@ -236,8 +232,7 @@ export const deleteCloud = id => {
 
 export const editCloud = (cloudId, name, fields, clientId) => {
   return dispatch => {
-    WebApi.clouds
-      .edit(cloudId, name, fields, clientId)
+    useRequest('editCloud', cloudId, name, fields, clientId)
       .then(response => {
         if (!response.errorOccurred()) {
           dispatch(addCloudResult(response));
@@ -301,8 +296,7 @@ export const deleteResponsiblePerson = id => {
 
 export const reactivateCloud = id => {
   return dispatch => {
-    WebApi.clouds
-      .reactivate(id)
+    useRequest('reactivateCloud', id)
       .then(response => {
         if (!response.errorOccurred()) {
           dispatch(setActionConfirmationResult(response));

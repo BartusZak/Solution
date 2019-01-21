@@ -22,7 +22,7 @@ export const getQuestions = (getQuestionsStatus, getQuestionsErrors, questions) 
 
   export const getQuarterQuestionsACreator = () => dispatch => {
       return new Promise((resolve, reject) => {
-          WebApi.quarterTalks.get.questions().then(response => {
+          useRequest('getQuarterTalks').then(response => {
             dispatch(getQuestions(true, [], response.replyBlock.data.dtoObjects));
             resolve(response.replyBlock.data.dtoObjects);
           }).catch(error => {
@@ -54,7 +54,7 @@ export const getQuestions = (getQuestionsStatus, getQuestionsErrors, questions) 
             return { quarterTalkQuestionId: item.id, answer: item.value}
         });
 
-        WebApi.quarterTalks.post.createQuarter(model).then(response => {
+        useRequest('addQuarterTalk', model).then(response => {
             dispatch(addQuarterTalk(true, []));
             resolve();
         }).catch(error => {
@@ -77,7 +77,7 @@ export const getReservedDates = (reservedDates, getDatesStatus, getDatesErrors) 
             "token": token
         };
 
-        WebApi.quarterTalks.post.reservedDates(model, true).then(response => {
+        useRequest('checkOutlookReservedDates', model, true).then(response => {
             const { dtoObjects: cutedResponse } = response.replyBlock.data;
             const copiedResponse = [...cutedResponse];
 
@@ -118,7 +118,7 @@ export const getReservedDates = (reservedDates, getDatesStatus, getDatesErrors) 
             "token": token
         }
 
-        WebApi.quarterTalks.post.planQuarter(model, true).then(response => {
+        useRequest('planQuarterTalk', model, true).then(response => {
             dispatch(planQuarter(true, []));
             resolve();
         }).catch(error => {
@@ -134,7 +134,7 @@ export const getReservedDates = (reservedDates, getDatesStatus, getDatesErrors) 
 
   export const getQuartersForEmployeeACreator = employeeId => dispatch => {
       return new Promise((resolve, reject) => {
-        WebApi.quarterTalks.get.getQuarterForEmployee(employeeId).then(response => {
+        useRequest('getQuarterTalksForEmployee', employeeId).then(response => {
             const { dtoObjects: items } = response.replyBlock.data;
 
             items.forEach(function(part, index){
@@ -184,7 +184,7 @@ export const getReservedDates = (reservedDates, getDatesStatus, getDatesErrors) 
 
   export const addQuestionACreator = question => dispatch => {
     return new Promise((resolve, reject) => {
-        WebApi.quarterTalks.post.addQuestion({question}).then(response => {
+        useRequest('addQuestion', {question}).then(response => {
             dispatch(addQuestion(true, []));
             resolve(response.replyBlock.data.dtoObject.id);
         }).catch(errors => {
@@ -196,7 +196,7 @@ export const getReservedDates = (reservedDates, getDatesStatus, getDatesErrors) 
 
 export const deleteQuestionACreator = questionId => dispatch => {
     return new Promise((resolve, reject) => {
-        WebApi.quarterTalks.delete.question(questionId).then(response => {
+        useRequest('deleteQuestion', questionId).then(response => {
             dispatch(deleteQuestion(true, []));
             resolve();
         }).catch(errors => {
@@ -215,7 +215,7 @@ export const deleteQuestionACreator = questionId => dispatch => {
         const quarterTalkQuestionItems = formItems.map(item => (
             { quarterTalkQuestionId: item.id, answer: item.value }
         ));
-        WebApi.quarterTalks.put.populateQuarter({quarterTalkQuestionItems}, quarterId).then(response => {
+        useRequest('editQuarterTalk', {quarterTalkQuestionItems}, quarterId).then(response => {
             dispatch(addQuarterTalk(true, []));
             resolve();
         }).catch(errors => {

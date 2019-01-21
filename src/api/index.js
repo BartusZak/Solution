@@ -146,7 +146,7 @@ const requests = {
   deleteEmployee: id => execute(fromAlertSettings.deleteEmployee, `employees/${id}`, requestTypes.delete),
   editSkills: (id, skillsArray) => execute(fromAlertSettings.editSkills, `employees/${id}`, requestTypes.put, skillsArray),
   editForeignLanguages: (id, languagesArray) => execute(fromAlertSettings.editForeignLanguages, `employees/foreignLanguages/${id}`, requestTypes.put, languagesArray),
-  editSkype: (employeeId, skypeId) => execute(fromAlertSettings.editSkype, `employees/UpdateSkype`, requestTypes.put, {employeeId, skypeId}),
+  editSkype: (skypeId, employeeId) => execute(fromAlertSettings.editSkype, `employees/updateSkype`, requestTypes.put, {skypeId, employeeId}),
   editOnBoardEmployee: (onBoardId, model) => execute(fromAlertSettings.editOnBoardEmployee, `employees/editOnBoard/${onBoardId}`, requestTypes.patch, model),
   editEmployee: (id, model) => execute(fromAlertSettings.editEmployee, `employees/${id}`, requestTypes.patch, model),
   reactivateEmployee: id => execute(fromAlertSettings.reactivateEmployee, `employees/reactivate/${id}`, requestTypes.patch),
@@ -155,9 +155,18 @@ const requests = {
   addProject: model => execute(fromAlertSettings.addProject, `projects/add`, requestTypes.post, model),
 
   //QUATER TALKS
+  getQuarterTalks: () => execute(fromAlertSettings.getQuarterTalks, `quarterTalks/questions`),
+  getQuarterTalksForEmployee: employeeId => execute(fromAlertSettings.getQuarterTalksForEmployee, `quarterTalks/forEmployee/${employeeId}`),
+  addQuarterTalk: model => execute(fromAlertSettings.addQuarterTalk, `quarterTalks`, requestTypes.post, model),
   reactivateQuaterTalk: id => execute(fromAlertSettings.reactivateQuaterTalk, `quarterTalks/reactivate/${id}`, requestTypes.put),
   deleteQuaterTalk: id => execute(fromAlertSettings.deleteQuaterTalk, `quarterTalks/${id}`, requestTypes.delete),
   editQuarterTalk: (id, model) => execute(fromAlertSettings.editQuarterTalk, `quarterTalks/${id}`, requestTypes.put, model),
+  planQuarterTalk: (model, shouldSync) => execute(fromAlertSettings.planQuarterTalk, `quarterTalks/Planned?syncCalendar=${shouldSync}`, requestTypes.post, model),
+  generateDocForQuarterTalk: quarterId => execute(fromAlertSettings.generateDocForQuarterTalk, `quarterTalks/GenerateDocx/${quarterId}`),
+  checkOutlookReservedDates: (model, checkOutlook) => execute(fromAlertSettings.checkOutlookReservedDates, `quarterTalks/GetReservedDates?checkOutlook=${checkOutlook}`, model),
+  getQuestions: () => execute(fromAlertSettings.getQuestions, `quarterTalks/questions`),
+  addQuestion: model => execute(fromAlertSettings.addQuestion, `quarterTalks/Question`, requestTypes.post, model),
+  deleteQuestion: id => execute(fromAlertSettings.deleteQuestion, `quarterTalks/Question/${id}`, requestTypes.delete),
 
   //ASSIGNMENTS
   getAssignmentByEmployee: employeeId => execute(fromAlertSettings.getAssignmentByEmployee, `assignments/employee/${employeeId}`),  
@@ -182,16 +191,17 @@ const requests = {
   
   //CLIENTS
   getClients: () => execute(fromAlertSettings.getClients, 'clients?lessDetailed=false'),
+  getClientById: id => execute(fromAlertSettings.getClientById, `client/${id}`),
   addClient: model => execute(fromAlertSettings.addClient, 'clients', requestTypes.post, model),
-  deleteClient: id => execute(fromAlertSettings.deleteClient, `delete/${id}`, requestTypes.delete),
+  deleteClient: id => execute(fromAlertSettings.deleteClient, `clients/${id}`, requestTypes.delete),
   editInfoClient: (id, model) => execute(fromAlertSettings.editInfoClient, `clients/${id}`, requestTypes.put, model),
   reactivateClient: id => execute(fromAlertSettings.reactivateClient, `clients/${id}/reactivate`, requestTypes.put),
 
   //CERTIFICATES
   getCertificates: employeeId => execute(fromAlertSettings.getCertificates, `certificates/employee/${employeeId}`),
   addCertificate: model => execute(fromAlertSettings.addCertificate, `certificates`, requestTypes.post, model),
-  editCertificate: (id, model) => execute(fromAlertSettings.editCertificate, `certificates/${-1}`, requestTypes.put, model),
-  deleteCertificate: id => execute(fromAlertSettings.deleteCertificate, `certificates/${-1}`, requestTypes.delete),
+  editCertificate: (id, model) => execute(fromAlertSettings.editCertificate, `certificates/${id}`, requestTypes.put, model),
+  deleteCertificate: id => execute(fromAlertSettings.deleteCertificate, `certificates/${id}`, requestTypes.delete),
 
   //FEEDBACKS
   getFeedbacksByEmployee: employeeId => execute(fromAlertSettings.getFeedbacksByEmployee, `feedbacks/employee/${employeeId}?isDeleted=false`),
@@ -219,8 +229,35 @@ const requests = {
   deleteUser: id => execute(fromAlertSettings.deleteUser, `account/${id}`, requestTypes.delete),
   deleteUserRequest: id => execute(fromAlertSettings.deleteUserRequest, `account/requests`, requestTypes.delete, params({ id })),
   editUserRoles: (id, roles) => execute(fromAlertSettings.editUserRoles, `account`, requestTypes.patch, {id, roles}),
-  reactivateUser: id => execute(fromAlertSettings.reactivateUser, `account/reactivate/${id}`, requestTypes.patch)
+  reactivateUser: id => execute(fromAlertSettings.reactivateUser, `account/reactivate/${id}`, requestTypes.patch),
   
+  //CLOUDS
+  addCloud: (name, fields, clientId) => execute(fromAlertSettings.addCloud, `clouds`, requestTypes.post, {name, fields, clientId}),
+  editCloud: (cloudId, name, fields, clientId) => execute(fromAlertSettings.editCloud, `clouds/${cloudId}`, requestTypes.put, {name, fields, clientId}),
+  deleteCloud: id => execute(fromAlertSettings.deleteCloud, `clouds/${id}`, requestTypes.delete),
+  reactivateCloud: id => execute(fromAlertSettings.reactivateCloud, `clouds/${id}/reactivate`, requestTypes.put),
+
+  //GDRIVE
+  gDriveLogin: () => execute(fromAlertSettings.gDriveLogin, `gdrive/Login`),
+  gDriveGenereteShareLink: model => execute(fromAlertSettings.gDriveGenereteShareLink, `gDrive/generateShareLink`, requestTypes.post, model),
+  gDriveGetFolders: model => execute(fromAlertSettings.gDriveGetFolders, `gDrive/get`, requestTypes.post, model),
+  gDriveDeleteFolder: model => execute(fromAlertSettings.gDriveDeleteFolder, `gDrive/delete`, requestTypes.post, model),
+  gDriveUpdateFolder: model => execute(fromAlertSettings.gDriveUpdateFolder, `gDrive/update`, requestTypes.post, model),
+  gDriveCreateFolder: model => execute(fromAlertSettings.gDriveCreateFolder, `gDrive/create`, requestTypes.post, model),
+  gDriveUploadFile: (model, config) => execute(fromAlertSettings.gDriveUploadFile, `gDrive/upload`, requestTypes.post, model, config),
+
+  //ONEDRIVE
+  oneDriveGetRedirectLink: shouldRedirectOnCalendar => 
+    execute(fromAlertSettings.oneDriveGetRedirectLink, `onedrive/auth?=${shouldRedirectOnCalendar || false}`),
+  oneDriveSendQueryToAuth: (code, shouldRedirectOnCalendar) => 
+    execute(fromAlertSettings.oneDriveSendQueryToAuth, `/onedrive/authenticated?code=${code}&calendar=${shouldRedirectOnCalendar || false}`),
+  oneDriveRefreshToken: oldToken => execute(fromAlertSettings.oneDriveRefreshToken, `onedrive/refresh?refresh_token=${oldToken}`), 
+  oneDriveGenerateShareLink: model => execute(fromAlertSettings.oneDriveGenerateShareLink, `onedrive/share`, requestTypes.post, model), 
+  oneDriveGetFolders: model => execute(fromAlertSettings.oneDriveGetFolders, `onedrive/files`, requestTypes.post, model), 
+  oneDriveCreateFolder: model => execute(fromAlertSettings.oneDriveCreateFolder, `onedrive/createFolder`, requestTypes.post, model),
+  oneDriveDeleteFolder: model => execute(fromAlertSettings.oneDriveDeleteFolder, `onedrive/deleteFolder`, requestTypes.post, model), 
+  oneDriveUpdateFolder: model => execute(fromAlertSettings.oneDriveUpdateFolder, `onedrive/updateFolder`, requestTypes.post, model),
+  oneDriveUploadFile: (model, config) => execute(fromAlertSettings.oneDriveUpdateFolder, `onedrive/upload`, requestTypes.post, model, config) 
 };
 
 export const useRequest = (name, ...params) => requests[name](...params);
@@ -279,52 +316,52 @@ const WebApi = {
       }
     }
   },
-  clients: {
-    get: {
-      all: () => {
-        return WebAround.get(`${API_ENDPOINT}/clients`);
-      },
-      byClientId: clientId => {
-        return WebAround.get(`${API_ENDPOINT}/clients/${clientId}`);
-      }
-    },
-    post: formData => {
-      return WebAround.post(`${API_ENDPOINT}/clients/`, formData);
-    },
-    delete: clientId => {
-      return WebAround.delete(`${API_ENDPOINT}/clients/${clientId}`);
-    },
-    put: {
-      info: (clientId, formData) => {
-        return WebAround.put(`${API_ENDPOINT}/clients/${clientId}`, formData);
-      },
-      reactivate: clientId => {
-        return WebAround.put(`${API_ENDPOINT}/clients/${clientId}/reactivate`);
-      }
-    }
-  },
-  clouds: {
-    post: (name, fields, clientId) => {
-      return WebAround.post(`${API_ENDPOINT}/clouds/`, {
-        name,
-        fields,
-        clientId
-      });
-    },
-    edit: (cloudId, name, fields, clientId) => {
-      return WebAround.put(`${API_ENDPOINT}/clouds/${cloudId}`, {
-        name,
-        fields,
-        clientId
-      });
-    },
-    delete: cloudId => {
-      return WebAround.delete(`${API_ENDPOINT}/clouds/${cloudId}`);
-    },
-    reactivate: cloudId => {
-      return WebAround.put(`${API_ENDPOINT}/clouds/${cloudId}/reactivate`);
-    }
-  },
+  // clients: {
+  //   get: {
+  //     all: () => {
+  //       return WebAround.get(`${API_ENDPOINT}/clients`);
+  //     },
+  //     byClientId: clientId => {
+  //       return WebAround.get(`${API_ENDPOINT}/clients/${clientId}`);
+  //     }
+  //   },
+  //   post: formData => {
+  //     return WebAround.post(`${API_ENDPOINT}/clients/`, formData);
+  //   },
+  //   delete: clientId => {
+  //     return WebAround.delete(`${API_ENDPOINT}/clients/${clientId}`);
+  //   },
+  //   put: {
+  //     info: (clientId, formData) => {
+  //       return WebAround.put(`${API_ENDPOINT}/clients/${clientId}`, formData);
+  //     },
+  //     reactivate: clientId => {
+  //       return WebAround.put(`${API_ENDPOINT}/clients/${clientId}/reactivate`);
+  //     }
+  //   }
+  // },
+  // clouds: { 
+  //   post: (name, fields, clientId) => {
+  //     return WebAround.post(`${API_ENDPOINT}/clouds/`, {
+  //       name,
+  //       fields,
+  //       clientId
+  //     });
+  //   },
+  //   edit: (cloudId, name, fields, clientId) => {
+  //     return WebAround.put(`${API_ENDPOINT}/clouds/${cloudId}`, {
+  //       name,
+  //       fields,
+  //       clientId
+  //     });
+  //   },
+  //   delete: cloudId => {
+  //     return WebAround.delete(`${API_ENDPOINT}/clouds/${cloudId}`);
+  //   },
+  //   reactivate: cloudId => {
+  //     return WebAround.put(`${API_ENDPOINT}/clouds/${cloudId}/reactivate`);
+  //   }
+  // },
   education: {
     get: {
       byEmployee: employeeId => {
@@ -336,143 +373,143 @@ const WebApi = {
     put: educationId => {},
     post: () => {}
   },
-  quarterTalks: {
-    get: {
-      questions: () => {
-        return WebAround.get(`${API_ENDPOINT}/QuarterTalks/questions`);
-      },
-      getQuarterForEmployee: employeeId => {
-        return WebAround.get(
-          `${API_ENDPOINT}/QuarterTalks/ForEmployee/` + employeeId
-        );
-      },
-      generateDoc: quarterId => {
-        return WebAround.get(
-          `${API_ENDPOINT}/QuarterTalks/GenerateDocx/${quarterId}`
-        );
-      }
-    },
-    delete: {
-      question: questionId => {
-        return WebAround.delete(
-          `${API_ENDPOINT}/QuarterTalks/Question/${questionId}`
-        );
-      }
-    },
-    put: {
-      populateQuarter: (model, quarterId) => {
-        return WebAround.put(
-          `${API_ENDPOINT}/QuarterTalks/${quarterId}`,
-          model
-        );
-      }
-    },
-    post: {
-      addQuestion: model => {
-        return WebAround.post(`${API_ENDPOINT}/QuarterTalks/Question`, model);
-      },
-      createQuarter: model => {
-        return WebAround.post(`${API_ENDPOINT}/QuarterTalks`, model);
-      },
-      planQuarter: (model, shouldSync) => {
-        return WebAround.post(
-          `${API_ENDPOINT}/QuarterTalks/Planned?syncCalendar=${shouldSync}`,
-          model
-        );
-      },
-      reservedDates: (model, checkOutlook) => {
-        return WebAround.post(
-          `${API_ENDPOINT}/QuarterTalks/GetReservedDates?checkOutlook=${checkOutlook}`,
-          model
-        );
-      }
-    }
-  },
-  employees: { // deleteOnBoardEmployee, deleteEmployee
-    get: {
-      byEmployee: employeeId => {
-        return WebAround.get(`${API_ENDPOINT}/employees/${employeeId}`);
-      },
-      capacity: employeeId => {
-        return WebAround.get(
-          `${API_ENDPOINT}/employees/${employeeId}/capacity`
-        );
-      },
-      employeesAndManagers: () => {
-        return WebAround.get(
-          `${API_ENDPOINT}/sharedEmployees/getEmployeesAndManagers`
-        );
-      },
-      onBoards: employeeId => {
-        return WebAround.get(`${API_ENDPOINT}/employees/GetOnBoardsByEmployeeId/${employeeId}`
-        );
-      },
-      emplo: {
-        contact: employeeId => {
-          return WebAround.get(
-            `${API_ENDPOINT}/employees/billenniumemplocontact`,
-            params({ employeeId })
-          );
-        },
-        skills: employeeId => {
-          return WebAround.get(
-            `${API_ENDPOINT}/employees/billenniumemploskills`,
-            params({ employeeId })
-          );
-        }
-      }
-    },
-    post: {
-      add: employee => {
-        return WebAround.post(`${API_ENDPOINT}/employees/add`, employee);
-      },
-      addOnBoard: onBoardModel => {
-        return WebAround.post(`${API_ENDPOINT}/employees/addToOnBoard`, onBoardModel);
-      }
-    },
-    deleteOnBoard: onBoardId => {
-      return WebAround.delete(`${API_ENDPOINT}/employees/DeleteOnBoard/${onBoardId}`);
-    },
-    delete: employeeId => {
-      return WebAround.delete(`${API_ENDPOINT}/employees/${employeeId}`);
-    },
-    put: {
-      skills: (employeeId, skillsArray) => {
-        return WebAround.put(
-          `${API_ENDPOINT}/employees/${employeeId}`,
-          skillsArray
-        );
-      },
-      foreignLanguages: (employeeId, languagesArray) => {
-        return WebAround.put(
-          `${API_ENDPOINT}/employees/${employeeId}`,
-          languagesArray
-        );
-      },
-      updateSkype: (skypeId, employeeId) => {
-        return WebAround.put(`${API_ENDPOINT}/employees/UpdateSkype`, {
-          skypeId,
-          employeeId
-        });
-      },
-      updateOnBoard: (onBoardModel, onBoardId) => {
-        return WebAround.patch(`${API_ENDPOINT}/Employees/EditOnBoard/${onBoardId}`, onBoardModel);
-      }
-    },
-    patch: {
-      data: (employeeId, model) => {
-        return WebAround.patch(
-          `${API_ENDPOINT}/employees/${employeeId}`,
-          model
-        );
-      },
-      reactivate: employeeId => {
-        return WebAround.patch(
-          `${API_ENDPOINT}/employees/reactivate/${employeeId}`
-        );
-      }
-    }
-  },
+  // quarterTalks: {
+  //   get: {
+  //     questions: () => {
+  //       return WebAround.get(`${API_ENDPOINT}/QuarterTalks/questions`);
+  //     },
+  //     getQuarterForEmployee: employeeId => {
+  //       return WebAround.get(
+  //         `${API_ENDPOINT}/QuarterTalks/ForEmployee/` + employeeId
+  //       );
+  //     },
+  //     generateDoc: quarterId => {
+  //       return WebAround.get(
+  //         `${API_ENDPOINT}/QuarterTalks/GenerateDocx/${quarterId}`
+  //       );
+  //     }
+  //   },
+  //   delete: {
+  //     question: questionId => {
+  //       return WebAround.delete(
+  //         `${API_ENDPOINT}/QuarterTalks/Question/${questionId}`
+  //       );
+  //     }
+  //   },
+  //   put: {
+  //     populateQuarter: (model, quarterId) => {
+  //       return WebAround.put(
+  //         `${API_ENDPOINT}/QuarterTalks/${quarterId}`,
+  //         model
+  //       );
+  //     }
+  //   },
+  //   post: {
+  //     addQuestion: model => {
+  //       return WebAround.post(`${API_ENDPOINT}/QuarterTalks/Question`, model);
+  //     },
+  //     createQuarter: model => {
+  //       return WebAround.post(`${API_ENDPOINT}/QuarterTalks`, model);
+  //     },
+  //     planQuarter: (model, shouldSync) => {
+  //       return WebAround.post(
+  //         `${API_ENDPOINT}/QuarterTalks/Planned?syncCalendar=${shouldSync}`,
+  //         model
+  //       );
+  //     },
+  //     reservedDates: (model, checkOutlook) => {
+  //       return WebAround.post(
+  //         `${API_ENDPOINT}/QuarterTalks/GetReservedDates?checkOutlook=${checkOutlook}`,
+  //         model
+  //       );
+  //     }
+  //   }
+  // },
+  // employees: { // deleteOnBoardEmployee, deleteEmployee
+  //   get: {
+  //     byEmployee: employeeId => {
+  //       return WebAround.get(`${API_ENDPOINT}/employees/${employeeId}`);
+  //     },
+  //     capacity: employeeId => {
+  //       return WebAround.get(
+  //         `${API_ENDPOINT}/employees/${employeeId}/capacity`
+  //       );
+  //     },
+  //     employeesAndManagers: () => {
+  //       return WebAround.get(
+  //         `${API_ENDPOINT}/sharedEmployees/getEmployeesAndManagers`
+  //       );
+  //     },
+  //     onBoards: employeeId => {
+  //       return WebAround.get(`${API_ENDPOINT}/employees/GetOnBoardsByEmployeeId/${employeeId}`
+  //       );
+  //     },
+  //     emplo: {
+  //       contact: employeeId => {
+  //         return WebAround.get(
+  //           `${API_ENDPOINT}/employees/billenniumemplocontact`,
+  //           params({ employeeId })
+  //         );
+  //       },
+  //       skills: employeeId => {
+  //         return WebAround.get(
+  //           `${API_ENDPOINT}/employees/billenniumemploskills`,
+  //           params({ employeeId })
+  //         );
+  //       }
+  //     }
+  //   },
+  //   post: {
+  //     add: employee => {
+  //       return WebAround.post(`${API_ENDPOINT}/employees/add`, employee);
+  //     },
+  //     addOnBoard: onBoardModel => {
+  //       return WebAround.post(`${API_ENDPOINT}/employees/addToOnBoard`, onBoardModel);
+  //     }
+  //   },
+  //   deleteOnBoard: onBoardId => {
+  //     return WebAround.delete(`${API_ENDPOINT}/employees/DeleteOnBoard/${onBoardId}`);
+  //   },
+  //   delete: employeeId => {
+  //     return WebAround.delete(`${API_ENDPOINT}/employees/${employeeId}`);
+  //   },
+  //   put: {
+  //     // skills: (employeeId, skillsArray) => {
+  //     //   return WebAround.put(
+  //     //     `${API_ENDPOINT}/employees/${employeeId}`,
+  //     //     skillsArray
+  //     //   );
+  //     // },
+  //     foreignLanguages: (employeeId, languagesArray) => {
+  //       return WebAround.put(
+  //         `${API_ENDPOINT}/employees/${employeeId}`,
+  //         languagesArray
+  //       );
+  //     },
+  //     updateSkype: (skypeId, employeeId) => {
+  //       return WebAround.put(`${API_ENDPOINT}/employees/UpdateSkype`, {
+  //         skypeId,
+  //         employeeId
+  //       });
+  //     },
+  //     updateOnBoard: (onBoardModel, onBoardId) => {
+  //       return WebAround.patch(`${API_ENDPOINT}/Employees/EditOnBoard/${onBoardId}`, onBoardModel);
+  //     }
+  //   },
+  //   patch: {
+  //     data: (employeeId, model) => {
+  //       return WebAround.patch(
+  //         `${API_ENDPOINT}/employees/${employeeId}`,
+  //         model
+  //       );
+  //     },
+  //     reactivate: employeeId => {
+  //       return WebAround.patch(
+  //         `${API_ENDPOINT}/employees/reactivate/${employeeId}`
+  //       );
+  //     }
+  //   }
+  // },
   // sharedEmployees: {
   //   get: {
   //     forManager: managerId => {
@@ -666,79 +703,79 @@ const WebApi = {
       );
     }
   },
-  gDrive: {
-    get: {
-      login: () => {
-        return WebAround.get(`${API_ENDPOINT}/gdrive/Login`);
-      }
-    },
-    post: {
-      generateShareLink: model => {
-        return WebAround.post(
-          `${API_ENDPOINT}/GDrive/GenerateShareLink`,
-          model
-        );
-      },
-      getFolders: model => {
-        return WebAround.post(`${API_ENDPOINT}/GDrive/Get`, model);
-      },
-      deleteFolder: model => {
-        return WebAround.post(`${API_ENDPOINT}/GDrive/Delete`, model);
-      },
-      updateFolder: model => {
-        return WebAround.post(`${API_ENDPOINT}/GDrive/Update`, model);
-      },
-      createFolder: model => {
-        return WebAround.post(`${API_ENDPOINT}/GDrive/Create`, model);
-      },
-      uploadFile: (model, config) => {
-        return WebAround.post(`${API_ENDPOINT}/GDrive/Upload`, model, config);
-      }
-    }
-  },
-  oneDrive: {
-    get: {
-      getRedirectLink: shouldRedirectOnCalendar => {
-        return WebAround.get(
-          `${API_ENDPOINT}/onedrive/auth?=${
-            shouldRedirectOnCalendar ? shouldRedirectOnCalendar : false
-          }`
-        );
-      },
-      sendQuertToAuth: (code, shouldRedirectOnCalendar) => {
-        return WebAround.get(
-          `${API_ENDPOINT}/onedrive/authenticated?code=${code}&calendar=${
-            shouldRedirectOnCalendar ? shouldRedirectOnCalendar : false
-          }`
-        );
-      },
-      refreshToken: oldToken => {
-        return WebAround.get(
-          `${API_ENDPOINT}/Onedrive/refresh?refresh_token=${oldToken}`
-        );
-      }
-    },
-    post: {
-      generateShareLink: model => {
-        return WebAround.post(`${API_ENDPOINT}/onedrive/share`, model);
-      },
-      getFolders: model => {
-        return WebAround.post(`${API_ENDPOINT}/onedrive/files`, model);
-      },
-      createFolder: model => {
-        return WebAround.post(`${API_ENDPOINT}/onedrive/createFolder`, model);
-      },
-      deleteFolder: model => {
-        return WebAround.post(`${API_ENDPOINT}/onedrive/deleteFolder`, model);
-      },
-      updateFolder: model => {
-        return WebAround.post(`${API_ENDPOINT}/onedrive/updateFolder`, model);
-      },
-      uploadFile: (model, config) => {
-        return WebAround.post(`${API_ENDPOINT}/onedrive/upload`, model, config);
-      }
-    }
-  },
+  // gDrive: { // 
+  //   get: {
+  //     login: () => {
+  //       return WebAround.get(`${API_ENDPOINT}/gdrive/Login`);
+  //     }
+  //   },
+  //   post: {
+  //     generateShareLink: model => {
+  //       return WebAround.post(
+  //         `${API_ENDPOINT}/GDrive/GenerateShareLink`,
+  //         model
+  //       );
+  //     },
+  //     getFolders: model => {
+  //       return WebAround.post(`${API_ENDPOINT}/GDrive/Get`, model);
+  //     },
+  //     deleteFolder: model => {
+  //       return WebAround.post(`${API_ENDPOINT}/GDrive/Delete`, model);
+  //     },
+  //     updateFolder: model => {
+  //       return WebAround.post(`${API_ENDPOINT}/GDrive/Update`, model);
+  //     },
+  //     createFolder: model => {
+  //       return WebAround.post(`${API_ENDPOINT}/GDrive/Create`, model);
+  //     },
+  //     uploadFile: (model, config) => {
+  //       return WebAround.post(`${API_ENDPOINT}/GDrive/Upload`, model, config);
+  //     }
+  //   }
+  // },
+  // oneDrive: { 
+  //   get: {
+  //     getRedirectLink: shouldRedirectOnCalendar => {
+  //       return WebAround.get(
+  //         `${API_ENDPOINT}/onedrive/auth?=${
+  //           shouldRedirectOnCalendar ? shouldRedirectOnCalendar : false
+  //         }`
+  //       );
+  //     },
+  //     sendQuertToAuth: (code, shouldRedirectOnCalendar) => {
+  //       return WebAround.get(
+  //         `${API_ENDPOINT}/onedrive/authenticated?code=${code}&calendar=${
+  //           shouldRedirectOnCalendar ? shouldRedirectOnCalendar : false
+  //         }`
+  //       );
+  //     },
+  //     refreshToken: oldToken => {
+  //       return WebAround.get(
+  //         `${API_ENDPOINT}/Onedrive/refresh?refresh_token=${oldToken}`
+  //       );
+  //     }
+  //   },
+  //   post: {
+  //     generateShareLink: model => {
+  //       return WebAround.post(`${API_ENDPOINT}/onedrive/share`, model);
+  //     },
+  //     getFolders: model => {
+  //       return WebAround.post(`${API_ENDPOINT}/onedrive/files`, model);
+  //     },
+  //     createFolder: model => {
+  //       return WebAround.post(`${API_ENDPOINT}/onedrive/createFolder`, model);
+  //     },
+  //     deleteFolder: model => {
+  //       return WebAround.post(`${API_ENDPOINT}/onedrive/deleteFolder`, model);
+  //     },
+  //     updateFolder: model => {
+  //       return WebAround.post(`${API_ENDPOINT}/onedrive/updateFolder`, model);
+  //     },
+  //     uploadFile: (model, config) => {
+  //       return WebAround.post(`${API_ENDPOINT}/onedrive/upload`, model, config);
+  //     }
+  //   }
+  // },
   responsiblePerson: {
     get: {
       byClient: clientId => {
@@ -818,63 +855,63 @@ const WebApi = {
       }
     }
   },
-  users: { 
-    get: {
-      byUser: userId => {
-        return WebAround.get(`${API_ENDPOINT}/account/${userId}`);
-      },
-      adSearch: query => {
-        return WebAround.get(`${API_ENDPOINT}/account/searchAD/${query}`);
-      }
-    },
-    post: {
-      list: (settings = {}) => {
-        return WebAround.post(`${API_ENDPOINT}/account`, settings);
-      },
-      listOfRequests: (settings = {}) => {
-        return WebAround.post(`${API_ENDPOINT}/account/requests`, settings);
-      },
-      add: (userId, roles) => {
-        return WebAround.post(`${API_ENDPOINT}/account/add`, {
-          id: userId,
-          roles
-        });
-      },
-      login: (login, password) => {
-        return axios
-          .post(`${API_ENDPOINT}/account/login`, { login, password })
-          .then(response => response.data.dtoObject);
-      },
-      logout: () => {
-        return axios.post(`${API_ENDPOINT}/account/logout`);
-      },
-      token: refreshToken => {
-        return axios.post(`${API_ENDPOINT}/account/login`, { refreshToken });
-      }
-    },
-    delete: {
-      user: userId => {
-        return WebAround.delete(`${API_ENDPOINT}/account/${userId}`);
-      },
-      request: userId => {
-        return WebAround.delete(
-          `${API_ENDPOINT}/account/requests`,
-          params({ userId })
-        );
-      }
-    },
-    patch: {
-      roles: (userId, roles) => {
-        return WebAround.patch(`${API_ENDPOINT}/account`, {
-          Id: userId,
-          Roles: roles
-        });
-      },
-      reactivate: userId => {
-        return WebAround.patch(`${API_ENDPOINT}/account/reactivate/${userId}`);
-      }
-    }
-  },
+  // users: { 
+  //   get: {
+  //     byUser: userId => {
+  //       return WebAround.get(`${API_ENDPOINT}/account/${userId}`);
+  //     },
+  //     adSearch: query => {
+  //       return WebAround.get(`${API_ENDPOINT}/account/searchAD/${query}`);
+  //     }
+  //   },
+  //   post: {
+  //     list: (settings = {}) => {
+  //       return WebAround.post(`${API_ENDPOINT}/account`, settings);
+  //     },
+  //     listOfRequests: (settings = {}) => {
+  //       return WebAround.post(`${API_ENDPOINT}/account/requests`, settings);
+  //     },
+  //     add: (userId, roles) => {
+  //       return WebAround.post(`${API_ENDPOINT}/account/add`, {
+  //         id: userId,
+  //         roles
+  //       });
+  //     },
+  //     login: (login, password) => {
+  //       return axios
+  //         .post(`${API_ENDPOINT}/account/login`, { login, password })
+  //         .then(response => response.data.dtoObject);
+  //     },
+  //     logout: () => {
+  //       return axios.post(`${API_ENDPOINT}/account/logout`);
+  //     },
+  //     token: refreshToken => {
+  //       return axios.post(`${API_ENDPOINT}/account/login`, { refreshToken });
+  //     }
+  //   },
+  //   delete: {
+  //     user: userId => {
+  //       return WebAround.delete(`${API_ENDPOINT}/account/${userId}`);
+  //     },
+  //     request: userId => {
+  //       return WebAround.delete(
+  //         `${API_ENDPOINT}/account/requests`,
+  //         params({ userId })
+  //       );
+  //     }
+  //   },
+  //   patch: {
+  //     roles: (userId, roles) => {
+  //       return WebAround.patch(`${API_ENDPOINT}/account`, {
+  //         Id: userId,
+  //         Roles: roles
+  //       });
+  //     },
+  //     reactivate: userId => {
+  //       return WebAround.patch(`${API_ENDPOINT}/account/reactivate/${userId}`);
+  //     }
+  //   }
+  // },
   workExperience: {
     get: {
       byExperience: workExperienceId => {},

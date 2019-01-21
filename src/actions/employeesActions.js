@@ -101,8 +101,7 @@ export const getUserCv = (
 export const updateSkype = (skypeId, employeeId) => {
   return dispatch => {
     dispatch(updateSkypeResult(null, true));
-    WebApi.employees.put
-      .updateSkype(skypeId, employeeId)
+    useRequest('editSkype', skypeId, employeeId)
       .then(response => {
         if (!response.errorOccurred()) {
           dispatch(updateSkypeResult(response, false)),
@@ -402,8 +401,7 @@ const clearAfterTime = delay => {
 
 export const deleteEmployee = employeeId => {
   return dispatch => {
-    WebApi.employees
-      .delete(employeeId)
+    useRequest('deleteEmployee', employeeId)
       .then(response => {
         dispatch(getEmployeePromise(employeeId));
       })
@@ -420,8 +418,7 @@ export const deleteEmployeeOnList = (
   setActionConfirmationResult
 ) => {
   return dispatch => {
-    WebApi.employees
-      .delete(employeeId)
+    useRequest('deleteEmployee', employeeId)
       .then(response => {
         setActionConfirmationResult(response);
         pageChange();
@@ -438,8 +435,7 @@ export const reActivateEmployeeOnList = (
   setActionConfirmationResult
 ) => {
   return dispatch => {
-    WebApi.employees.patch
-      .reactivate(employeeId)
+    useRequest('reactivateEmployee', employeeId)
       .then(response => {
         setActionConfirmationResult(response);
         pageChange();
@@ -452,8 +448,7 @@ export const reActivateEmployeeOnList = (
 
 export const reactivateEmployee = employeeId => {
   return dispatch => {
-    WebApi.employees.patch
-      .reactivate(employeeId)
+    useRequest('reactivateEmployee', employeeId)
       .then(response => {
         dispatch(getEmployeePromise(employeeId)).then(secondResponse => {
           dispatch(loadAssignmentsACreator(employeeId));
@@ -478,8 +473,7 @@ export const editStatistics = (
       capacity: capacity,
       cloudsIds: currentClouds
     };
-    WebApi.employees.patch
-      .data(employeeId, model)
+    useRequest('editEmployee', employeeId, model)
       .then(response => {
         dispatch(getEmployeePromise(employeeId));
       })
@@ -614,8 +608,7 @@ export const changeEmployeeSkillsACreator = (employeeId, currentArray) => {
         yearsOfExperience: currentArray[key].skill.yearsOfExperience
       });
     }
-    WebApi.employees.put
-      .skills(employeeId, skillsArray)
+    useRequest('editSkills', employeeId, skillsArray)
       .then(response => {
         dispatch(changeEmployeeSkills(true, []));
         dispatch(clearAfterTimeByFuncRef(changeEmployeeSkills, 1500, null, []));
@@ -654,8 +647,7 @@ export const addNewSkillsToEmployeeACreator = (
     }
     model = model.concat(populateSkillArrayWithConstData(newSkills));
 
-    WebApi.employees.put
-      .skills(employeeId, model)
+    useRequest('editSkills',employeeId, model)
       .then(response => {
         dispatch(addNewSkillsToEmployee(true, []));
         dispatch(getEmployeePromise(employeeId));
@@ -756,7 +748,7 @@ export const loadEmployeeOnBoardsACreator = employeeId => {
 
 export const deleteOnBoard = (onBoardId) => dispatch => {
   return new Promise((resolve, reject) => {
-    WebApi.employees.deleteOnBoard(onBoardId)
+    useRequest('deleteOnBoardEmployee', onBoardId)
       .then(response => {
         dispatch(setActionConfirmationResult(response));
         resolve()
@@ -792,8 +784,7 @@ export const updateEmployeeOnBoard = (updateEmployeeOnBoardStatus, updateEmploye
 
 export const updateEmployeeOnBoardACreator = (onBoardModel, onBoardId) => dispatch => {
   return new Promise((resolve, reject) => {
-    WebApi.employees.put
-      .updateOnBoard(onBoardModel, onBoardId)
+    useRequest('editOnBoardEmployee', onBoardId, onBoardModel)
       .then(response => {
         dispatch(updateEmployeeOnBoard(true, []));
         resolve(response.replyBlock.data.dtoObject);
