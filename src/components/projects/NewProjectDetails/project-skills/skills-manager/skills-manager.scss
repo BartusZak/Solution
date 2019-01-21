@@ -1,0 +1,38 @@
+@import '../../../../../scss//new-color-schema.scss';
+div.skills-modal {
+  position: absolute;
+  padding: 20px;
+  height: 500px;
+  top: 0;
+  box-sizing: border-box;
+  width: 350px;
+  right: -500px;
+  border-radius: 5px;
+  color: $font-grey;
+  h3 {
+    font-size: 20px;
+    grid-area: header;
+    i {
+      color: $dark-font;
+    }
+  }
+  .not-scaled-content {
+    height: 100%;
+    display: flex;
+    flex-flow: column;
+    .skills-list {
+      margin: 30px 0 15px 0;
+      overflow-y: auto;
+      max-height: 80%;
+    }
+    .skills-footer {
+      margin-top: auto;
+      .field-block {
+        width: 280px;
+      }
+      .label-btn {
+        font-size: 16px;
+      }
+    }
+  }
+}

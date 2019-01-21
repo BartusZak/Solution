@@ -15,7 +15,8 @@ export const addOwnerToProject = 'addOwnerToProject';
 // Reponsible person
 export const createResponsiblePerson = 'createResponsiblePerson';
 export const editResponsiblePerson = 'editResponsiblePerson';
-
+// Skills
+export const loadAllSkills = 'loadAllSkills';
 // Quarter talks
 export const editQuarterTalk = 'editQuarterTalk';
 export const deleteQuaterTalk = 'deleteQuaterTalk';

@@ -1,33 +1,37 @@
 import React from 'react';
 import Button from '../../../common/button/button';
-import './project-skills.scss';
+import SkillsManager from './skills-manager/skills-manager';
+import ProjectSkill from './project-skill/project-skill';
 
+import './project-skills.scss';
 class ProjectSkills extends React.PureComponent {
   state = {
-    skillsMarkers: {}
+    skillsMarkers: {}, skillManager: false
   }
 
   componentDidMount = () => this.setMarkers();
 
   componentDidUpdate = prevProps => {
-    if (prevProps.skills !== this.props.skills) this.setMarkers();
+    if (prevProps.projectSkills !== this.props.projectSkills) this.setMarkers();
   }
 
   setMarkers = () => {
-    const { skills } = this.props;
+    const { projectSkills } = this.props;
     const skillsMarkers = {};
     setTimeout(() => {
-      skills.forEach(({skillId, skillLevel}) => {
+      projectSkills.forEach(({skillId, skillLevel}) => {
         skillsMarkers[skillId] = `${(skillLevel/5)*100}%`;
       });
       this.setState({skillsMarkers});
     }, 200);
   }
 
+  togleManager = () => this.setState({skillManager: !this.state.skillManager});
+
   render() {
-    const { skillsMarkers } = this.state;
-    const { skills } = this.props;
-    const skillsCount = skills.length;
+    const { skillsMarkers, skillManager } = this.state;
+    const { projectSkills } = this.props;
+    const skillsCount = projectSkills.length;
     return (
       <div className={`project-skills-wrapper flex-column ${skillsCount === 0 ? 'empty-list-bg' : ''}`}>
         <p className="important-par">Project skills ({skillsCount})</p>
@@ -35,44 +39,26 @@ class ProjectSkills extends React.PureComponent {
         {skillsCount === 0 ?
           <div className="empty-list-comunicate">
             <p>Project skill list is already empty. Click button bellow if you want add new one</p>
-            <i className="fas fa-crosshairs fa-lg"></i>
+            <i onClick={this.togleManager} className="fas fa-crosshairs fa-lg"></i>
           </div> :
 
           <React.Fragment>
             <ul>
-              {skills.map(({skillId, skillName, skillLevel, coveredAtLevel, color}) => (
-                <li key={skillId}>
-                  <div className="skill-head flex-row-center">
-                    <div className="skill-dot" style={{background: color}} />
-                    <span className="skill-name">{skillName}</span>
-                  </div>
-                  <div className="skill-details flex-row-center">
-                    <div className="detail-label">
-                      <span className="dcmt-light-color">experience level</span>
-
-                      <div className="flex-row-center">
-                        <span className="skill-number">{skillLevel}</span>
-                        <div className="progress-marker" style={{width: '100px'}}>
-                          <div className="progress-value" style={{width: skillsMarkers[skillId]}} />
-                        </div>
-                      </div>
-
-                    </div>
-                    <div className="detail-label">
-                      <span className="dcmt-light-color">years of experience</span>
-                      <span>{coveredAtLevel}</span>
-                    </div>
-
-                  </div>
-                </li>
+              {projectSkills.map(({skillId, skillName: name, skillLevel, color}) => (
+                <ProjectSkill markerWidth={skillsMarkers[skillId]}
+                  key={skillId} name={name} skillLevel={skillLevel} color={color} />
               ))}
             </ul>
 
-            <Button title="OPEN MANAGEMENT" mainClass="dcmt-main-btn dcmt-light-btn" />
+            <Button onClick={this.togleManager} title="OPEN MANAGEMENT" mainClass="dcmt-main-btn dcmt-light-btn" />
+
           </React.Fragment>
         }
+
+        { skillManager && <SkillsManager close={this.togleManager} /> }
       </div>
     );
   }
 }
+
 export default ProjectSkills;

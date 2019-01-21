@@ -111,6 +111,8 @@ const requests = {
   createResponsiblePerson: model => execute(fromAlertSettings.createResponsiblePerson, 'responsiblepersons', requestTypes.post, model),
   editResponsiblePerson: (model, id) => execute(fromAlertSettings.editResponsiblePerson, `responsiblepersons/${id}`, requestTypes.put, model),
 
+  //SKILLS
+  loadAllSkills: () => execute(fromAlertSettings.loadAllSkills, `skills`),
   //QUATER TALKS
   reactivateQuaterTalk: id => execute(fromAlertSettings.reactivateQuaterTalk, `QuarterTalks/Reactivate/${id}`, requestTypes.put),
   deleteQuaterTalk: id => execute(fromAlertSettings.deleteQuaterTalk, `QuarterTalks/${id}`, requestTypes.delete),

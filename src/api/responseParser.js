@@ -1,10 +1,6 @@
 import en from '../translations/en';
 import pl from '../translations/pl';
-import storeCreator from "./../store";
-import redux from "redux";
-import storage from "redux-persist/lib/storage";
-
-
+import storeCreator from "../store/index";
 const { store } = storeCreator;
 
 store.subscribe(listener);

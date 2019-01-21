@@ -38,7 +38,7 @@ class NewProjectDetails extends React.Component {
         <div className="project-details-wrapper">
           <ProjectInformations project={project} t={t} />
           <div className="project-data-wrapper">
-            <ProjectSkills skills={skills} />
+            <ProjectSkills projectSkills={skills} />
             <ProjectTeam team={team} />
 
             {!project.parentId &&

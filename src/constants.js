@@ -34,6 +34,7 @@ export const SKILL_ADDED = "SKILL_ADDED";
 export const REMOVE_SKILL = "REMOVE_SKILL";
 export const EDIT_SKILL = "EDIT_SKILL";
 export const EDIT_SKILL_ERROR = "EDIT_SKILL_ERROR";
+export const PUT_ALL_SKILLS = "[Skills] PUT_ALL_SKILLS";
 
 export const LANGUAGE_CHANGED = "LANGUAGE_CHANGED";
 export const LANGUAGE_CHANGE = "LANGUAGE_CHANGE";
