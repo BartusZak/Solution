@@ -50,7 +50,8 @@
 div.circle-searcher {
   border-radius: 50px;
   input, select {
-    padding-left: 12.5px;
+    padding-left: 15px;
+    height: 100%;
   }
   div.spinner-new {
     border: 2px solid $white;
