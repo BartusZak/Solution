@@ -1,8 +1,10 @@
 // Employees
 export const getEmployees = 'getEmployees';
 export const getClientsSlim = 'getClientsSlim';
+export const getEmployeesBySkill = 'getEmployeesBySkill';
 
 // Projects
+export const getProjects = 'getProjects';
 export const addProject = 'addProject';
 export const editProject = 'editProject';
 export const addProjectPhase = 'addProjectPhase';

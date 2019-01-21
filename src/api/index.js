@@ -98,6 +98,7 @@ const requests = {
 
   //EMPLOYEES
   getEmployees: settings => execute(fromAlertSettings.getEmployees, 'employees', requestTypes.post, settings),
+  getEmployeesBySkill: skillId => execute(fromAlertSettings.getEmployeesBySkill, `employees/forSkill/${skillId}`),
 
   //PROJECTS
   addProject: model => execute(fromAlertSettings.addProject, 'projects/add', requestTypes.post, model),
