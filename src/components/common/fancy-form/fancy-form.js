@@ -1,18 +1,26 @@
 import React from 'react';
-import { validatorsFunctions, checkFormContainErrors, createSlotFunctionsNames, runSingleValidation } from './index';
+import { validatorsFunctions, checkFormContainErrors, createSlotFunctionsNames,
+  runSingleValidation, runOnSubmitValidation } from './index';
 import Select from './select';
+import DatePicker from 'react-datepicker';
+import TypeAndSelect from '../../common/fancy-form/fancy-data-list';
+import Button from '../button/button';
+import moment from 'moment';
 
-export class InputSettings {
-  constructor(label, validators, listData = [], needsSlot = false, component = 'input', componentProps = {className: 'field'}) {
-    this.label = label;
-    this.validators = validators;
-    this.listData = listData;
-    this.needsSlot = needsSlot;
-    this.component = component;
-    componentProps.placeholder = `type your ${label}...`;
-    this.componentProps = componentProps;
-  }
-}
+import './fancy-form.scss';
+export const dFormat = "YYYY/MM/DD";
+export const minDate = "1994/01/01";
+export const maxDate = "2100/01/01";
+
+const defaultDatePickerConfig = {
+  minDate: moment(minDate),
+  maxDate: moment(maxDate),
+  dateFormat: dFormat,
+  peekNextMonth: true,
+  showMonthDropdown: true,
+  showYearDropdown: true,
+  dropdownMode: "select"
+};
 
 class FancyForm extends React.PureComponent {
     constructor(props) {
@@ -24,7 +32,6 @@ class FancyForm extends React.PureComponent {
             values: {...props.initialValues},
             errors: {},
             settings: {...props.settings},
-
             isFormDirty: false,
             isFormInvalid: false
         };
@@ -33,17 +40,33 @@ class FancyForm extends React.PureComponent {
 
     componentDidUpdate = prevProps => {
         if (prevProps.initialValues !== this.props.initialValues) {
-            this.detectInitialValuesChanges(this.props.initialValues);
+          this.detectInitialValuesChanges(this.props.initialValues);
         }
         if (prevProps.settings !== this.props.settings) {
-            this.setState({settings: {...this.props.settings}});
+          this.setState({settings: {...this.props.settings}});
+        }
+        if(prevProps.submitFromFlag !== this.props.submitFromFlag) {
+          this.checkSubmitedData();
         }
     }
 
+    componentWillUnmount() {
+      const { onUnmount } = this.props;
+      if (onUnmount) onUnmount(this.state.values);
+    }
+
     detectInitialValuesChanges = initialValues => {
-        const values = {...initialValues, ...this.state.values};
-        const formKeys = Object.keys(values);
-        this.setState({values, formKeys});
+      const { values: oldValues, settings } = this.state;
+      const values = {...initialValues}; const errors = {...this.state.errors}; const formKeys = Object.keys(values);
+      let isFormInvalid = false;
+      formKeys.forEach(key => {
+        if (oldValues[key] !== values[key])
+          errors[key] = runSingleValidation(values[key], settings[key].validators, settings[key].label);
+        if (errors[key])
+          isFormInvalid = true;
+      });
+
+      this.setState({values, formKeys, errors, isFormInvalid});
     }
 
     putChanges = (value, key) => {
@@ -56,74 +79,77 @@ class FancyForm extends React.PureComponent {
       if (isFormDirty) this.setState({ values, errors, isFormInvalid: checkFormContainErrors(errors) });
       else this.setState({values, errors});
 
-      return errors[key];
     }
 
     handleChangeFromEvent = (e, key) => this.putChanges(e.target.value, key);
-    handleChangeDirectly = (value, key) => this.putChanges(value, key);
+    handleDateChange = (date, key) => this.putChanges(date, key);
+    handleChangeValues = values => { this.detectInitialValuesChanges(values); }
 
-
-    runOnSubmitValidation = funcRef => {
+    checkSubmitedData = () => {
         const { values, formKeys, settings } = this.state;
-        const errors = {...this.state.errors};
-        let isFormInvalid = false;
-        formKeys.forEach(key => {
-            errors[key] = runSingleValidation(values[key], settings[key].validators, settings[key].label);
-            if (errors[key]) {
-                isFormInvalid = true;
-            }
-        });
-        this.setState({errors, isFormInvalid, isFormDirty: true}, () => funcRef(isFormInvalid));
+        const { errors, isFormInvalid } = runOnSubmitValidation(values, formKeys, settings);
+        if (!isFormInvalid) this.props.onSubmit(this.state.values);
+
+        this.setState({errors, isFormInvalid, isFormDirty: true});
     }
 
     handleSubmit = (e, values) => {
         e.preventDefault();
-        this.runOnSubmitValidation(isFormInvalid => {
-            if (!isFormInvalid) {
-                this.props.onSubmit(this.state.values);
-            }
-        });
+        this.checkSubmitedData();
     }
 
+
     renderComponent = (settings, props) => {
-        switch(settings.component) {
-            case 'select':
-              return <Select {...settings.componentProps} {...props} listData={settings.listData} />;
-            default:
-              return <input {...settings.componentProps} {...props} />;
-        }
+      switch(settings.component) {
+        case 'select':
+          return <Select {...settings.componentProps} {...props} listData={settings.listData} />;
+        case 'textarea':
+          return <textarea {...settings.componentProps} {...props} style={{resize: 'none'}}></textarea>;
+        case 'date-picker':
+          return (
+            <DatePicker {...defaultDatePickerConfig} {...settings.componentProps}
+              onChange={date => this.handleDateChange(date, props.key)} selected={props.value ? props.value : null}
+          />
+          );
+        case 'type-and-select':
+          return <TypeAndSelect {...settings.componentProps} {...props} listName={props.key} listData={settings.listData} />
+        default:
+          return <input {...settings.componentProps} {...props} />;
+      }
     }
 
     render() {
         const { formKeys, values, errors, isFormInvalid, isFormDirty, settings } = this.state;
-        const { renderForm, renderSubmitBtn, btnTitle, formClass, inputWrapperClass, labelClass, errorClass, btnClass } = this.props;
+        const { renderForm, renderSubmitBtn, btnTitle, formClass, inputWrapperClass, labelClass, errorClass, btnClass,
+          isSubmiting } = this.props;
         return (
             <React.Fragment>
                 {renderForm ? renderForm(formKeys, values, errors, isFormInvalid, isFormDirty, this.handleChangeFromEvent, this.handleSubmit) :
                 <form className={formClass} onSubmit={this.handleSubmit}>
                     {formKeys.map(key => {
                         if (settings[key].needsSlot && this.props[this.slots[key]])
-                            return this.props[this.slots[key]](key, values[key], errors[key], this.handleChangeFromEvent, this.handleChangeDirectly);
+                            return this.props[this.slots[key]](key, values, this.handleChangeFromEvent, settings[key], errors, this.handleChangeValues);
 
                         else {
                             return (
                                 <section className={inputWrapperClass} key={key}>
-                                    <label className={labelClass}>{settings[key].label}</label>
+                                    <label className={labelClass}>
+                                      {settings[key].label} {settings[key].validators ? settings[key].validators.required ? '*' : null : null}
+                                    </label>
 
                                     {this.renderComponent(settings[key], {
-                                        value: values[key], onChange: e => this.handleChangeFromEvent(e, key)
+                                        value: values[key], onChange: e => this.handleChangeFromEvent(e, key), key
                                     })}
 
                                     <p className={errorClass}>{errors[key]}</p>
                                 </section>
                             );
                         }
+
                     })}
 
                     {renderSubmitBtn ? renderSubmitBtn(this.handleSubmit) :
-                        <button className={btnClass} type="submit" disabled={isFormInvalid}>
-                            {btnTitle}
-                        </button>
+                        <Button title={btnTitle} mainClass={btnClass} type="submit" disable={isFormInvalid || isSubmiting} />
                     }
 
                 </form>
@@ -134,11 +160,11 @@ class FancyForm extends React.PureComponent {
 }
 
 FancyForm.defaultProps = {
-    formClass: 'form',
+    formClass: 'form animate-form-content',
     inputWrapperClass: 'fields-wrapper-col',
     labelClass: 'field-label',
     errorClass: 'field-error',
-    btnClass: 'label-submit',
+    btnClass: 'label-btn btn-submit-form ',
     btnTitle: 'submit'
 };
 

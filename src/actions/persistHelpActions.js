@@ -4,7 +4,7 @@ import { FETCH_LISTS, CHOOSE_FOLDER_TO_GENERATE_REPORT, G_DRIVE_LOGIN, FETCH_FOR
 from "../constants";
 import WebApi from '../api/index';
 import { getFolders } from './oneDriveActions';
-import { errorCatcher, errorCatcherForLogin } from '../services/errorsHandler';
+import { errorCatcher } from '../services/errorsHandler';
 import storeCreator from '../store/index';
 
 const { store } = storeCreator;

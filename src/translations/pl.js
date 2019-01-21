@@ -5,9 +5,35 @@ const translations = {
     Employee: 'Znajdź pracownika',
     EmptyEmployeeQuery: 'Nie znaleziono pracowników o podanych parametrach'
   },
+  FancyModal: {
+    Step: 'Krok'
+  },
   DragAndDrop: {
     DroppedMessage: 'Pliki zostały upuszczone',
     TooManyFilesError: 'Upuszczono za dużo plików. Limit to '
+  },
+  PhaseProjectForm: {
+    firstStepTitleForPhases: 'Wypełnij szczegóły fazy projektu',
+    secondStepTitleForPhases: 'Uzupełnij informacje o kliencie dla fazy projektu',
+    firstStepTitleForProjects: 'Uzupełnij szczegóły projektu',
+    secondStepTitleForProjects: 'Wypełnij informacje o kliencie',
+    name: 'nazwa',
+    description: 'opis',
+    startDate: 'data rozpoczęcia',
+    endDate: 'data zakończenia',
+    client: 'klient',
+    cloud: 'chmura',
+    responsiblePerson: 'osoba odpowiedzialna',
+    EmptyResponsiblePersonsInSelect: 'nie wybrano osoby odpowiedzialnej...'
+  },
+  ResponsiblePersonForm: {
+    client: 'klient',
+    firstName: 'imię',
+    lastName: 'nazwisko',
+    email: 'adres email',
+    phoneNumber: 'numer telefonu',
+    modalHeaderAdd: 'Dodaj nową osobę odpowiedzialną',
+    modalHeaderEdit: 'Edytuj dane osoby odpowiedzialnej'
   },
   LoginForm: {
     EnterUsername: "Podaj login",
@@ -848,17 +874,45 @@ const translations = {
     RoleError: "Ups, coś poszło nie tak....",
     SearchingUsersAccounts: "Wyszukiwanie Kont Użytkowników",
     EditingUsersRoles: "Edytowanie Roli Użytkowników",
-    SearchAD: "Wyszukiwanie Pracowników w Active Directory",
-    AddUser: "Dodawanie Kont Użytkowników",
-    ReactivateUser: "Reaktywowanie Kont Użytkowników",
-    DeleteUserRequest: "Usuwanie próśb o Konto Użytkowników",
-    DeleteUser: "Usuwanie Kont Użytkowników",
+    SearchingAD: "Wyszukiwanie Pracowników w Active Directory",
+    AddingUser: "Dodawanie Kont Użytkowników",
+    ReactivatingUser: "Reaktywowanie Kont Użytkowników",
+    DeletingUserRequest: "Usuwanie próśb o Konto Użytkowników",
+    DeletingUser: "Usuwanie Kont Użytkowników",
     SearchingProjects: "Wyszukiwanie Projektów",
+    AddingProject: "Dodawanie projektu",
+    EditingProject: "Edytowanie projektu",
+    ProjectDetails: "Szczegóły projektu",
+    AddingProjectOwners: "Dodawanie właścicieli projektu",
+    DeletingProjectOwners: "Usuwanie właścicieli projektu",
+    ClosingProject: "Zamykanie projektu",
+    ReactivatingProject: "Reaktywacja projektu",
+    SettingProjectSkills: "Ustawianie umiejętności w projekcie",
+    DeletingProject: "Usuwanie projektu",
+    GettingSuggestedEmployees: "Pobieranie sugerowanych pracowników",
     GettingListOfClients: "Wyświetlanie Listy Klientów",
     AddingClient: "Dodawanie Klientów",
     DeletingClient: "Usuwanie Klientów",
     EditingClient: "Edytowanie Klientów",
-    ReactivatingClient: "Reaktywowanie Klientów"
+    ReactivatingClient: "Reaktywowanie Klientów",
+
+    GettingEmployeeAssignments: "Pobierz przypisania pracownika",
+    GettingProjectAssignments: "Pobierz przypisania projektu",
+    AddingAssignment: "Przypisanie pracownika do projektu",
+    EditingAssignment: "Edytowanie przypisania",
+    DeletingAssignment: "Usuwanie przypisania",
+
+    GettingEmployeeCertificates: "Pobieranie certyfikatów pracownika",
+    EditingCertificate: "Edytowanie certyfikatu",
+    AddingCertificate: "Dodawanie certyfikatu",
+    DeletingCertificate: "Usuwanie certyfikatu",
+
+    AddingCloud: "Dodawanie chmury",
+    EditingCloud: "Edytowanie chmury",
+    DeletingCloud: "Usuwanie chmury",
+    ReactivatingCloud: "Reaktywacja chmury",
+
+    ImportingCV: 'Importowanie CV',
   },
   ReportsCloudView: {
     LoadingAccountDataPrompt:

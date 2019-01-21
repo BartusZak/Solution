@@ -19,7 +19,7 @@ class TypeAhead extends React.PureComponent {
     const error = runSingleValidation(value, validators, label);
 
     if(this.delayTimeout) {
-      this.setState({isLoading: false});
+      this.setState({isLoading: false, isListEmpty: null});
       clearTimeout(this.delayTimeout);
     }
 
@@ -61,12 +61,12 @@ class TypeAhead extends React.PureComponent {
 
             <input onChange={this.handleRequest} type={type} placeholder={placeholder} value={value} />
             <div className="field-icon">
-              { isLoading ? <div className="spinner-new type-ahead-spinner" />: <i className={`fa ${icon}`} /> }
+              { isLoading ? <div className="spinner-new spinner-new-small field-spinner" />: <i className={`fa ${icon}`} /> }
             </div>
 
             {renderDataList && renderDataList(dataList, this.resetAll, isListEmpty, isLoading)}
 
-            {error && <div onClick={this.resetAll} className="empty-data-list">{error}</div>}
+            {error && <div onClick={this.resetAll} className="empty-data-list field-error-color">{error}</div>}
           </div>
         </div>
 

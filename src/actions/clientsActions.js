@@ -4,7 +4,7 @@ import {
   asyncEnded,
   setActionConfirmationResult,
   setActionConfirmationResultWithoutEnding
-  
+
 } from "./asyncActions";
 import {
   LOAD_CLIENTS_SUCCESS,
@@ -12,8 +12,14 @@ import {
   ADD_CLIENT_RESULT,
   ADD_CLOUD_RESULT,
   ADD_RESPONSIBLE_PERSON_RESULT,
-  CLEAR_RESPONSE_CLOUD
+  CLEAR_RESPONSE_CLOUD,
+  PUT_SLIM_CLIENTS,
+  ADD_SLIM_CLIENT,
+  UPDATE_SLIM_CLIENT
 } from "../constants";
+
+import { useRequest } from '../api/index';
+import { transformArrayIntoObject } from '../services/transform-data-service';
 
 export const clearResponseCloud = () => {
   return {
@@ -57,6 +63,26 @@ export const addResponsiblePersonResult = resultBlock => {
     resultBlock
   };
 };
+
+export const addSlimClient = client => ({ type: ADD_SLIM_CLIENT, client });
+export const updateSlimClient = (clientName, client) => ({ type: UPDATE_SLIM_CLIENT, clientName, client });
+export const putSlimClients = clientsSlim => ({type: PUT_SLIM_CLIENTS, clientsSlim });
+
+export const getClientsSlim = () => dispatch =>
+  useRequest('getClientsSlim')
+  .then(res => dispatch(putSlimClients(transformArrayIntoObject('name', res.extractData()))));
+
+export const createResponsiblePerson = model => dispatch => new Promise((resolve, reject) => {
+  useRequest('createResponsiblePerson', model)
+  .then(res => resolve(res.extractData()))
+  .catch(() => reject());
+});
+
+export const editResponsiblePerson = (model, id) => dispatch => new Promise((resolve, reject) => {
+  useRequest('editResponsiblePerson', model, id)
+  .then(() => resolve())
+  .catch(() => reject());
+})
 
 export const loadClients = () => {
   return dispatch => {
@@ -248,37 +274,6 @@ export const editCloud = (cloudId, name, fields, clientId) => {
       })
       .catch(error => {
         dispatch(addCloudResult(error));
-        throw error;
-      });
-  };
-};
-
-export const editResponsiblePerson = (
-  responsiblePersonId,
-  firstName,
-  lastName,
-  email,
-  phoneNumber,
-  client
-) => {
-  return dispatch => {
-    WebApi.responsiblePerson
-      .edit(
-        responsiblePersonId,
-        firstName,
-        lastName,
-        email,
-        phoneNumber,
-        client
-      )
-      .then(response => {
-        if (!response.errorOccurred()) {
-          dispatch(addResponsiblePersonResult(response));
-          dispatch(this.loadClients());
-        }
-      })
-      .catch(error => {
-        dispatch(addResponsiblePersonResult(error));
         throw error;
       });
   };

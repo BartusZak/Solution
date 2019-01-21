@@ -26,29 +26,6 @@
   }
 }
 
-.user-details-container,
-.project-details-container {
-  padding-bottom: 1.5em;
-
-  .detail-container {
-    margin-bottom: 0.4em;
-  }
-
-  label {
-    // display: inline-block;
-    font-size: 15px;
-    // width: 20%;
-  }
-  span {
-    font-weight: 700;
-    font-size: 15px;
-  }
-  input {
-    margin: 0;
-    height: 1.7em;
-  }
-}
-
 .edit-user-button-container,
 .edit-project-button-container {
   display: flex;

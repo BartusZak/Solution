@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import "./table.scss";
 import moment from "moment";
-import Hoc from "../../../services/auxilary";
 import Modal from "react-responsive-modal";
 import ConfirmModal from "../confimModal/confirmModal";
 import Form from "components/form/form";
@@ -371,7 +370,7 @@ class Table extends Component {
     return (
       <div className="table-container">
         {items && items.length > 0 ? (
-          <Hoc>
+          <React.Fragment>
             <h3>{title}</h3>
             <table>
               <thead>
@@ -395,7 +394,7 @@ class Table extends Component {
                 {t("Add")}
               </button>
             )}
-          </Hoc>
+          </React.Fragment>
         ) : (
           <div className="empty-project-squad">
             <div>

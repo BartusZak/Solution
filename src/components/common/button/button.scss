@@ -1,3 +1,4 @@
+@import '../../../scss/new-color-schema.scss';
 .log-in-btn {
   padding: 15px;
   width: 190px;
@@ -130,13 +131,13 @@
   }
 
 }
-.files-btn:focus{
-  outline: none;
-}
 
 $white: #fff;
 $danger: #d22708;
 $danger-hover: #d33819;
+button:focus {
+  outline: none;
+}
 .btn {
   border-radius: 5px;
   border: none;
@@ -176,6 +177,10 @@ $danger-hover: #d33819;
     background-color: #93b652;
   }
 }
+button.dcmt-btn-light {
+  background: $dcmt-light;
+  color: $white;
+}
 .animated-icon-btn {
   @media(min-width: 764px) {
     i {
@@ -192,4 +197,15 @@ $danger-hover: #d33819;
   background: transparent;
   border: none;
   text-transform: uppercase;
+}
+.btn-submit-form {
+  font-size: 18px;
+  color: $dcmt;
+  font-weight: 500;
+  text-transform: uppercase;
+  margin: 30px auto 0 auto;
+  display: block;
+  &:disabled {
+    color: $font-grey;
+  }
 }

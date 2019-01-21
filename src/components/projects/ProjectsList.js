@@ -1,60 +1,35 @@
-import React, { Component } from "react";
+import React from "react";
 import Icon from "../common/Icon";
 import SmoothTable from "../common/SmoothTable";
 import { setActionConfirmation } from "./../../actions/asyncActions";
 import { connect } from "react-redux";
-import Modal from "react-responsive-modal";
-import WebApi from "../../api";
-import "react-datepicker/dist/react-datepicker.css";
-import DatePicker from "react-datepicker";
 import PropTypes from "prop-types";
 import { translate } from "react-translate";
-import { push } from "react-router-redux";
+import { withRouter } from 'react-router-dom';
 import binaryPermissioner from "./../../api/binaryPermissioner";
 import specialPermissioner from "./../../api/specialPermissioner";
-import "../../scss/components/projects/ProjectsList.scss";
 import { bindActionCreators } from "redux";
-import ProjectDetailsBlock from "../projects/modals/ProjectDetailsBlock";
-import {
-  editProjectPromise,
-  getContactPersonDataACreator
-} from "../../actions/projectsActions";
+import PhaseProjectForm from './phase-project-form/phase-project-form';
 
-class ProjectsList extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      showEditProjectModal: false,
-      project: {},
-      responseBlock: {},
-      loading: false
-    };
-  }
-  componentWillReceiveProps(nextProps) {
-    if (
-      nextProps.editProjectErrors !== this.props.editProjectErrors &&
-      nextProps.editProjectStatus
-    ) {
-      setTimeout(() => {
-        this.props.pageChange();
-      }, 3000);
+import "../../scss/components/projects/ProjectsList.scss";
+class ProjectsList extends React.Component {
+  state = {
+    project: {},
+    projectToEdit: null,
+    responseBlock: {},
+    loading: false,
+    openProjectForm: false
+  };
+
+  componentDidUpdate = prevProps => {
+    if (prevProps.projects !== this.props.projects) {
+      this.setState({projectToEdit: null, openProjectForm: false});
     }
   }
 
-  handleGetProject = project => {
-    this.setState({ project: project, showEditProjectModal: true });
-  };
-
-  handleCloseModal = () => {
-    this.setState({ showEditProjectModal: false });
-  };
-
-  clearEditModalData = () => {
-    this.setState({ showEditProjectModal: false });
-  };
-
   render() {
-    const { t } = this.props;
+    const { openProjectForm, projectToEdit } = this.state;
+    const { t, match, history } = this.props;
     const construct = {
       rowClass: "project-block",
       tableClass: "projects-list-container",
@@ -97,9 +72,7 @@ class ProjectsList extends Component {
       operators: [
         {
           pretty: t("Add"),
-          click: () => {
-            this.props.openAddProjectModal();
-          },
+          click: () => this.setState({openProjectForm: true}),
           comparator: () =>
             binaryPermissioner(false)(0)(0)(0)(1)(1)(1)(this.props.binPem)
         }
@@ -227,9 +200,7 @@ class ProjectsList extends Component {
             {
               icon: { icon: "pen-square", iconType: "fas" },
               title: t("EditProject"),
-              click: object => {
-                this.handleGetProject(object);
-              },
+              click: project => this.setState({projectToEdit: project}),
               comparator: object => {
                 return (
                   specialPermissioner().projects.isOwner(
@@ -244,7 +215,7 @@ class ProjectsList extends Component {
               icon: { icon: "sign-in-alt", iconType: "fas" },
               title: t("SeeMore"),
               click: object => {
-                this.props.push(`/main/projects/${object.id}`);
+                history.push(`${match.url}/${object.id}`);
               },
               comparator: object => {
                 return (
@@ -271,24 +242,15 @@ class ProjectsList extends Component {
           data={this.props.projects}
           construct={construct}
         />
-        <Modal
-          open={this.state.showEditProjectModal}
-          classNames={{ modal: "Modal Modal-projects" }}
-          contentLabel="Edit projects details"
-          onClose={this.handleCloseModal}
-        >
-          <ProjectDetailsBlock
-            shouldOnlyEdit={true}
-            editProjectStatus={this.props.editProjectStatus}
-            editProjectErrors={this.props.editProjectErrors}
-            project={this.state.project}
-            getContactPersonDataACreator={
-              this.props.getContactPersonDataACreator
-            }
-            editProject={this.props.editProjectPromise}
-            closeEditProjectModal={this.clearEditModalData}
-          />
-        </Modal>
+
+        {(openProjectForm || projectToEdit) &&
+          <PhaseProjectForm projectToEdit={projectToEdit}
+            onSubmitSucc={projectId => {
+              this.setState({openProjectForm: false});
+              if (projectId) history.push(match.url + "/" + projectId);
+            }}
+            close={() => this.setState({openProjectForm: false, projectToEdit: null})} />
+        }
       </div>
     );
   }
@@ -297,18 +259,12 @@ class ProjectsList extends Component {
 function mapStateToProps(state) {
   return {
     binPem: state.authReducer.binPem,
-    login: state.authReducer.login,
-    editProjectStatus: state.projectsReducer.editProjectStatus,
-    editProjectErrors: state.projectsReducer.editProjectErrors
+    login: state.authReducer.login
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    getContactPersonDataACreator: clientId =>
-      dispatch(getContactPersonDataACreator(clientId)),
-    editProjectPromise: (projectToSend, projectId) =>
-      dispatch(editProjectPromise(projectToSend, projectId)),
     setActionConfirmation: (confirmationInProgress, toConfirm) =>
       dispatch(setActionConfirmation(confirmationInProgress, toConfirm))
   };
@@ -317,7 +273,6 @@ function mapDispatchToProps(dispatch) {
 ProjectsList.propTypes = {
   projects: PropTypes.arrayOf(PropTypes.object),
   pageChange: PropTypes.func.isRequired,
-  openAddProjectModal: PropTypes.func.isRequired,
   currentPage: PropTypes.number.isRequired,
   totalPageCount: PropTypes.number.isRequired,
   loading: PropTypes.bool.isRequired,
@@ -327,4 +282,4 @@ ProjectsList.propTypes = {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(translate("ProjectsList")(ProjectsList));
+)(translate("ProjectsList")(withRouter(ProjectsList)));

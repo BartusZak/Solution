@@ -5,9 +5,35 @@ const translations = {
     Employee: 'Find employee',
     EmptyEmployeeQuery: 'There is no employees for given parameters'
   },
+  FancyModal: {
+    Step: 'Step'
+  },
   DragAndDrop: {
     DroppedMessage: 'Files succesfully dropped',
     TooManyFilesError: 'Too many files dropped. Limit is '
+  },
+  PhaseProjectForm: {
+    firstStepTitleForPhases: 'Populate project phase details',
+    secondStepTitleForPhases: 'Populate client details for project phase',
+    firstStepTitleForProjects: 'Populate project details',
+    secondStepTitleForProjects: 'Populate client informations',
+    name: 'name',
+    description: 'description',
+    startDate: 'start date',
+    endDate: 'end date',
+    client: 'client',
+    cloud: 'cloud',
+    responsiblePerson: 'responsible person',
+    EmptyResponsiblePersonsInSelect: 'responsible person is not selected...'
+  },
+  ResponsiblePersonForm: {
+    client: 'client',
+    firstName: 'first name',
+    lastName: 'last name',
+    email: 'email adress',
+    phoneNumber: 'phone number',
+    modalHeaderAdd: 'Add new responsible person',
+    modalHeaderEdit: 'Edit responsible person'
   },
   LoginForm: {
     EnterUsername: "Enter username",
@@ -838,17 +864,49 @@ const translations = {
     RoleError: "Ups, something went wrong...",
     SearchingUsersAccounts: "Searching Users Accounts",
     EditingUsersRoles: "Editing Users Roles",
-    SearchAD: "Searching Employees in Active Directory",
-    AddUser: "Adding Users Accounts",
-    ReactivateUser: "Reactivating Users Accounts",
-    DeleteUserRequest: "Deleting Users Accounts Requests",
-    DeleteUser: "Deleting Users Accounts",
+    SearchingAD: "Searching Employees in Active Directory",
+    AddingUser: "Adding Users Accounts",
+    ReactivatingUser: "Reactivating Users Accounts",
+    DeletingUserRequest: "Deleting Users Accounts Requests",
+    DeletingUser: "Deleting Users Accounts",
+
     SearchingProjects: "Searching Projects",
+    AddingProject: "Adding Project",
+    EditingProject: "Editing Project",
+    DeletingProjectOwners: "Deleting Project Owners",
+    ClosingProject: "Closing Project",
+    ReactivatingProject: "Reactivating Project",
+    SettingProjectSkills: "Setting Project Skills",
+    DeletingProject: "Deleting Projekt",
+    GettingSuggestedEmployees: "Getting Suggested Employees",
+
     GettingListOfClients: "Getting List of Clients",
     AddingClient: "Adding Client",
     DeletingClient: "Deleting Client",
     EditingClient: "Editing Client",
-    ReactivatingClient: "Reactivating Client"
+    ReactivatingClient: "Reactivating Client",
+
+    GettingEmployeeAssignments: "Getting Employee Assignments",
+    GettingProjectAssignments: "Getting ProjectAssignments",
+    AddingAssignment: "Adding Assignment",
+    EditingAssignment: "Editing Assignment",
+    DeletingAssignment: "Deleting Assignment",
+
+    GettingEmployeeCertificates: "Getting Employee Certificate",
+    EditingCertificate: "Editing Employee Certificate",
+    AddingCertificate: "Adding Certificate",
+    DeletingCertificate: "Deleting Certificate",
+
+    AddingCloud: "Adding Cloud",
+    EditingCloud: "Editing Cloud",
+    DeletingCloud: "Deleting Cloud",
+    ReactivatingCloud: "Reactivating Cloud",
+
+    ImportingCV: "Importing CV",
+
+    AddingEducation: "Adding Education",
+    EditingEducation: "Editing Education",
+    DeletingEducation: "Deleting Education",
   },
   ReportsCloudView: {
     LoadingAccountDataPrompt: "Cloud data is loading right now. Please wait...",

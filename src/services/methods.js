@@ -32,7 +32,7 @@ export const cutNotNeededKeysFromArray = (keys, indexes) => {
   const newKeys = [];
   for(let i = 0; i < keys.length; i++){
       if(!contains(i, indexes))
-          newKeys.push(keys[i]); 
+          newKeys.push(keys[i]);
   }
   return newKeys;
 }
@@ -67,10 +67,10 @@ export const prepareToLongStringToShow = (optimalLength, incomingWord) => {
   if(incomingWord.length > optimalLength){
     for(let i = 0; i < optimalLength; i++)
       returnWord += incomingWord.charAt(i);
-    
+
     returnWord = returnWord + "...";
   }
-  
+
   else
     returnWord = incomingWord;
 
@@ -111,7 +111,7 @@ export function generateSortFunction(key, ascending){
   return function sortByKey(a, b){
     return ascending ? a[key] - b[key] : b[key] - a[key];
   }
-} 
+}
 
 export function sortStrings(key){
   return function(a,b){
@@ -121,7 +121,6 @@ export function sortStrings(key){
     return ((x < y) ? -1 : ((x > y) ? 1 : 0));
   }
 }
-
 
 export const refreshPage = () => {
   window.location.href = window.location.href;
@@ -140,40 +139,13 @@ export const clearDataOfForm = formItems => {
   }
 }
 
-export const extractFromItemsWantedAttributes = (attributes, items) => {
-  const copiedItems = [...items];
-  if(attributes){
-      const allKeysOfItems = Object.keys(copiedItems);
-      const newItems = [];
-
-      for(let i = 0; i < copiedItems.length; i++){
-          const newObject = {};
-          for(let j = 0; j < attributes.length; j++){
-              const isAttributesInKeysList = allKeysOfItems.findIndex(el => el === attributes[j]);
-              if(isAttributesInKeysList){
-                  const actualValue = copiedItems[i][attributes[j]];
-                  if (typeof actualValue ===  "string" || typeof actualValue ===  "number" || typeof actualValue ===  "bollean"){
-                      newObject[attributes[j]] = actualValue;
-                  }
-                  else{
-                      newObject[attributes[j]] = JSON.parse(JSON.stringify(actualValue));
-                  }
-              }
-          }
-          newItems.push(newObject);
-      }
-      return newItems;
-  }
-  return copiedItems;
-}
-
 export const getEmployeeId = () => {
   const url = window.location.href;
   const indexOfLastEqual = url.lastIndexOf("=");
   if(indexOfLastEqual === -1){
     return "";
   }
- 
+
   return window.location.href.substring(indexOfLastEqual+1, url.length);
 }
 

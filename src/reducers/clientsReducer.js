@@ -5,15 +5,25 @@ import {
   ADD_CLOUD_RESULT,
   ADD_RESPONSIBLE_PERSON_RESULT,
   CLEAR_RESPONSE_CLOUD,
-  LOGOUT
+  LOGOUT,
+  PUT_SLIM_CLIENTS,
+  ADD_SLIM_CLIENT,
+  UPDATE_SLIM_CLIENT
 } from "../constants";
 
 const initialState = {
-  clients: []
+  clients: [],
+  clientsSlim: {}
 };
 
 export const clientsReducer = (state = initialState, action) => {
   switch (action.type) {
+    case PUT_SLIM_CLIENTS:
+      return { ...state, clientsSlim: {...action.clientsSlim} };
+    case ADD_SLIM_CLIENT:
+      return { ...state, clientsSlim: {...state.clientsSlim, [action.client.name]: action.client }}
+    case UPDATE_SLIM_CLIENT:
+      return { ...state, clientsSlim: {...state.clientsSlim, [action.clientName]: action.client} };
     case CLEAR_RESPONSE_CLOUD:
       return {
         ...state,

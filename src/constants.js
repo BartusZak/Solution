@@ -17,6 +17,9 @@ export const LOAD_PROJECTS_SUCCESS = "LOAD_PROJECTS_SUCCESS";
 export const LOAD_CLIENTS_FAIL = "LOAD_CLIENTS_FAIL";
 export const LOAD_CLIENTS_SUCCESS = "LOAD_CLIENTS_SUCCESS";
 export const ADD_CLIENT_RESULT = "ADD_CLIENT_RESULT";
+export const PUT_SLIM_CLIENTS = "[Clients] PUT_SLIM_CLIENTS";
+export const ADD_SLIM_CLIENT = "[Clients] ADD_SLIM_CLIENT";
+export const UPDATE_SLIM_CLIENT = "[Clients] UPDATE_SLIM_CLIENT";
 
 export const ADD_CLOUD_RESULT = "ADD_CLOUD_RESULT";
 export const ADD_RESPONSIBLE_PERSON_RESULT = "ADD_RESPONSIBLE_PERSON_RESULT";
@@ -46,7 +49,6 @@ export const SET_ACTION_CONFIRMATION_RESULT_WITHOUT_ENDING =
   "SET_ACTION_CONFIRMATION_RESULT_WITHOUT_ENDING";
 export const SET_ACTION_CONFIRMATION_RESULT = "SET_ACTION_CONFIRMATION_RESULT";
 export const ACTION_CONFIRMED = "ACTION_CONFIRMED";
-export const CHANGE_EDITED_PROJECT = "CHANGE_EDITED_PROJECT";
 export const CHANGE_OPERATION_STATE = "CHANGE_OPERATION_STATE";
 
 // PROJECTS
@@ -76,15 +78,13 @@ export const GET_MY_FEEDBACK = "GET_MY_FEEDBACK";
 export const GET_FEEDBACKS = "GET_FEEDBACKS";
 export const DELETE_FEEDBACK = "DELETE_FEEDBACK";
 export const EDIT_FEEDBACK = "EDIT_FEEDBACK";
-export const EDIT_PROJECT = "EDIT_PROJECT";
+export const UPDATE_PROJECT = "[Projects] UPDATE_PROJECT";
+export const ADD_PHASE = "[Projects] ADD_PHASE";
 export const CHANGE_PROJECT_SKILLS = "CHANGE_PROJECT_SKILLS";
 export const CHANGE_PROJECT_STATE = "CHANGE_PROJECT_STATE";
-export const CREATE_PROJECT = "CREATE_PROJECT";
-export const CREATE_PROJECT_PHASE = "CREATE_PROJECT_PHASE";
 export const GET_SUGGEST_EMPLOYEES = "GET_SUGGEST_EMPLOYEES";
 export const CHANGE_GET_SUGGEST_EMPLOYEES_STATUS =
   "CHANGE_GET_SUGGEST_EMPLOYEES_STATUS";
-export const GET_CONTACT_PERSON_DATA = "GET_CONTACT_PERSON_DATA";
 // REPORTS
 export const GET_TEAMS = "GET_TEAMS";
 export const GET_USER_CV = "GET_USER_CV";
@@ -196,25 +196,120 @@ export const MARKASREAD_NOTIFICATION = "MARKASREAD_NOTIFICATION";
 export const MARKALLASREAD_NOTIFICATION = "MARKALLASREAD_NOTIFICATION";
 
 //INFO
-export const ACCOUNT_CAN_SEARCH_USERS_ACCOUNTS =
-  "ACCOUNT_CAN_SEARCH_USERS_ACCOUNTS";
-export const ACCOUNT_CAN_CHANGE_USERS_ROLES = "ACCOUNT_CAN_CHANGE_USERS_ROLES";
-export const ACCOUNT_CAN_SEARCH_AD = "ACCOUNT_CAN_SEARCH_AD";
-export const ACCOUNT_CAN_ADD_USER = "ACCOUNT_CAN_ADD_USER";
-export const ACCOUNT_CAN_REACTIVATE_USER = "ACCOUNT_CAN_REACTIVATE_USER";
-export const ACCOUNT_CAN_DELETE_USER = "ACCOUNT_CAN_DELETE_USER";
-export const ACCOUNT_CAN_DELETE_USER_REQUEST =
-  "ACCOUNT_CAN_DELETE_USER_REQUEST";
+export const CHANGE_STATE = 'CHANGE_STATE';
 
-export const PROJECT_CAN_SEARCH_PROJECTS = "PROJECT_CAN_SEARCH_PROJECTS";
+export const ACCOUNT = 'account'
+export const CAN_SEARCH_USER_ACCOUNT = 'canSearchUserAccounts'
+export const CAN_EDIT_USERS_ROLES = 'canEditUsersRoles'
+export const CAN_SEARCH_AD = 'canSearchAD'
+export const CAN_ADD_USER = 'canAddUser'
+export const CAN_REACTIVATE_USER = 'canReactivateUser'
+export const CAN_DELETE_USER = 'canDeleteUser'
+export const CAN_DELETE_USER_REQUEST = 'canDeleteUserRequest'
 
-export const CLIENT_GET_LIST_OF_CLIENTS = "CLIENT_GET_LIST_OF_CLIENTS";
-export const CLIENT_POST_CLIENT = "CLIENT_POST_CLIENT";
-export const CLIENT_DELETE_CLIENT = "CLIENT_DELETE_CLIENT";
-export const CLIENT_EDIT_CLIENT = "CLIENT_EDIT_CLIENT";
-export const CLIENT_REACTIVATE_CLIENT = "CLIENT_REACTIVATE_CLIENT";
+export const PROJECTS = 'projects'
+export const CAN_SEARCH_PROJECTS = "canSearchProjects";
+export const CAN_ADD_PROJECT = "canAddProject";
+export const CAN_EDIT_PROJECT = "canEditProject";
+export const CAN_GET_PROJECT = "canGetProject";
+export const CAN_ADD_PROJECT_OWNERS = "canAddProjectOwners";
+export const CAN_DELETE_PROJECT_OWNERS = "canDeleteProjectOwners";
+export const CAN_CLOSE_PROJECT = 'canCloseProject';
+export const CAN_REACTIVATE_PROJECT = 'canReactivateProject';
+export const CAN_SET_PROJECT_SKILLS = 'canSetProjectSkills';
+export const CAN_DELETE_PROJECT = 'canDeleteProject'
+export const CAN_GET_SUGGESTED_EMPLOYEES = 'canGetSuggestedEmployees'
+
+export const CLIENT = 'client'
+export const CAN_GET_LIST_OF_CLIENTS = "canGetListOfClients";
+export const CAN_ADD_CLIENT = "canAddClient";
+export const CAN_DELETE_CLIENT = "canDeleteClient";
+export const CAN_EDIT_CLIENT = "canEditClient";
+export const CAN_REACTIVATE_CLIENT = "canReactivateClient";
+
+export const ASSIGNMENTS = 'assignments'
+export const CAN_GET_EMPLOYEE_ASSIGNMENTS = 'canGetEmployeeAssignments';
+export const CAN_GET_PROJECT_ASSIGNMENTS = 'canGetProjectAssignments';
+export const CAN_ADD_ASSIGNMENT = 'canAddAssignment';
+export const CAN_EDIT_ASSIGNMENT = 'canEditAssignment';
+export const CAN_DELETE_ASSIGNMENT = 'canDeleteAssignment';
+
+export const CERTIFICATES = 'Certificates'
+export const CAN_GET_EMPLOYEE_CERTIFICATES = 'canGetEmployeeCertificates'
+export const CAN_EDIT_CERTIFICATE = 'canEditCertificate'
+export const CAN_DELETE_CERTIFICATE= 'canDeleteCertificate'
+export const CAN_ADD_CERTIFICATE = 'canAddCertificate'
+
+export const CLOUDS = 'Clouds'
+export const CAN_ADD_CLOUD = 'canAddCloud';
+export const CAN_EDIT_CLOUD = 'canEditCloud';
+export const CAN_DELETE_CLOUD = 'canDeleteCloud';
+export const CAN_REACTIVATE_CLOUD = 'canReactivateCloud';
+
+export const CV_IMPORT = 'CVImport'
+export const CAN_IMPORT_CV = 'canImportCV'
+
+export const EDUCATION = 'Education'
+export const CAN_ADD_EDUCATION = 'canAddEducation'
+export const CAN_EDIT_EDUCATION = 'canEditEducation'
+export const CAN_GET_EDUCATION = 'canGetEducation'
+export const CAN_DELETE_EDUCATION = 'canDeleteEducation'
+
+export const EMPLOYEES = 'Employees';
+export const CAN_GET_EMPLOYEE = 'canGetEmployee';
+export const CAN_GET_EMPLOYEE_CAPACITY = 'canGetEmployeeCapacity';
+export const CAN_GET_EMPLOYEES_AND_MANAGERS = 'canGetEmployeesAndManagers';
+export const CAN_GET_EMPLOYEE_ONBOARDS = 'canGetEmployeeOnBoards';
+export const CAN_GET_EMPLO_CONTACT = 'canGetEmploContact';
+export const CAN_GET_EMPLO_SKILLS = 'canGetEmploSkills';
+export const CAN_SEARCH_EMPLOYEES = 'canSearchEmployees';
+export const CAN_ADD_EMPLOYEE = 'canAddEmployee';
+export const CAN_ADD_EMPLOYEE_ONBOARD = 'canAddEmployeeOnboard';
+export const CAN_DELETE_EMPLOYEE_ONBOARD = 'canDeleteEmployeeOnboard';
+export const CAN_DELETE_EMPLOYEE = 'canDeleteEmployee';
+export const CAN_SET_EMPLOYEE_SKILLS = 'canSetEmployeeSkills';
+export const CAN_SET_EMPLOYEE_F_LANGUAGES = 'canSetEmployeeFLanguages';
+export const CAN_SET_EMPLOYEE_SKYPE = 'canSetEmployeeSkype';
+export const CAN_EDIT_EMPLOYEE_ONBOARD = 'canEditEmployeeOnboard';
+export const CAN_REACTIVATE_EMPLOYEE = 'canReactivateEmployee';
+export const CAN_EDIT_EMPLOYEE = 'canEditEmployee';
+
+export const FEEDBACKS = 'Feedbacks'
+export const CAN_GET_FEEDBACKS_BY_EMPLOYEE = 'canGetFeedbacksByEmployee';
+export const CAN_GET_FEEDBACKS_BY_EMPLOYEE_IN_PROJECT = 'canGetFeedbacksByEmployeeInProject';
+export const CAN_ADD_FEEDBACK = 'canAddFeedback';
+export const CAN_EDIT_FEEDBACK = 'canEditFeedback';
+export const CAN_DELETE_FEEDBACK = 'canDeleteFeedback';
+
+export const GDRIVE = 'GDrive';
+export const CAN_LOGIN_GDRIVE = 'canLoginGDrive';
+export const CAN_GENERATE_SHARE_LINK_GDRIVE = 'canGenerateShareLinkGDrive';
+export const CAN_GET_FOLDERS_GDRIVE = 'canGetFoldersGDrive';
+export const CAN_DELETE_FOLDER_GDRIVE = 'canDeleteFolderGDrive';
+export const CAN_UPDATE_FOLDER_GDRIVE = 'canUpdateFolderGDrive';
+export const CAN_CREATE_FOLDER_GDRIVE = 'canCreateFolderGDrive';
+export const CAN_UPLOAD_FILE_GDRIVE = 'canUploadFileGDrive';
+
+export const NOTIFICATIONS = 'Notifications';
+export const CAN_GET_ALL_NOTIFICATIONS = 'canGetAllNotifications';
+export const CAN_DELETE_NOTIFICATIONS = 'canDeleteNotifications';
+export const CAN_MARK_AS_READ_NOTIFICATION = 'canMarkAsReadNotification';
+
+export const ONEDRIVE = 'OneDrive';
+export const CAN_GET_REDIRECT_LINK_ONEDRIVE = 'canGetRedirectLinkOneDrive';
+export const CAN_SEND_QUERY_TO_AUTH_ONEDRIVE = 'canSendQueryToAuthOneDrive';
+export const CAN_REFRESH_TOKEN_ONEDRIVE = 'canRefreshTokenOneDrive';
+export const CAN_GENERATE_SHARE_LINK_ONEDRIVE = 'canGenerateShareLinkOneDrive';
+export const CAN_GET_FOLDERS_ONEDRIVE = 'canGetFoldersOneDrive';
+export const CAN_CREATE_FOLDER_ONEDRIVE = 'canCreateFolderOneDrive';
+export const CAN_DELETE_FOLDER_ONEDRIVE = 'canDeleteFolderOneDrive';
+export const CAN_UPDATE_FOLDER_ONEDRIVE = 'canUpdateFolderOneDrive';
+export const CAN_UPLOAD_FILE_ONEDRIVE = 'canUploadFileOneDrive';
 
 
 export const ADD_ALERT = "[Alerts] ADD_ALERT";
 export const EDIT_ALERT = "[Alerts] EDIT_ALERT";
 export const REMOVE_ALERT = "[Alerts] REMOVE_ALERT";
+
+
+// RESPONSIBLE PERSON
