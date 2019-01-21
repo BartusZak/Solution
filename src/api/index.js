@@ -113,7 +113,6 @@ const requests = {
   reactivateQuaterTalk: id => execute(fromAlertSettings.reactivateQuaterTalk, `QuarterTalks/Reactivate/${id}`, requestTypes.put),
   deleteQuaterTalk: id => execute(fromAlertSettings.deleteQuaterTalk, `QuarterTalks/${id}`, requestTypes.delete),
   editQuarterTalk: (id, model) => execute(fromAlertSettings.editQuarterTalk, `QuarterTalks/${id}`, requestTypes.put, model),
-<<<<<<< HEAD
   getQuestions: () => execute(fromAlertSettings.getQuestions, 'QuarterTalks/questions', requestTypes.get),
   getQuarterForEmployee: employeeId =>   execute(fromAlertSettings.getQuarterTalkForEmployee, `QuarterTalks/ForEmployee/${employeeId}`, requestTypes.get),
   generateQuarterTalkDoc: quarterId => execute(fromAlertSettings.generateQuarterTalkDoc, `QuarterTalks/GenerateDocx/${quarterId}`, requestTypes.get),
@@ -170,8 +169,6 @@ const requests = {
   editWorkExperience: (id, model) => execute(fromAlertSettings.editWorkExperience, `workexperience/${id}`, requestTypes.put, model),
   deleteWorkExperience: id => execute(fromAlertSettings.deleteWorkExperience, `workexperience/${id}`, requestTypes.delete),
   getWorkExperienceByEmployeeId: employeeId => execute(fromAlertSettings.getWorkExperienceByEmployeeId, `workexperience/employee/${employeeId}`, requestTypes.get)
-=======
->>>>>>> develop
 };
 
 export const useRequest = (name, ...params) => requests[name](...params);
