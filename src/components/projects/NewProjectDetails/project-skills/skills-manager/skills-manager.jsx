@@ -8,7 +8,6 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import './skills-manager.scss';
-
 const ManagerContent = ({allSkills, allSkillsCount, status, skillsData, reloadSkills, handleMarking}) => {
   if (!status)
     return (
@@ -46,12 +45,18 @@ const ManagerContent = ({allSkills, allSkillsCount, status, skillsData, reloadSk
   );
 }
 
-class SkillsManagement extends React.PureComponent {
+class SkillsManagement extends React.Component {
   state = {
-    isLoadingAllSkills: true, skillsData: null
+    isLoadingAllSkills: false, skillsData: null
   }
 
-  componentDidMount = () => this.getSkills();
+  componentDidMount = () => {
+    if (!this.props.loadAllSkillsResult.status)
+      this.getSkills();
+    else {
+      this.generateSkillData();
+    }
+  }
 
   componentDidUpdate = prevProps => {
     if(prevProps.loadAllSkillsResult !== this.props.loadAllSkillsResult) {
@@ -93,6 +98,7 @@ class SkillsManagement extends React.PureComponent {
         </h3>
       )}>
         { isLoadingAllSkills ? <div className="spinner-new spinner-new-big spinner-new-center" /> :
+          skillsData &&
           <ManagerContent
             reloadSkills={this.getSkills} handleMarking={this.handleMarking}
             allSkills={allSkills} allSkillsCount={allSkillsCount}

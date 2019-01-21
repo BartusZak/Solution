@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { translate } from 'react-translate';
 import { withRouter } from 'react-router-dom';
 import { getProject } from '../../../actions/projectsActions';
+import { putAllSkills } from '../../../actions/skillsActions';
 import ProjectInformations from './project-informations/project-informations';
 import ProjectSkills from './project-skills/project-skills';
 import ProjectTeam from './project-team/project-team';
@@ -26,6 +27,8 @@ class NewProjectDetails extends React.Component {
     this.setState({isLoading: true});
     getProject(match.params.id);
   }
+
+  componentWillUnmount = () => this.props.putAllSkills();
 
   render() {
     const { projectResult, project, t, history } = this.props;
@@ -61,7 +64,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    getProject: id => dispatch(getProject(id))
+    getProject: id => dispatch(getProject(id)),
+    putAllSkills: () => dispatch(putAllSkills([], {result: null}))
   };
 };
 
