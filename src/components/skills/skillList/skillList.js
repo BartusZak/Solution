@@ -12,11 +12,12 @@ class SkillList extends Component {
     this.state = {
       hoveredIndex: -1,
       editingSkillIndex: -1,
-      editInputValue: '',
+      selectedIndex: -1,
       editingInputId: -1,
+      editInputValue: '',
       editingSubmited: false,
       editingError: '',
-      saveIconClass: 'fa fa-save edit-icon'
+      saveIconClass: 'fa fa-save'
     };
 
     this.myRef = React.createRef();
@@ -42,7 +43,12 @@ class SkillList extends Component {
       this.props.async.setActionConfirmationProgress(true);
       this.props.deleteSkill(
         this.props.toConfirm.skillId,
-      ).then(resposne => {this.props.getAllSkills([])});
+      ).then(resposne => {
+        this.props.getAllSkills([]);
+        this.setState({
+          selectedIndex: -1
+        })
+      });
     }
 
     if(nextProps.editedSkillError !== this.props.editedSkillError) {
@@ -131,7 +137,7 @@ class SkillList extends Component {
   editSkillSubmit = () => {
     const { editInputValue, editingInputId} = this.state;
     this.setState({
-      saveIconClass: 'fa fa-save edit-icon animate'
+      saveIconClass: 'fa fa-save animate'
     });
     this.props.editSkillACreator(editingInputId, editInputValue)
       .then(resopnse => {this.setState({saveIconClass: 'fa fa-save edit-icon'}); this.closeEdit()})
@@ -150,11 +156,11 @@ class SkillList extends Component {
 
   render() {
     const {skills, showNewAddingTemplate, newSkillName, newSkillNameError, newAddedCounter, newAddSkillColor, t} = this.props;
-    const { editInputValue } = this.state;
+    const { editInputValue, saveIconClass } = this.state;
     let skillListMarkup = null;
 
     if(skills.length === 0){
-      skillListMarkup = <p className="empty-list-sk">{t("NoResults")}</p>;
+      skillListMarkup = <div className="empty-list-container"><p className="empty-list-sk">{t("NoResults")}</p></div>;
     }
     else{
       skillListMarkup = (
@@ -166,34 +172,37 @@ class SkillList extends Component {
             </li>}
             {skills.map((skill, index) => (
               <React.Fragment key={skill.skill.name}>
-               <li onMouseEnter={() => this.handleHover(index)} onMouseLeave={() => this.handleHover(index)} onClick={() => {this.props.skillChoosen(skill.skill.id, skill.skill.name)}}>
+               <li className={this.state.selectedIndex === skill.skill.id ? "selected-row" : ""} onMouseEnter={() => this.handleHover(index)} onMouseLeave={() => this.handleHover(index)} onClick={() => {this.setState({selectedIndex: skill.skill.id}); this.props.skillChoosen(skill.skill.id, skill.skill.name)}}>
                     <span>
+                      {skill.class &&
+                        <i className={skill.class}>N</i>
+                      }
+                      <b style={{background: skill.color}}></b>
                       {this.checkEditingIndex(index)
                       ?
                         <div className='edit-input-container'>
                           <input type="text" className='skill-edit-input' value={editInputValue} onChange={(e) => this.handleEditInputChange(e, t)} onKeyPress={(e) => this.handleKeyPress(e)}/>
-                          <i className="fa fa-times close" title='Zamknij edycję' onClick={() => this.closeEdit()}></i>
+                          <i className="fa fa-times close" title={t("CloseEdit")} onClick={() => this.closeEdit()}></i>
                         </div>
                       :
                         <div className='name'>
-                          {skill.skill.name}{this.checkHoveredIndex(index) && <i className="fa fa-trash remove" title={t("DeleteSkill")} onClick={() => this.deleteSkill(skill.skill.name, skill.skill.id, t)}></i>}
+                          {skill.skill.name}
                         </div>
                       }
-
                     </span>
-                    {skill.class &&
-                      <i className={skill.class}>N</i>
+
+                    {this.checkHoveredIndex(index) && !this.checkEditingIndex(index) &&
+                      <div className="operations-container slide-left">
+                        <i className="fa fa-edit" title={t("EditSkill")} onClick={() => {this.toogleEdit(index, skill.skill.name, skill.skill.id)}}></i>
+                        <i className="fa fa-times" title={t("DeleteSkill")} onClick={() => this.deleteSkill(skill.skill.name, skill.skill.id, t)}></i>
+                      </div>}
+
+                    {this.checkEditingIndex(index) &&
+                      <div className="operations-container slide-left">
+                        <i className={saveIconClass} title={t("SaveChanges")} onClick={() => {this.editSkillSubmit()}}></i>
+                      </div>
                     }
 
-                    {this.checkEditingIndex(index) ?
-                    <b style={{background: skill.color}}>
-                      {<i className={this.state.saveIconClass} title="Zapisz" onClick={() => this.editSkillSubmit()}></i>}
-                    </b>
-                    :
-                    <b style={{background: skill.color}}>
-                      {this.checkHoveredIndex(index) && <i className="fa fa-pencil-alt edit-icon" title={t("EditSkill")} onClick={() => {this.toogleEdit(index, skill.skill.name, skill.skill.id)}}></i>}
-                    </b>
-                    }
                 </li>
                 {this.state.editingError !== '' && this.checkEditingIndex(index) && <div className="editing-skill-error">{this.state.editingError}</div>}
             </React.Fragment>
