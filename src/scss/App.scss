@@ -317,6 +317,15 @@ a:visited {
     }
   }
 }
+.fancy-modal-backdrop {
+  position: absolute;
+  top: 0;
+  z-index: 100;
+  right: 0;
+  background: $white-backdrop;
+  width: 100%;
+  height: 100%;
+}
 .field-spinner {
   top: 8px; right: 8px;
 }

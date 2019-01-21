@@ -9,14 +9,14 @@ import {
   DELETE_FEEDBACK,
   CHANGE_PROJECT_SKILLS,
   ADD_SKILLS_TO_PROJECT,
-  CHANGE_PROJECT_STATE,
   GET_SUGGEST_EMPLOYEES,
   CHANGE_GET_SUGGEST_EMPLOYEES_STATUS,
-  ADD_PROJECT_OWNER_TO_PROJECT,
   EDIT_EMPLOYEE_ASSIGNMENT,
   DELETE_EMPLOYEE_ASSIGNMENT,
   UPDATE_PROJECT,
-  ADD_PHASE
+  ADD_PHASE,
+  ADD_OWNER,
+  CHANGE_PROJECT_STATUS
 } from "../constants";
 import { updateObject } from "../services/methods";
 const initialState = {
@@ -27,9 +27,6 @@ const initialState = {
   resultBlock: null,
 
   project: null, projectResult: {status: null},
-
-  responsiblePersonKeys: [],
-  overViewKeys: [],
 
   addEmployeeToProjectStatus: null,
   addEmployeeToProjectErrors: [],
@@ -57,17 +54,10 @@ const initialState = {
   addSkillsToProjectStatus: null,
   addSkillsToProjectErrors: [],
 
-  changeProjectStateStatus: null,
-  changeProjectStateErrors: [],
-  currentOperation: "",
-
   getSuggestEmployeesStatus: null,
   getSuggestEmployeesError: [],
 
-  suggestEmployees: {},
-
-  addProjectOwnerToProjectStatus: null,
-  addProjectOwnerToProjectErrors: []
+  suggestEmployees: {}
 };
 
 export const projectsReducer = (state = initialState, action) => {
@@ -86,15 +76,20 @@ export const projectsReducer = (state = initialState, action) => {
       return {
         ...state, project: {...state.project, projectPhases: [...state.project.projectPhases, action.phase]}
       };
-    case ADD_PROJECT_OWNER_TO_PROJECT:
-      return updateObject(state, {
-        addProjectOwnerToProjectStatus: action.addProjectOwnerToProjectStatus,
-        addProjectOwnerToProjectErrors: action.addProjectOwnerToProjectErrors
-      });
+    case CHANGE_PROJECT_STATUS:
+      const project = { ...state.project, isDeleted: action.isDeleted };
+      if (action.status !== null)
+        project.status = action.status;
+      return { ...state, project };
     case SET_PROJECT_DATA:
       return {
         ...state, project: action.project, projectResult: action.projectResult
       }
+    case ADD_OWNER:
+      console.log(action.owner);
+      return {
+        ...state, project: {...state.project, owners: [action.owner, ...state.project.owners] }
+      };
     case LOAD_PROJECTS_SUCCESS:
       return updateObject(state, {
         projects: action.projects.results,
@@ -161,12 +156,6 @@ export const projectsReducer = (state = initialState, action) => {
       return updateObject(state, {
         addSkillsToProjectStatus: action.addSkillsToProjectStatus,
         addSkillsToProjectErrors: action.addSkillsToProjectErrors
-      });
-    case CHANGE_PROJECT_STATE:
-      return updateObject(state, {
-        changeProjectStateStatus: action.changeProjectStateStatus,
-        changeProjectStateErrors: action.changeProjectStateErrors,
-        currentOperation: action.currentOperation
       });
     case GET_SUGGEST_EMPLOYEES:
       return updateObject(state, { suggestEmployees: action.suggestEmployees });

@@ -135,7 +135,7 @@ class PhaseProjectForm extends React.PureComponent {
   }
 
   updateViewAfterEditPerson = (personToEdit, id) => {
-    const { clientsSlim, updateSlimClient, projectToEdit } = this.props;
+    const { clientsSlim, updateSlimClient } = this.props;
     const { client: clientName } = personToEdit;
     const phaseSecondInitValues = {...this.state.phaseSecondInitValues, responsiblePerson: id };
 

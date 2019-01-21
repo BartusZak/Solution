@@ -7,6 +7,10 @@ export const getProject = 'getProject';
 export const addProject = 'addProject';
 export const editProject = 'editProject';
 export const addProjectPhase = 'addProjectPhase';
+export const reactivateProject = 'reactivateProject';
+export const closeProject = 'closeProject';
+export const deleteProject = 'deleteProject';
+export const addOwnerToProject = 'addOwnerToProject';
 
 // Reponsible person
 export const createResponsiblePerson = 'createResponsiblePerson';
@@ -25,6 +29,10 @@ export const succOperationsWhiteObject = {
   addProject: {pl: 'Projekt został pomyślnie dodany', en: 'Project has been succesfully added'},
   editProject: {pl: 'Projekt został pomyślnie edytowany', en: 'Project has been succesfully modified'},
   addProjectPhase: {pl: 'Faza projektu została pomyślnie stworzona', en: 'Project phase has been succesfully created'},
+  reactivateProject: {pl: 'Projekt został pomyślnie aktywowany', en: 'Project has been succesfully activated'},
+  closeProject: {pl: 'Projekt został pomyślnie zamknięty', en: 'Project has been succesfully closed'},
+  deleteProject: {pl: 'Projekt został pomyślnie usunięty', en: 'Project has been succesfully deleted'},
+  addOwnerToProject: {pl: 'Dodano noweg właściciela', en: 'New owner has been added'},
 
   // Reponsible person
   createResponsiblePerson: {pl: 'Osoba odpowiedzialna została pomyślnie dodana', en: 'Responsible person has been succesfully added'},

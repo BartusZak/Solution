@@ -1,24 +1,20 @@
 import React from 'react'
 import { translate } from 'react-translate';
 import { connect } from 'react-redux';
-
-import TypeAhead from '../../common/fancy-form/type-ahead/type-ahead';
 import { loadEmployees } from '../../../actions/employeesActions';
-
+import TypeAhead from '../../common/fancy-form/type-ahead/type-ahead';
 import Button from '../../common/button/button';
 
 class EmployeeSearcher extends React.PureComponent {
 
   getEmployees = value => {
+    const { employeeFilter } = this.props;
     const config = {
-      limit: 1000, ascending: true, query: value,
-      employeeFilter: {
-        hasAccount: true
-      }
+      limit: 1000, ascending: true, query: value, isDeleted: false,
+      employeeFilter: employeeFilter ? employeeFilter : { hasAccount: true }
     };
     const page = 1;
-    const limit = 25;
-
+    const limit = 1000;
     return this.props.loadEmployees(page, limit, config);
   }
 
@@ -39,7 +35,7 @@ class EmployeeSearcher extends React.PureComponent {
                     {dataList.map(item => (
                       <li onClick={() => {
                         resetAll();
-                        emitEmployeeClick(item.id);
+                        emitEmployeeClick(item);
                       }}
                         key={item.id}>
                         {item.fullName}

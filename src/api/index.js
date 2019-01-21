@@ -17,8 +17,6 @@ export const selectLang = state =>
 
 store.subscribe(listener);
 
-
-
 let lang = '';
 function listener() {
   let langHeader = '';
@@ -104,6 +102,10 @@ const requests = {
   addProject: model => execute(fromAlertSettings.addProject, 'projects/add', requestTypes.post, model),
   editProject: (model, id) => execute(fromAlertSettings.editProject, `projects/${id}`, requestTypes.put, model),
   addProjectPhase: model => execute(fromAlertSettings.addProjectPhase, 'projects/add', requestTypes.post, model),
+  reactivateProject: id => execute(fromAlertSettings.reactivateProject, `projects/reactivate/${id}`, requestTypes.put),
+  closeProject: id => execute(fromAlertSettings.closeProject, `projects/close/${id}`, requestTypes.put),
+  deleteProject: id => execute(fromAlertSettings.deleteProject, `projects/delete/${id}`, requestTypes.delete),
+  addOwnerToProject: (id, usersIds) => execute(fromAlertSettings.addOwnerToProject, `projects/owner/${id}`, requestTypes.put, {usersIds}),
 
   //RESPINSIBLE PERSON
   createResponsiblePerson: model => execute(fromAlertSettings.createResponsiblePerson, 'responsiblepersons', requestTypes.post, model),

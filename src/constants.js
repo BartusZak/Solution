@@ -66,7 +66,6 @@ export const overViewNames = [
   "EndDate",
   "ParentName"
 ];
-export const ADD_PROJECT_OWNER_TO_PROJECT = "ADD_PROJECT_OWNER_TO_PROJECT";
 export const ADD_EMPLOYEE_TO_PROJECT = "ADD_EMPLOYEE_TO_PROJECT";
 export const EDIT_EMPLOYEE_ASSIGNMENT = "EDIT_EMPLOYEE_ASSIGNMENT";
 export const DELETE_EMPLOYEE_ASSIGNMENT = "DELETE_EMPLOYEE_ASSIGNMENT";
@@ -78,8 +77,13 @@ export const EDIT_FEEDBACK = "EDIT_FEEDBACK";
 export const UPDATE_PROJECT = "[Projects] UPDATE_PROJECT";
 export const SET_PROJECT_DATA = "[Projects] SET_PROJECT_DATA";
 export const ADD_PHASE = "[Projects] ADD_PHASE";
+export const CHANGE_PROJECT_STATUS = "[Projects] CHANGE_PROJECT_STATUS";
+export const ADD_OWNER = "[Projects] ADD_OWNER";
+export const closed = 2;
+export const inactive = 1;
+export const active = 0;
+
 export const CHANGE_PROJECT_SKILLS = "CHANGE_PROJECT_SKILLS";
-export const CHANGE_PROJECT_STATE = "CHANGE_PROJECT_STATE";
 export const GET_SUGGEST_EMPLOYEES = "GET_SUGGEST_EMPLOYEES";
 export const CHANGE_GET_SUGGEST_EMPLOYEES_STATUS =
   "CHANGE_GET_SUGGEST_EMPLOYEES_STATUS";

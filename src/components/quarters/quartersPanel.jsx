@@ -94,7 +94,7 @@ class Quarters extends React.PureComponent{
                 }
 
                 <nav className="quarter-talks-navigation">
-                  <EmployeeSearcher emitEmployeeClick={id => this.changeActualWatchedUser(id)} />
+                  <EmployeeSearcher emitEmployeeClick={employee => this.changeActualWatchedUser(employee.id)} />
 
                   <div className="btns-nav-wrapper">
                     <Button onClick={() => this.handleBtnClick(`${match.url}/employees`, true)}

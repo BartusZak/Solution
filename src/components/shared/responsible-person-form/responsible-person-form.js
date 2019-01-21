@@ -28,13 +28,12 @@ class ResponsiblePersonForm extends React.Component {
   }
 
   handleSubmit = formData => {
-    const { client, shouldEdit,
-      createResponsiblePerson, editResponsiblePerson, afterSuccAdd, afterSuccEdit, personToEdit } = this.props;
+    const { shouldEdit, createResponsiblePerson, editResponsiblePerson, afterSuccAdd, afterSuccEdit, personToEdit } = this.props;
 
     this.setState({isSubmitting: true});
     if (shouldEdit) {
       editResponsiblePerson(formData, personToEdit.id)
-      .then(addedPerson => {
+      .then(() => {
         afterSuccEdit(formData, personToEdit.id);
       })
       .catch(() => this.setState({isSubmitting: false}));

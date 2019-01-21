@@ -1,9 +1,10 @@
+import { closed, inactive, active } from '../../../constants';
 export const calculateProjectState = (statusCode, isDeleted) => {
   if (isDeleted) return "deleted"
   if (statusCode === closed) return "closed";
   if (statusCode === inactive) return "inactive";
   if (statusCode === active) return "active";
 }
-export const closed = 2;
-export const inactive = 1;
-export const active = 0;
+export const deleting = 'deleting';
+export const reactivating = 'reactivating';
+export const closing = 'closing';
