@@ -1,40 +1,26 @@
 import axios from "axios";
-// import * as jwtDecode from "jwt-decode";
 import { resolve as BluebirdResolve } from "bluebird/js/browser/bluebird.core.min.js";
 import * as usersMocks from "./mock/users";
 import * as projectsMocks from "./mock/projects";
-import redux from "redux";
 import storeCreator from "./../store";
-import storage from "redux-persist/lib/storage";
 import { push } from "react-router-redux";
 import { logout } from "./../actions/authActions";
-import {
-  refreshToken,
-  authOneDrive,
-  getFolderACreator
-} from "../actions/oneDriveActions";
 import ResponseParser from "./responseParser";
 import Config from "Config";
-import { loginACreator } from "../actions/persistHelpActions";
-import { Certificate } from "crypto";
-import { addAlert, removeAlert } from '../actions/alertsActions';
+import { addAlert } from '../actions/alertsActions';
 import * as fromAlertSettings from './request-settings';
 const { store } = storeCreator;
 
 export const API_ENDPOINT = Config.serverUrl;
-
-store.subscribe(listener);
-``;
-
-const select = state =>
-  state.authReducer.tokens !== undefined ? state.authReducer.tokens.token : "";
-
 export const selectLang = state =>
   state.languageReducer.language ? state.languageReducer.language : "pl";
 
+store.subscribe(listener);
+
+
+
 let lang = '';
 function listener() {
-  // const token = `Bearer ${select(store.getState())}`;
   let langHeader = '';
   switch (selectLang(store.getState())) {
     case "pl":
@@ -48,7 +34,6 @@ function listener() {
   }
 
   axios.defaults.withCredentials = true;
-  // axios.defaults.headers.common["Authorization"] = token;
   axios.defaults.headers.common["Accept-Language"] = langHeader;
 }
 
@@ -57,30 +42,6 @@ const authValidator = response => {
     store.dispatch(logout());
     store.dispatch(push("/"));
   }
-  // if (response.response) {
-  //   if (response.response.status === 401 || response.response === undefined) {
-  //     store.dispatch(logout());
-  //     store.dispatch(push("/"));
-  //   } else {
-  //     if (response.response.config.url.search("onedrive") !== -1) {
-  //       const oneDriveToken = JSON.parse(response.response.config.data).token;
-  //       const startPath = "/drive/root:";
-  //       store
-  //         .dispatch(refreshToken(oneDriveToken))
-  //         .then(response => {
-  //           dispatch(getFolderACreator(response, startPath));
-  //         })
-  //         .catch(error => {
-  //           store.dispatch(authOneDriveACreator());
-  //         });
-  //     } else if (response.response.config.url.search("GDrive") !== -1) {
-  //       dispatch(loginACreator());
-  //     }
-  //   }
-  // } else {
-  //   store.dispatch(logout());
-  //   store.dispatch(push("/"));
-  // }
 
   throw response;
 };
@@ -132,16 +93,27 @@ const requestTypes = {
   delete: 'delete'
 };
 const requests = {
+  //CLIENTS
+  getClientsSlim: settings => execute(fromAlertSettings.getClientsSlim, 'Clients?lessDetailed=true'),
+
   //EMPLOYEES
   getEmployees: settings => execute(fromAlertSettings.getEmployees, 'employees', requestTypes.post, settings),
+  getEmployeesBySkill: skillId => execute(fromAlertSettings.getEmployeesBySkill, `employees/forSkill/${skillId}`),
 
   //PROJECTS
-  addProject: model => execute(fromAlertSettings.getProjects, `projects/add`, requestTypes.post, model),
+  addProject: model => execute(fromAlertSettings.addProject, 'projects/add', requestTypes.post, model),
+  editProject: (model, id) => execute(fromAlertSettings.editProject, `projects/${id}`, requestTypes.put, model),
+  addProjectPhase: model => execute(fromAlertSettings.addProjectPhase, 'projects/add', requestTypes.post, model),
+
+  //RESPINSIBLE PERSON
+  createResponsiblePerson: model => execute(fromAlertSettings.createResponsiblePerson, 'responsiblepersons', requestTypes.post, model),
+  editResponsiblePerson: (model, id) => execute(fromAlertSettings.editResponsiblePerson, `responsiblepersons/${id}`, requestTypes.put, model),
 
   //QUATER TALKS
   reactivateQuaterTalk: id => execute(fromAlertSettings.reactivateQuaterTalk, `QuarterTalks/Reactivate/${id}`, requestTypes.put),
   deleteQuaterTalk: id => execute(fromAlertSettings.deleteQuaterTalk, `QuarterTalks/${id}`, requestTypes.delete),
   editQuarterTalk: (id, model) => execute(fromAlertSettings.editQuarterTalk, `QuarterTalks/${id}`, requestTypes.put, model),
+<<<<<<< HEAD
   getQuestions: () => execute(fromAlertSettings.getQuestions, 'QuarterTalks/questions', requestTypes.get),
   getQuarterForEmployee: employeeId =>   execute(fromAlertSettings.getQuarterTalkForEmployee, `QuarterTalks/ForEmployee/${employeeId}`, requestTypes.get),
   generateQuarterTalkDoc: quarterId => execute(fromAlertSettings.generateQuarterTalkDoc, `QuarterTalks/GenerateDocx/${quarterId}`, requestTypes.get),
@@ -198,6 +170,8 @@ const requests = {
   editWorkExperience: (id, model) => execute(fromAlertSettings.editWorkExperience, `workexperience/${id}`, requestTypes.put, model),
   deleteWorkExperience: id => execute(fromAlertSettings.deleteWorkExperience, `workexperience/${id}`, requestTypes.delete),
   getWorkExperienceByEmployeeId: employeeId => execute(fromAlertSettings.getWorkExperienceByEmployeeId, `workexperience/employee/${employeeId}`, requestTypes.get)
+=======
+>>>>>>> develop
 };
 
 export const useRequest = (name, ...params) => requests[name](...params);

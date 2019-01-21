@@ -1,31 +1,19 @@
 import React, { Component } from "react";
 import "./ProjectDetails.scss";
-import Aux from "../../../services/auxilary";
 import ProjectInformationsCart from "./ProjectInformationsCart/ProjectInformationsCart";
-import {
-  cutNotNeededKeysFromArray,
-  populateFormArrayWithValues
-} from "../../../services/methods";
-import SmallSpinner from "../../common/spinner/small-spinner";
 import Modal from "react-responsive-modal";
 import Table from "../../common/table/table";
-import ProjectDetailsBlock from "../modals/ProjectDetailsBlock";
 import moment from "moment";
 import Form from "../../form/form";
 import ProgressPicker from "../../common/progressPicker/progressPicker";
-import { validateInput } from "../../../services/validation";
-import { errorCatcher } from "../../../services/errorsHandler";
 import { getRandomColor } from "../../../services/methods";
 import OperationStatusPrompt from "../../form/operationStatusPrompt/operationStatusPrompt";
 import { translate } from "react-translate";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { loadClients } from "../../../actions/clientsActions";
 import * as projectsActions from "../../../actions/projectsActions";
 import {
-  createProjectPhaseACreator,
   getProjectDataACreator,
-  getContactPersonDataACreator,
   getProjectACreator,
   addEmployeeToProjectACreator,
   addEmployeeToProject,
@@ -34,12 +22,9 @@ import {
   deleteEmployeeAssignmentACreator,
   getProject,
   changeProjectSkillsACreator,
-  editProjectACreator,
   addSkillsToProjectACreator,
   addSkillsToProject,
-  editProject,
   changeProjectStateACreator,
-  clearProjectState,
   getSuggestEmployeesACreator,
   addProjectOwnerACreator
 } from "../../../actions/projectsActions";
@@ -49,17 +34,14 @@ import {
 } from "../../../actions/skillsActions";
 import Skills from "../../common/skills/skills";
 import ConfirmModal from "../../common/confimModal/confirmModal";
-import ServerError from "../../common/serverError/serverError";
 import WebApi from "../../../api/index";
-import employeeTable from "../../employees/details/employeeTable/employeeTable";
 import specialPermissioner from "./../../../api/specialPermissioner";
 import binaryPermissioner from "./../../../api/binaryPermissioner";
 import Owners from "./Owners/Owners";
 import ShareProject from "./ShareProject";
 import NotFound404 from "../../notFound404/NotFound404";
 import Spinner from '../../common/spinner/spinner';
-import ContactList from "../../../components/common/contactList/contactList";
-import { clearDataOfForm } from "../../../services/methods";
+import PhaseProjectForm from '../phase-project-form/phase-project-form';
 
 class ProjectDetails extends Component {
   workerNames = [
@@ -83,7 +65,8 @@ class ProjectDetails extends Component {
     currentOpenedRow: -1,
     matches: false,
     isDeleted: false,
-    editModal: false,
+    editProject: false,
+    addPhaseForm: false,
     deleteProjectModal: false,
     addEmployeModal: false,
     shareProjectModal: false,
@@ -164,211 +147,14 @@ class ProjectDetails extends Component {
     addEmployeSpinner: false,
     projectStatus: [],
     showAllAssignments: false,
-    addNewProjectPhaseFormValues: [
-      {
-        title: this.props.t("ProjectName"),
-        type: "text",
-        placeholder: `${this.props.t("Insert")} ${this.props.t(
-          "ProjectName"
-        )}`,
-        value: "",
-        error: "",
-        inputType: "nameWithPolishLetters",
-        minLength: 3,
-        maxLength: 25,
-        canBeNull: false
-      },
-      {
-        title: this.props.t("Description"),
-        type: "text",
-        placeholder: `${this.props.t("Insert")} ${this.props.t(
-          "Description"
-        )}`,
-        mode: "textarea",
-        value: "",
-        error: "",
-        inputType: null,
-        minLength: 3,
-        maxLength: 1500,
-        canBeNull: false
-      },
-      {
-        title: this.props.t("StartDate"),
-        name: "startDate",
-        type: "text",
-        placeholder: `${this.props.t("Insert")} ${this.props.t("StartDate")}`,
-        mode: "date-picker",
-        value: moment(),
-        error: "",
-        canBeBefore: true
-      },
-      {
-        title: this.props.t("EndDate"),
-        name: "endDate",
-        type: "text",
-        placeholder: `${this.props.t("Insert")} ${this.props.t("EndDate")}`,
-        mode: "date-picker",
-        value: moment(),
-        error: "",
-        canBeBefore: false
-      }
-      ],
-      responsiblePersonFormValues: [
-        {
-          title: "Email",
-          type: "text",
-          placeholder: `${this.props.t("Insert")} Email
-          `,
-          value: "",
-          error: "",
-          inputType: "email",
-          minLength: 7,
-          maxLength: 70,
-          canBeNull: false
-        },
-        {
-          title: this.props.t("Name"),
-          type: "text",
-          placeholder: `${this.props.t("Insert")} ${this.props.t("Name")}`,
-          value: "",
-          error: "",
-          inputType: "firstName",
-          minLength: 3,
-          maxLength: 30,
-          canBeNull: false
-        },
-        {
-          title: this.props.t("Surname"),
-          type: "text",
-          placeholder: `${this.props.t("Insert")} ${this.props.t("Surname")}`,
-          value: "",
-          error: "",
-          inputType: "lastName",
-          minLength: 3,
-          maxLength: 40,
-          canBeNull: false
-        },
-        {
-          title: this.props.t("Phone"),
-          type: "text",
-          placeholder: `${this.props.t("Insert")} ${this.props.t("Phone")}`,
-          value: "",
-          inputType: "phoneNumber",
-          error: "",
-          canBeNull: false,
-          minLength: 7,
-          maxLength: 20
-        }
-      ],
-      showAddPhaseModal: false,
-      openFirstForm: true,
-      selected: this.props.t("SelectPeopleToContact"),
-      responsiblePersons: [],
-      isLoading: false
+    selected: this.props.t("SelectPeopleToContact"),
+    isLoading: false
   };
   componentDidMount() {
     this.loadProjectData("isLoadingProject",null);
     const { getSuggest } = this.props;
     getSuggest(this.props.match.params.id);
   }
-
-  handleOpenModal() {
-    this.props.loadClients();
-    this.setState({ showAddPhaseModal: true });
-  }
-
-  handleCloseModal() {
-    this.setState({ showAddPhaseModal: false });
-  }
-  changeForm = () => {
-    this.goForClient();
-    this.setState({ openFirstForm: !this.state.openFirstForm });
-  };
-
-  goForClient = () => {
-    const { getContactPersonDataACreator, project, clients } = this.props;
-    const matchedClient = clients.find(client => client.name === project.client);
-    if (matchedClient) {
-      const clientId = matchedClient.id
-      this.setState({ isLoading: true });
-      getContactPersonDataACreator(clientId)
-      .then(response => {
-        if (response.length > 0) {
-          let responsiblePersons = [];
-          const responsiblePersonFormValues = [
-            ...this.state.responsiblePersonFormValues
-          ];
-
-          responsiblePersons = responsiblePersons.concat(response);
-
-          responsiblePersonFormValues[0].value = response[0].email;
-          responsiblePersonFormValues[1].value = response[0].firstName;
-          responsiblePersonFormValues[2].value = response[0].lastName;
-          responsiblePersonFormValues[3].value = response[0].phoneNumber;
-
-          this.setState({
-            responsiblePersons: responsiblePersons,
-            responsiblePersonFormValues: responsiblePersonFormValues
-          });
-        }
-          this.setState({ isLoading: false });
-        })
-        .catch(error => {
-          this.setState({ isLoading: false });
-        });
-    }
-  };
-
-  fetchContactDateByOtherClient = e => {
-    const { responsiblePersons } = this.state;
-    const index = responsiblePersons.findIndex(i => {
-      return i.firstName === e.target.value;
-    });
-    const responsiblePersonFormValues = [
-      ...this.state.responsiblePersonFormValues
-    ];
-    responsiblePersonFormValues[0].value = responsiblePersons[index].email;
-    responsiblePersonFormValues[1].value = responsiblePersons[index].firstName;
-    responsiblePersonFormValues[2].value = responsiblePersons[index].lastName;
-    responsiblePersonFormValues[3].value =
-      responsiblePersons[index].phoneNumber;
-
-    this.setState({
-      responsiblePersonFormValues: responsiblePersonFormValues,
-      selected: responsiblePersons[index].firstName
-    });
-  };
-
-  addProjectPhase = () => {
-    this.setState({ isLoading: true });
-    const { responsiblePersonFormValues } = this.state;
-    const addNewProjectPhaseFormValues = [...this.state.addNewProjectPhaseFormValues];
-    const { projectActions, project, createProjectPhase } = this.props;
-    let parentProjectData = null;
-    if(project) {
-      parentProjectData = {
-        parentId: project.id,
-        client: project.client
-      }
-    }
-    createProjectPhase(
-      addNewProjectPhaseFormValues,
-      responsiblePersonFormValues,
-      parentProjectData
-    )
-    .then(response => {
-      clearDataOfForm(addNewProjectPhaseFormValues);
-      setTimeout(() => {
-        this.setState({
-          showAddPhaseModal: false,
-          openFirstForm: true,
-          addNewProjectPhaseFormValues: addNewProjectPhaseFormValues
-        });
-        projectActions.createProjectPhase(null, []);
-        this.loadProjectData("isLoadingProject",null);
-      }, 1500);
-    });
-  };
 
   togleActiveAssignments = () => {
     const { showAllAssignments } = this.state;
@@ -529,10 +315,6 @@ class ProjectDetails extends Component {
       return [{ classVal: "spn-active", name: this.props.t("Active") }];
   };
 
-  clearEditModalData = () => {
-    this.props.editProjectClearData(null, []);
-    this.setState({ editModal: false });
-  };
   componentWillUnmount() {
     this.props.clearProjectData(null, null, [], [], []);
   }
@@ -686,13 +468,12 @@ class ProjectDetails extends Component {
 
   render() {
     const { project, loading, loadProjectStatus, addEmployeeToProjectStatus,
-      addEmployeeToProjectErrors, changeProjectState, changeProjectStateStatus,
-      changeProjectStateErrors, getSuggestEmployeesStatus, suggestEmployees,
-      addProjectOwnerToProjectStatus, addProjectOwnerToProjectErrors, t, createProjectStatus, createProjectErrors, match} = this.props;
+      addEmployeeToProjectErrors, changeProjectState, getSuggestEmployeesStatus, suggestEmployees,
+      addProjectOwnerToProjectStatus, addProjectOwnerToProjectErrors, t, match} = this.props;
     const projectPhases = project ? this.projectPhaseData() : null;
     const { reactivate, close } = WebApi.projects.put;
     const { projectStatus, showAllAssignments, matches, currentOpenedRow,
-      isChangingAssignments, isLoadingProject, openFirstForm, addNewProjectPhaseFormValues, responsiblePersonFormValues, isLoading, responsiblePersons, selected } = this.state;
+      isChangingAssignments, isLoadingProject } = this.state;
     return (
       <div
         onClick={
@@ -704,7 +485,7 @@ class ProjectDetails extends Component {
       >
         {isLoadingProject && <Spinner message={t("LoadingProjectMessage")} fontSize="7px" />}
         {loadProjectStatus && (
-          <Aux>
+          <React.Fragment>
             <header>
               <h1>
                 {projectStatus && (
@@ -728,12 +509,8 @@ class ProjectDetails extends Component {
                     this.props.login
                   )) && (
                   <React.Fragment>
-                    <button
-                      onClick={() =>
-                        this.setState({ editModal: !this.state.editModal })
-                      }
-                      className="option-btn normal-btn"
-                    >
+                    <button onClick={() =>this.setState({ editProject: true })}
+                      className="option-btn normal-btn">
                       {t("EditProject")}
                     </button>
                     {loading && <Spinner fontSize="1.77px" position="relative" positionClass="" />}
@@ -943,13 +720,13 @@ class ProjectDetails extends Component {
                         )}
                     </tbody>
                     </table>
-                    <button className="add-programmer-btn" onClick={() => this.setState({showAddPhaseModal: true})}>{t("Add")}</button>
+                    <button className="add-programmer-btn" onClick={() => this.setState({addPhaseForm: true})}>{t("Add")}</button>
                   </div>
                   ):
                   <div className="empty-project-phases-container">
                     <div>
                       <span>{t("EmptyProjectPhases")}</span>
-                      <div  onClick={() => this.setState({showAddPhaseModal: true})}>
+                      <div onClick={() => this.setState({addPhaseForm: true})}>
                         <i className="fas fa-briefcase fa-lg " />
                         <i className="fas fa-plus" />
                       </div>
@@ -1165,85 +942,17 @@ class ProjectDetails extends Component {
               </div>
             </main>
 
-          <Modal
-            key={10}
-            open={this.state.showAddPhaseModal}
-            classNames={{
-              modal: `Modal ${openFirstForm ? "Modal-add-project" : ""}`
-            }}
-            contentLabel="Add project modal"
-            onClose={() => this.setState({ showAddPhaseModal: false })}
-          >
-            <header>
-              <h3>{openFirstForm ? t("AddProjectPhase") : t("ContactPerson")}</h3>
-            </header>
+          {this.state.addPhaseForm &&
+            <PhaseProjectForm parentId={project.id} isPhaseForm
+              onSubmitSucc={() => this.setState({addPhaseForm: false})}
+              close={() => this.setState({addPhaseForm: false})} />
+          }
 
-          {openFirstForm ? (
-            <Form
-              btnTitle={t("Next")}
-              key={11}
-              shouldSubmit={false}
-              dateIndexesToCompare={[2, 3]}
-              onSubmit={this.changeForm}
-              formItems={addNewProjectPhaseFormValues}
-              endDate={moment()}
-              onBlur={this.goForClient}
-            />
-          ) : (
-            <Form
-              btnTitle={t("Add")}
-              key={12}
-              shouldSubmit={true}
-              formItems={responsiblePersonFormValues}
-              onSubmit={this.addProjectPhase}
-              isLoading={isLoading}
-              submitResult={{
-                status: createProjectStatus,
-                content: createProjectStatus
-                  ? t("ProjectPhaseHasBeenAdded")
-                  : createProjectErrors && createProjectErrors[0]
-              }}
-            >
-              <button
-                onClick={this.changeForm}
-                type="button"
-                className="come-back-btn"
-              >
-                {t("Back")}
-              </button>
-
-              {responsiblePersons.length > 0 && (
-                <ContactList
-                  selected={selected}
-                  onChange={e => this.fetchContactDateByOtherClient(e)}
-                  items={responsiblePersons}
-                  t={this.props.t}
-                />
-              )}
-            </Form>
-            )}
-          </Modal>
-
-            <Modal
-              key={1}
-              open={this.state.editModal}
-              classNames={{ modal: "Modal Modal-add-project" }}
-              contentLabel="Edit project modal"
-              onClose={this.clearEditModalData}
-            >
-              <ProjectDetailsBlock
-                showAllAssignments={showAllAssignments}
-                editProjectStatus={this.props.editProjectStatus}
-                editProjectErrors={this.props.editProjectErrors}
-                responsiblePerson={project.responsiblePerson}
-                project={project}
-                getContactPersonDataACreator={
-                  this.props.getContactPersonDataACreator
-                }
-                editProject={this.props.editProject}
-                closeEditProjectModal={this.clearEditModalData}
-              />
-            </Modal>
+          {this.state.editProject &&
+            <PhaseProjectForm projectToEdit={project}
+              onSubmitSucc={() => this.setState({editProject: false})}
+              close={() => this.setState({editProject: false})} />
+          }
 
             <ConfirmModal
               open={this.state.deleteProjectModal}
@@ -1340,7 +1049,7 @@ class ProjectDetails extends Component {
                   operationPrompt={addEmployeeToProjectStatus}
                 />
               )}
-          </Aux>
+          </React.Fragment>
         )}
 
         {loadProjectStatus === false && (
@@ -1385,9 +1094,6 @@ const mapStateToProps = state => {
     changeProjectSkillsStatus: state.projectsReducer.changeProjectSkillsStatus,
     changeProjectSkillsErrors: state.projectsReducer.changeProjectSkillsErrors,
 
-    editProjectStatus: state.projectsReducer.editProjectStatus,
-    editProjectErrors: state.projectsReducer.editProjectErrors,
-
     loadedSkills: state.skillsReducer.loadedSkills,
     loadSkillsStatus: state.skillsReducer.loadSkillsStatus,
     loadSkillsErrors: state.skillsReducer.loadSkillsErrors,
@@ -1402,20 +1108,10 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    loadClients: () => dispatch(loadClients()),
-    createProjectPhase: (firstArray, secondArray, parentProjectData) => dispatch(createProjectPhaseACreator(firstArray, secondArray, parentProjectData)),
     projectActions: bindActionCreators(projectsActions, dispatch),
-    getContactPersonDataACreator: clientId =>
-      dispatch(getContactPersonDataACreator(clientId)),
     getProject: (projectId, showAllAssignments) =>
       dispatch(getProjectACreator(projectId, showAllAssignments)),
-    editProject: (projectId, projectToSend, showAllAssignments) =>
-      dispatch(
-        editProjectACreator(projectId, projectToSend, showAllAssignments)
-      ),
     getProjectDataACreator: (projectId, showAllAssignments) => dispatch(getProjectDataACreator(projectId, showAllAssignments)),
-    editProjectClearData: (status, errors) =>
-      dispatch(editProject(status, errors)),
     clearProjectData: (project, status, errors, personKeys, overViewKeys) =>
       dispatch(getProject(project, status, errors, personKeys, overViewKeys)),
     addEmployeeToProject: (
@@ -1472,8 +1168,6 @@ const mapDispatchToProps = dispatch => {
 
     changeProjectState: (funcName, currentOperation, model) =>
       dispatch(changeProjectStateACreator(funcName, currentOperation, model)),
-
-    clearProjectState: () => dispatch(clearProjectState()),
 
     getSuggest: projectId => dispatch(getSuggestEmployeesACreator(projectId))
   };

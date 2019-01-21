@@ -5,6 +5,36 @@ const translations = {
     Employee: 'Znajdź pracownika',
     EmptyEmployeeQuery: 'Nie znaleziono pracowników o podanych parametrach'
   },
+  FancyModal: {
+    Step: 'Krok'
+  },
+  DragAndDrop: {
+    DroppedMessage: 'Pliki zostały upuszczone',
+    TooManyFilesError: 'Upuszczono za dużo plików. Limit to '
+  },
+  PhaseProjectForm: {
+    firstStepTitleForPhases: 'Wypełnij szczegóły fazy projektu',
+    secondStepTitleForPhases: 'Uzupełnij informacje o kliencie dla fazy projektu',
+    firstStepTitleForProjects: 'Uzupełnij szczegóły projektu',
+    secondStepTitleForProjects: 'Wypełnij informacje o kliencie',
+    name: 'nazwa',
+    description: 'opis',
+    startDate: 'data rozpoczęcia',
+    endDate: 'data zakończenia',
+    client: 'klient',
+    cloud: 'chmura',
+    responsiblePerson: 'osoba odpowiedzialna',
+    EmptyResponsiblePersonsInSelect: 'nie wybrano osoby odpowiedzialnej...'
+  },
+  ResponsiblePersonForm: {
+    client: 'klient',
+    firstName: 'imię',
+    lastName: 'nazwisko',
+    email: 'adres email',
+    phoneNumber: 'numer telefonu',
+    modalHeaderAdd: 'Dodaj nową osobę odpowiedzialną',
+    modalHeaderEdit: 'Edytuj dane osoby odpowiedzialnej'
+  },
   LoginForm: {
     EnterUsername: "Podaj login",
     EnterPassword: "Podaj hasło",
@@ -720,10 +750,13 @@ const translations = {
     Info2: "Cofnięcie tej akcji jest niemożliwe.",
     SuccessfullyDeleted: "Pomyślnie usunięto umiejętność",
     AllSkills: "Wszystkie umiejętności",
-    AddSkillName: "wpisz nazwę nowej umiejętności...",
-    EnterSkillName: "wpisz nazwę umiejętności...",
+    AddSkillName: "wpisz nazwę nowej umiejętności ...",
+    EnterSkillName: "wpisz nazwę umiejętności ...",
     SkillExists: "Ta umiejętność już istnieje",
-    SkillName: "Nazwa umiejętności"
+    SkillName: "Nazwa umiejętności",
+    TypeSearch: "wyszukaj umiejętności ...",
+    TypeAdd: "podaj nazwę nowej umiejętności ...",
+    LoadingSkills: "Ładowanie umiejętności"
   },
   SkillList: {
     DeleteSkill: "Usuń umiejętność",
@@ -731,7 +764,21 @@ const translations = {
     DeleteSkillQuestion: "Czy na pewno chcesz usunąć skill ",
     SuccessfullyDeletedSkill: "Pomyślnie usunięto skill",
     SkillLenghtError: "Nazwa umiejętności nie może być dłuższa niż 100 znaków",
-    NoResults: "Brak wyników dla tego ciągu znaków"
+    NoResults: "Brak wyników dla tego ciągu znaków",
+    SaveChanges: "Zapisz zmiany",
+    CloseEdit: "Zamknij edycję"
+  },
+  EmployeesForSkill: {
+    EmployeesWithSkill: "Pracownicy posiadający wybraną umiejętność",
+    SortingBy: "SORTUJ",
+    YearsOfExp: "lata doświadczenia",
+    SkillLvl: "poziom umiejętności",
+    ChooseOption: "wybierz opcję"
+  },
+  EmployeeCard: {
+    KnowledgeLvl: "wiedzy o wybranej umiejętności",
+    More: "WIĘCEJ",
+    In: "w",
   },
   FileInput: {
     ChooseFile: "Wybierz plik",

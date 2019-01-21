@@ -1,6 +1,5 @@
 import {
   LOAD_PROJECTS_SUCCESS,
-  CHANGE_EDITED_PROJECT,
   GET_PROJECT,
   names,
   overViewNames,
@@ -10,28 +9,23 @@ import {
   GET_FEEDBACKS,
   DELETE_FEEDBACK,
   EDIT_FEEDBACK,
-  EDIT_PROJECT,
   ADD_SKILLS_TO_PROJECT,
   CHANGE_PROJECT_STATE,
-  CREATE_PROJECT,
-  CREATE_PROJECT_PHASE,
   GET_SUGGEST_EMPLOYEES,
   CHANGE_GET_SUGGEST_EMPLOYEES_STATUS,
-  GET_CONTACT_PERSON_DATA,
   ADD_PROJECT_OWNER_TO_PROJECT,
   EDIT_EMPLOYEE_ASSIGNMENT,
-  DELETE_EMPLOYEE_ASSIGNMENT
+  DELETE_EMPLOYEE_ASSIGNMENT,
+  UPDATE_PROJECT,
+  ADD_PHASE
 } from "../constants";
-import axios from "axios";
 import WebApi from "../api";
 import {
   asyncStarted,
-  asyncEnded,
-  changeOperationStatus
+  asyncEnded
 } from "./asyncActions";
 import { errorCatcher } from "../services/errorsHandler";
 import { cutNotNeededKeysFromArray } from "../services/methods";
-import moment from "moment";
 import { useRequest } from '../api/index';
 
 export const loadProjectsSuccess = (projects, resultBlock) => {
@@ -105,13 +99,6 @@ export const loadProjects = (
       .catch(error => {
         dispatch(asyncEnded());
       });
-  };
-};
-
-export const changeEditedProjectId = projectId => {
-  return {
-    type: CHANGE_EDITED_PROJECT,
-    projectId
   };
 };
 
@@ -430,89 +417,6 @@ export const editFeedbackACreator = (feedbackId, description, projectId, onlyAct
   };
 };
 
-export const editProject = (editProjectStatus, editProjectErrors) => {
-  return {
-    type: EDIT_PROJECT,
-    editProjectStatus,
-    editProjectErrors
-  };
-};
-export const editProjectPromise = (projectToSend, projectId) => dispatch => {
-  return new Promise((resolve, reject) => {
-    WebApi.projects.put
-      .project(projectId, projectToSend)
-      .then(response => {
-        dispatch(editProject(true, []));
-        resolve(response);
-      })
-      .catch(error => {
-        dispatch(editProject(false, errorCatcher(error)));
-        reject(error);
-      });
-  });
-};
-const getProjectPromise = (projectId, onlyActiveAssignments) => dispatch => {
-  return new Promise((resolve, reject) => {
-    WebApi.projects.get
-      .projects(projectId, onlyActiveAssignments)
-      .then(response => {
-        resolve(response.replyBlock.data.dtoObject);
-      })
-      .catch(error => {
-        reject(error);
-      });
-  });
-};
-
-export const editProjectACreator = (
-  projectId,
-  projectToSend,
-  onlyActiveAssignments
-) => {
-  return dispatch => {
-    dispatch(editProjectPromise(projectToSend, projectId))
-      .then(response => {
-        dispatch(clearAfterTimeByFuncRef(editProject, 5000, null, []));
-
-        dispatch(getProjectPromise(projectId, onlyActiveAssignments))
-          .then(getProjectResponse => {
-            const responsiblePersonKeys = {
-              keys: cutNotNeededKeysFromArray(
-                Object.keys(getProjectResponse.responsiblePerson),
-                [0]
-              ),
-              names: names
-            };
-
-            const overViewKeys = {
-              keys: cutNotNeededKeysFromArray(Object.keys(getProjectResponse), [0, 1, 2, 4, 8, 9, 10, 11, 12, 13, 14, 15, 16]),
-              names: overViewNames
-            };
-
-            dispatch(
-              getProject(
-                getProjectResponse,
-                true,
-                [],
-                responsiblePersonKeys,
-                overViewKeys,
-                []
-              )
-            );
-          })
-          .catch(error => {
-            dispatch(getProject(null, false, errorCatcher(error), [], []));
-            dispatch(
-              clearAfterTimeByFuncRef(getProject, 5000, null, null, [], [], [])
-            );
-          });
-      })
-      .catch(error => {
-        dispatch(clearAfterTimeByFuncRef(editProject, 5000, null, []));
-      });
-  };
-};
-
 export const changeProjectSkills = (
   changeProjectSkillsStatus,
   changeProjectSkillsErrors
@@ -644,78 +548,6 @@ export const changeProjectStateACreator = (
       });
   };
 };
-export const clearProjectState = () => {
-  return {
-    type: CHANGE_PROJECT_STATE,
-    changeProjectStateStatus: null,
-    changeProjectStateErrors: [],
-    currentOperation: ""
-  };
-};
-
-export const createProject = (createProjectStatus, createProjectErrors) => {
-  return { type: CREATE_PROJECT, createProjectStatus, createProjectErrors };
-};
-
-export const createProjectACreator = (firstArray, secondArray) => dispatch => {
-  return new Promise((resolve, reject) => {
-    const model = {
-      name: firstArray[0].value,
-      description: firstArray[1].value,
-      client: firstArray[3].value ? firstArray[3].value : firstArray[2].value,
-      responsiblePerson: {
-        firstName: secondArray[1].value,
-        lastName: secondArray[2].value,
-        email: secondArray[0].value,
-        phoneNumber: secondArray[3].value
-      },
-      startDate: firstArray[4].value,
-      estimatedEndDate: firstArray[5].value
-    };
-    useRequest('addProject', model)
-      .then(response => {
-        dispatch(createProject(true, []));
-        resolve(response.replyBlock.data.dtoObject);
-      })
-      .catch(error => {
-        dispatch(createProject(false, errorCatcher(error)));
-        reject(error);
-      });
-  });
-};
-
-export const createProjectPhase = (createProjectPhaseStatus, createProjectPhaseErrors) => {
-  return { type: CREATE_PROJECT_PHASE, createProjectPhaseStatus, createProjectPhaseErrors };
-};
-
-export const createProjectPhaseACreator = (firstArray, secondArray, parentProjectData) => dispatch => {
-  return new Promise((resolve, reject) => {
-    const model = {
-      name: firstArray[0].value,
-      description: firstArray[1].value,
-      responsiblePerson: {
-        firstName: secondArray[1].value,
-        lastName: secondArray[2].value,
-        email: secondArray[0].value,
-        phoneNumber: secondArray[3].value
-      },
-      startDate: firstArray[2].value,
-      estimatedEndDate: firstArray[3].value,
-      client: parentProjectData.client,
-      parentId: parentProjectData.parentId
-    };
-    WebApi.projects.post
-      .add(model)
-      .then(response => {
-        dispatch(createProjectPhase(true, []));
-        resolve(response.replyBlock.data.dtoObject);
-      })
-      .catch(error => {
-        dispatch(createProjectPhase(false, errorCatcher(error)));
-        reject(error);
-      });
-  });
-};
 
 export const getSuggestEmployeesStatus = (
   getSuggestEmployeesStatus,
@@ -748,31 +580,26 @@ export const getSuggestEmployeesACreator = projectId => {
   };
 };
 
-export const getContactPersonData = (
-  contactPersonData,
-  getContactPersonDataStatus,
-  getContactPersonDataErrors
-) => {
-  return {
-    type: GET_CONTACT_PERSON_DATA,
-    contactPersonData,
-    getContactPersonDataStatus,
-    getContactPersonDataErrors
-  };
-};
+export const addProject = (model, succ, err) =>
+  useRequest('addProject', model)
+    .then(response => succ(response.extractData().id))
+    .catch(() => err());
 
-export const getContactPersonDataACreator = clientId => dispatch => {
-  return new Promise((resolve, reject) => {
-    WebApi.responsiblePerson.get
-      .byClient(clientId)
-      .then(response => {
-        const { dtoObjects } = response.replyBlock.data;
-        dispatch(getContactPersonData(dtoObjects, true, []));
-        resolve(dtoObjects);
-      })
-      .catch(error => {
-        dispatch(getContactPersonData([], false, errorCatcher(error)));
-        reject(error);
-      });
-  });
-};
+export const editProject = (project, succ, err) => dispatch =>
+  useRequest('editProject', project, project.id)
+  .then(() => { dispatch(updateProject(project)); succ(); } )
+  .catch(() => err());
+
+export const addProjectPhase = (model, succ, err) => dispatch =>
+  useRequest('addProjectPhase', model)
+  .then(res => {
+    const id = res.extractData().id;
+    const phase = { ...model, id, endDate: null,
+      team: [], owners: null, status: 0, skills: [], isDeleted: false, sharedProjects: []};
+    dispatch(addPhase(phase));
+    succ();
+   })
+  .catch(() => err());
+
+export const updateProject = project => ({ type: UPDATE_PROJECT, project });
+export const addPhase = phase => ({ type: ADD_PHASE, phase });

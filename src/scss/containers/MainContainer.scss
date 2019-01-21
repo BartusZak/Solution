@@ -25,7 +25,7 @@
 
   overflow-y: scroll;
 
-  .header {
+  & > .header {
     height: 55px;
     overflow: hidden;
     white-space: nowrap;
@@ -162,7 +162,6 @@
       vertical-align: baseline;
       color: white;
       font-size: 3.8vh;
-      font-family: "Faster One", cursive;
     }
 
     .extender {

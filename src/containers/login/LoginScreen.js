@@ -22,7 +22,7 @@ class LoginScreen extends React.Component {
 
   render() {
     return (
-      <div className="login-screen">  
+      <div className="login-screen">
         <Logo size="vector_cut" container />
         <LoginForm languageSwitch={this.props.languageSwitch} />
       </div>

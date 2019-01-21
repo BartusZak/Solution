@@ -1,0 +1,54 @@
+@import '../../../../scss/new-color-schema.scss';
+
+.react-datepicker{
+    border: unset;
+    box-shadow: $shadow;
+
+    .react-datepicker__navigation--previous {
+        left: unset;
+        right: 40px;
+        top: 20px; 
+        bottom: auto;
+        margin: auto 0;
+        border-right-color:$white;
+     }
+     
+    .react-datepicker__current-month{
+        margin-left: 15px;
+        padding: 20px 0;
+        color: $white;
+     }
+     
+    .react-datepicker__navigation--next {
+        right: 10px;
+        top: 20px;
+        bottom: auto;
+        margin: auto 0;
+        border-left-color: $white;
+     }
+
+     .react-datepicker__header{
+        text-align: unset;
+        background-color: $dcmt;
+        border-bottom: unset;
+        padding-top: unset;
+     }
+
+     .react-datepicker__triangle{
+        border-bottom-color: $dcmt !important;
+     }
+
+     .react-datepicker__day-name{
+        color: black;
+     }
+
+     .react-datepicker__day-names{
+        text-align: center;
+        padding: 10px 0;
+        background-color: $white;
+     }
+
+     .react-datepicker__day--keyboard-selected{
+        background-color: $dcmt;
+     }
+}

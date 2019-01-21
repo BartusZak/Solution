@@ -151,7 +151,7 @@ export default class InfoClient extends Component {
         <div className="responsible-person-container">
           <InfoClientList
             t={t}
-            list={client.resposiblePersons}
+            list={client.responsiblePersons}
             translateText={responsiblePersonTranslateText}
             handleOpenAddItemModal={this.handleResponsiblePersonAddOpenModal}
             handleDeleteInfoList={handleDeleteResponsiblePerson}

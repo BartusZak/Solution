@@ -5,6 +5,36 @@ const translations = {
     Employee: 'Find employee',
     EmptyEmployeeQuery: 'There is no employees for given parameters'
   },
+  FancyModal: {
+    Step: 'Step'
+  },
+  DragAndDrop: {
+    DroppedMessage: 'Files succesfully dropped',
+    TooManyFilesError: 'Too many files dropped. Limit is '
+  },
+  PhaseProjectForm: {
+    firstStepTitleForPhases: 'Populate project phase details',
+    secondStepTitleForPhases: 'Populate client details for project phase',
+    firstStepTitleForProjects: 'Populate project details',
+    secondStepTitleForProjects: 'Populate client informations',
+    name: 'name',
+    description: 'description',
+    startDate: 'start date',
+    endDate: 'end date',
+    client: 'client',
+    cloud: 'cloud',
+    responsiblePerson: 'responsible person',
+    EmptyResponsiblePersonsInSelect: 'responsible person is not selected...'
+  },
+  ResponsiblePersonForm: {
+    client: 'client',
+    firstName: 'first name',
+    lastName: 'last name',
+    email: 'email adress',
+    phoneNumber: 'phone number',
+    modalHeaderAdd: 'Add new responsible person',
+    modalHeaderEdit: 'Edit responsible person'
+  },
   LoginForm: {
     EnterUsername: "Enter username",
     EnterPassword: "Enter password",
@@ -712,7 +742,10 @@ const translations = {
     AddSkillName: "Enter new skill name",
     EnterSkillName: "Enter skill name...",
     SkillExists: "That skill already exists",
-    SkillName: "Skill name"
+    SkillName: "Skill name",
+    TypeSearch: "type for search skill...",
+    TypeAdd: "type here for add new skill...",
+    LoadingSkills: "Loading skills"
   },
   SkillList: {
     DeleteSkill: "Delete skill",
@@ -720,7 +753,22 @@ const translations = {
     DeleteSkillQuestion: "Are you sure that you want to delete that skill ",
     SuccessfullyDeletedSkill: "Successfully deleted skill",
     SkillLenghtError: "Skill name can't be longer than 100 characters",
-    NoResults: "No matching results"
+    NoResults: "No matching results",
+    SaveChanges: "Save changes",
+    CloseEdit: "Close edit form"
+  },
+  EmployeesForSkill: {
+    EmployeesWithSkill: "Employees which have selected skill",
+    SortingBy: "SORTING BY",
+    YearsOfExp: "years of experience",
+    SkillLvl: "skill level",
+    ChooseOption: "choose option"
+  },
+  EmployeeCard: {
+    KnowledgeLvl: "knowledge about selected skill",
+    More: "MORE",
+    In: "in",
+    LoadingSkills: "Ładowanie umiejętności"
   },
   FileInput: {
     ChooseFile: "Choose File",

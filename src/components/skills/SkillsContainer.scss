@@ -1,119 +1,249 @@
+@import "../../scss/ColorSchema";
+
 .skills-panel-container {
   width: 100%;
+  height: 100%;
+  background: white;
+  padding: 20px;
   display: flex;
-  .left-panel-container {
-    width: 30%;
-    padding-bottom: 30px;
-    position: relative;
-    .correct-operation {
-      top: 10px;
-      right: -10px;
+  align-items: center;
+  justify-content: space-between;
+
+  @media (max-width: 900px) {
+    height: 90%;
+  }
+
+  @media (max-width: 666px) {
+    display: block;
+    padding: 0;
+  }
+
+  .right-panel-container {
+    width: 73%;
+    height: 100%;
+
+    @media (max-width: 1180px) {
+      width: 60%;
     }
-    .empty-list-sk {
-      padding: 30px;
-      text-align: center;
-    }
-    header {
+
+    @media (max-width: 666px) {
       width: 100%;
-      padding-top: 30px;
-      span {
-        font-size: 22px;
-        position: relative;
-        .fa-plus,
-        .fa-times {
-          position: absolute;
-          top: -10px;
-          right: -25px;
-          font-size: 17px;
-          cursor: pointer;
-        }
-        .fa-plus {
-          color: rgb(91, 203, 98);
-        }
+      margin-top: 80px;
+    }
+  }
+
+  .left-panel-container {
+    min-width: 25%;
+    max-width: 25%;
+    height: 100%;
+    display: flex;
+    flex-flow: column;
+    position: relative;
+
+    @media (max-width: 1180px) {
+      min-width: 35%;
+      max-width: 35%;
+    }
+
+    @media (max-width: 1000px) {
+      min-width: 45%;
+      max-width: 45%;
+    }
+
+    @media (max-width: 666px) {
+      min-width: 100%;
+      max-width: 100%;
+      height: 100%;
+    }
+
+    .skills-title {
+      color: $main-color;
+      font-size: 20px;
+
+      @media (max-width: 666px) {
+        margin-top: 20px;
+        margin-left: 20px;
       }
-      .searcher-container {
-        margin-top: 30px;
-        position: relative;
-        .valid-error {
-          height: 50px;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          span {
-            color: tomato;
-            font-size: 16px;
-          }
-        }
-        .small-spiner {
-          top: 5px;
-          right: 6px;
-        }
-        .invalid-name {
-          border: 1px solid red;
-        }
-        input {
-          box-shadow: 1px 1px 1px 1px black;
-          outline: 0px;
-          width: 100%;
-          margin: 0;
-          padding: 7.5px 15px;
-          transition: 0.5s all ease-in-out;
-          height: 100%;
-          border: 1px solid transparent;
-          border-radius: 5px;
-          height: unset !important;
-          font-size: 14px;
-        }
+    }
+
+    .search-skill-container {
+      margin-top: 20px;
+      margin-bottom: 20px;
+      margin-right: 40px;
+      border-radius: 50px;
+      font-size: 14px;
+
+      @media (max-width: 666px) {
+        margin-left: 20px;
+        margin-right: 20px;
+      }
+
+      .field-icon {
+        border-radius: 50%;
+        background-color: $main-color;
         i {
-          position: absolute;
-          top: 9px;
-          right: 12.5px;
-        }
-        .fa-plus {
-          color: lightseagreen;
+          color: #fff;
         }
       }
     }
 
+    .skill-list-container {
+      position: absolute;
+      bottom: -20px;
+      width: 100%;
+      left: -20px;
+      height: 88%;
+      border-top-right-radius: 50px;
+      background-color: $wrapper-background-brighter;
+
+      @media (max-height: 800px) {
+        height: 85%;
+      }
+
+      @media (max-height: 650px) {
+        height: 82%;
+      }
+
+      @media (max-width: 666px) {
+        left: 0;
+        border-top-right-radius: 0;
+      }
+
+      .valid-error {
+        position: absolute;
+        text-align: center;
+        color: $button-element-background;
+        font-size: 14px;
+        bottom: 55px;
+        left: 20px;
+        right: 20px;
+      }
+
+      .add-skill-container {
+        position: absolute;
+        left: 20px;
+        right: 20px;
+        bottom: 10px;
+        font-size: 14px;
+      }
+    }
+
+    .correct-operation {
+      top: 10px;
+      right: -10px;
+    }
+    .empty-list-container {
+      height: 85%;
+
+      .empty-list-sk {
+        padding: 30px;
+        text-align: center;
+      }
+    }
+
     ul {
-      height: 650px;
+      direction: rtl;
+      height: 85%;
       width: 100% !important;
       padding: 0;
       margin-right: 1%;
       box-sizing: border-box;
       overflow-y: auto;
 
+      @media (max-width: 666px) {
+        height: 80%;
+      }
+
       .new-adding-template {
         margin: 0 auto;
         animation: 1s animate-template-in ease-in-out forwards;
-        height: 35px;
-        color: white;
-        padding: 0 15px;
+        padding: 0 30px;
         border-radius: 5px;
         letter-spacing: 1.25px;
+        word-wrap: break-word;
+        pointer-events: none;
+
         @keyframes animate-template-in {
           0% {
-            background: transparent;
             width: 0;
           }
           100% {
-            background: lightcoral;
-            width: 90%;
+            width: 100%;
           }
         }
       }
+
+      .selected-row {
+        background-color: white;
+      }
+
       li {
-        margin: 5px 0;
+        direction:ltr;
+        margin: 0;
         padding: 4px 30px 4px 30px;
         display: flex;
         width: 100%;
+        min-height: 60px;
         align-items: center;
         justify-content: space-between;
         position: relative;
         transition: 0.5s;
+        font-size: 15px;
+        cursor: pointer;
 
         &:hover {
-          background-color: rgba(214, 214, 214, 0.479);
+          background-color: white;
+        }
+
+        .operations-container {
+          position: absolute;
+          right: 30px;
+          top: 0;
+          bottom: 0;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          font-size: 20px;
+          font-weight: 100;
+          z-index: 10;
+
+          i {
+            margin-right: 10px;
+            transition: 0.5s;
+
+            &:hover {
+              opacity: 0.7;
+            }
+          }
+
+          .animate {
+            animation: 1s animate-size infinite !important;
+            @keyframes animate-size {
+              0% {
+                opacity: 1;
+
+              }
+              50% {
+                opacity: 0.5;
+              }
+              100% {
+                opacity: 1;
+              }
+            }
+          }
+        }
+
+        .slide-left {
+          animation: 1s animate-position forwards;
+
+          @keyframes animate-position {
+            0% {
+              right: -80px;
+            }
+            100% {
+              right: 30px;
+            }
+          }
         }
 
         .edit-input-container {
@@ -121,8 +251,10 @@
 
           .skill-edit-input {
             margin-bottom: unset;
+            padding: 5px;
             padding-right: 25px;
             border-radius: 5px;
+            margin-left: 5px;
             border: 1px solid rgba(109, 109, 109, 0.582);
             animation: 0.5s animate-opacity forwards;
             @keyframes animate-opacity {
@@ -138,29 +270,44 @@
           .close {
             position: absolute;
             top: 3px;
-            right: 15px;
-            color: #8c1b2f;
-            font-size: 1rem;
+            right: 10px;
+            height: 85%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: $button-element-background;
+            font-size: 1.1rem;
             border-left: 1px solid rgba(109, 109, 109, 0.582);
-            background-color: rgba(211, 211, 211, 0.301);
             padding-left: 4px;
             cursor: pointer;
           }
         }
 
-
         span {
+          display: flex;
+          align-items: center;
           max-width: 90%;
 
+          .recently-added {
+            position: absolute;
+            left: 10px;
+          }
+
           .name {
+            margin-left: 10px;
+            display: inline-flex;
             width: auto;
             position: relative;
+
+            @media (max-width: 1000px) {
+              font-size: 14px;
+            }
 
             .remove {
               position: absolute;
               top: -7px;
               right: -15px;
-              color: #8c1b2f;
+              color: $button-element-background;
               font-size: 0.8rem;
               animation: 0.5s animate-opacity ease-in-out forwards;
               cursor: pointer;
@@ -178,67 +325,19 @@
 
         }
         b {
-          display: block;
-          width: 20px;
-          height: 20px;
+          display: inline-flex;
+          width: 14px;
+          height: 14px;
+          border-radius: 50%;
           position: relative;
-
-          .animate {
-            animation: 1s animate-size infinite !important;
-            @keyframes animate-size {
-              0% {
-                opacity: 0.5;
-              }
-              50% {
-                opacity: 1;
-              }
-              100% {
-                opacity: 0.5;
-              }
-            }
-          }
-
-          .edit-icon {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            color: rgba(255, 255, 255, 0.733);
-            font-size: 0.8rem;
-            z-index: 100;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            transition: 0.5s;
-            cursor: pointer;
-
-            animation: 0.5s animate-opacity ease-in-out forwards;
-            @keyframes animate-opacity {
-              0% {
-                opacity: 0;
-              }
-              100% {
-                opacity: 1;
-              }
-            }
-
-            &:hover {
-              color: rgb(255, 255, 255);
-            }
-          }
-        }
-        i {
-          position: absolute;
-          right: 65px;
-          color: green;
-          font-weight: bold;
         }
       }
       .editing-skill-error {
         text-align: center;
         font-size: 0.8rem;
-        color: #8c1b2f;
+        color: $button-element-background;
+        background-color: white;
+        padding-bottom: 5px;
 
         animation: 0.5s animate-opacity ease-in-out forwards;
         @keyframes animate-opacity {
@@ -254,4 +353,5 @@
 
     }
   }
+
 }

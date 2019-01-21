@@ -1,0 +1,68 @@
+@import '../../../scss/new-color-schema.scss';
+.fancy-backdrop {
+  background: $backdrop;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1200;
+}
+.fancy-modal {
+  position: fixed;
+  background: $white;
+  z-index: 1201;
+  box-shadow: $shadow;
+  & > {
+    .label-btn:not(.dcmt-btn-light) {
+      color: $font-grey;
+    }
+  }
+}
+.scaled-content, .not-scaled-content {
+  transition: .2s ease-in-out;
+}
+.scaled-content {
+  transform: scale(.94);
+}
+.not-scaled-content {
+  transform: scale(1);
+}
+.m-w-center {
+  top: 10%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.m-w-h-center {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.fancy-modal-header {
+  height: 50px;
+  display: flex;
+  background: $modal-header-bg;
+  button.label-btn {
+    font-size: 16px;
+    width: 100%;
+  }
+}
+.fancy-modal-title {
+  color: $dcmt-light;
+  font-size: 18px;
+}
+.title-padding {
+  padding: 25px 30px 25px 30px;
+}
+.title-no-padding {
+  padding: 25px 30px 0 30px;
+}
+.fancy-modal-backdrop {
+  position: absolute;
+  top: 0;
+  z-index: 100;
+  right: 0;
+  background: $white-backdrop;
+  width: 100%;
+  height: 100%;
+}

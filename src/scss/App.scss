@@ -1,6 +1,5 @@
 @import "3rd/Reset.scss";
 @import "ColorSchema.scss";
-@import "./components/common/Button";
 @import "./components/common/Input";
 @import "./components/common/ContentContainer";
 @import "./components/common/ContentContainer";
@@ -8,14 +7,18 @@
 @import "./components/common/Logo";
 @import "./components/common/Flags";
 @import "./components/common/modals/ResultModal";
-@import "./components/projects/Skill";
 @import "./components/projects/Owner";
 @import "./components/stats/StatsContainer";
 @import './new-color-schema.scss';
+@import "./components/common/Button";
+@import './fancy-form-motive.scss';
 body {
-  font-family: "Roboto Condensed", sans-serif;
+  font-family: "Roboto", sans-serif;
   min-height: 100vh;
   background: $content-background;
+}
+button, input, textarea {
+  font-family: inherit;
 }
 .clickable {
   cursor: pointer
@@ -104,33 +107,6 @@ input[type="checkbox"] {
   }
 }
 
-::selection {
-  background: #ffb97c; /* WebKit/Blink Browsers */
-}
-
-.button-group {
-  button {
-    margin-right: 15px;
-  }
-}
-
-path.c3-shape {
-  cursor: default !important;
-}
-
-.text-just {
-  display: block;
-  text-align: justify;
-}
-
-.text-right {
-  text-align: right;
-}
-
-.text-bold {
-  font-weight: 900;
-}
-
 a,
 a:visited {
   text-decoration: none;
@@ -198,16 +174,6 @@ a:visited {
     color: rgb(166, 50, 147);
   }
 }
-
-.internum {
-  padding: 25px;
-}
-
-.scroll-container {
-  height: 73.3vh;
-  overflow-y: auto;
-}
-
 .result-block {
   width: 100%;
   text-align: center;
@@ -311,14 +277,6 @@ a:visited {
   }
 }
 
-.Modal-assignment {
-  height: auto;
-}
-
-.full-screen-loader {
-  position: relative;
-}
-
 .api-error-message {
   color: red;
   background: white;
@@ -330,46 +288,8 @@ a:visited {
 .Modal-add-project {
   height: 550px;
 }
+// That styles are for fancy form component
 
-.react-datepicker-popper {
-  z-index: 200;
-}
-
-.input-data-list, .empty-data-list {
-  position: absolute;
-  width: 100%;
-  box-shadow: $shadow;
-  background: $white;
-  top: 38px;
-  right: 0;
-  z-index: 10;
-}
-.input-data-list {
-  max-height: 350px;
-  li {
-    padding: 10px;
-    &:not(:last-of-type) {
-      cursor: pointer;
-      &:hover {
-        background: $hover;
-      }
-    }
-  }
-  .list-footer {
-    button {
-      display: block;
-      margin-left: auto;
-    }
-  }
-}
-.empty-data-list {
-  padding: 30px;
-  box-sizing: border-box;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: $font-grey;
-}
 .spinner-new {
   position: absolute;
   border-radius: 50%;
@@ -377,6 +297,7 @@ a:visited {
   border-top-color: transparent;
   border-right-color: transparent;
   animation: .5s animate-spinner ease-in infinite;
+  z-index: 1220;
   @keyframes animate-spinner {
     0%{
         transform: rotate(0);
@@ -386,85 +307,34 @@ a:visited {
     }
   }
 }
-
-.field {
-  border: 1px solid $input-border;
-  border-radius: 4px;
-  padding: 10px;
-  &:focus {
-    outline: none;
+.field-spinner {
+  top: 8px; right: 8px;
+}
+.form-down-right-spinner {
+  right: 10px; bottom: 10px;
+}
+.spinner-new-small {
+  width: 20px; height: 20px;
+}
+.spinner-new-medium {
+  width: 30px; height: 30px;
+}
+.spinner-new-big {
+  width: 45px; height: 45px;
+}
+.spinner-new-center {
+  top: 0; right: 0; left: 0; bottom: 0; margin: auto;
+}
+.react-datepicker-wrapper, .react-datepicker__input-container{
+  width: 100%;
+}
+@keyframes animate-left-in-content {
+  0% {
+    opacity: 0;
+    transform: translateX(-25px);
   }
-}
-.field-label {
-  color: $dcmt;
-}
-.fields-wrapper-row {
-  display: flex;
-  flex-flow: row;
-  align-items: center;
-}
-.fields-wrapper-col {
-  display: flex;
-  flex-flow: column;
-  label {
-    margin-bottom: 10px;
-  }
-}
-.field-error {
-  font-size: 14px;
-  margin: 0;
-  box-sizing: border-box;
-  height: 35px;
-  display: flex;
-  padding: 2px 0 0 5px;
-  flex-flow: column;
-  justify-content: center;
-  color: $input-error;
-}
-.label-submit {
-  font-size: 20px;
-  color: $dcmt;
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  font-weight: 500;
-  text-transform: uppercase;
-  font-family: inherit;
-  margin: 30px auto 0 auto;
-  display: block;
-  &:focus {
-    outline: none;
-  }
-}
-.field-block {
-  border: 1px solid $input-border;
-  border-radius: 4px;
-  height: 38px;
-  background: $white;
-  display: flex;
-  align-items: center;
-  position: relative;
-  input {
-    border: none;
-    background: none;
-    padding-left: 10px;
-    font-family: inherit;
-    width: 85%;
-    &:focus {
-      outline: none;
-    }
-  }
-  .field-icon {
-    width: 38px;
-    height: 38px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: absolute;
-    right: 0;
-    top: 0;
-    i {
-      color: $font-grey;
-    }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
   }
 }

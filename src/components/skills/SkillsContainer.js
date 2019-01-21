@@ -3,14 +3,17 @@ import { translate } from "react-translate";
 import { sortStrings, getRandomColor } from "../../services/methods";
 import { connect } from "react-redux";
 import { getAllSkillsACreator } from "../../actions/skillsActions";
+import { getEmployeesBySkillACreator } from '../../actions/employeesActions';
 import SkillList from "./skillList/skillList";
-import Spinner from "../common/LoaderCircular";
+import Spinner from '../common/spinner/spinner';
 import "./SkillsContainer.scss";
 import ServerError from "../common/serverError/serverError";
 import { validateInput } from "../../services/validation";
 import { addNewSkillACreator, addNewSkill } from "../../actions/skillsActions";
 import SmallSpinner from "../common/spinner/small-spinner";
 import CorrectOperation from "../common/correctOperation/correctOperation";
+import EmployeesForSkill from './employeesForSkill/EmployeesForSkill';
+import { withRouter } from "react-router-dom";
 
 const createColorIcons = currentSkills => {
   const skillsWithColors = [];
@@ -35,8 +38,12 @@ class SkillsContainer extends Component {
     newSkillNameError: "",
     isAddingSkillSpinner: false,
     showNewAddingTemplate: false,
-    newAddSkillColor: getRandomColor()
+    newAddSkillColor: getRandomColor(),
+    choosenSkillId: null,
+    choosenSkillName: null
   };
+
+
   componentDidMount() {
     this.props.getAllSkillsACreator([]);
   }
@@ -193,6 +200,16 @@ class SkillsContainer extends Component {
       }
     }
   };
+
+  skillChoosen = (skillId, skillName) => {
+    this.setState({
+      choosenSkillId: skillId,
+      choosenSkillName: skillName
+    })
+
+    this.props.getEmployeesBySkillACreator(skillId);
+  }
+
   render() {
     const {
       isLoading,
@@ -222,9 +239,9 @@ class SkillsContainer extends Component {
     );
 
     return (
-      <div className="content-container skills-panel-container">
+      <div className="skills-panel-container">
         {isLoading ? (
-          <Spinner />
+          <Spinner message={t("LoadingSkills")} fontSize="7px" />
         ) : loadSkillsStatus === false ? (
           <ServerError
             errorClass="whole-page-error"
@@ -233,57 +250,57 @@ class SkillsContainer extends Component {
         ) : (
           <React.Fragment>
             <div className="left-panel-container">
-              {addNewSkillStatus && <CorrectOperation />}
-              <header>
-                <span>
-                  {t("AllSkills")}
-                  {iconType}
-                </span>
-                <div className="searcher-container">
-                  {isAddingSkill ? (
-                    <input
-                      onFocus={() =>
-                        this.setState({ showNewAddingTemplate: true })
-                      }
-                      className={newSkillNameError ? "invalid-name" : ""}
-                      onKeyPress={
-                        isAddingSkillSpinner ? null : e => this.addNewSkill(e)
-                      }
-                      type="text"
-                      value={newSkillName}
-                      placeholder={t("AddSkillName")}
-                      onChange={e => this.onChangeNewFolderName(e)}
-                    />
-                  ) : (
-                    <input
-                      value={searchValue}
-                      onChange={e => this.onChangeInputSearch(e)}
-                      type="text"
-                      placeholder={t("EnterSkillName")}
-                    />
-                  )}
-                  <p className="valid-error">
-                    <span>{newSkillNameError}</span>
-                  </p>
-                  {isAddingSkill || <i className="fa fa-search" />}
+              <div className="skills-title">{t("AllSkills")}</div>
+                <div className="field-block search-skill-container">
+                <input
+                  type="text"
+                  placeholder={t("TypeSearch")}
+                  onChange={e => this.onChangeInputSearch(e)}
+                  value={searchValue}/>
+                <div className="field-icon"><i className="fa fa-search"></i></div>
+              </div>
 
-                  {isAddingSkillSpinner && <SmallSpinner />}
-                </div>
-              </header>
+              <div className="skill-list-container">
+                <SkillList
+                  getAllSkills={this.props.getAllSkillsACreator}
+                  newAddSkillColor={newAddSkillColor}
+                  newSkillName={newSkillName}
+                  newSkillNameError={newSkillNameError}
+                  skills={searchedSkills}
+                  showNewAddingTemplate={showNewAddingTemplate && newSkillName}
+                  skillChoosen={this.skillChoosen}
+                />
 
-              <SkillList
-                getAllSkills={this.props.getAllSkillsACreator}
-                newAddSkillColor={newAddSkillColor}
-                newSkillName={newSkillName}
-                newSkillNameError={newSkillNameError}
-                skills={searchedSkills}
-                showNewAddingTemplate={showNewAddingTemplate && newSkillName}
-              />
+              <p className="valid-error">
+                <span>{newSkillNameError}</span>
+              </p>
+              <div className="field-block add-skill-container">
+                <input
+                  type="text"
+                  placeholder={t("TypeAdd")}
+                  value={newSkillName}
+                  onFocus={() =>
+                    this.setState({ showNewAddingTemplate: true })
+                  }
+                  onKeyPress={
+                    isAddingSkillSpinner ? null : e => this.addNewSkill(e)
+                  }
+                  onChange={e => this.onChangeNewFolderName(e)}/>
+                <div className="field-icon"><i className="fa fa-plus"></i></div>
+              </div>
+
+              </div>
             </div>
-
-            <div className="right-panel-container" />
           </React.Fragment>
         )}
+        <div className="right-panel-container">
+        {!isLoading && <EmployeesForSkill
+            employeesBySkill={this.props.employeesBySkill}
+            choosenSkill={this.state.choosenSkillName}
+            history={this.props.history}
+            language={this.props.language}
+        /> }
+        </div>
       </div>
     );
   }
@@ -301,7 +318,10 @@ const mapStateToProps = state => {
     addNewSkillErrors: state.skillsReducer.addNewSkillErrors,
 
     editedSkill: state.skillsReducer.editedSkill,
-    editedSkillError: state.skillsReducer.editedSkillError
+    editedSkillError: state.skillsReducer.editedSkillError,
+
+    employeesBySkill: state.employeesReducer.employeesBySkill,
+    language: state.languageReducer.language
   };
 };
 
@@ -310,11 +330,12 @@ const mapDispatchToProps = dispatch => {
     getAllSkillsACreator: currentSkills =>
       dispatch(getAllSkillsACreator(currentSkills)),
     addNewSkillACreator: name => dispatch(addNewSkillACreator(name)),
-    addNewSkill: (status, errors) => dispatch(addNewSkill(status, errors))
+    addNewSkill: (status, errors) => dispatch(addNewSkill(status, errors)),
+    getEmployeesBySkillACreator: skillId => dispatch(getEmployeesBySkillACreator(skillId))
   };
 };
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(translate("SkillsContainer")(SkillsContainer));
+)(translate("SkillsContainer")(withRouter(SkillsContainer)));

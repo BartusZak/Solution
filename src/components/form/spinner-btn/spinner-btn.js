@@ -1,9 +1,8 @@
 import React from "react";
 import "./spinner-btn.scss";
-import Aux from "../../../services/auxilary";
 const spinnerBtn = props => {
   return (
-    <Aux>
+    <React.Fragment>
       {props.submitResult &&
         !props.isLoading &&
         props.submitResult.status !== null && (
@@ -42,7 +41,7 @@ const spinnerBtn = props => {
       >
         {props.isLoading ? "" : props.btnTitle}
       </button>
-    </Aux>
+    </React.Fragment>
   );
 };
 
