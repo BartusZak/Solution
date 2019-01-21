@@ -313,293 +313,289 @@ class AllRoles extends PureComponent {
 
     const GDriveRequests = [
       {
-        text: t('loginGDrive'),
+        text: t('LoginGDrive'),
         values: gdrive[CAN_LOGIN_GDRIVE]
       },
       {
-        text: t('generateShareLinkGDrive'),
+        text: t('GenerateShareLinkGDrive'),
         values: gdrive[CAN_GENERATE_SHARE_LINK_GDRIVE]
       },
       {
-        text: t('getFoldersGDrive'),
+        text: t('GetFoldersGDrive'),
         values: gdrive[CAN_GET_FOLDERS_GDRIVE]
       },
       {
-        text: t('deleteFolderGDrive'),
+        text: t('DeleteFolderGDrive'),
         values: gdrive[CAN_DELETE_FOLDER_GDRIVE]
       },
       {
-        text: t('updateFolderGDrive'),
+        text: t('UpdateFolderGDrive'),
         values: gdrive[CAN_UPDATE_FOLDER_GDRIVE]
       },
       {
-        text: t('createFolderGDrive'),
+        text: t('CreateFolderGDrive'),
         values: gdrive[CAN_CREATE_FOLDER_GDRIVE]
       },
       {
-        text: t('uploadFolderGDrive'),
+        text: t('UploadFolderGDrive'),
         values: gdrive[CAN_UPLOAD_FILE_GDRIVE]
       },
     ]
 
     const NotificationsRequests = [
       {
-        text: t('deleteNotifications'),
+        text: t('DeleteNotifications'),
         values: notifications[CAN_DELETE_NOTIFICATIONS]
       },
       {
-        text: t('getAllNotifications'),
+        text: t('GetAllNotifications'),
         values: notifications[CAN_GET_ALL_NOTIFICATIONS]
       },
       {
-        text: t('markAsReadNotification'),
+        text: t('MarkAsReadNotification'),
         values: notifications[CAN_MARK_AS_READ_NOTIFICATION]
       },
     ]
 
     const OneDriveRequests = [
       {
-        text: t('getRedirectLinkOneDrive'),
+        text: t('GetRedirectLinkOneDrive'),
         values: oneDrive[CAN_GET_REDIRECT_LINK_ONEDRIVE]
       },
       {
-        text: t('sendQueryToAuthOneDrive'),
+        text: t('SendQueryToAuthOneDrive'),
         values: oneDrive[CAN_SEND_QUERY_TO_AUTH_ONEDRIVE]
       },
       {
-        text: t('refreshTokenOneDrive'),
+        text: t('RefreshTokenOneDrive'),
         values: oneDrive[CAN_REFRESH_TOKEN_ONEDRIVE]
       },
       {
-        text: t('generateShareLinkOneDrive'),
+        text: t('GenerateShareLinkOneDrive'),
         values: oneDrive[CAN_GENERATE_SHARE_LINK_ONEDRIVE]
       },
       {
-        text: t('getFoldersOneDrive'),
+        text: t('GetFoldersOneDrive'),
         values: oneDrive[CAN_GET_FOLDERS_ONEDRIVE]
       },
       {
-        text: t('createFolderOneDrive'),
+        text: t('CreateFolderOneDrive'),
         values: oneDrive[CAN_CREATE_FOLDER_ONEDRIVE]
       },
       {
-        text: t('deleteFolderOneDrive'),
+        text: t('DeleteFolderOneDrive'),
         values: oneDrive[CAN_DELETE_FOLDER_ONEDRIVE]
       },
       {
-        text: t('updateFolderOneDrive'),
+        text: t('UpdateFolderOneDrive'),
         values: oneDrive[CAN_UPDATE_FOLDER_ONEDRIVE]
       },
       {
-        text: t('uploadFileOneDrive'),
+        text: t('UploadFileOneDrive'),
         values: oneDrive[CAN_UPLOAD_FILE_ONEDRIVE]
       },
     ]
 
     const QuarterTalksRequests = [
       {
-        text: t('editQuarterTalk'),
+        text: t('EditQuarterTalk'),
         values: quarterTalks[CAN_EDIT_QUARTER_TALK]
       },
       {
-        text: t('getQuarterTalkForEmployee'),
+        text: t('GetQuarterTalkForEmployee'),
         values: quarterTalks[CAN_GET_QUARTERS_FOR_EMPLOYEE]
       },
       {
-        text: t('getQuarterTalkReservedDates'),
+        text: t('GetQuarterTalkReservedDates'),
         values: quarterTalks[CAN_GET_QUARTER_TALK_RESERVED_DATES]
       },
       {
-        text: t('addQuarterTalk'),
+        text: t('AddQuarterTalk'),
         values: quarterTalks[CAN_ADD_QUARTER_TALK]
       },
       {
-        text: t('planQuarterTalk'),
+        text: t('PlanQuarterTalk'),
         values: quarterTalks[CAN_PLAN_QUARTER_TALK]
       },
       {
-        text: t('addQuestion'),
+        text: t('AddQuestion'),
         values: quarterTalks[CAN_ADD_QUESTION]
       },
       {
-        text: t('deleteQuestion'),
+        text: t('DeleteQuestion'),
         values: quarterTalks[CAN_DELETE_QUESTION]
       },
       {
-        text: t('reactivateQuarterTalk'),
+        text: t('ReactivateQuarterTalk'),
         values: quarterTalks[CAN_REACTIVATE_QUARTER_TALK]
       },
       {
-        text: t('deleteQuarterTalk'),
+        text: t('DeleteQuarterTalk'),
         values: quarterTalks[CAN_DELETE_QUARTER_TALK]
       },
       {
-        text: t('generateQuarterTalkDoc'),
+        text: t('GenerateQuarterTalkDoc'),
         values: quarterTalks[CAN_GENERATE_QUARTER_TALK_DOC]
       },
       {
-        text: t('getQuestions'),
+        text: t('GetQuestions'),
         values: quarterTalks[CAN_GET_QUESTIONS]
       },
     ]
 
     const ReportsRequests = [
       {
-        text: t('generateReport'),
+        text: t('GenerateReport'),
         values: reports[CAN_GENERATE_REPORT]
       },
       {
-        text: t('generateCv'),
+        text: t('GenerateCv'),
         values: reports[CAN_GENERATE_CV_PDF]
       },
       {
-        text: t('generateCvWord'),
+        text: t('GenerateCvWord'),
         values: reports[CAN_GENERATE_CV_WORD]
       },
       {
-        text: t('getFeedback'),
+        text: t('GetFeedback'),
         values: reports[CAN_GET_FEEDBACK]
       },
       {
-        text: t('getCv'),
+        text: t('GetCv'),
         values: reports[CAN_GET_CV]
       },
       {
-        text: t('getTeams'),
+        text: t('GetTeams'),
         values: reports[CAN_GET_TEAMS]
       },
       {
-        text: t('getReportExcel'),
+        text: t('GetReportExcel'),
         values: reports[CAN_GET_DEVELOPERS_EXCEL_REPORT]
       },
       {
-        text: t('getReportZip'),
+        text: t('GetReportZip'),
         values: reports[CAN_GET_ZIP_REPORT]
       },
       {
-        text: t('getRecentReports'),
+        text: t('GetRecentReports'),
         values: reports[CAN_GET_RECENT_AND_FAVORITES_REPORTS]
       },
       {
-        text: t('unfavoriteReport'),
+        text: t('UnfavoriteReport'),
         values: reports[CAN_UNFAVORITE_REPORT]
       }
     ]
     
     const ResponsiblePersonRequests = [
       {
-        text: t('getResponsiblePersonByClientId'),
+        text: t('GetResponsiblePersonByClientId'),
         values: responsiblePerson[CAN_GET_RESPONSIBLE_PERSON_BY_CLIENTID]
       },
       {
-        text: t('getResponsiblePersonById'),
+        text: t('GetResponsiblePersonById'),
         values: responsiblePerson[CAN_GET_RESPONSIBLEPERSON_BY_ID]
       },
       {
-        text: t('editResponsiblePerson'),
+        text: t('EditResponsiblePerson'),
         values: responsiblePerson[CAN_EDIT_RESPONSIBLE_PERSON]
       },
       {
-        text: t('addResponsiblePerson'),
+        text: t('AddResponsiblePerson'),
         values: responsiblePerson[CAN_ADD_RESPONSIBLE_PERSON]
       },
       {
-        text: t('deleteResponsiblePerson'),
+        text: t('DeleteResponsiblePerson'),
         values: responsiblePerson[CAN_DELETE_RESPONSIBLE_PERSON]
       },
       {
-        text: t('reactivateResponsiblePerson'),
+        text: t('ReactivateResponsiblePerson'),
         values: responsiblePerson[CAN_REACTIVATE_RESPONSIBLE_PERSON]
       }
     ]
 
     const SkillsRequests = [
       {
-        text: t('getAllSkills'),
+        text: t('GetAllSkills'),
         values: skills[CAN_GET_ALL_SKILLS]
       },
       {
-        text: t('getSkillById'),
+        text: t('GetSkillById'),
         values: skills[CAN_GET_SKILL_BY_ID]
       },
       {
-        text: t('addSkill'),
+        text: t('AddSkill'),
         values: skills[CAN_ADD_SKILL]
       },
       {
-        text: t('deleteSkill'),
+        text: t('DeleteSkill'),
         values: skills[CAN_DELETE_SKILL]
       },
       {
-        text: t('editSkill'),
+        text: t('EditSkill'),
         values: skills[CAN_EDIT_SKILL]
       }
     ]
 
     const StatsRequests = [
       {
-        text: t('getStats'),
+        text: t('GetStats'),
         values: stats[CAN_GET_STATS]
       },
     ]
 
     const RolesRequests = [
       {
-        text: t('getAllRoles'),
+        text: t('GetAllRoles'),
         values: roles[CAN_GET_ALL_ROLES]
       },
       {
-        text: t('addRole'),
+        text: t('AddRole'),
         values: roles[CAN_ADD_ROLE]
       },
       {
-        text: t('editRole'),
+        text: t('EditRole'),
         values: roles[CAN_EDIT_ROLE]
       },
       {
-        text: t('deleteRole'),
+        text: t('DeleteRole'),
         values: roles[CAN_DELETE_ROLE]
       }
     ]
 
     const ShareProjectsRequests = [
       {
-        text: t('shareProject'),
+        text: t('ShareProject'),
         values: shareProjects[CAN_SHARE_PROJECT]
       },
       {
-        text: t('getManagersSharedProject'),
+        text: t('GetManagersSharedProject'),
         values: shareProjects[CAN_GET_MANAGERS_SHARED_PROJECT]
       },
       {
-        text: t('getAlreadySharedManagers'),
+        text: t('GetAlreadySharedManagers'),
         values: shareProjects[CAN_GET_ALREADY_SHARED_MANAGERS]
-      },
-      {
-        text: t('cancelShareProject'),
-        values: shareProjects[CAN_CANCEL_SHARE_PROJECT]
       }
     ]
 
     const WorkExperienceRequests = [
       {
-        text: t('addWorkExperience'),
+        text: t('AddWorkExperience'),
         values: workExperience[CAN_ADD_WORK_EXPERIENCE]
       },
       {
-        text: t('getWorkExperience'),
+        text: t('GetWorkExperience'),
         values: workExperience[CAN_GET_WORK_EXPERIENCE]
       },
       {
-        text: t('editWorkExperience'),
+        text: t('EditWorkExperience'),
         values: workExperience[CAN_EDIT_WORK_EXPERIENCE]
       },
       {
-        text: t('deleteWorkExperience'),
+        text: t('DeleteWorkExperience'),
         values: workExperience[CAN_DELETE_WORK_EXPERIENCE]
       },
       {
-        text: t('getWorkExperienceByEmployeeId'),
+        text: t('GetWorkExperienceByEmployeeId'),
         values: workExperience[CAN_GET_WORK_EXPERIENCE_BY_EMPLOYEEID]
       }
     ]

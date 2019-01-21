@@ -191,7 +191,6 @@ const requests = {
   shareProject: (projectId, model) => execute(fromAlertSettings.shareProject, `shareproject/${projectId}`, requestTypes.post, model),
   getManagersSharedProject: projectId => execute(fromAlertSettings.getManagersSharedProject, `shareproject/alreadysharedmanagers/${projectId}`, requestTypes.get),
   getAlreadySharedManagers: projectId => execute(fromAlertSettings.getAlreadySharedManagers, `shareproject/destinationmanagers/${projectId}`, requestTypes.get),
-  cancelShareProject: (projectId, shareProjectId) => execute(fromAlertSettings.cancelShareProject, `shareproject/${projectId}/${shareProjectId}`, requestTypes.delete),
   
   //WORK EXPERIENCE
   addWorkExperience: model => execute(fromAlertSettings.addWorkExperience, `workexperience`, requestTypes.post, model),

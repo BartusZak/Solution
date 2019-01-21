@@ -146,7 +146,6 @@ import {
   CAN_SHARE_PROJECT,
   CAN_GET_MANAGERS_SHARED_PROJECT,
   CAN_GET_ALREADY_SHARED_MANAGERS,
-  CAN_CANCEL_SHARE_PROJECT,
   WORK_EXPERIENCE,
   CAN_ADD_WORK_EXPERIENCE,
   CAN_GET_WORK_EXPERIENCE,
@@ -694,7 +693,7 @@ const infoCreators = [
   //REPORTS
   () => {
     return dispatch => {
-      dispatch(genericInfoACreator( useRequest('generateReport', {}, false, false), REPORTS, CAN_GENERATE_REPORT))
+      dispatch(genericInfoACreator( useRequest('generateReport', {teamsSheets: {}}, false, false), REPORTS, CAN_GENERATE_REPORT))
     }
   },
   () => {
@@ -845,11 +844,6 @@ const infoCreators = [
   () => {
     return dispatch => {
       dispatch(genericInfoACreator( useRequest('getAlreadySharedManagers', 0), SHARE_PROJECTS, CAN_GET_ALREADY_SHARED_MANAGERS))
-    }
-  },
-  () => {
-    return dispatch => {
-      dispatch(genericInfoACreator( useRequest('cancelShareProject', 0, 0), SHARE_PROJECTS, CAN_CANCEL_SHARE_PROJECT))
     }
   },
   

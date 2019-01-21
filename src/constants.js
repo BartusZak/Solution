@@ -358,7 +358,6 @@ export const SHARE_PROJECTS = 'ShareProject';
 export const CAN_SHARE_PROJECT = 'canShareProject';
 export const CAN_GET_MANAGERS_SHARED_PROJECT = 'canGetManagersSharedProject';
 export const CAN_GET_ALREADY_SHARED_MANAGERS = 'canGetAlreadySharedManagers';
-export const CAN_CANCEL_SHARE_PROJECT = 'canCancelShareProject';
 
 export const WORK_EXPERIENCE = 'WorkExperience';
 export const CAN_ADD_WORK_EXPERIENCE = 'canAddWorkExperience';
