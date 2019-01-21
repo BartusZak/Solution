@@ -187,6 +187,7 @@
           color: white;
           position: relative;
           transition: 0.5s;
+          border: none;
           cursor: pointer;
 
           &:hover {
@@ -218,6 +219,8 @@
           color: #006064;
           font-size: 15px;
           transition: 0.5s;
+          border: none;
+          background-color: unset;
           cursor: pointer;
 
           &:hover {

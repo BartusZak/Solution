@@ -5,17 +5,14 @@ import { API_ENDPOINT } from '../../../api';
 import EmployeeCard from './EmployeeCard';
 
 class EmployeesForSkill extends Component {
-  constructor(props){
-    super(props);
-    this.state={
-      selectClass:'',
-      selectedOption: this.props.t("ChooseOption"),
-      selectedOptionKey: '',
-      sortedEmployees: []
-    }
+  state={
+    selectClass:'',
+    selectedOption: this.props.t("ChooseOption"),
+    selectedOptionKey: '',
+    sortedEmployees: []
   }
 
-  componentWillReceiveProps = (nextProps) => {
+  componentDidUpdate = (nextProps) => {
     if(this.props.employeesBySkill !== nextProps.employeesBySkill)
     {
       this.setState({

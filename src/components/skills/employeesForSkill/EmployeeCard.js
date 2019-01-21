@@ -11,34 +11,6 @@ class EmployeeCard extends Component {
       openedMail: false,
       openedSkype: false
     };
-
-    this.phoneRef = React.createRef();
-    this.mailRef = React.createRef();
-    this.skypeRef = React.createRef();
-  }
-
-  componentDidMount() {
-    document.addEventListener("mousedown", this.handleClickOutside);
-  }
-
-  componentWillUnmount() {
-    document.removeEventListener("mousedown", this.handleClickOutside);
-  }
-
-  handleClickOutside = (event) => {
-    const { openedMail, openedPhone, openedSkype } = this.state;
-
-    if(openedMail && this.mailRef && !this.mailRef.current.contains(event.target)) {
-      this.closeAllContainers();
-    }
-
-    if(openedPhone && this.phoneRef && !this.phoneRef.current.contains(event.target)) {
-      this.closeAllContainers();
-    }
-
-    if(openedSkype && this.skypeRef && !this.skypeRef.current.contains(event.target)) {
-      this.closeAllContainers();
-    }
   }
 
   openPhone = () => {
@@ -128,7 +100,7 @@ class EmployeeCard extends Component {
     const profilePhoto =
       API_ENDPOINT + "/ProfilePhotos/" + employee.id + ".jpg";
     const imgContent = employee.profilePhoto ? (
-      <img alt={"avatar"} src={profilePhoto} className="photo-container no-border"/>
+      <img alt="avatar" src={profilePhoto} className="photo-container no-border"/>
     ) : (
       <figure className="photo-container">
         <i className="fa fa-user" />
@@ -148,14 +120,12 @@ class EmployeeCard extends Component {
 
         <div className="contact-container">
           <div className="icons-container">
-            <div className="icon" onClick={() => this.openPhone()}><i className="fa fa-phone" ref={this.phoneRef}></i></div>
+            <button className="icon" onFocus={() => this.openPhone()} onBlur={() => this.setState({openedPhone: false})}><i className="fa fa-phone"></i></button>
             {openedPhone && <div className="phone-number-container">{employee.phoneNumber ? employee.phoneNumber : 'Nie podano'}</div>}
-            <div className="icon" onClick={() => this.openMail()}><i className="fa fa-envelope" ref={this.mailRef}></i></div>
+            <button className="icon" onFocus={() => this.openMail()} onBlur={() => this.setState({openedMail: false})}><i className="fa fa-envelope"></i></button>
             {openedMail && <div className="email-address-container">{employee.email ? employee.email : 'Nie podano'}</div>}
           </div>
-          <div className="skype-id" onClick={() => this.openSkype()} ref={this.skypeRef}>
-            skype.id
-          </div>
+          <button className="skype-id" onFocus={() => this.openSkype()} onBlur={() => this.setState({openedSkype: false})}>skype.id</button>
           {openedSkype && <div className="skype-id-container">{employee.skypeId ? employee.skypeId : 'Nie podano'}</div>}
         </div>
 

@@ -27,24 +27,22 @@ const createColorIcons = currentSkills => {
 };
 
 class SkillsContainer extends Component {
-  constructor(props){
-    super(props);
-    this.state = {
-      skills: null,
-      loadedSkillsArray: [],
-      isLoading: true,
-      searchValue: "",
-      searchedSkills: [],
-      isAddingSkill: false,
-      newSkillName: "",
-      newSkillNameError: "",
-      isAddingSkillSpinner: false,
-      showNewAddingTemplate: false,
-      newAddSkillColor: getRandomColor(),
-      choosenSkillId: null,
-      choosenSkillName: null
-    };
-  }
+  state = {
+    skills: null,
+    loadedSkillsArray: [],
+    isLoading: true,
+    searchValue: "",
+    searchedSkills: [],
+    isAddingSkill: false,
+    newSkillName: "",
+    newSkillNameError: "",
+    isAddingSkillSpinner: false,
+    showNewAddingTemplate: false,
+    newAddSkillColor: getRandomColor(),
+    choosenSkillId: null,
+    choosenSkillName: null
+  };
+
 
   componentDidMount() {
     this.props.getAllSkillsACreator([]);
@@ -333,7 +331,7 @@ const mapDispatchToProps = dispatch => {
       dispatch(getAllSkillsACreator(currentSkills)),
     addNewSkillACreator: name => dispatch(addNewSkillACreator(name)),
     addNewSkill: (status, errors) => dispatch(addNewSkill(status, errors)),
-    getEmployeesBySkillACreator: (skillId) => dispatch(getEmployeesBySkillACreator(skillId))
+    getEmployeesBySkillACreator: skillId => dispatch(getEmployeesBySkillACreator(skillId))
   };
 };
 
