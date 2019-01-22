@@ -88,10 +88,11 @@ class SkillsManagement extends React.Component {
 
   render() {
     const { isLoadingAllSkills, skillsData } = this.state;
-    const { close, allSkills, loadAllSkillsResult } = this.props;
+    const { close, allSkills, loadAllSkillsResult, skillManagerClass } = this.props;
     const allSkillsCount = allSkills.length;
     return (
-      <FancyModal positionClass='skills-modal flex-column' close={close} renderHeader={() => (
+      <FancyModal backdropClass={skillManagerClass}
+        positionClass={`skills-modal flex-column ${skillManagerClass}`} close={close} renderHeader={() => (
         <h3 className="flex-between-c">
           Manage skills {isLoadingAllSkills || `(${allSkillsCount})`}
           {(!isLoadingAllSkills && loadAllSkillsResult.status && allSkillsCount > 0) && <i className="fa fa-sort"></i>}

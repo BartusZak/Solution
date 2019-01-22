@@ -86,7 +86,6 @@ export const projectsReducer = (state = initialState, action) => {
         ...state, project: action.project, projectResult: action.projectResult
       }
     case ADD_OWNER:
-      console.log(action.owner);
       return {
         ...state, project: {...state.project, owners: [action.owner, ...state.project.owners] }
       };

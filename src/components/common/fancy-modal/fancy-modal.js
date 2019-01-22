@@ -3,7 +3,7 @@ import './fancy-modal.scss';
 import Button from '../../common/button/button';
 import { translate } from 'react-translate';
 
-const FancyModal = ({positionClass, renderHeader, handleClick, phases, currentPhase, title, isLoading, children, close, t}) => {
+const FancyModal = ({positionClass, renderHeader, handleClick, phases, currentPhase, title, isLoading, children, close, t, backdropClass}) => {
   const phasesArray = phases ? Object.keys(phases) : [];
   return (
     <React.Fragment>
@@ -31,9 +31,10 @@ const FancyModal = ({positionClass, renderHeader, handleClick, phases, currentPh
             <div className="spinner-new spinner-new-big spinner-new-center" />
           </React.Fragment>
         }
+
       </div>
 
-      <div onClick={close} className="fancy-backdrop" />
+      <div onClick={close} className={`fancy-backdrop ${backdropClass}`} />
     </React.Fragment>
   );
 }
@@ -41,6 +42,7 @@ const FancyModal = ({positionClass, renderHeader, handleClick, phases, currentPh
 FancyModal.defaultProps = {
   positionClass: 'm-w-h-center',
   phases: {},
+  backdropClass: ''
 };
 
 export default translate("FancyModal")(FancyModal);

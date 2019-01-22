@@ -6,7 +6,7 @@ import ProjectSkill from './project-skill/project-skill';
 import './project-skills.scss';
 class ProjectSkills extends React.PureComponent {
   state = {
-    skillsMarkers: {}, skillManager: false
+    skillsMarkers: {}, skillManager: false, skillManagerClass: 'manager-open'
   }
 
   componentDidMount = () => this.setMarkers();
@@ -28,10 +28,14 @@ class ProjectSkills extends React.PureComponent {
 
   togleManager = () => this.setState({skillManager: !this.state.skillManager});
 
+  setManagerClosedClass = () => this.setState({skillManagerClass: 'manager-closed'});
+  setManagerOpenClass = () => this.setState({skillManagerClass: 'manager-open'});
+
   render() {
-    const { skillsMarkers, skillManager } = this.state;
+    const { skillsMarkers, skillManager, skillManagerClass } = this.state;
     const { projectSkills } = this.props;
     const skillsCount = projectSkills.length;
+    console.log(skillManagerClass);
     return (
       <div className={`project-skills-wrapper flex-column ${skillsCount === 0 ? 'empty-list-bg' : ''}`}>
         <p className="important-par">Project skills ({skillsCount})</p>
@@ -39,7 +43,7 @@ class ProjectSkills extends React.PureComponent {
         {skillsCount === 0 ?
           <div className="empty-list-comunicate">
             <p>Project skill list is already empty. Click button bellow if you want add new one</p>
-            <i onClick={this.togleManager} className="fas fa-crosshairs fa-lg"></i>
+            <i onClick={skillManager ? this.setManagerOpenClass : this.togleManager} className="fas fa-crosshairs fa-lg"></i>
           </div> :
 
           <React.Fragment>
@@ -50,12 +54,15 @@ class ProjectSkills extends React.PureComponent {
               ))}
             </ul>
 
-            <Button onClick={this.togleManager} title="OPEN MANAGEMENT" mainClass="dcmt-main-btn dcmt-light-btn" />
+            <Button onClick={skillManager ? this.setManagerOpenClass : this.togleManager} title="OPEN MANAGEMENT" mainClass="dcmt-main-btn dcmt-light-btn" />
 
           </React.Fragment>
         }
 
-        { skillManager && <SkillsManager close={this.togleManager} /> }
+        { skillManager &&
+          <SkillsManager close={skillManager ? this.setManagerClosedClass : this.togleManager}
+            skillManagerClass={skillManagerClass} />
+        }
       </div>
     );
   }

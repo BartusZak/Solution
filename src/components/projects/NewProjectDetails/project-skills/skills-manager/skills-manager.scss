@@ -36,3 +36,10 @@ div.skills-modal {
     }
   }
 }
+.manager-open {
+  opacity: 1;
+}
+.manager-closed {
+  opacity: 0;
+  z-index: -1;
+}

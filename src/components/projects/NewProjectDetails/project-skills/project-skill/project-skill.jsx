@@ -24,7 +24,6 @@ class ProjectSkill extends React.Component {
             <div className="flex-row-center">
               <span className="skill-number">{skillLevel}</span>
               <div className="progress-marker" style={{width: '100px'}}>
-                {console.log(markerWidth)}
                 <div className="progress-value" style={{width: markerWidth}} />
               </div>
             </div>
