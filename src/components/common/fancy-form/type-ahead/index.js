@@ -1,3 +1,3 @@
 import React from 'react';
 
-export const AheadClassContext = React.createContext('aheadClass');
+export const AheadClassContext = React.createContext('payload');

@@ -51,7 +51,7 @@ class ProjectInformations extends React.Component {
   }
 
   render() {
-    const { editProjectForm, addPhaseForm, currentChangeStatusOperationName: operationName } = this.state;
+    const { editProjectForm, addPhaseForm, currentChangeStatusOperationName: operationName, isAddingOwner } = this.state;
     const { project } = this.props;
     const { id, name, description, responsiblePerson, owners, status, isDeleted, startDate, estimatedEndDate, client, cloud, parentId } = project;
     const projectState = calculateProjectState(status, isDeleted);
@@ -123,8 +123,9 @@ class ProjectInformations extends React.Component {
 
         <p className="important-par">Project owners ({owners.length})</p>
 
-        <Provider value="field-block circle-searcher">
-          <EmployeeSearcher employeeFilter={{ hasAccount: true, capacity: 0 }}
+        <Provider value={{isLoadingByParent: isAddingOwner}}>
+          <EmployeeSearcher
+            employeeFilter={{ hasAccount: true, capacity: 0 }}
             emitEmployeeClick={employee => this.addOwner(id, employee)}
             placeholder="EmployeeSearcherOwnersPlaceholder" />
         </Provider>

@@ -45,6 +45,10 @@ class TypeAhead extends React.PureComponent {
     this.setState({dataList: [], value: '', error: '', isListEmpty: null});
   }
 
+  typeAheadStyles = {
+    position: 'relative'
+  };
+
   render() {
     const { isLoading, isListEmpty, error, value, dataList } = this.state;
     const { icon, type, label, wrapperClass, placeholder, renderDataList } = this.props;
@@ -52,12 +56,18 @@ class TypeAhead extends React.PureComponent {
 
     return (
       <Consumer>
-        {aheadClass => (
-          <div className={wrapperClass}>
-            {aheadClass === "aheadClass" &&
+        {({isLoadingByParent, classVal}) => (
+          <div style={this.typeAheadStyles} className={wrapperClass}>
+            {isLoadingByParent &&
+              <React.Fragment>
+                <div className="spinner-new spinner-new-small field-spinner" />
+                <div className="fancy-modal-backdrop" />
+              </React.Fragment>
+            }
+            {classVal === "aheadClass" &&
               <label className="field-label">{label}</label>
             }
-            <div className={aheadClass === 'aheadClass' ? 'field-block' : aheadClass}>
+            <div className={classVal ? classVal : 'field-block'}>
 
               <input onChange={this.handleRequest} type={type} placeholder={placeholder} value={value} />
               <div className="field-icon">
