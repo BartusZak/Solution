@@ -22,7 +22,7 @@ export const getQuestions = (getQuestionsStatus, getQuestionsErrors, questions) 
 
   export const getQuarterQuestionsACreator = () => dispatch => {
       return new Promise((resolve, reject) => {
-          useRequest('getQuarterTalks').then(response => {
+          useRequest('getQuestions').then(response => {
             dispatch(getQuestions(true, [], response.replyBlock.data.dtoObjects));
             resolve(response.replyBlock.data.dtoObjects);
           }).catch(error => {
@@ -210,7 +210,7 @@ export const deleteQuestionACreator = questionId => dispatch => {
       return { type: DELETE_QUESTION, status, errors };
   }
 
-  export const populateQuarterTalkACreator = (formItems, quarterId) => dispatch => {
+  export const editQuarterTalkACreator = (formItems, quarterId) => dispatch => {
       return new Promise((resolve, reject) => {
         const quarterTalkQuestionItems = formItems.map(item => (
             { quarterTalkQuestionId: item.id, answer: item.value }

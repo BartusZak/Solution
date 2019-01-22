@@ -135,7 +135,7 @@ export const succOperationsWhiteObject = {
   getProjects: {pl: 'Projekt został pomyślnie dodany', en: 'Project has been succesfully added'},
 
   addQuarterTalk: {pl: 'Rozmowa kwartalna została dodana pomyślnie.', en: 'Quarter talk has been succesfully added'},
-  editQuarterTalk: {pl: 'Zaznaczona rozmowa kwartalna została pomyślnie edytowana', en: 'Marked quarter talk has been succesfully edited'},
+  populateQuarterTalk: {pl: 'Zaznaczona rozmowa kwartalna została pomyślnie edytowana', en: 'Marked quarter talk has been succesfully edited'},
   deleteQuaterTalk: {pl: 'Status rozmowy kwartalnej został zmieniony na usunięty', en: 'Quarter talk status has been succesfully changed into deleted'},
   reactivateQuaterTalk: {pl: 'Status rozmowy kwartalnej został zmieniony na aktywny', en: 'Quarter talk status has been succesfully changed into active'},
 
@@ -160,11 +160,11 @@ export const succOperationsWhiteObject = {
 
   addUser: {pl: 'Użytkownik został dodany pomyślnie', en: 'User has been successfully added'},
   editUserRoles: {pl: 'Pomyślnie edytowano role użytkownika', en: 'User roles have been successfully edited'},
-  reactivateUser: {pl: 'Pomyślnie reaktywowano użytkownika', en: 'User has been successfully reactivated'},
+  reactivateUser: {pl: 'Pomyślnie aktywowano użytkownika', en: 'User has been successfully activated'},
   deleteUser: {pl: 'Pomyślnie usunięto użytkownika', en: 'User has been successfully deleted'},
 
   deleteEmployee: {pl: 'Pomyślnie usunięto pracownika', en: 'Employee has been successfully deleted'},
-  reactivateEmployee: {pl: 'Pomyślnie reaktywowano pracownika', en: 'Employee has been successfully reactivated'},
+  reactivateEmployee: {pl: 'Pomyślnie aktywowano pracownika', en: 'Employee has been successfullyactivated'},
   editSkills: {pl: 'Pomyślnie zaktualizowano umiejętności', en: 'Employee skills have been succesfully updated'},
   addOnBoardEmployee: {pl: 'OnBoard został dodany pomyślnie', en:'OnBoard has been succesfully added'},
   deleteOnBoardEmployee: {pl: 'OnBoard został usunięty pomyślnie', en:'OnBoard has been succesfully deleted'},

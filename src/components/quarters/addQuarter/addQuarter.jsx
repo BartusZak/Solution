@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import './addQuarter.scss';
 import Form from '../../../components/form/form.js';
 import { connect } from 'react-redux';
-import { populateQuarterTalkACreator,
+import { editQuarterTalkACreator,
     deleteQuestion,
     deleteQuestionACreator,
     addQuestionACreator, addQuestion,
@@ -109,11 +109,11 @@ class AddQuarter extends Component{
 
     addQuarter = () => {
         this.setState({isAddingQuarter: true});
-        const { addQuarterTalkACreator, currentWatchedUser, populateQuarterTalkACreator } = this.props;
+        const { addQuarterTalkACreator, currentWatchedUser, editQuarterTalkACreator } = this.props;
         const addQuarterFormItems = [...this.state.addQuarterFormItems];
 
         if(this.quarterToPopulateId){
-            populateQuarterTalkACreator(addQuarterFormItems, this.quarterToPopulateId).then(() => {
+            editQuarterTalkACreator(addQuarterFormItems, this.quarterToPopulateId).then(() => {
                 this.setState({isAddingQuarter: false});
             }).catch(() => this.setState({isAddingQuarter: false}));
         }
@@ -388,7 +388,7 @@ const mapStateToProps = state => {
       deleteQuestionACreator: questionId => dispatch(deleteQuestionACreator(questionId)),
       deleteQuestionClearData: () => dispatch(deleteQuestion(null, [])),
 
-      populateQuarterTalkACreator: (formItems, quarterId) => dispatch(populateQuarterTalkACreator(formItems, quarterId))
+      editQuarterTalkACreator: (formItems, quarterId) => dispatch(editQuarterTalkACreator(formItems, quarterId))
     };
   };
 

@@ -8,7 +8,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import constraints from "../../../constraints";
 import PropTypes from "prop-types";
 import { translate } from "react-translate";
-import WebApi from "../../../api";
+import WebApi, { useRequest } from "../../../api";
 import Form from "../../form/form";
 import { validateInput } from "../../../services/validation";
 import { mapObjectKeysToArrayByGivenIndexes } from "../../../services/methods";
@@ -155,7 +155,7 @@ class ProjectDetailsBlock extends React.PureComponent {
   };
 
   componentDidMount() {
-    WebApi.clients.get.all().then(response => {
+    useRequest('getClients').then(response => {
       const editProjectArray = [...this.state.editProjectArray];
       const responsiblePersonArray = [...this.state.responsiblePersonArray]
       const { project , responsiblePerson} = this.props;
