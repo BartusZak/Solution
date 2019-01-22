@@ -14,6 +14,7 @@ import { useRequest } from '../../api/index';
 import FancyModal from '../../components/common/fancy-modal/fancy-modal';
 import Button from '../../components/common/button/button';
 import AddPreferedRolesModal from './AddPreferedRolesModal';
+import TranslationsSwitch from '../../components/translationSwitch/TranslationsSwitch';
 
 import './LoginContainer.scss';
 import LoaderHorizontal from '../../components/common/LoaderHorizontal';
@@ -67,7 +68,7 @@ class LoginContainer extends Component {
             </div>
             <div className="container">
               <span className="psw">
-                {t('Forgot')}{' '}
+                {t('Forgot')}
                 <a
                   target="_blank"
                   href="https://support.billennium.pl/Users/Account/RequestLostPassword"
@@ -75,16 +76,7 @@ class LoginContainer extends Component {
                   {t('Password')}?
                 </a>
               </span>
-              <span className="psr">
-                <span
-                  onClick={() => languageChange('pl')}
-                  className="flag-pol"
-                />
-                <span
-                  onClick={() => languageChange('en')}
-                  className="flag-gbr"
-                />
-              </span>
+              <TranslationsSwitch />
             </div>
           </div>
         </div>
@@ -111,7 +103,9 @@ const mapDispatchToProps = dispatch => {
 
 LoginContainer.propTypes = {};
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(translate('LoginContainer')(LoginContainer));
+export default translate('LoginContainer')(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(LoginContainer)
+);

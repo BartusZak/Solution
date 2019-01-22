@@ -1,19 +1,19 @@
-import React from "react";
-import { withRouter } from "react-router-dom";
+import React from 'react';
+import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import Logo from "../../../components/common/Logo";
-import TopBar from "./TopBar";
-import Icon from "../../../components/common/Icon";
-import LeftMenu from "../menu/LeftMenu";
+import Logo from '../../../components/common/Logo';
+import TopBar from './TopBar';
+import Icon from '../../../components/common/Icon';
+import LeftMenu from '../menu/LeftMenu';
 import { browserHistory } from 'react-router';
-import { putNotificationIconInSideBar } from "../../../actions/persistHelpActions";
-import {Link} from 'react-router-dom';
-import { connect } from "react-redux";
+import { putNotificationIconInSideBar } from '../../../actions/persistHelpActions';
+import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 
 class Header extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {extended: false, blocked: false};
+    this.state = { extended: false, blocked: false };
 
     this.handleExtend = this.handleExtend.bind(this);
     this.handleBlockedClick = this.handleBlockedClick.bind(this);
@@ -21,7 +21,7 @@ class Header extends React.Component {
   }
 
   componentDidMount() {
-    this.props.history.listen(location =>  {
+    this.props.history.listen(location => {
       this.closeMenu();
     });
   }
@@ -33,7 +33,7 @@ class Header extends React.Component {
   }
 
   handleExtend() {
-    if(this.state.blocked) return;
+    if (this.state.blocked) return;
     this.setState(prevState => ({
       extended: !prevState.extended
     }));
@@ -54,15 +54,30 @@ class Header extends React.Component {
 
     return (
       <div className="header">
-        <div className="first-bar"/>
-        <div className="second-bar"/>
-        <div onClick={this.handleBlockedClick} className="extender menu-hide-exclusion">
-          <Icon additionalClass="menu-hide-exclusion" icon="bars" iconSize="lg"/>
-          {isNotificationIconInSideBar && <div><i className="fa fa-bell notification-in-sidebar-icon"></i></div>}
+        <div className="first-bar" />
+        <div className="second-bar" />
+        <div
+          onClick={this.handleBlockedClick}
+          className="extender menu-hide-exclusion"
+        >
+          <Icon
+            additionalClass="menu-hide-exclusion"
+            icon="bars"
+            iconSize="lg"
+          />
+          {isNotificationIconInSideBar && (
+            <div>
+              <i className="fa fa-bell notification-in-sidebar-icon" />
+            </div>
+          )}
         </div>
-        <LeftMenu className="left-menu" close={this.closeMenu} extended={this.state.extended} />
+        <LeftMenu
+          className="left-menu"
+          close={this.closeMenu}
+          extended={this.state.extended}
+        />
         <Link to="/main">
-            <Logo size="vector_cut_header"/>
+          <Logo size="vector_cut_header" />
         </Link>
         <TopBar />
       </div>

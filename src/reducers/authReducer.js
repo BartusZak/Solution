@@ -19,7 +19,8 @@ const initialState = {
   authCodeStatus: null,
   authCodeErrors: [],
   refreshToken: '',
-  accountRequest: false
+  accountRequest: false,
+  azureToken: ''
 };
 
 let pem = userBlock => {

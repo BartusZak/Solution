@@ -1,6 +1,6 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-import { connect } from 'react-redux';
+import { translate } from 'react-translate';
 
 import colors from '../../scss/ColorSchema.scss';
 import Logo from 'components/common/Logo';
@@ -28,4 +28,4 @@ class LoginScreen extends React.Component {
   }
 }
 
-export default connect()(withRouter(LoginScreen));
+export default translate('LoginScreen')(withRouter(LoginScreen));

@@ -1,5 +1,8 @@
 const translations = {
   locale: 'pl',
+  TranslationsSwitch: {
+    CHANGE_LANGUAGE: 'Język'
+  },
   EmployeeSearcher: {
     EmployeeSearcherPlaceholder: 'zacznij pisać aby rozpocząć wyszukiwanie...',
     Employee: 'Znajdź pracownika',

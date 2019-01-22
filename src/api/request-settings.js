@@ -2,6 +2,9 @@
 export const login = 'login';
 export const loginAzureAD = 'loginAzureAD';
 
+//Users
+export const searchAD = 'searchAD';
+
 // Employees
 export const getEmployees = 'getEmployees';
 export const getClientsSlim = 'getClientsSlim';

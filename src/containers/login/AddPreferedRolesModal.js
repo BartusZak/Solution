@@ -133,11 +133,11 @@ class AddPreferedRoles extends React.Component {
           </CSSTransitionGroup>
         );
       }
-      if (this.state.isLoading) {
-        setTimeout(() => {
-          this.props.closeModal();
-        }, 2000);
-      }
+      // if (this.state.isLoading) {
+      //   setTimeout(() => {
+      //     this.props.closeModal();
+      //   }, 2000);
+      // }
     }
 
     return (

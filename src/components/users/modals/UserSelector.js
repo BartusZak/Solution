@@ -1,8 +1,8 @@
-import React, { Component } from "react";
-import StageOne from "./StageOne";
-import StageTwo from "./StageTwo";
-import WebApi from "../../../api";
-import PropTypes from "prop-types";
+import React, { Component } from 'react';
+import StageOne from './StageOne';
+import StageTwo from './StageTwo';
+import WebApi from '../../../api';
+import PropTypes from 'prop-types';
 
 const initialState = {
   selectedUser: {},
@@ -32,30 +32,37 @@ class UserSelector extends Component {
   };
 
   getUsers = user => {
+    useRequest('searchAD', user)
+      .then(response => {
+        console.log(response);
+      })
+      .catch(response => {
+        console.log(response);
+      });
     // if (!user) {
     //   return Promise.resolve({ options: [] });
     // }
-    return WebApi.users.get
-      .adSearch(user)
-      .then(response => {
-        this.setState({
-          errorBlock: response
-        });
-        return response;
-      })
-      .then(responsex => {
-        let usersRequest = responsex.extractData();
-        let usersList = [];
-        usersRequest.map((i, index) => {
-          let OneUser = Object.assign(i, i.hasAccount && { disabled: true });
-          usersList.push(OneUser);
-        });
-        return { options: usersList };
-      })
-      .catch(errorBlock => {
-        this.setState({ errorBlock });
-        // this.refs.StageOne.stopLoading();
-      });
+    // return WebApi.users.get
+    //   .adSearch(user)
+    //   .then(response => {
+    //     this.setState({
+    //       errorBlock: response
+    //     });
+    //     return response;
+    //   })
+    //   .then(responsex => {
+    //     let usersRequest = responsex.extractData();
+    //     let usersList = [];
+    //     usersRequest.map((i, index) => {
+    //       let OneUser = Object.assign(i, i.hasAccount && { disabled: true });
+    //       usersList.push(OneUser);
+    //     });
+    //     return { options: usersList };
+    //   })
+    //   .catch(errorBlock => {
+    //     this.setState({ errorBlock });
+    //     // this.refs.StageOne.stopLoading();
+    //   });
   };
 
   doAddUser = newUser => {

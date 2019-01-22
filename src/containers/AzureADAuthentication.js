@@ -42,6 +42,7 @@ class AzureADAuthentication extends PureComponent {
     useRequest('loginAzureAD', queryStringValues.code)
       .then(response => {
         const data = response.extractData();
+        console.log(data);
         if (!data.roles) {
           const warnMessage = warnOperationsWhiteObject['choosePreferedRoles'];
           store.dispatch(
@@ -68,7 +69,9 @@ class AzureADAuthentication extends PureComponent {
         }
       })
       .catch(error => {
-        const data = error.replyBlock.response.data.errorObjects[0].model;
+        const data =
+          error.replyBlock.response.data.errorObjects[0].errors
+            .accountRequestPendingError;
         authAccountAlreadyRequested();
         store.dispatch(
           addAlert({

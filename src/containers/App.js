@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import * as languageActions from '../actions/languageActions';
 
-import { Route, Switch, BrowserRouter } from 'react-router';
+import { Route, Switch } from 'react-router';
 import { PrivateRoute, Home } from '../creators';
 import { TranslatorProvider } from 'react-translate';
 
@@ -16,7 +16,6 @@ import LoginScreen from './login/LoginScreen';
 
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { LANGUAGE_CHANGE } from '../constants';
 import { withRouter } from 'react-router-dom';
 
 import NotFound404 from '../components/notFound404/NotFound404';
@@ -26,36 +25,11 @@ import Alerts from '../components/common/alerts/alerts';
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      language: this.props.language || 'pl'
-    };
-
-    this.returnLanguage = this.returnLanguage.bind(this);
-    this.changeLanguage = this.changeLanguage.bind(this);
+    this.state = {};
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.type === LANGUAGE_CHANGE) {
-      this.changeLanguage(nextProps.language);
-    }
-  }
-
-  changeLanguage(language) {
-    //TO CHANGE!!
-    this.setState(
-      {
-        language
-      },
-      () => {
-        setTimeout(() => {
-          window.location.reload();
-        }, 100);
-      }
-    );
-  }
-
-  returnLanguage() {
-    switch (this.state.language) {
+  changeLanguage = language => {
+    switch (language) {
       case 'pl':
         return pl;
       case 'en':
@@ -63,11 +37,12 @@ class App extends Component {
       default:
         return pl;
     }
-  }
+  };
 
   render() {
+    const { language } = this.props;
     return (
-      <TranslatorProvider translations={this.returnLanguage()}>
+      <TranslatorProvider translations={this.changeLanguage(language)}>
         <React.Fragment>
           <Alerts />
           <Switch>
