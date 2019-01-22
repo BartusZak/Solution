@@ -8,10 +8,13 @@ export const searchAD = 'searchAD';
 // Employees
 export const getEmployees = 'getEmployees';
 export const getClientsSlim = 'getClientsSlim';
+export const getEmployeesBySkill = 'getEmployeesBySkill';
 
 // Projects
+export const getProjects = 'getProjects';
 export const addProject = 'addProject';
 export const editProject = 'editProject';
+export const addProjectPhase = 'addProjectPhase';
 
 // Reponsible person
 export const createResponsiblePerson = 'createResponsiblePerson';
@@ -31,14 +34,9 @@ export const succOperationsWhiteObject = {
     en: 'Logged in successfully!'
   },
   // Projects
-  addProject: {
-    pl: 'Projekt został pomyślnie dodany',
-    en: 'Project has been succesfully added'
-  },
-  editProject: {
-    pl: 'Projekt został pomyślnie edytowany',
-    en: 'Project has been succesfully modified'
-  },
+  addProject: {pl: 'Projekt został pomyślnie dodany', en: 'Project has been succesfully added'},
+  editProject: {pl: 'Projekt został pomyślnie edytowany', en: 'Project has been succesfully modified'},
+  addProjectPhase: {pl: 'Faza projektu została pomyślnie stworzona', en: 'Project phase has been succesfully created'},
 
   // Reponsible person
   createResponsiblePerson: {

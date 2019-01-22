@@ -1,0 +1,280 @@
+@import "../../../scss/ColorSchema";
+
+.employees-for-skill-container {
+  height: 100%;
+
+  & > .header {
+    color: #006064;
+    font-size: 20px;
+    margin-bottom: 20px;
+
+    @media (max-width: 666px) {
+      text-align: center;
+      font-size: 20px !important;
+    }
+  }
+
+  & > .sort-by-header {
+    color: $dark-select;
+    font-size: 14px;
+    font-weight: bold;
+
+    @media (max-width: 666px) {
+      text-align: center;
+    }
+
+    .sorting-by-option {
+      display: inline-block;
+      color: $dark-select-option;
+      font-weight: 100;
+      font-size: 15px;
+      position: relative;
+      margin-left: 10px;
+      cursor: pointer;
+
+      .list-visible {
+        display: block;
+      }
+
+      ul {
+        display: none;
+        position: absolute;
+        width: 150px;
+        bottom: -40px;
+        left: 0;
+
+        .selected {
+          color: $dark-select-option-selected;
+          pointer-events: none;
+          font-weight: 500;
+          cursor: not-allowed !important;
+        }
+
+        li {
+          margin-bottom: 3px;
+          cursor: pointer;
+          transition: 0.5s;
+
+          &:hover {
+            color: #006064;
+          }
+        }
+      }
+
+      select:focus {
+        outline: none;
+      }
+    }
+  }
+
+  & > .employees-for-skill-list-container {
+    margin-top: 50px;
+    width: 100%;
+    max-height: 88%;
+    overflow-x: hidden;
+    overflow-y: auto;
+    display: flex;
+    flex-flow: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+
+    @media (max-width: 1000px) {
+      justify-content: center;
+    }
+
+    .employee-card-container {
+      border-radius: 10px;
+      width: 250px;
+      height: 250px;
+      background-color: $wrapper-background-brighter;
+      text-align: center;
+      margin: 10px;
+      position: relative;
+
+      .localization {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        font-size: 16px;
+      }
+
+      .employee-name-photo-container {
+        margin-top: 30px;
+        margin-left: 10px;
+        display: flex;
+        align-items: center;
+
+        .photo-container {
+          width: 50px;
+          height: 50px;
+          border-radius: 50%;
+          border: 1px solid black;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+
+        .no-border {
+          border: none;
+        }
+
+        .name {
+          text-align: left;
+          margin-left: 5px;
+          font-size: 16px;
+        }
+
+        .surname {
+          text-align: left;
+          margin-left: 5px;
+          font-size: 16px;
+        }
+      }
+
+      .contact-container {
+        padding: 10px;
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        position: relative;
+
+        .phone-number-container {
+          position: absolute;
+          bottom: -20px;
+          font-size: 15px;
+          left: 10px;
+          padding: 5px 10px;
+          background-color: #fff;
+          color: $dark-select;
+        }
+
+        .email-address-container {
+          position: absolute;
+          bottom: -30px;
+          font-size: 15px;
+          left: 35px;
+          padding: 5px 10px;
+          background-color: #fff;
+          color: $dark-select;
+          max-width: 170px;
+          max-height: 40px;
+          word-wrap: break-word;
+          overflow: auto;
+        }
+
+        .skype-id-container {
+          position: absolute;
+          font-size: 15px;
+          bottom: -20px;
+          right: 10px;
+          padding: 5px 10px;
+          background-color: #fff;
+          color: $dark-select;
+          max-width: 130px;
+          max-height: 40px;
+          word-wrap: break-word;
+          overflow: auto;
+        }
+
+        .icon {
+          margin-left: 2px;
+          display: inline-flex;
+          width: 20px;
+          height: 14px;
+          background-color: $main-color;
+          border-radius: 5px;
+          color: white;
+          position: relative;
+          transition: 0.5s;
+          border: none;
+          cursor: pointer;
+
+          &:hover {
+            background-color: $main-color-hover;
+          }
+
+          .fa-phone {
+            position: absolute;
+            left: 0;
+            top: 2px;
+            bottom: 0;
+            right: 0;
+            margin: auto;
+            font-size: 10px;
+          }
+
+          .fa-envelope {
+            position: absolute;
+            left: 1px;
+            top: 2px;
+            bottom: 0;
+            right: 0;
+            margin: auto;
+            font-size: 11px;
+          }
+        }
+
+        .skype-id {
+          color: #006064;
+          font-size: 15px;
+          transition: 0.5s;
+          border: none;
+          background-color: unset;
+          cursor: pointer;
+
+          &:hover {
+            color: $main-color-hover;
+          }
+        }
+      }
+
+      .experience {
+        text-align: left;
+        color: #707070;
+        font-size: 14px;
+        margin-left: 10px;
+        margin-bottom: 10px;
+      }
+
+      .level {
+        text-align: left;
+        color: #707070;
+        font-size: 14px;
+        margin-left: 10px;
+        margin-bottom: 10px;
+      }
+
+      .company-seniority {
+        text-align: left;
+        color: $dark-select;
+        font-size: 14px;
+        margin-left: 10px;
+        margin-bottom: 10px;
+
+        .company-name {
+          color: $main-color;
+          font-weight: bold;
+        }
+      }
+
+      .more-btn {
+        position: absolute;
+        bottom: 10px;
+        right: 10px;
+        font-size: 14px;
+        font-weight: bold;
+        color: $dark-select;
+        cursor: pointer;
+        transition: 0.5s;
+
+        &:hover {
+          color: #aaaaaa;
+        }
+      }
+
+    }
+  }
+
+
+}

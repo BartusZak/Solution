@@ -24,14 +24,15 @@ const { store } = storeCreator;
 export const API_ENDPOINT = Config.serverUrl;
 export const AZURE_AD_REDIRECT_URI = Config.azureAdRedirectUri;
 
+
 store.subscribe(listener);
-``;
 
 const select = state =>
   state.authReducer.tokens !== undefined ? state.authReducer.tokens.token : '';
 
 export const selectLang = state =>
   state.languageReducer.language ? state.languageReducer.language : 'pl';
+
 
 let lang = '';
 function listener() {
@@ -154,29 +155,13 @@ const requests = {
     execute(fromAlertSettings.getClientsSlim, 'Clients?lessDetailed=true'),
 
   //EMPLOYEES
-  getEmployees: settings =>
-    execute(
-      fromAlertSettings.getEmployees,
-      'employees',
-      requestTypes.post,
-      settings
-    ),
+  getEmployees: settings => execute(fromAlertSettings.getEmployees, 'employees', requestTypes.post, settings),
+  getEmployeesBySkill: skillId => execute(fromAlertSettings.getEmployeesBySkill, `employees/forSkill/${skillId}`),
 
   //PROJECTS
-  addProject: model =>
-    execute(
-      fromAlertSettings.addProject,
-      'projects/add',
-      requestTypes.post,
-      model
-    ),
-  editProject: (model, id) =>
-    execute(
-      fromAlertSettings.editProject,
-      `projects/${id}`,
-      requestTypes.put,
-      model
-    ),
+  addProject: model => execute(fromAlertSettings.addProject, 'projects/add', requestTypes.post, model),
+  editProject: (model, id) => execute(fromAlertSettings.editProject, `projects/${id}`, requestTypes.put, model),
+  addProjectPhase: model => execute(fromAlertSettings.addProjectPhase, 'projects/add', requestTypes.post, model),
 
   //RESPINSIBLE PERSON
   createResponsiblePerson: model =>

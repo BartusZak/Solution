@@ -24,7 +24,8 @@ import {
   ADD_EMPLOYEE_ONBOARD,
   CHANGE_GET_EMPLOYEE_ONBOARDS_STATUS,
   GET_EMPLOYEE_ONBOARDS,
-  UPDATE_EMPLOYEE_ONBOARD
+  UPDATE_EMPLOYEE_ONBOARD,
+  GET_EMPLOYEES_BY_SKILL
 } from "../constants";
 import WebApi from "../api";
 import {
@@ -58,6 +59,24 @@ export const updateSkypeResult = (resultBlock, loading) => {
     loading
   };
 };
+
+export const getEmployeeBySkill = employeesBySkill => {
+  return {
+    type: GET_EMPLOYEES_BY_SKILL,
+    employeesBySkill
+  };
+};
+
+export const getEmployeesBySkillACreator = (skillId) => {
+  return dispatch => {
+    useRequest('getEmployeesBySkill', skillId)
+      .then(response => {
+        if (!response.errorOccurred()) {
+          dispatch(getEmployeeBySkill(response.extractData()))
+        }
+      })
+  }
+}
 
 export const downloadCV = (format, employeeId) => {
   return dispatch => {

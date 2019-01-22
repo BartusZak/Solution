@@ -15,9 +15,11 @@ const translations = {
     DroppedMessage: 'Files succesfully dropped',
     TooManyFilesError: 'Too many files dropped. Limit is '
   },
-  ProjectForm: {
-    firstPhaseTitle: 'Populate project details form',
-    secondPhaseTitle: 'Populate client form',
+  PhaseProjectForm: {
+    firstStepTitleForPhases: 'Populate project phase details',
+    secondStepTitleForPhases: 'Populate client details for project phase',
+    firstStepTitleForProjects: 'Populate project details',
+    secondStepTitleForProjects: 'Populate client informations',
     name: 'name',
     description: 'description',
     startDate: 'start date',
@@ -739,14 +741,17 @@ const translations = {
   SkillsContainer: {
     Deletion: 'Deletion',
     Info1:
-      'Deletion will be permanent, removing entries from the database and all places where referenced.',
-    Info2: 'Rollback of this action is not available.',
-    SuccessfullyDeleted: 'Successfully deleted skill',
-    AllSkills: 'All skills',
-    AddSkillName: 'Enter new skill name',
-    EnterSkillName: 'Enter skill name...',
-    SkillExists: 'That skill already exists',
-    SkillName: 'Skill name'
+      "Deletion will be permanent, removing entries from the database and all places where referenced.",
+    Info2: "Rollback of this action is not available.",
+    SuccessfullyDeleted: "Successfully deleted skill",
+    AllSkills: "All skills",
+    AddSkillName: "Enter new skill name",
+    EnterSkillName: "Enter skill name...",
+    SkillExists: "That skill already exists",
+    SkillName: "Skill name",
+    TypeSearch: "type for search skill...",
+    TypeAdd: "type here for add new skill...",
+    LoadingSkills: "Loading skills"
   },
   SkillList: {
     DeleteSkill: 'Delete skill',
@@ -754,7 +759,22 @@ const translations = {
     DeleteSkillQuestion: 'Are you sure that you want to delete that skill ',
     SuccessfullyDeletedSkill: 'Successfully deleted skill',
     SkillLenghtError: "Skill name can't be longer than 100 characters",
-    NoResults: 'No matching results'
+    NoResults: "No matching results",
+    SaveChanges: "Save changes",
+    CloseEdit: "Close edit form"
+  },
+  EmployeesForSkill: {
+    EmployeesWithSkill: "Employees which have selected skill",
+    SortingBy: "SORTING BY",
+    YearsOfExp: "years of experience",
+    SkillLvl: "skill level",
+    ChooseOption: "choose option"
+  },
+  EmployeeCard: {
+    KnowledgeLvl: "knowledge about selected skill",
+    More: "MORE",
+    In: "in",
+    LoadingSkills: "Ładowanie umiejętności"
   },
   FileInput: {
     ChooseFile: 'Choose File',

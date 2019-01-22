@@ -3,23 +3,17 @@ import moment from 'moment';
 import { translate } from 'react-translate';
 import { connect } from 'react-redux';
 import { getClientsSlim, updateSlimClient, addSlimClient } from '../../../actions/clientsActions';
-import { addProject, editProject } from '../../../actions/projectsActions';
+import { setHeaders, phases } from './index';
+import { addProject, editProject, addProjectPhase } from '../../../actions/projectsActions';
 import { InputSettings } from '../../common/fancy-form/index';
 import FancyDataList from '../../common/fancy-form/fancy-data-list';
 import FancyModal from '../../common/fancy-modal/fancy-modal';
 import FancyForm, { dFormat } from '../../common/fancy-form/fancy-form';
 import ResponsiblePersonForm from '../../shared/responsible-person-form/responsible-person-form';
 
-import './project-form.scss';
-class ProjectForm extends React.PureComponent {
-  phases = {
-    phaseFirstInitValues: 'phaseFirstInitValues',
-    phaseSecondInitValues: 'phaseSecondInitValues'
-  };
-  phasesTitles = {
-    phaseFirstInitValues: this.props.t("firstPhaseTitle"),
-    phaseSecondInitValues: this.props.t("secondPhaseTitle")
-  };
+import './phase-project-form.scss';
+class PhaseProjectForm extends React.PureComponent {
+  phasesTitles = setHeaders(this.props.t, this.props.isPhaseForm);
   phaseFirstSettings = {
     name: new InputSettings(this.props.t("name"), { required: true, minLength: 3, maxLength: 255 } ),
     description: new InputSettings(this.props.t("description"), { minLength: 3, maxLength: 255 }, 'textarea' ),
@@ -43,7 +37,7 @@ class ProjectForm extends React.PureComponent {
       phaseSecondInitValues.cloud = cloud ? cloud : '';
     }
     this.state = {
-      phase: this.phases.phaseFirstInitValues,
+      phase: phases.phaseFirstInitValues,
       phaseFirstInitValues,
       phaseSecondInitValues,
       isSubmitting: false,
@@ -81,7 +75,7 @@ class ProjectForm extends React.PureComponent {
   changePhaseAndSave = (formData, phase, phaseNameToCopyPopulatedValues) => this.setState({phase, [phaseNameToCopyPopulatedValues]: formData});
 
   changePhaseAndRunSubmit = phase => {
-    const isClickingSecondPhase = phase !== this.phases.phaseFirstInitValues;
+    const isClickingSecondPhase = phase !== phases.phaseFirstInitValues;
     if (isClickingSecondPhase) {
       this.setState({runSubmitingFirstPhase: true});
     }
@@ -92,37 +86,47 @@ class ProjectForm extends React.PureComponent {
   startAddingResponsiblePerson = () => this.setState({openResonsiblePersonForm: true, responsiblePersonFormMode: 'add'});
   startEditingResponsiblePerson = () => this.setState({openResonsiblePersonForm: true, responsiblePersonFormMode: 'edit'});
 
-  addOrEditProject = formData => {
-    const { projectToEdit, onSubmitSucc, editProject } = this.props;
+  handleSubmitting = formData => {
+    const { projectToEdit, onSubmitSucc, editProject, parentId, isPhaseForm, addProjectPhase } = this.props;
     const project = { ...this.state.phaseFirstInitValues, ...formData, responsiblePerson: {...this.state.personToEdit} };
     project.startDate = moment(project.startDate).format(dFormat);
     project.estimatedEndDate = moment(project.estimatedEndDate).format(dFormat);
+
     this.setState({isSubmitting: true});
-    if (projectToEdit)
-      editProject({...projectToEdit, ...project},
+    if (isPhaseForm) {
+      project.parentId = parentId
+      addProjectPhase(project,
         () => onSubmitSucc(),
-        () => this.setState({isSubmitting: false})
-      );
+        () => this.setState({isSubmitting: false}));
+    }
     else {
-      addProject(project,
-          projectId => onSubmitSucc(projectId),
+      if (projectToEdit) {
+        editProject({...projectToEdit, ...project},
+          () => onSubmitSucc(),
           () => this.setState({isSubmitting: false})
-      );
+        );
+      }
+      else {
+        addProject(project,
+            projectId => onSubmitSucc(projectId),
+            () => this.setState({isSubmitting: false})
+        );
+      }
     }
   }
 
   updateViewAfterAddPerson = ({ client: clientName, firstName, lastName, email, phoneNumber, id }, createdClient) => {
     const responsiblePerson = { firstName, lastName, email, phoneNumber, id };
     const phaseSecondInitValues = {...this.state.phaseSecondInitValues, responsiblePerson: id };
+    const { clientsSlim, updateSlimClient, addSlimClient } = this.props;
     if (createdClient) {
       const client = { id: createdClient.id, name: createdClient.name, responsiblePersons: [ responsiblePerson ], clouds: [] };
-      this.props.addSlimClient(client);
+      addSlimClient(client);
     }
     else {
-      const { clientsSlim, updateSlimClient } = this.props;
       const { responsiblePersons } = clientsSlim[clientName];
       const client = {...clientsSlim[clientName], responsiblePersons: [responsiblePerson, ...responsiblePersons] };
-      this.props.updateSlimClient(clientName, client);
+      updateSlimClient(clientName, client);
     }
 
     this.setState({openResonsiblePersonForm: false, watchedClient: clientName, phaseSecondInitValues,
@@ -146,7 +150,7 @@ class ProjectForm extends React.PureComponent {
   render() {
     const { phase, phaseFirstInitValues, phaseSecondInitValues, runSubmitingFirstPhase, openResonsiblePersonForm,
       responsiblePersonFormMode, isSubmitting, personToEdit, watchedClient } = this.state;
-    const { close, t, clientsSlim } = this.props;
+    const { close, clientsSlim } = this.props;
 
     const clientsKeys = Object.keys(clientsSlim);
     const countOfClients = clientsKeys.length;
@@ -168,22 +172,22 @@ class ProjectForm extends React.PureComponent {
     }
     else {
       return (
-        <FancyModal close={close} isLoading={isSubmitting} phases={this.phases} currentPhase={phase} handleClick={this.changePhaseAndRunSubmit} title={this.phasesTitles[phase]}>
-          {phase === this.phases.phaseFirstInitValues &&
+        <FancyModal close={close} isLoading={isSubmitting} phases={phases} currentPhase={phase} handleClick={this.changePhaseAndRunSubmit} title={this.phasesTitles[phase]}>
+          {phase === phases.phaseFirstInitValues &&
             <FancyForm
               key={1}
               submitFromFlag={runSubmitingFirstPhase}
-              onSubmit={formData => this.changePhaseAndSave(formData, this.phases.phaseSecondInitValues, this.phases.phaseFirstInitValues)}
+              onSubmit={formData => this.changePhaseAndSave(formData, phases.phaseSecondInitValues, phases.phaseFirstInitValues)}
               initialValues={phaseFirstInitValues}
               settings={this.phaseFirstSettings} />
           }
-          {phase === this.phases.phaseSecondInitValues &&
+          {phase === phases.phaseSecondInitValues &&
             <FancyForm
               key={2}
               isSubmitting={isSubmitting}
-              onSubmit={formData => this.addOrEditProject(formData)}
+              onSubmit={formData => this.handleSubmitting(formData)}
               initialValues={phaseSecondInitValues}
-              renderClient={(key, values, handleChangeFromEvent, setting, errors, handleChangeValues) => (
+              renderClient={(key, values, _, setting, errors, handleChangeValues) => (
                 <section key={key} className="fields-wrapper-col">
                   <label className="field-label">{setting.label} ({countOfClients}) *</label>
                   <div className="data-list-container">
@@ -285,8 +289,9 @@ const mapDispatchToProps = dispatch => {
     getClientsSlim: () => dispatch(getClientsSlim()),
     editProject: (project, succ, err) => dispatch(editProject(project, succ, err)),
     updateSlimClient: (clientName, slimClient) => dispatch(updateSlimClient(clientName, slimClient)),
-    addSlimClient: client => dispatch(addSlimClient(client))
+    addSlimClient: client => dispatch(addSlimClient(client)),
+    addProjectPhase: (model, succ, err) => dispatch(addProjectPhase(model, succ, err))
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(translate("ProjectForm")(ProjectForm));
+export default connect(mapStateToProps, mapDispatchToProps)(translate("PhaseProjectForm")(PhaseProjectForm));

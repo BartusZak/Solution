@@ -4,20 +4,19 @@ import {
   GET_PROJECT,
   ADD_EMPLOYEE_TO_PROJECT,
   ADD_FEEDBACK,
-  GET_MY_FEEDBACK,
   GET_FEEDBACKS,
   EDIT_FEEDBACK,
   DELETE_FEEDBACK,
   CHANGE_PROJECT_SKILLS,
   ADD_SKILLS_TO_PROJECT,
   CHANGE_PROJECT_STATE,
-  CREATE_PROJECT_PHASE,
   GET_SUGGEST_EMPLOYEES,
   CHANGE_GET_SUGGEST_EMPLOYEES_STATUS,
   ADD_PROJECT_OWNER_TO_PROJECT,
   EDIT_EMPLOYEE_ASSIGNMENT,
   DELETE_EMPLOYEE_ASSIGNMENT,
   UPDATE_PROJECT,
+  ADD_PHASE
 } from "../constants";
 import { updateObject } from "../services/methods";
 const initialState = {
@@ -64,12 +63,6 @@ const initialState = {
   changeProjectStateErrors: [],
   currentOperation: "",
 
-  createProjectStatus: null,
-  createProjectErrors: [],
-
-  createProjectPhaseStatus: null,
-  createProjectPhaseError: [],
-
   getSuggestEmployeesStatus: null,
   getSuggestEmployeesError: [],
 
@@ -90,6 +83,10 @@ export const projectsReducer = (state = initialState, action) => {
           return p.id === action.project.id ? {...action.project} : p;
         }),
         project: state.project ? {...state.project, ...action.project, responsiblePerson} : null
+      };
+    case ADD_PHASE:
+      return {
+        ...state, project: {...state.project, projectPhases: [...state.project.projectPhases, action.phase]}
       };
     case ADD_PROJECT_OWNER_TO_PROJECT:
       return updateObject(state, {
@@ -176,11 +173,6 @@ export const projectsReducer = (state = initialState, action) => {
         changeProjectStateStatus: action.changeProjectStateStatus,
         changeProjectStateErrors: action.changeProjectStateErrors,
         currentOperation: action.currentOperation
-      });
-    case CREATE_PROJECT_PHASE:
-      return updateObject(state, {
-        createProjectPhaseStatus: action.createProjectPhaseStatus,
-        createProjectPhaseError: action.createProjectPhaseError
       });
     case GET_SUGGEST_EMPLOYEES:
       return updateObject(state, { suggestEmployees: action.suggestEmployees });

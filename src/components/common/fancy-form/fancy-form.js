@@ -17,7 +17,6 @@ export const dFormat = 'YYYY/MM/DD';
 export const minDate = '1994/01/01';
 export const maxDate = '2100/01/01';
 
-const now = moment();
 const defaultDatePickerConfig = {
   minDate: moment(minDate),
   maxDate: moment(maxDate),
