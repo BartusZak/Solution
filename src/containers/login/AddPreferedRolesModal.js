@@ -63,7 +63,7 @@ class AddPreferedRoles extends React.Component {
     e.preventDefault();
 
     const userRoles = {
-      id: this.props.login,
+      azureAdId: this.props.login,
       roles: []
     };
 

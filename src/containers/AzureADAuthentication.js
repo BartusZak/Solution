@@ -42,7 +42,6 @@ class AzureADAuthentication extends PureComponent {
     useRequest('loginAzureAD', queryStringValues.code)
       .then(response => {
         const data = response.extractData();
-        console.log(data);
         if (!data.roles) {
           const warnMessage = warnOperationsWhiteObject['choosePreferedRoles'];
           store.dispatch(
@@ -53,7 +52,7 @@ class AzureADAuthentication extends PureComponent {
               time: 5000
             })
           );
-          authAccountRequest(data.login);
+          authAccountRequest(data.azureData.user_id);
         } else {
           const succMessage = succOperationsWhiteObject['loggedIn'];
           store.dispatch(
