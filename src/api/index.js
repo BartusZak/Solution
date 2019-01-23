@@ -434,6 +434,116 @@ const WebApi = {
       }
     }
   },
+  CvImport: {
+    post: files => {
+      return WebAround.post(
+        `${API_ENDPOINT}/CvImport/ImportCv`,
+        files
+        // {
+        //   headers: { "Content-Type": "multipart/form-data" }
+        // }
+      );
+    }
+  },
+  projects: {
+    get: {
+      projects: (projectId, onlyActiveAssignments = true) => {
+        return WebAround.get(
+          `${API_ENDPOINT}/projects/${projectId}?onlyActiveAssignments=${onlyActiveAssignments}`
+        );
+      },
+      suggestEmployees: projectId => {
+        return WebAround.get(
+          `${API_ENDPOINT}/projects/EmployeeWithFreeCapacity?projectId=${projectId}`
+        );
+      }
+    },
+    post: {
+      list: (settings = {}) => {
+        return WebAround.post(`${API_ENDPOINT}/projects/`, settings);
+      },
+      add: projectModel => {
+        return WebAround.post(`${API_ENDPOINT}/projects/add`, projectModel);
+      }
+    },
+    put: {
+      project: (projectId, projectModel) => {
+        return WebAround.put(
+          `${API_ENDPOINT}/projects/${projectId}`,
+          projectModel
+        );
+      },
+      owner: (projectId, ownersIdsArray) => {
+        return WebAround.put(`${API_ENDPOINT}/projects/owner/${projectId}`, {
+          usersIds: ownersIdsArray
+        });
+      },
+      closeProject: projectId => {
+        return WebAround.put(`${API_ENDPOINT}/projects/close/${projectId}`);
+      },
+      close: model => {
+        return WebAround.put(`${API_ENDPOINT}/projects/close/${model[0]}`);
+      },
+      reactivate: model => {
+        return WebAround.put(`${API_ENDPOINT}/projects/reactivate/${model[0]}`);
+      },
+      reactivateProject: projectId => {
+        return WebAround.put(
+          `${API_ENDPOINT}/projects/reactivate/${projectId}`
+        );
+      },
+      skills: (projectId, skillsArray) => {
+        return WebAround.put(
+          `${API_ENDPOINT}/projects/skills/${projectId}`,
+          skillsArray
+        );
+      }
+    },
+    delete: {
+      owner: model => {
+        return WebAround.delete(`${API_ENDPOINT}/projects/owner/${model[0]}`, {
+          data: {
+            userId: model[1]
+          }
+        });
+      },
+      project: model => {
+        return WebAround.delete(`${API_ENDPOINT}/projects/delete/${model[0]}`);
+      },
+      deleteProject: projectId => {
+        return WebAround.delete(`${API_ENDPOINT}/projects/delete/${projectId}`);
+      }
+    }
+  },
+  shareProject: {
+    get: {
+      managers: projectId => {
+        return WebAround.get(
+          `${API_ENDPOINT}/shareProject/DestinationManagers/${projectId}`
+        );
+      },
+      alreadySharedManagers: projectId => {
+        return WebAround.get(
+          `${API_ENDPOINT}/shareProject/AlreadySharedManagers/${projectId}`
+        );
+      }
+    },
+    post: {
+      add: (projectId, shareProjectModel) => {
+        return WebAround.post(
+          `${API_ENDPOINT}/shareProject/${projectId}`,
+          shareProjectModel
+        );
+      }
+    },
+    delete: {
+      cancel: (projectId, shareProjectId) => {
+        return WebAround.delete(
+          `${API_ENDPOINT}/shareProject/${projectId}/${shareProjectId}`
+        );
+      }
+    }
+  },
   // clients: {
   //   get: {
   //     all: () => {
