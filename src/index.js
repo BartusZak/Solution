@@ -1,21 +1,13 @@
-import React from "react";
-import { render } from "react-dom";
-import { Provider } from "react-redux";
-import { ConnectedRouter } from "react-router-redux";
-import { PersistGate } from "redux-persist/integration/react";
+import React from 'react';
+import { render } from 'react-dom';
+// import { ConnectedRouter } from "react-router-redux";
+// import { PersistGate } from "redux-persist/integration/react";
 
-import storeCreator from "./store";
-import App from "./containers/App";
+// import storeCreator from "./store";
+// import App from "./containers/App";
 
-const { store, persistor, history } = storeCreator;
+// const { store } = storeCreator;
 
-render(
-  <Provider store={store}>
-    <PersistGate loading={null} persistor={persistor}>
-      <ConnectedRouter history={history}>
-        <App history={history} />
-      </ConnectedRouter>
-    </PersistGate>
-  </Provider>,
-  document.getElementById("app")
-);
+if (typeof window !== 'undefined' && typeof document !== 'undefined') {
+  React.render(<div>Twoja stara</div>, document.getElementById('root'));
+}

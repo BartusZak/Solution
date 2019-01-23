@@ -147,7 +147,7 @@ export const downloadReportZipFile = (downloadReportZipFileStatus, downloadRepor
 export const downloadReportZipFileACreator = (fileName) => dispatch =>
     WebApi.reports.get.reportZip(fileName).then(response => {
       dispatch(downloadReportZipFile(true, []));
-      window.open(response.replyBlock.request.responseURL);
+      // window.open(response.replyBlock.request.responseURL);
     }).catch(errors => {
       dispatch(downloadReportZipFile(false, errorCatcher(errors)));
     })

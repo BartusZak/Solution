@@ -42,19 +42,19 @@ class GDriveContent extends React.Component{
     }
     componentDidMount(){
         const { loginStatus, folders, getFolders, login } = this.props;
-        if(window.location.href.search("#") === -1){
-            login();
-        }
+        // if(window.location.href.search("#") === -1){
+        //     login();
+        // }
         else if(folders.length === 0 && loginStatus){
             getFolders(startPath, startPath);
         }
     }
     componentWillReceiveProps(nextProps){
-        if(window.location.href.search("#") === -1){
-            this.setState({isLoading: false, isDeletingOrEditingFolder: false});
-            window.location.href = nextProps.redirectUrl;
-        }
-        else if(nextProps.folders !== this.props.folders || 
+        // if(window.location.href.search("#") === -1){
+        //     this.setState({isLoading: false, isDeletingOrEditingFolder: false});
+        //     window.location.href = nextProps.redirectUrl;
+        // }
+        if(nextProps.folders !== this.props.folders || 
             nextProps.editFolderError !== this.props.editFolderError){
             this.setState({isLoading: false, currentOpenedFolderToEditId: "", 
                 editFolderName: "", isAddingFolder: false, isEditingFolder: false,
@@ -183,7 +183,7 @@ class GDriveContent extends React.Component{
         }, 500);
     }
     copyLink = () => {
-       window.open(this.props.generatedGDriveSharedLink);
+    //    window.open(this.props.generatedGDriveSharedLink);
        this.closeShareLinkModal();
     }
 

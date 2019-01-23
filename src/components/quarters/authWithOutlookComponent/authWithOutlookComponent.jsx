@@ -19,13 +19,13 @@ class AuthWithOutlook extends React.PureComponent {
     } = this.props;
     const code = getQueryParam();
     if (code) {
-      sendAuthCodePromise(window.location.href, true)
-        .then(() => {
-          push(linkBeforeRedirectToOutlookAuth);
-        })
-        .catch(() => {
-          this.setState({ isAuthenticating: false });
-        });
+      // sendAuthCodePromise(window.location.href, true)
+      //   .then(() => {
+      //     push(linkBeforeRedirectToOutlookAuth);
+      //   })
+      //   .catch(() => {
+      //     this.setState({ isAuthenticating: false });
+      //   });
     }
   };
 

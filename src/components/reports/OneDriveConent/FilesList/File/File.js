@@ -21,7 +21,7 @@ const file = ({folder, openFolder, editFolderError, isDeletingOrEditingFolder,
         onClick={folder.type === "file" ? 
             folder.size ? 
             () => onFileClick(folder.id) : 
-            () => window.open(folder.webUrl)
+            // () => window.open(folder.webUrl)
             : null}
         key={folder.name}>
 
@@ -78,7 +78,7 @@ const file = ({folder, openFolder, editFolderError, isDeletingOrEditingFolder,
                 }
                 
 
-                <span onClick={() => window.open(folder.webUrl)}>{t("Open")}</span>
+                {/* <span onClick={() => window.open(folder.webUrl)}>{t("Open")}</span> */}
             </div>
         }
         

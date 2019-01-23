@@ -124,7 +124,7 @@ export function sortStrings(key){
 
 
 export const refreshPage = () => {
-  window.location.href = window.location.href;
+  // window.location.href = window.location.href;
 }
 
 export const clearDataOfForm = formItems => {
@@ -168,13 +168,15 @@ export const extractFromItemsWantedAttributes = (attributes, items) => {
 }
 
 export const getEmployeeId = () => {
-  const url = window.location.href;
+  // const url = window.location.href;
+  const url = ""
   const indexOfLastEqual = url.lastIndexOf("=");
   if(indexOfLastEqual === -1){
     return "";
   }
  
-  return window.location.href.substring(indexOfLastEqual+1, url.length);
+  // return window.location.href.substring(indexOfLastEqual+1, url.length);
+  return null;
 }
 
 export const pushMomentValuesDynamicly = (limit, startDate, numberOfAdds, valueType, format) => {

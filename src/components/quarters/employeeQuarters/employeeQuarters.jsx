@@ -88,7 +88,7 @@ class EmployeeQuarters extends React.PureComponent{
                 }).catch(() => this.setState({isChangingSomethingInQuarterList: false}));
                 break;
             case "generateDoc":
-                window.open(`${API_ENDPOINT}/QuarterTalks/GenerateDocx/${quarter.id}`)
+                // window.open(`${API_ENDPOINT}/QuarterTalks/GenerateDocx/${quarter.id}`)
                 break;
             default:
                 const currentWatchedItemId = quartersForEmployee.findIndex(item => item.id === quarter.id);

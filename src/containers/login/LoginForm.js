@@ -62,11 +62,11 @@ class LoginForm extends React.Component {
   }
 
   closePreferedRolesModal = (t) => {
-    if(window.confirm(t("CloseModalMessage"))) {
-      this.setState({
-        showPreferedRolesModal: false
-      })
-    }
+    // if(window.confirm(t("CloseModalMessage"))) {
+    //   this.setState({
+    //     showPreferedRolesModal: false
+    //   })
+    // }
   }
 
   handleUserIdChange = (e) => {

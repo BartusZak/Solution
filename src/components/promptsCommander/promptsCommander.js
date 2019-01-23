@@ -21,7 +21,7 @@ class PromptsCommander extends React.Component{
     }
     componentDidMount(){
         if(!this.props.barType)
-            window.addEventListener('beforeunload', this.handleExitFromPageWhenGeneratingReport);
+            // window.addEventListener('beforeunload', this.handleExitFromPageWhenGeneratingReport);
     }
     handleExitFromPageWhenGeneratingReport = e => {
         if(this.props.isStarted){
@@ -53,7 +53,7 @@ class PromptsCommander extends React.Component{
     }
     componentWillUnmount() {
         if(!this.props.barType)
-            window.removeEventListener('beforeunload', this.handleExitFromPageWhenGeneratingReport);
+            // window.removeEventListener('beforeunload', this.handleExitFromPageWhenGeneratingReport);
     }
     handleDelete = (notificationId) => {
         this.setState({currentDeletedElements: [...this.state.currentDeletedElements, notificationId]});

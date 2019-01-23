@@ -105,7 +105,7 @@ class EmployeeDetailsContainer extends React.Component {
 }
   componentDidUpdate() {
     if (this.props.userDownloadCVLink && this.props.getUserCVStatus) {
-      window.location.href = this.props.userDownloadCVLink;
+      // window.location.href = this.props.userDownloadCVLink;
       this.props.getUserCVClear("", null, []);
     }
   }

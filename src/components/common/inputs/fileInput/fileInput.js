@@ -15,7 +15,8 @@ class FileInput extends PureComponent {
 
   getImageDimensions = file => {
     return new Promise(resolve => {
-      const _URL = window.URL || window.webkitURL;
+      const _URL = ""
+      // const _URL = window.URL || window.webkitURL;
       let img = new Image();
 
       img.onload = function() {

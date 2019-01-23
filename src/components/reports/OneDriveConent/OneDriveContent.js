@@ -65,7 +65,7 @@ class OneDriveContent extends React.PureComponent {
             
         else if(search !== "" && didODriveTokenIsCreated){
             this.setState({isPreparingForLogingIn: false, isTakingCodeFromApi: true}, () => {
-                sendCodeToGetToken(window.location.href);
+                // sendCodeToGetToken(window.location.href);
             });
         }
         else if(generateReportStatus === null){
@@ -77,7 +77,7 @@ class OneDriveContent extends React.PureComponent {
     componentWillReceiveProps(nextProps){
         if(nextProps.authErrors !== this.props.authErrors){
             if(nextProps.authStatus === true)
-                window.location.href = nextProps.authRedirectLink;
+                // window.location.href = nextProps.authRedirectLink;s
             else 
                 this.setState({isPreparingForLogingIn: false});
         }
@@ -216,7 +216,7 @@ class OneDriveContent extends React.PureComponent {
         }, 500);
     }
     copyLink = () => {
-       window.open(this.props.generatedShareLink);
+    //    window.open(this.props.generatedShareLink);
        this.closeShareLinkModal();
     }
 

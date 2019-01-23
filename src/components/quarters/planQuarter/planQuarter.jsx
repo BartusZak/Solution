@@ -125,7 +125,7 @@ class PlanQuarter extends React.PureComponent{
                 .then(link => {
                     this.setState({isGettingReservedDates: false});
                     changeLinkBeforeRedirect(location);
-                    window.location.href = link;
+                    // window.location.href = link;
                 })
                 .catch(() => this.setState({isGettingReservedDates: false}));
             }

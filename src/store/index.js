@@ -7,7 +7,7 @@ import createHistory from "history/createBrowserHistory";
 import storage from "redux-persist/lib/storage";
 import * as reducers from "../reducers";
 
-const history = createHistory();
+const history = "/";
 
 const persistConfig = {
   key: "root",
@@ -30,10 +30,11 @@ const storeCreator = () => {
     )
   );
 
-  const composeEnhancers =
-    window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+  // const composeEnhancers =
+  //   window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
-  let store = createStore(persistedReducer, composeEnhancers(middleware));
+  // let store = createStore(persistedReducer, composeEnhancers(middleware));
+  let store = createStore(persistedReducer);
 
   let persistor = persistStore(store);
 

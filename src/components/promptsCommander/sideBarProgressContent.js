@@ -32,8 +32,10 @@ const sideProgressBar = ({
 }) => {
   const menuClass = shouldShowGlobal ? "menu-expanded" : "menu-collapsed";
   const btnClass = shouldShowGlobal ? "btn-expanded" : "btn-collapsed";
-  const didLocationIsOnGDrive =
-    window.location.href.search("gdrive") !== -1 ? true : false;
+  const didLocationIsOnGDrive =""
+  // const didLocationIsOnGDrive =
+
+  //   window.location.href.search("gdrive") !== -1 ? true : false;
   const day = 86400000;
 
   const btnBorderClass = isStarted ? createClassesForLoader(percentage) : null;

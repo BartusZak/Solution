@@ -68,7 +68,8 @@ const genReport = ({
               {choosenFolder &&
                 <div className="icon-container">
                   <i className="fa fa-folder" />
-                  <span onClick={() => window.open(choosenFolder.webUrl)}>
+                  {/* <span onClick={() => window.open(choosenFolder.webUrl)}> */}
+                  <span>
                     {t("OpenIn")}
                     <i className={`fab ${currentPath.search(startPathname+"/onedrive") !== -1 ?
                       "fa-windows" : "fa-google-drive"}`}></i>
