@@ -11,7 +11,7 @@
     "test": "babel-node mocha --reporter progress tools/testSetup.js \"src/**/*.test.js\"",
     "start2": "webpack-dev-server --inline --hot --port 8080 --host 0.0.0.0 --config ./webpack.config.js",
     "build": "rimraf dist && SET NODE_ENV=production& webpack --config ./webpack.config.js --progress --profile --color",
-    "start": "node ./node_modules/babel-cli/bin/babel-node.js index.js"
+    "start": "SET NODE_ENV=production& webpack --config ./webpack.config.js"
   },
   "repository": {
     "type": "git",
