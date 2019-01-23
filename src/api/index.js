@@ -156,7 +156,22 @@ const requests = {
 
   //EMPLOYEES
   getEmployees: settings => execute(fromAlertSettings.getEmployees, 'employees', requestTypes.post, settings),
-  getEmployeesBySkill: skillId => execute(fromAlertSettings.getEmployeesBySkill, `employees/forSkill/${skillId}`),
+  getEmployeeById: id => execute(fromAlertSettings.getEmployeeById, `employees/${id}`),
+  getEmployeeCapacity: id => execute(fromAlertSettings.getEmployeeCapacity, `employees/${id}/capacity`),
+  getEmployeesAndManagers: () => execute(fromAlertSettings.getEmployeesAndManagers, `sharedEmployees/getEmployeesAndManagers`),
+  getOnBoardsByEmployeeId : employeeId => execute(fromAlertSettings.getOnBoardsByEmployeeId, `employees/getOnBoardsByEmployeeId/${employeeId}`),
+  getEmployeeContact: employeeId => execute(fromAlertSettings.getEmployeeContact, `employees/billenniumemplocontact`, requestTypes.get, params({ employeeId })),
+  getEmployeeSkills: employeeId => execute(fromAlertSettings.getEmployeeSkills, `employees/billenniumemploskills`, requestTypes.get, params({ employeeId })),
+  addEmployee: model => execute(fromAlertSettings.addEmployee, `employees/add`, requestTypes.post, model),
+  addOnBoardEmployee: model => execute(fromAlertSettings.addOnBoardEmployee, `employees/addToOnBoard`, requestTypes.post, model),
+  deleteOnBoardEmployee: id => execute(fromAlertSettings.deleteOnBoardEmployee, `employees/deleteOnBoard/${id}`, requestTypes.delete),
+  deleteEmployee: id => execute(fromAlertSettings.deleteEmployee, `employees/${id}`, requestTypes.delete),
+  editSkills: (id, skillsArray) => execute(fromAlertSettings.editSkills, `employees/${id}`, requestTypes.put, skillsArray),
+  editForeignLanguages: (id, languagesArray) => execute(fromAlertSettings.editForeignLanguages, `employees/foreignLanguages/${id}`, requestTypes.put, languagesArray),
+  editSkype: (skypeId, employeeId) => execute(fromAlertSettings.editSkype, `employees/updateSkype`, requestTypes.put, {skypeId, employeeId}),
+  editOnBoardEmployee: (onBoardId, model) => execute(fromAlertSettings.editOnBoardEmployee, `employees/editOnBoard/${onBoardId}`, requestTypes.patch, model),
+  editEmployee: (id, model) => execute(fromAlertSettings.editEmployee, `employees/${id}`, requestTypes.patch, model),
+  reactivateEmployee: id => execute(fromAlertSettings.reactivateEmployee, `employees/reactivate/${id}`, requestTypes.patch),
 
   //PROJECTS
   addProject: model => execute(fromAlertSettings.addProject, 'projects/add', requestTypes.post, model),
