@@ -1,6 +1,5 @@
 import { GET_FOLDERS, GENERATE_G_DRIVE_SHARE_LINK }
 from "../constants";
-import WebApi from "../api";
 import { errorCatcher } from '../services/errorsHandler';
 import { asyncEnded, asyncStarted } from '../actions/asyncActions';
 import { chooseFolder } from './persistHelpActions';
@@ -8,6 +7,7 @@ import { getFolders, setParentDetails, deleteFolder, updateFolder, createFolder,
 import { loginACreator } from './persistHelpActions';
 import storeCreator from '../store';
 import { clearAfterTimeByFuncRef } from '../services/methods';
+import { useRequest } from '../api/index';
 
 export const getFoldersACreator = (folderId, path) => {
     return dispatch => {
@@ -15,7 +15,7 @@ export const getFoldersACreator = (folderId, path) => {
             "id": folderId
         }
         dispatch(asyncStarted());
-        WebApi.gDrive.post.getFolders(model).then(response => {
+        useRequest('gDriveGetFolders', model).then(response => {
             const { dtoObjects } = response.replyBlock.data;
             
             dispatch(getFolders(dtoObjects, true, [], path));
@@ -37,7 +37,7 @@ export const deleteFolderACreator = (folderId, path, redirectPath, currentChoose
         }
         dispatch(asyncStarted());
         
-        WebApi.gDrive.post.deleteFolder(model).then(response => {
+        useRequest('gDriveDeleteFolder', model).then(response => {
             dispatch(deleteFolder(true, []));
             if(currentChoosenFolder)
                 if(currentChoosenFolder.id === folderId)
@@ -60,7 +60,7 @@ export const updateFolderACreator = (name, path, redirectPath, folderId) => {
             "id": folderId,
             "newName": name
         }
-        WebApi.gDrive.post.updateFolder(model).then(response => {
+        useRequest('gDriveUpdateFolder', model).then(response => {
             dispatch(updateFolder(true, []));
             dispatch(clearAfterTimeByFuncRef(updateFolder, 5000, null, []));
             dispatch(getFoldersACreator(redirectPath, path));
@@ -77,7 +77,7 @@ export const createFolderACreator = (name, parentId, path, redirectPath) => {
             "name": name,
             "parentId": parentId
         }
-        WebApi.gDrive.post.createFolder(model).then(response => {
+        useRequest('gDriveCreateFolder', model).then(response => {
             dispatch(createFolder(true , []));
             dispatch(clearAfterTimeByFuncRef(createFolder, 5000, null, []));
             
@@ -98,7 +98,7 @@ export const uploadFileACreator = (path, file, parentId) => {
         const config = {
             headers: {'Content-Type': 'multipart/form-data' }
         }
-        WebApi.gDrive.post.uploadFile(model, config).then(response => {
+        useRequest('gDriveUploadFile', model, config).then(response => {
             dispatch(uploadFile(true, []));
             dispatch(getFoldersACreator(parentId, path));
         }).catch(error => {
@@ -113,7 +113,7 @@ export const generateGDriveShareLink = (generateGDriveShareLinkStatus, generateG
 }
 
 export const generateGDriveShareLinkACreator = id => (dispatch) =>  {
-    WebApi.gDrive.post.generateShareLink({id: id}).then(response => {
+    useRequest('gDriveGenereteShareLink', {id: id}).then(response => {
         const { shareLink } = response.replyBlock.data.dtoObject;
         dispatch(generateGDriveShareLink(true, [], shareLink));
     }).catch(error => {

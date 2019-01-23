@@ -17,6 +17,8 @@ import {
   ADD_SLIM_CLIENT,
   UPDATE_SLIM_CLIENT
 } from "../constants";
+import { useRequest } from '../api/index';
+
 
 import { useRequest } from '../api/index';
 import { transformArrayIntoObject } from '../services/transform-data-service';
@@ -87,8 +89,7 @@ export const editResponsiblePerson = (model, id) => dispatch => new Promise((res
 export const loadClients = () => {
   return dispatch => {
     dispatch(asyncStarted());
-    WebApi.clients.get
-      .all()
+    useRequest('getClients')
       .then(response => {
         if (!response.errorOccurred()) {
           dispatch(loadClientsSuccess(response.extractData(), response));
@@ -106,8 +107,7 @@ export const loadClients = () => {
 export const deleteClient = id => {
   return dispatch => {
     dispatch(asyncStarted());
-    WebApi.clients
-      .delete(id)
+    useRequest('deleteClient', id)
       .then(response => {
         if (!response.errorOccurred()) {
           let promise = new Promise((resolve, reject) => {
@@ -128,8 +128,7 @@ export const deleteClient = id => {
 export const reactivateClient = id => {
   return dispatch => {
     dispatch(asyncStarted());
-    WebApi.clients.put
-      .reactivate(id)
+    useRequest('reactivateClient',id)
       .then(response => {
         if (!response.errorOccurred()) {
           let promise = new Promise((resolve, reject) => {
@@ -150,8 +149,7 @@ export const reactivateClient = id => {
 export const saveEdit = (id, value) => {
   return dispatch => {
     dispatch(asyncStarted());
-    WebApi.clients.put
-      .info(id, value)
+    useRequest('editInfoClient', id, value)
       .then(response => {
         if (!response.errorOccurred()) {
           dispatch(this.loadClients());
@@ -167,8 +165,7 @@ export const saveEdit = (id, value) => {
 
 export const editClient = (clientId, formData) => {
   return dispatch => {
-    WebApi.clients.put
-      .info(clientId, formData)
+    useRequest('editInfoClient', clientId, formData)
       .then(response => {
         if (!response.errorOccurred()) {
           dispatch(addClientResult(response));
@@ -187,8 +184,7 @@ export const editClient = (clientId, formData) => {
 
 export const addClient = formData => {
   return dispatch => {
-    WebApi.clients
-      .post(formData)
+    useRequest('addClient', formData)
       .then(response => {
         if (!response.errorOccurred()) {
           dispatch(addClientResult(response));
@@ -207,8 +203,7 @@ export const addClient = formData => {
 
 export const addCloud = (name, fields, clientId) => {
   return dispatch => {
-    WebApi.clouds
-      .post(name, fields, clientId)
+    useRequest('addCloud', name, fields, clientId)
       .then(response => {
         if (!response.errorOccurred()) {
           dispatch(addCloudResult(response));
@@ -247,8 +242,7 @@ export const addResponsiblePerson = (
 
 export const deleteCloud = id => {
   return dispatch => {
-    WebApi.clouds
-      .delete(id)
+    useRequest('deleteCloud', id)
       .then(response => {
         if (!response.errorOccurred()) {
           dispatch(setActionConfirmationResult(response));
@@ -264,8 +258,7 @@ export const deleteCloud = id => {
 
 export const editCloud = (cloudId, name, fields, clientId) => {
   return dispatch => {
-    WebApi.clouds
-      .edit(cloudId, name, fields, clientId)
+    useRequest('editCloud', cloudId, name, fields, clientId)
       .then(response => {
         if (!response.errorOccurred()) {
           dispatch(addCloudResult(response));
@@ -298,8 +291,7 @@ export const deleteResponsiblePerson = id => {
 
 export const reactivateCloud = id => {
   return dispatch => {
-    WebApi.clouds
-      .reactivate(id)
+    useRequest('reactivateCloud', id)
       .then(response => {
         if (!response.errorOccurred()) {
           dispatch(setActionConfirmationResult(response));
