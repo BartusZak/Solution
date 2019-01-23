@@ -18,9 +18,6 @@ import {
   UPDATE_SLIM_CLIENT
 } from "../constants";
 import { useRequest } from '../api/index';
-
-
-import { useRequest } from '../api/index';
 import { transformArrayIntoObject } from '../services/transform-data-service';
 
 export const clearResponseCloud = () => {

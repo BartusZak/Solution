@@ -200,9 +200,6 @@ const requests = {
   editEmployee: (id, model) => execute(fromAlertSettings.editEmployee, `employees/${id}`, requestTypes.patch, model),
   reactivateEmployee: id => execute(fromAlertSettings.reactivateEmployee, `employees/reactivate/${id}`, requestTypes.patch),
 
-  //PROJECTS
-  addProject: model => execute(fromAlertSettings.addProject, `projects/add`, requestTypes.post, model),
-
   //QUATER TALKS
   getQuarterTalks: () => execute(fromAlertSettings.getQuarterTalks, `quarterTalks/questions`),
   getQuarterTalksForEmployee: employeeId => execute(fromAlertSettings.getQuarterTalksForEmployee, `quarterTalks/forEmployee/${employeeId}`),

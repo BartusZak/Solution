@@ -36,9 +36,6 @@ export const editOnBoardEmployee = 'editOnBoardEmployee';
 export const editEmployee = 'editEmployee';
 export const reactivateEmployee = 'reactivateEmployee';
 
-// Projects
-export const addProject = 'addProject';
-
 // Quarter talks
 export const getQuarterTalks = 'getquarterTalks';
 export const getQuarterTalksForEmployee = 'getQuarterTalksForEmployee';
