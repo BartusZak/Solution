@@ -9,10 +9,6 @@ export const addProject = 'addProject';
 export const editProject = 'editProject';
 export const addProjectPhase = 'addProjectPhase';
 
-// Reponsible person
-export const createResponsiblePerson = 'createResponsiblePerson';
-export const editResponsiblePerson = 'editResponsiblePerson';
-
 // Quarter talks
 export const editQuarterTalk = 'editQuarterTalk';
 export const deleteQuaterTalk = 'deleteQuaterTalk';

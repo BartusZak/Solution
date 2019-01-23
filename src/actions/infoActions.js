@@ -370,7 +370,7 @@ const infoCreators = [
   },
   () => {
     return dispatch => {
-      dispatch(genericInfoACreator(WebApi.assignments.post({}), ASSIGNMENTS, CAN_ADD_ASSIGNMENT))
+      dispatch(genericInfoACreator(WebApi.assignments.post({"employeeId": ""}), ASSIGNMENTS, CAN_ADD_ASSIGNMENT))
     };
   },
   () => {
@@ -392,12 +392,12 @@ const infoCreators = [
   },
   () => {
     return dispatch => {
-      dispatch(genericInfoACreator(WebApi.certificates.post.add({}), CERTIFICATES, CAN_ADD_CERTIFICATE))
+      dispatch(genericInfoACreator(WebApi.certificates.post.add({"employeeId": ""}), CERTIFICATES, CAN_ADD_CERTIFICATE))
     };
   },
   () => {
     return dispatch => {CERTIFICATES
-      dispatch(genericInfoACreator(WebApi.certificates.put.update(0,{}), CERTIFICATES, CAN_EDIT_CERTIFICATE))
+      dispatch(genericInfoACreator(WebApi.certificates.put.update(0,{"employeeId": ""}), CERTIFICATES, CAN_EDIT_CERTIFICATE))
     };
   },
   () => {
@@ -467,7 +467,7 @@ const infoCreators = [
   },
   () => {
     return dispatch => {
-      dispatch(genericInfoACreator(useRequest('getEmployees',{limit: 0}), EMPLOYEES, CAN_SEARCH_EMPLOYEES))
+      dispatch(genericInfoACreator(useRequest('getEmployees',{"employeeId": "",limit: 0}), EMPLOYEES, CAN_SEARCH_EMPLOYEES))
     };
   },
   () => {
@@ -477,7 +477,7 @@ const infoCreators = [
   },
   () => {
     return dispatch => {
-      dispatch(genericInfoACreator(WebApi.employees.post.addOnBoard({}), EMPLOYEES, CAN_ADD_EMPLOYEE_ONBOARD))
+      dispatch(genericInfoACreator(WebApi.employees.post.addOnBoard({"employeeId": ""}), EMPLOYEES, CAN_ADD_EMPLOYEE_ONBOARD))
     };
   },
   () => {
@@ -492,17 +492,17 @@ const infoCreators = [
   },
   () => {
     return dispatch => {
-      dispatch(genericInfoACreator(WebApi.employees.put.skills(0,[]), EMPLOYEES, CAN_SET_EMPLOYEE_SKILLS))
+      dispatch(genericInfoACreator(WebApi.employees.put.skills("",[]), EMPLOYEES, CAN_SET_EMPLOYEE_SKILLS))
     };
   },
   () => {
     return dispatch => {
-      dispatch(genericInfoACreator(WebApi.employees.put.foreignLanguages(0,[]), EMPLOYEES, CAN_SET_EMPLOYEE_F_LANGUAGES))
+      dispatch(genericInfoACreator(WebApi.employees.put.foreignLanguages("",[]), EMPLOYEES, CAN_SET_EMPLOYEE_F_LANGUAGES))
     };
   },
   () => {
     return dispatch => {
-      dispatch(genericInfoACreator(WebApi.employees.put.updateSkype(0,0), EMPLOYEES, CAN_SET_EMPLOYEE_SKYPE))
+      dispatch(genericInfoACreator(WebApi.employees.put.updateSkype("",""), EMPLOYEES, CAN_SET_EMPLOYEE_SKYPE))
     };
   },
   () => {
@@ -533,7 +533,7 @@ const infoCreators = [
   },
   () => {
     return dispatch => {
-      dispatch(genericInfoACreator(WebApi.feedbacks.post.feedback({}), FEEDBACKS, CAN_ADD_FEEDBACK))
+      dispatch(genericInfoACreator(WebApi.feedbacks.post.feedback({"employeeId":""}), FEEDBACKS, CAN_ADD_FEEDBACK))
     };
   },
   () => {
@@ -675,7 +675,7 @@ const infoCreators = [
   },  
   () => {
     return dispatch => {
-      dispatch(genericInfoACreator( useRequest('addQuestion',{}), QUARTERTALKS, CAN_ADD_QUESTION))};
+      dispatch(genericInfoACreator( useRequest('addQuestion',{"employeeId": ""}), QUARTERTALKS, CAN_ADD_QUESTION))};
   },  
   () => {
     return dispatch => {
@@ -683,11 +683,11 @@ const infoCreators = [
   },
   () => {
     return dispatch => {
-      dispatch(genericInfoACreator( useRequest('planQuarterTalk',{}, false), QUARTERTALKS, CAN_PLAN_QUARTER_TALK))};
+      dispatch(genericInfoACreator( useRequest('planQuarterTalk',{"employeeId":""}, false), QUARTERTALKS, CAN_PLAN_QUARTER_TALK))};
   },
   () => {
     return dispatch => {
-      dispatch(genericInfoACreator( useRequest('getQuarterTalksReservedDates', {}, false), QUARTERTALKS, CAN_GET_QUARTER_TALK_RESERVED_DATES))};
+      dispatch(genericInfoACreator( useRequest('getQuarterTalksReservedDates', {"employeeId":""}, false), QUARTERTALKS, CAN_GET_QUARTER_TALK_RESERVED_DATES))};
   },
 
   //REPORTS
@@ -698,22 +698,22 @@ const infoCreators = [
   },
   () => {
     return dispatch => {
-      dispatch(genericInfoACreator( useRequest('generateCv', 0), REPORTS, CAN_GENERATE_CV_PDF))
+      dispatch(genericInfoACreator( useRequest('generateCv', ""), REPORTS, CAN_GENERATE_CV_PDF))
     }
   },
   () => {
     return dispatch => {
-      dispatch(genericInfoACreator( useRequest('generateCvWord', 0), REPORTS, CAN_GENERATE_CV_WORD))
+      dispatch(genericInfoACreator( useRequest('generateCvWord', ""), REPORTS, CAN_GENERATE_CV_WORD))
     }
   },
   () => {
     return dispatch => {
-      dispatch(genericInfoACreator( useRequest('getFeedback', 0), REPORTS, CAN_GET_FEEDBACK ))
+      dispatch(genericInfoACreator( useRequest('getFeedback', ""), REPORTS, CAN_GET_FEEDBACK ))
     }
   },
   () => {
     return dispatch => {
-      dispatch(genericInfoACreator( useRequest('getCv', 0), REPORTS, CAN_GET_CV))
+      dispatch(genericInfoACreator( useRequest('getCv', ""), REPORTS, CAN_GET_CV))
     }
   },
   () => {
@@ -723,22 +723,22 @@ const infoCreators = [
   },
   () => {
     return dispatch => {
-      dispatch(genericInfoACreator( useRequest('getReportExcel', 0), REPORTS, CAN_GET_DEVELOPERS_EXCEL_REPORT))
+      dispatch(genericInfoACreator( useRequest('getReportExcel', ""), REPORTS, CAN_GET_DEVELOPERS_EXCEL_REPORT))
     }
   },
   () => {
     return dispatch => {
-      dispatch(genericInfoACreator( useRequest('getReportZip', 0), REPORTS, CAN_GET_ZIP_REPORT))
+      dispatch(genericInfoACreator( useRequest('getReportZip', ""), REPORTS, CAN_GET_ZIP_REPORT))
     }
   },
   () => {
     return dispatch => {
-      dispatch(genericInfoACreator( useRequest('getRecentReports', 0), REPORTS, CAN_GET_RECENT_AND_FAVORITES_REPORTS))
+      dispatch(genericInfoACreator( useRequest('getRecentReports', ""), REPORTS, CAN_GET_RECENT_AND_FAVORITES_REPORTS))
     }
   },
   () => {
     return dispatch => {
-      dispatch(genericInfoACreator( useRequest('unfavoriteReport', 0), REPORTS, CAN_UNFAVORITE_REPORT))
+      dispatch(genericInfoACreator( useRequest('unfavoriteReport', ""), REPORTS, CAN_UNFAVORITE_REPORT))
     }
   },
 
