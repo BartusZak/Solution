@@ -1,5 +1,5 @@
-import WebApi from "../api";
-import {useRequest} from '../api/index'
+import WebApi from '../api';
+import { useRequest } from '../api/index';
 import {
   CHANGE_STATE,
   ACCOUNT,
@@ -153,67 +153,94 @@ import {
   CAN_DELETE_WORK_EXPERIENCE,
   CAN_GET_WORK_EXPERIENCE_BY_EMPLOYEEID,
   STATS
-
-} from "../constants";
+} from '../constants';
 
 export const infoActionCreator = () => {
   return dispatch => {
-
     infoCreators.forEach(creator => {
-      dispatch(creator())
+      dispatch(creator());
     });
-
   };
 };
 
-
-export const genericChangeTypeStatusLoading = (controllerKey, requestKey, status, loading) => {
+export const genericChangeTypeStatusLoading = (
+  controllerKey,
+  requestKey,
+  status,
+  loading
+) => {
   return {
     type: CHANGE_STATE,
     controllerKey,
     requestKey,
-    value:{
+    value: {
       status,
       loading
     }
   };
 };
 
-
 export const genericInfoACreator = (Api, controllerKey, requestKey) => {
   return dispatch => {
-    dispatch(genericChangeTypeStatusLoading(controllerKey, requestKey, false, true));
+    dispatch(
+      genericChangeTypeStatusLoading(controllerKey, requestKey, false, true)
+    );
     Api.then(response => {
       !response.errorOccurred() &&
-        dispatch(genericChangeTypeStatusLoading(controllerKey, requestKey, true, false));
+        dispatch(
+          genericChangeTypeStatusLoading(controllerKey, requestKey, true, false)
+        );
     }).catch(error => {
       if (error.replyBlock.status === 400) {
-        dispatch(genericChangeTypeStatusLoading(controllerKey, requestKey, true, false));
+        dispatch(
+          genericChangeTypeStatusLoading(controllerKey, requestKey, true, false)
+        );
       } else {
-        dispatch(genericChangeTypeStatusLoading(controllerKey, requestKey, false, false));
+        dispatch(
+          genericChangeTypeStatusLoading(
+            controllerKey,
+            requestKey,
+            false,
+            false
+          )
+        );
       }
     });
   };
 };
 
-
 const infoCreators = [
   //ACCOUNT
-  ()=>{
-    return dispatch => { dispatch(
-      genericInfoACreator(useRequest('searchUsers',{ Limit: 0, Page: 0 }), ACCOUNT, CAN_SEARCH_USER_ACCOUNT )
-    )}
+  () => {
+    return dispatch => {
+      dispatch(
+        genericInfoACreator(
+          useRequest('searchUsers', { Limit: 0, Page: 0 }),
+          ACCOUNT,
+          CAN_SEARCH_USER_ACCOUNT
+        )
+      );
+    };
   },
   () => {
     return dispatch => {
       dispatch(
-        genericInfoACreator(useRequest('editUserRoles', [0, []]),ACCOUNT, CAN_EDIT_USERS_ROLES)
-      )}
+        genericInfoACreator(
+          useRequest('editUserRoles', [0, []]),
+          ACCOUNT,
+          CAN_EDIT_USERS_ROLES
+        )
+      );
+    };
   },
   () => {
     return dispatch => {
       dispatch(
-        genericInfoACreator(useRequest('getUserByAdSearch', 0), ACCOUNT, CAN_SEARCH_AD)
+        genericInfoACreator(
+          useRequest('getUserByAdSearch', 0),
+          ACCOUNT,
+          CAN_SEARCH_AD
+        )
       );
     };
   },
@@ -227,21 +254,33 @@ const infoCreators = [
   () => {
     return dispatch => {
       dispatch(
-        genericInfoACreator(useRequest('reactivateUser'), ACCOUNT, CAN_REACTIVATE_USER)
+        genericInfoACreator(
+          useRequest('reactivateUser'),
+          ACCOUNT,
+          CAN_REACTIVATE_USER
+        )
       );
     };
   },
   () => {
     return dispatch => {
       dispatch(
-        genericInfoACreator(useRequest('deleteUser', 0), ACCOUNT, CAN_DELETE_USER)
+        genericInfoACreator(
+          useRequest('deleteUser', 0),
+          ACCOUNT,
+          CAN_DELETE_USER
+        )
       );
     };
   },
   () => {
     return dispatch => {
       dispatch(
-        genericInfoACreator(useRequest('deleteUserRequest', 0), ACCOUNT, CAN_DELETE_USER_REQUEST)
+        genericInfoACreator(
+          useRequest('deleteUserRequest', 0),
+          ACCOUNT,
+          CAN_DELETE_USER_REQUEST
+        )
       );
     };
   },
@@ -249,76 +288,121 @@ const infoCreators = [
   () => {
     return dispatch => {
       dispatch(
-        genericInfoACreator( WebApi.projects.post.list({ Limit: 0, Page: 0 }), PROJECTS, CAN_SEARCH_PROJECTS)
-      );
-  }},
-  () => {
-    return dispatch => {
-      dispatch(
-        genericInfoACreator(WebApi.projects.post.add({}),PROJECTS, CAN_ADD_PROJECT)
+        genericInfoACreator(
+          WebApi.projects.post.list({ Limit: 0, Page: 0 }),
+          PROJECTS,
+          CAN_SEARCH_PROJECTS
+        )
       );
     };
   },
   () => {
     return dispatch => {
       dispatch(
-        genericInfoACreator(WebApi.projects.put.project(0,{}), PROJECTS, CAN_EDIT_PROJECT)
+        genericInfoACreator(
+          WebApi.projects.post.add({}),
+          PROJECTS,
+          CAN_ADD_PROJECT
+        )
       );
     };
   },
   () => {
     return dispatch => {
       dispatch(
-        genericInfoACreator(WebApi.projects.get.projects(0), PROJECTS, CAN_GET_PROJECT)
+        genericInfoACreator(
+          WebApi.projects.put.project(0, {}),
+          PROJECTS,
+          CAN_EDIT_PROJECT
+        )
       );
     };
   },
   () => {
     return dispatch => {
       dispatch(
-        genericInfoACreator(WebApi.projects.put.owner(0,[]), PROJECTS, CAN_ADD_PROJECT_OWNERS)
+        genericInfoACreator(
+          WebApi.projects.get.projects(0),
+          PROJECTS,
+          CAN_GET_PROJECT
+        )
       );
     };
   },
   () => {
     return dispatch => {
       dispatch(
-        genericInfoACreator(WebApi.projects.delete.owner([0]), PROJECTS, CAN_DELETE_PROJECT_OWNERS)
+        genericInfoACreator(
+          WebApi.projects.put.owner(0, []),
+          PROJECTS,
+          CAN_ADD_PROJECT_OWNERS
+        )
       );
     };
   },
   () => {
     return dispatch => {
       dispatch(
-        genericInfoACreator(WebApi.projects.put.closeProject(0), PROJECTS, CAN_CLOSE_PROJECT)
+        genericInfoACreator(
+          WebApi.projects.delete.owner([0]),
+          PROJECTS,
+          CAN_DELETE_PROJECT_OWNERS
+        )
       );
     };
   },
   () => {
     return dispatch => {
       dispatch(
-        genericInfoACreator(WebApi.projects.put.reactivateProject(0), PROJECTS, CAN_REACTIVATE_PROJECT)
+        genericInfoACreator(
+          WebApi.projects.put.closeProject(0),
+          PROJECTS,
+          CAN_CLOSE_PROJECT
+        )
       );
     };
   },
   () => {
     return dispatch => {
       dispatch(
-        genericInfoACreator(WebApi.projects.put.skills(0,[]), PROJECTS, CAN_SET_PROJECT_SKILLS)
+        genericInfoACreator(
+          WebApi.projects.put.reactivateProject(0),
+          PROJECTS,
+          CAN_REACTIVATE_PROJECT
+        )
       );
     };
   },
   () => {
     return dispatch => {
       dispatch(
-        genericInfoACreator(WebApi.projects.delete.deleteProject(0), PROJECTS, CAN_DELETE_PROJECT)
+        genericInfoACreator(
+          WebApi.projects.put.skills(0, []),
+          PROJECTS,
+          CAN_SET_PROJECT_SKILLS
+        )
       );
     };
   },
   () => {
     return dispatch => {
       dispatch(
-        genericInfoACreator(WebApi.projects.get.suggestEmployees(0), PROJECTS, CAN_GET_SUGGESTED_EMPLOYEES)
+        genericInfoACreator(
+          WebApi.projects.delete.deleteProject(0),
+          PROJECTS,
+          CAN_DELETE_PROJECT
+        )
+      );
+    };
+  },
+  () => {
+    return dispatch => {
+      dispatch(
+        genericInfoACreator(
+          WebApi.projects.get.suggestEmployees(0),
+          PROJECTS,
+          CAN_GET_SUGGESTED_EMPLOYEES
+        )
       );
     };
   },
@@ -326,546 +410,1135 @@ const infoCreators = [
   () => {
     return dispatch => {
       dispatch(
-        genericInfoACreator(useRequest('getClients'), CLIENT, CAN_GET_LIST_OF_CLIENTS)
+        genericInfoACreator(
+          useRequest('getClients'),
+          CLIENT,
+          CAN_GET_LIST_OF_CLIENTS
+        )
       );
-    };
-  },
-  () => {
-    return dispatch => {
-      dispatch(genericInfoACreator(useRequest('addClient'), CLIENT, CAN_ADD_CLIENT))
-    };
-  },
-  () => {
-    return dispatch => {
-      dispatch(genericInfoACreator(useRequest('deleteClient'), CLIENT, CAN_DELETE_CLIENT))
     };
   },
   () => {
     return dispatch => {
       dispatch(
-        genericInfoACreator(useRequest('editInfoClient'), CLIENT, CAN_EDIT_CLIENT)
+        genericInfoACreator(useRequest('addClient'), CLIENT, CAN_ADD_CLIENT)
       );
     };
   },
   () => {
     return dispatch => {
-      dispatch(genericInfoACreator(useRequest('reactivateClient'),CLIENT, CAN_REACTIVATE_CLIENT))
+      dispatch(
+        genericInfoACreator(
+          useRequest('deleteClient'),
+          CLIENT,
+          CAN_DELETE_CLIENT
+        )
+      );
+    };
+  },
+  () => {
+    return dispatch => {
+      dispatch(
+        genericInfoACreator(
+          useRequest('editInfoClient'),
+          CLIENT,
+          CAN_EDIT_CLIENT
+        )
+      );
+    };
+  },
+  () => {
+    return dispatch => {
+      dispatch(
+        genericInfoACreator(
+          useRequest('reactivateClient'),
+          CLIENT,
+          CAN_REACTIVATE_CLIENT
+        )
+      );
     };
   },
   //ASSIGNMENTS
   () => {
     return dispatch => {
-      dispatch(genericInfoACreator(useRequest('getAssignmentByEmployee', 0), ASSIGNMENTS, CAN_GET_EMPLOYEE_ASSIGNMENTS))
+      dispatch(
+        genericInfoACreator(
+          useRequest('getAssignmentByEmployee', 0),
+          ASSIGNMENTS,
+          CAN_GET_EMPLOYEE_ASSIGNMENTS
+        )
+      );
     };
   },
   () => {
     return dispatch => {
-      dispatch(genericInfoACreator(useRequest('getAssignmentByProject', 0), ASSIGNMENTS, CAN_GET_PROJECT_ASSIGNMENTS))
+      dispatch(
+        genericInfoACreator(
+          useRequest('getAssignmentByProject', 0),
+          ASSIGNMENTS,
+          CAN_GET_PROJECT_ASSIGNMENTS
+        )
+      );
     };
   },
   () => {
     return dispatch => {
-      dispatch(genericInfoACreator(useRequest('addAssignment',{"employeeId": ""}), ASSIGNMENTS, CAN_ADD_ASSIGNMENT))
+      dispatch(
+        genericInfoACreator(
+          useRequest('addAssignment', { employeeId: '' }),
+          ASSIGNMENTS,
+          CAN_ADD_ASSIGNMENT
+        )
+      );
     };
   },
   () => {
     return dispatch => {
-      dispatch(genericInfoACreator(useRequest('editAssignment', 0, {}), ASSIGNMENTS, CAN_EDIT_ASSIGNMENT))
+      dispatch(
+        genericInfoACreator(
+          useRequest('editAssignment', 0, {}),
+          ASSIGNMENTS,
+          CAN_EDIT_ASSIGNMENT
+        )
+      );
     };
   },
   () => {
     return dispatch => {
-      dispatch(genericInfoACreator(useRequest('deleteAssignment', 0), ASSIGNMENTS, CAN_DELETE_ASSIGNMENT))
+      dispatch(
+        genericInfoACreator(
+          useRequest('deleteAssignment', 0),
+          ASSIGNMENTS,
+          CAN_DELETE_ASSIGNMENT
+        )
+      );
     };
   },
 
-   //CERTIFICATES
-   () => {
+  //CERTIFICATES
+  () => {
     return dispatch => {
-      dispatch(genericInfoACreator(useRequest('getCertificates', 0), CERTIFICATES, CAN_GET_EMPLOYEE_CERTIFICATES))
+      dispatch(
+        genericInfoACreator(
+          useRequest('getCertificates', 0),
+          CERTIFICATES,
+          CAN_GET_EMPLOYEE_CERTIFICATES
+        )
+      );
     };
   },
   () => {
     return dispatch => {
-      dispatch(genericInfoACreator(useRequest('addCertificate', {"employeeId": ""}), CERTIFICATES, CAN_ADD_CERTIFICATE))
+      dispatch(
+        genericInfoACreator(
+          useRequest('addCertificate', { employeeId: '' }),
+          CERTIFICATES,
+          CAN_ADD_CERTIFICATE
+        )
+      );
     };
   },
   () => {
     return dispatch => {
-      dispatch(genericInfoACreator(useRequest('editCertificate', 0, {"employeeId": ""}), CERTIFICATES, CAN_EDIT_CERTIFICATE))
+      dispatch(
+        genericInfoACreator(
+          useRequest('editCertificate', 0, { employeeId: '' }),
+          CERTIFICATES,
+          CAN_EDIT_CERTIFICATE
+        )
+      );
     };
   },
   () => {
     return dispatch => {
-      dispatch(genericInfoACreator(useRequest('deleteCertificate'), CERTIFICATES, CAN_DELETE_CERTIFICATE))
+      dispatch(
+        genericInfoACreator(
+          useRequest('deleteCertificate'),
+          CERTIFICATES,
+          CAN_DELETE_CERTIFICATE
+        )
+      );
     };
   },
 
   //CLOUDS
   () => {
     return dispatch => {
-      dispatch(genericInfoACreator(useRequest('reactivateCloud',0), CLOUDS, CAN_REACTIVATE_CLOUD))
+      dispatch(
+        genericInfoACreator(
+          useRequest('reactivateCloud', 0),
+          CLOUDS,
+          CAN_REACTIVATE_CLOUD
+        )
+      );
     };
   },
   () => {
     return dispatch => {
-      dispatch(genericInfoACreator(useRequest('addCloud', {}), CLOUDS, CAN_ADD_CLOUD))
+      dispatch(
+        genericInfoACreator(useRequest('addCloud', {}), CLOUDS, CAN_ADD_CLOUD)
+      );
     };
   },
   () => {
     return dispatch => {
-      dispatch(genericInfoACreator(useRequest('editCloud', {}), CLOUDS, CAN_EDIT_CLOUD))
+      dispatch(
+        genericInfoACreator(useRequest('editCloud', {}), CLOUDS, CAN_EDIT_CLOUD)
+      );
     };
   },
   () => {
     return dispatch => {
-      dispatch(genericInfoACreator(useRequest('deleteCloud', 0), CLOUDS, CAN_DELETE_CLOUD))
+      dispatch(
+        genericInfoACreator(
+          useRequest('deleteCloud', 0),
+          CLOUDS,
+          CAN_DELETE_CLOUD
+        )
+      );
     };
   },
 
   //CV IMPORT
   () => {
     return dispatch => {
-      dispatch(genericInfoACreator(WebApi.CvImport.post(new FormData()), CV_IMPORT, CAN_IMPORT_CV))
+      dispatch(
+        genericInfoACreator(
+          WebApi.CvImport.post(new FormData()),
+          CV_IMPORT,
+          CAN_IMPORT_CV
+        )
+      );
     };
   },
   //EMPLOYEES
   () => {
     return dispatch => {
-      dispatch(genericInfoACreator(useRequest('getEmployeeById', 0), EMPLOYEES, CAN_GET_EMPLOYEE))
+      dispatch(
+        genericInfoACreator(
+          useRequest('getEmployeeById', 0),
+          EMPLOYEES,
+          CAN_GET_EMPLOYEE
+        )
+      );
     };
   },
   () => {
     return dispatch => {
-      dispatch(genericInfoACreator(useRequest('getEmployeeCapacity', 0), EMPLOYEES, CAN_GET_EMPLOYEE_CAPACITY))
+      dispatch(
+        genericInfoACreator(
+          useRequest('getEmployeeCapacity', 0),
+          EMPLOYEES,
+          CAN_GET_EMPLOYEE_CAPACITY
+        )
+      );
     };
   },
   () => {
     return dispatch => {
-      dispatch(genericInfoACreator(useRequest('getEmployeesAndManagers'), EMPLOYEES, CAN_GET_EMPLOYEES_AND_MANAGERS))
+      dispatch(
+        genericInfoACreator(
+          useRequest('getEmployeesAndManagers'),
+          EMPLOYEES,
+          CAN_GET_EMPLOYEES_AND_MANAGERS
+        )
+      );
     };
   },
   () => {
     return dispatch => {
-      dispatch(genericInfoACreator(useRequest('getOnBoardsByEmployeeId', 0), EMPLOYEES, CAN_GET_EMPLOYEE_ONBOARDS))
+      dispatch(
+        genericInfoACreator(
+          useRequest('getOnBoardsByEmployeeId', 0),
+          EMPLOYEES,
+          CAN_GET_EMPLOYEE_ONBOARDS
+        )
+      );
     };
   },
   () => {
     return dispatch => {
-      dispatch(genericInfoACreator(useRequest('getEmployeeContact',0), EMPLOYEES, CAN_GET_EMPLO_CONTACT))
+      dispatch(
+        genericInfoACreator(
+          useRequest('getEmployeeContact', 0),
+          EMPLOYEES,
+          CAN_GET_EMPLO_CONTACT
+        )
+      );
     };
   },
   () => {
     return dispatch => {
-      dispatch(genericInfoACreator(useRequest('getEmployeeSkills', 0), EMPLOYEES, CAN_GET_EMPLO_SKILLS))
+      dispatch(
+        genericInfoACreator(
+          useRequest('getEmployeeSkills', 0),
+          EMPLOYEES,
+          CAN_GET_EMPLO_SKILLS
+        )
+      );
     };
   },
   () => {
     return dispatch => {
-      dispatch(genericInfoACreator(useRequest('getEmployees',{"employeeId": "",limit: 0}), EMPLOYEES, CAN_SEARCH_EMPLOYEES))
+      dispatch(
+        genericInfoACreator(
+          useRequest('getEmployees', { employeeId: '', limit: 0 }),
+          EMPLOYEES,
+          CAN_SEARCH_EMPLOYEES
+        )
+      );
     };
   },
   () => {
     return dispatch => {
-      dispatch(genericInfoACreator(useRequest('addEmployee', {}), EMPLOYEES, CAN_ADD_EMPLOYEE))
+      dispatch(
+        genericInfoACreator(
+          useRequest('addEmployee', {}),
+          EMPLOYEES,
+          CAN_ADD_EMPLOYEE
+        )
+      );
     };
   },
   () => {
     return dispatch => {
-      dispatch(genericInfoACreator(useRequest('addOnBoardEmployee', {"employeeId": ""}), EMPLOYEES, CAN_ADD_EMPLOYEE_ONBOARD))
+      dispatch(
+        genericInfoACreator(
+          useRequest('addOnBoardEmployee', { employeeId: '' }),
+          EMPLOYEES,
+          CAN_ADD_EMPLOYEE_ONBOARD
+        )
+      );
     };
   },
   () => {
     return dispatch => {
-      dispatch(genericInfoACreator(useRequest('deleteOnBoardEmployee', 0), EMPLOYEES, CAN_DELETE_EMPLOYEE_ONBOARD))
+      dispatch(
+        genericInfoACreator(
+          useRequest('deleteOnBoardEmployee', 0),
+          EMPLOYEES,
+          CAN_DELETE_EMPLOYEE_ONBOARD
+        )
+      );
     };
   },
   () => {
     return dispatch => {
-      dispatch(genericInfoACreator(useRequest('deleteEmployee', 0), EMPLOYEES, CAN_DELETE_EMPLOYEE))
+      dispatch(
+        genericInfoACreator(
+          useRequest('deleteEmployee', 0),
+          EMPLOYEES,
+          CAN_DELETE_EMPLOYEE
+        )
+      );
     };
   },
   () => {
     return dispatch => {
-      dispatch(genericInfoACreator(useRequest('editSkills', "",[]), EMPLOYEES, CAN_SET_EMPLOYEE_SKILLS))
+      dispatch(
+        genericInfoACreator(
+          useRequest('editSkills', '', []),
+          EMPLOYEES,
+          CAN_SET_EMPLOYEE_SKILLS
+        )
+      );
     };
   },
   () => {
     return dispatch => {
-      dispatch(genericInfoACreator(useRequest('editForeignLanguages', "",[]), EMPLOYEES, CAN_SET_EMPLOYEE_F_LANGUAGES))
+      dispatch(
+        genericInfoACreator(
+          useRequest('editForeignLanguages', '', []),
+          EMPLOYEES,
+          CAN_SET_EMPLOYEE_F_LANGUAGES
+        )
+      );
     };
   },
   () => {
     return dispatch => {
-      dispatch(genericInfoACreator(useRequest('editSkype', "",""), EMPLOYEES, CAN_SET_EMPLOYEE_SKYPE))
+      dispatch(
+        genericInfoACreator(
+          useRequest('editSkype', '', ''),
+          EMPLOYEES,
+          CAN_SET_EMPLOYEE_SKYPE
+        )
+      );
     };
   },
   () => {
     return dispatch => {
-      dispatch(genericInfoACreator(useRequest('editOnBoardEmployee', 0, {}), EMPLOYEES, CAN_EDIT_EMPLOYEE_ONBOARD))
+      dispatch(
+        genericInfoACreator(
+          useRequest('editOnBoardEmployee', 0, {}),
+          EMPLOYEES,
+          CAN_EDIT_EMPLOYEE_ONBOARD
+        )
+      );
     };
   },
   () => {
     return dispatch => {
-      dispatch(genericInfoACreator(useRequest('reactivateEmployee', 0), EMPLOYEES, CAN_REACTIVATE_EMPLOYEE))
+      dispatch(
+        genericInfoACreator(
+          useRequest('reactivateEmployee', 0),
+          EMPLOYEES,
+          CAN_REACTIVATE_EMPLOYEE
+        )
+      );
     };
   },
   () => {
     return dispatch => {
-      dispatch(genericInfoACreator(useRequest('editEmployee', 0,{}), EMPLOYEES, CAN_EDIT_EMPLOYEE))
+      dispatch(
+        genericInfoACreator(
+          useRequest('editEmployee', 0, {}),
+          EMPLOYEES,
+          CAN_EDIT_EMPLOYEE
+        )
+      );
     };
   },
   //FEEDBACKS
   () => {
     return dispatch => {
-      dispatch(genericInfoACreator(useRequest('getFeedbacksByEmployee', 0), FEEDBACKS, CAN_GET_FEEDBACKS_BY_EMPLOYEE))
+      dispatch(
+        genericInfoACreator(
+          useRequest('getFeedbacksByEmployee', 0),
+          FEEDBACKS,
+          CAN_GET_FEEDBACKS_BY_EMPLOYEE
+        )
+      );
     };
   },
   () => {
     return dispatch => {
-      dispatch(genericInfoACreator(useRequest('getFeedbacksbyEmployeeInProject', []), FEEDBACKS, CAN_GET_FEEDBACKS_BY_EMPLOYEE_IN_PROJECT))
+      dispatch(
+        genericInfoACreator(
+          useRequest('getFeedbacksbyEmployeeInProject', []),
+          FEEDBACKS,
+          CAN_GET_FEEDBACKS_BY_EMPLOYEE_IN_PROJECT
+        )
+      );
     };
   },
   () => {
     return dispatch => {
-      dispatch(genericInfoACreator(useRequest('addFeedback', {"employeeId":""}), FEEDBACKS, CAN_ADD_FEEDBACK))
+      dispatch(
+        genericInfoACreator(
+          useRequest('addFeedback', { employeeId: '' }),
+          FEEDBACKS,
+          CAN_ADD_FEEDBACK
+        )
+      );
     };
   },
   () => {
     return dispatch => {
-      dispatch(genericInfoACreator(useRequest('editFeedback', 0, {}), FEEDBACKS, CAN_EDIT_FEEDBACK))
+      dispatch(
+        genericInfoACreator(
+          useRequest('editFeedback', 0, {}),
+          FEEDBACKS,
+          CAN_EDIT_FEEDBACK
+        )
+      );
     };
   },
   () => {
     return dispatch => {
-      dispatch(genericInfoACreator(useRequest('deleteFeedback', 0), FEEDBACKS, CAN_DELETE_FEEDBACK))
+      dispatch(
+        genericInfoACreator(
+          useRequest('deleteFeedback', 0),
+          FEEDBACKS,
+          CAN_DELETE_FEEDBACK
+        )
+      );
     };
   },
   //GDRIVE
   () => {
     return dispatch => {
-      dispatch(genericInfoACreator(useRequest('gDriveLogin'), GDRIVE, CAN_LOGIN_GDRIVE))
+      dispatch(
+        genericInfoACreator(useRequest('gDriveLogin'), GDRIVE, CAN_LOGIN_GDRIVE)
+      );
     };
   },
   () => {
     return dispatch => {
-      dispatch(genericInfoACreator(useRequest('gDriveGenereteShareLink', {}), GDRIVE, CAN_GENERATE_SHARE_LINK_GDRIVE))
+      dispatch(
+        genericInfoACreator(
+          useRequest('gDriveGenereteShareLink', {}),
+          GDRIVE,
+          CAN_GENERATE_SHARE_LINK_GDRIVE
+        )
+      );
     };
   },
   () => {
     return dispatch => {
-      dispatch(genericInfoACreator(useRequest('gDriveGetFolders', {}), GDRIVE, CAN_GET_FOLDERS_GDRIVE))
+      dispatch(
+        genericInfoACreator(
+          useRequest('gDriveGetFolders', {}),
+          GDRIVE,
+          CAN_GET_FOLDERS_GDRIVE
+        )
+      );
     };
   },
   () => {
     return dispatch => {
-      dispatch(genericInfoACreator(useRequest('gDriveDeleteFolder', {}), GDRIVE, CAN_DELETE_FOLDER_GDRIVE))
+      dispatch(
+        genericInfoACreator(
+          useRequest('gDriveDeleteFolder', {}),
+          GDRIVE,
+          CAN_DELETE_FOLDER_GDRIVE
+        )
+      );
     };
   },
   () => {
     return dispatch => {
-      dispatch(genericInfoACreator(useRequest('gDriveUpdateFolder', {}), GDRIVE, CAN_UPDATE_FOLDER_GDRIVE))
+      dispatch(
+        genericInfoACreator(
+          useRequest('gDriveUpdateFolder', {}),
+          GDRIVE,
+          CAN_UPDATE_FOLDER_GDRIVE
+        )
+      );
     };
   },
   () => {
     return dispatch => {
-      dispatch(genericInfoACreator(useRequest('gDriveCreateFolder', {}), GDRIVE, CAN_CREATE_FOLDER_GDRIVE))
+      dispatch(
+        genericInfoACreator(
+          useRequest('gDriveCreateFolder', {}),
+          GDRIVE,
+          CAN_CREATE_FOLDER_GDRIVE
+        )
+      );
     };
   },
   () => {
     return dispatch => {
-      dispatch(genericInfoACreator(useRequest('oneDriveUploadFile', {}), GDRIVE, CAN_UPLOAD_FILE_GDRIVE))
+      dispatch(
+        genericInfoACreator(
+          useRequest('oneDriveUploadFile', {}),
+          GDRIVE,
+          CAN_UPLOAD_FILE_GDRIVE
+        )
+      );
     };
   },
   //NOTIFICATIONS
   () => {
     return dispatch => {
-      dispatch(genericInfoACreator(useRequest('getAllNotification'), NOTIFICATIONS, CAN_GET_ALL_NOTIFICATIONS))
+      dispatch(
+        genericInfoACreator(
+          useRequest('getAllNotification'),
+          NOTIFICATIONS,
+          CAN_GET_ALL_NOTIFICATIONS
+        )
+      );
     };
   },
   () => {
     return dispatch => {
-      dispatch(genericInfoACreator(useRequest('deleteNotifications', []), NOTIFICATIONS, CAN_DELETE_NOTIFICATIONS ))
+      dispatch(
+        genericInfoACreator(
+          useRequest('deleteNotifications', []),
+          NOTIFICATIONS,
+          CAN_DELETE_NOTIFICATIONS
+        )
+      );
     };
   },
   () => {
     return dispatch => {
-      dispatch(genericInfoACreator(useRequest('markNotificationAsRead', 0), NOTIFICATIONS, CAN_MARK_AS_READ_NOTIFICATION))
+      dispatch(
+        genericInfoACreator(
+          useRequest('markNotificationAsRead', 0),
+          NOTIFICATIONS,
+          CAN_MARK_AS_READ_NOTIFICATION
+        )
+      );
     };
   },
   //ONEDRIVE
   () => {
     return dispatch => {
-      dispatch(genericInfoACreator(useRequest('oneDriveGetRedirectLink', false), ONEDRIVE, CAN_GET_REDIRECT_LINK_ONEDRIVE))
+      dispatch(
+        genericInfoACreator(
+          useRequest('oneDriveGetRedirectLink', false),
+          ONEDRIVE,
+          CAN_GET_REDIRECT_LINK_ONEDRIVE
+        )
+      );
     };
   },
   () => {
     return dispatch => {
-      dispatch(genericInfoACreator(useRequest('oneDriveSendQueryToAuth', '',{}), ONEDRIVE, CAN_SEND_QUERY_TO_AUTH_ONEDRIVE))
+      dispatch(
+        genericInfoACreator(
+          useRequest('oneDriveSendQueryToAuth', '', {}),
+          ONEDRIVE,
+          CAN_SEND_QUERY_TO_AUTH_ONEDRIVE
+        )
+      );
     };
   },
   () => {
     return dispatch => {
-      dispatch(genericInfoACreator(useRequest('oneDriveRefreshToken', ''), ONEDRIVE, CAN_REFRESH_TOKEN_ONEDRIVE))
+      dispatch(
+        genericInfoACreator(
+          useRequest('oneDriveRefreshToken', ''),
+          ONEDRIVE,
+          CAN_REFRESH_TOKEN_ONEDRIVE
+        )
+      );
     };
   },
   () => {
     return dispatch => {
-      dispatch(genericInfoACreator(useRequest('oneDriveGenerateShareLink', {}), ONEDRIVE, CAN_GENERATE_SHARE_LINK_ONEDRIVE))
+      dispatch(
+        genericInfoACreator(
+          useRequest('oneDriveGenerateShareLink', {}),
+          ONEDRIVE,
+          CAN_GENERATE_SHARE_LINK_ONEDRIVE
+        )
+      );
     };
   },
   () => {
     return dispatch => {
-      dispatch(genericInfoACreator(useRequest('oneDriveGetFolders', {}), ONEDRIVE, CAN_GET_FOLDERS_ONEDRIVE))
+      dispatch(
+        genericInfoACreator(
+          useRequest('oneDriveGetFolders', {}),
+          ONEDRIVE,
+          CAN_GET_FOLDERS_ONEDRIVE
+        )
+      );
     };
   },
   () => {
     return dispatch => {
-      dispatch(genericInfoACreator(useRequest('oneDriveCreateFolder', {}), ONEDRIVE, CAN_CREATE_FOLDER_ONEDRIVE))
+      dispatch(
+        genericInfoACreator(
+          useRequest('oneDriveCreateFolder', {}),
+          ONEDRIVE,
+          CAN_CREATE_FOLDER_ONEDRIVE
+        )
+      );
     };
   },
   () => {
     return dispatch => {
-      dispatch(genericInfoACreator(useRequest('oneDriveDeleteFolder', {}), ONEDRIVE, CAN_DELETE_FOLDER_ONEDRIVE))
+      dispatch(
+        genericInfoACreator(
+          useRequest('oneDriveDeleteFolder', {}),
+          ONEDRIVE,
+          CAN_DELETE_FOLDER_ONEDRIVE
+        )
+      );
     };
   },
   () => {
     return dispatch => {
-      dispatch(genericInfoACreator(useRequest('oneDriveUpdateFolder', {}), ONEDRIVE, CAN_UPDATE_FOLDER_ONEDRIVE))
+      dispatch(
+        genericInfoACreator(
+          useRequest('oneDriveUpdateFolder', {}),
+          ONEDRIVE,
+          CAN_UPDATE_FOLDER_ONEDRIVE
+        )
+      );
     };
   },
   () => {
     return dispatch => {
-      dispatch(genericInfoACreator(useRequest('oneDriveUploadFile', {}), ONEDRIVE, CAN_UPLOAD_FILE_ONEDRIVE))
+      dispatch(
+        genericInfoACreator(
+          useRequest('oneDriveUploadFile', {}),
+          ONEDRIVE,
+          CAN_UPLOAD_FILE_ONEDRIVE
+        )
+      );
     };
   },
   //QUARTERTALKS
   () => {
     return dispatch => {
-      dispatch(genericInfoACreator( useRequest('reactivateQuaterTalk', 0), QUARTERTALKS,CAN_REACTIVATE_QUARTER_TALK ))};
+      dispatch(
+        genericInfoACreator(
+          useRequest('reactivateQuaterTalk', 0),
+          QUARTERTALKS,
+          CAN_REACTIVATE_QUARTER_TALK
+        )
+      );
+    };
   },
   () => {
     return dispatch => {
-      dispatch(genericInfoACreator( useRequest('deleteQuaterTalk', 0), QUARTERTALKS, CAN_DELETE_QUARTER_TALK))};
-  },  
-  () => {
-    return dispatch => {
-      dispatch(genericInfoACreator( useRequest('editQuarterTalk', 0, {}), QUARTERTALKS, CAN_EDIT_QUARTER_TALK))};
-  },  
-  () => {
-    return dispatch => {
-      dispatch(genericInfoACreator( useRequest('getQuestions'), QUARTERTALKS, CAN_GET_QUESTIONS))};
-  },  
-  () => {
-    return dispatch => {
-      dispatch(genericInfoACreator( useRequest('getQuarterForEmployee',0 ), QUARTERTALKS, CAN_GET_QUARTERS_FOR_EMPLOYEE))};
-  }, 
-   () => {
-    return dispatch => {
-      dispatch(genericInfoACreator( useRequest('generateQuarterTalkDoc',0), QUARTERTALKS, CAN_GENERATE_QUARTER_TALK_DOC))};
-  },  
-  () => {
-    return dispatch => {
-      dispatch(genericInfoACreator( useRequest('deleteQuestion',0), QUARTERTALKS,CAN_DELETE_QUESTION ))};
-  },  
-  () => {
-    return dispatch => {
-      dispatch(genericInfoACreator( useRequest('addQuestion',{"employeeId": ""}), QUARTERTALKS, CAN_ADD_QUESTION))};
-  },  
-  () => {
-    return dispatch => {
-      dispatch(genericInfoACreator( useRequest('createQuarterTalk',{}), QUARTERTALKS, CAN_ADD_QUARTER_TALK))};
+      dispatch(
+        genericInfoACreator(
+          useRequest('deleteQuaterTalk', 0),
+          QUARTERTALKS,
+          CAN_DELETE_QUARTER_TALK
+        )
+      );
+    };
   },
   () => {
     return dispatch => {
-      dispatch(genericInfoACreator( useRequest('planQuarterTalk',{"employeeId":""}, false), QUARTERTALKS, CAN_PLAN_QUARTER_TALK))};
+      dispatch(
+        genericInfoACreator(
+          useRequest('editQuarterTalk', 0, {}),
+          QUARTERTALKS,
+          CAN_EDIT_QUARTER_TALK
+        )
+      );
+    };
   },
   () => {
     return dispatch => {
-      dispatch(genericInfoACreator( useRequest('getQuarterTalksReservedDates', {"employeeId":""}, false), QUARTERTALKS, CAN_GET_QUARTER_TALK_RESERVED_DATES))};
+      dispatch(
+        genericInfoACreator(
+          useRequest('getQuestions'),
+          QUARTERTALKS,
+          CAN_GET_QUESTIONS
+        )
+      );
+    };
   },
+  () => {
+    return dispatch => {
+      dispatch(
+        genericInfoACreator(
+          useRequest('getQuarterTalksForEmployee', ''),
+          QUARTERTALKS,
+          CAN_GET_QUARTERS_FOR_EMPLOYEE
+        )
+      );
+    };
+  },
+  () => {
+    return dispatch => {
+      dispatch(
+        genericInfoACreator(
+          useRequest('generateDocForQuarterTalk', 0),
+          QUARTERTALKS,
+          CAN_GENERATE_QUARTER_TALK_DOC
+        )
+      );
+    };
+  },
+  () => {
+    return dispatch => {
+      dispatch(
+        genericInfoACreator(
+          useRequest('deleteQuestion', 0),
+          QUARTERTALKS,
+          CAN_DELETE_QUESTION
+        )
+      );
+    };
+  },
+  () => {
+    return dispatch => {
+      dispatch(
+        genericInfoACreator(
+          useRequest('addQuestion', { employeeId: '' }),
+          QUARTERTALKS,
+          CAN_ADD_QUESTION
+        )
+      );
+    };
+  },
+  () => {
+    return dispatch => {
+      dispatch(
+        genericInfoACreator(
+          useRequest('addQuarterTalk', {}),
+          QUARTERTALKS,
+          CAN_ADD_QUARTER_TALK
+        )
+      );
+    };
+  },
+  () => {
+    return dispatch => {
+      dispatch(
+        genericInfoACreator(
+          useRequest('planQuarterTalk', { employeeId: '' }, false),
+          QUARTERTALKS,
+          CAN_PLAN_QUARTER_TALK
+        )
+      );
+    };
+  },
+  // () => {
+  //   return dispatch => {
+  //     dispatch(
+  //       genericInfoACreator(
+  //         useRequest('checkOutlookReservedDates', { employeeId: '' }, false),
+  //         QUARTERTALKS,
+  //         CAN_GET_QUARTER_TALK_RESERVED_DATES
+  //       )
+  //     );
+  //   };
+  // },
 
   //REPORTS
   () => {
     return dispatch => {
-      dispatch(genericInfoACreator( useRequest('generateReport', {teamsSheets: {}}, false, false), REPORTS, CAN_GENERATE_REPORT))
-    }
+      dispatch(
+        genericInfoACreator(
+          useRequest('generateReport', { teamsSheets: {} }, false, false),
+          REPORTS,
+          CAN_GENERATE_REPORT
+        )
+      );
+    };
   },
   () => {
     return dispatch => {
-      dispatch(genericInfoACreator( useRequest('generateCv', ""), REPORTS, CAN_GENERATE_CV_PDF))
-    }
+      dispatch(
+        genericInfoACreator(
+          useRequest('generateCv', ''),
+          REPORTS,
+          CAN_GENERATE_CV_PDF
+        )
+      );
+    };
   },
   () => {
     return dispatch => {
-      dispatch(genericInfoACreator( useRequest('generateCvWord', ""), REPORTS, CAN_GENERATE_CV_WORD))
-    }
+      dispatch(
+        genericInfoACreator(
+          useRequest('generateCvWord', ''),
+          REPORTS,
+          CAN_GENERATE_CV_WORD
+        )
+      );
+    };
   },
   () => {
     return dispatch => {
-      dispatch(genericInfoACreator( useRequest('getFeedback', ""), REPORTS, CAN_GET_FEEDBACK ))
-    }
+      dispatch(
+        genericInfoACreator(
+          useRequest('getFeedback', ''),
+          REPORTS,
+          CAN_GET_FEEDBACK
+        )
+      );
+    };
   },
   () => {
     return dispatch => {
-      dispatch(genericInfoACreator( useRequest('getCv', ""), REPORTS, CAN_GET_CV))
-    }
+      dispatch(
+        genericInfoACreator(useRequest('getCv', ''), REPORTS, CAN_GET_CV)
+      );
+    };
   },
   () => {
     return dispatch => {
-      dispatch(genericInfoACreator( useRequest('getTeams'), REPORTS, CAN_GET_TEAMS))
-    }
+      dispatch(
+        genericInfoACreator(useRequest('getTeams'), REPORTS, CAN_GET_TEAMS)
+      );
+    };
   },
   () => {
     return dispatch => {
-      dispatch(genericInfoACreator( useRequest('getReportExcel', ""), REPORTS, CAN_GET_DEVELOPERS_EXCEL_REPORT))
-    }
+      dispatch(
+        genericInfoACreator(
+          useRequest('getReportExcel', ''),
+          REPORTS,
+          CAN_GET_DEVELOPERS_EXCEL_REPORT
+        )
+      );
+    };
   },
   () => {
     return dispatch => {
-      dispatch(genericInfoACreator( useRequest('getReportZip', ""), REPORTS, CAN_GET_ZIP_REPORT))
-    }
+      dispatch(
+        genericInfoACreator(
+          useRequest('getReportZip', ''),
+          REPORTS,
+          CAN_GET_ZIP_REPORT
+        )
+      );
+    };
   },
   () => {
     return dispatch => {
-      dispatch(genericInfoACreator( useRequest('getRecentReports', ""), REPORTS, CAN_GET_RECENT_AND_FAVORITES_REPORTS))
-    }
+      dispatch(
+        genericInfoACreator(
+          useRequest('getRecentReports', ''),
+          REPORTS,
+          CAN_GET_RECENT_AND_FAVORITES_REPORTS
+        )
+      );
+    };
   },
   () => {
     return dispatch => {
-      dispatch(genericInfoACreator( useRequest('unfavoriteReport', ""), REPORTS, CAN_UNFAVORITE_REPORT))
-    }
+      dispatch(
+        genericInfoACreator(
+          useRequest('unfavoriteReport', ''),
+          REPORTS,
+          CAN_UNFAVORITE_REPORT
+        )
+      );
+    };
   },
 
   //RESPONSIBLE PERSON
   () => {
     return dispatch => {
-      dispatch(genericInfoACreator( useRequest('getResponsiblePersonByClientId', 0), RESPONSIBLE_PERSON, CAN_GET_RESPONSIBLE_PERSON_BY_CLIENTID))
-    }
+      dispatch(
+        genericInfoACreator(
+          useRequest('getResponsiblePersonByClientId', 0),
+          RESPONSIBLE_PERSON,
+          CAN_GET_RESPONSIBLE_PERSON_BY_CLIENTID
+        )
+      );
+    };
   },
   () => {
     return dispatch => {
-      dispatch(genericInfoACreator( useRequest('getResponsiblePersonById', 0), RESPONSIBLE_PERSON, CAN_GET_RESPONSIBLEPERSON_BY_ID))
-    }
+      dispatch(
+        genericInfoACreator(
+          useRequest('getResponsiblePersonById', 0),
+          RESPONSIBLE_PERSON,
+          CAN_GET_RESPONSIBLEPERSON_BY_ID
+        )
+      );
+    };
   },
   () => {
     return dispatch => {
-      dispatch(genericInfoACreator( useRequest('editResponsiblePerson', {}, 0), RESPONSIBLE_PERSON, CAN_EDIT_RESPONSIBLE_PERSON))
-    }
+      dispatch(
+        genericInfoACreator(
+          useRequest('editResponsiblePerson', {}, 0),
+          RESPONSIBLE_PERSON,
+          CAN_EDIT_RESPONSIBLE_PERSON
+        )
+      );
+    };
   },
   () => {
     return dispatch => {
-      dispatch(genericInfoACreator( useRequest('addResponsiblePerson', {}), RESPONSIBLE_PERSON, CAN_ADD_RESPONSIBLE_PERSON))
-    }
+      dispatch(
+        genericInfoACreator(
+          useRequest('addResponsiblePerson', {}),
+          RESPONSIBLE_PERSON,
+          CAN_ADD_RESPONSIBLE_PERSON
+        )
+      );
+    };
   },
   () => {
     return dispatch => {
-      dispatch(genericInfoACreator( useRequest('deleteResponsiblePerson', 0), RESPONSIBLE_PERSON, CAN_DELETE_RESPONSIBLE_PERSON))
-    }
+      dispatch(
+        genericInfoACreator(
+          useRequest('deleteResponsiblePerson', 0),
+          RESPONSIBLE_PERSON,
+          CAN_DELETE_RESPONSIBLE_PERSON
+        )
+      );
+    };
   },
   () => {
     return dispatch => {
-      dispatch(genericInfoACreator( useRequest('reactivateResponsiblePerson', 0), RESPONSIBLE_PERSON, CAN_REACTIVATE_RESPONSIBLE_PERSON))
-    }
+      dispatch(
+        genericInfoACreator(
+          useRequest('reactivateResponsiblePerson', 0),
+          RESPONSIBLE_PERSON,
+          CAN_REACTIVATE_RESPONSIBLE_PERSON
+        )
+      );
+    };
   },
 
   //SKILLS
   () => {
     return dispatch => {
-      dispatch(genericInfoACreator( useRequest('getAllSkills'), SKILLS, CAN_GET_ALL_SKILLS))
-    }
+      dispatch(
+        genericInfoACreator(
+          useRequest('getAllSkills'),
+          SKILLS,
+          CAN_GET_ALL_SKILLS
+        )
+      );
+    };
   },
   () => {
     return dispatch => {
-      dispatch(genericInfoACreator( useRequest('getSkillById', 0), SKILLS, CAN_GET_SKILL_BY_ID))
-    }
+      dispatch(
+        genericInfoACreator(
+          useRequest('getSkillById', 0),
+          SKILLS,
+          CAN_GET_SKILL_BY_ID
+        )
+      );
+    };
   },
   () => {
     return dispatch => {
-      dispatch(genericInfoACreator( useRequest('addSkill', {}), SKILLS, CAN_ADD_SKILL))
-    }
+      dispatch(
+        genericInfoACreator(useRequest('addSkill', {}), SKILLS, CAN_ADD_SKILL)
+      );
+    };
   },
   () => {
     return dispatch => {
-      dispatch(genericInfoACreator( useRequest('deleteSkill', 0), SKILLS, CAN_DELETE_SKILL))
-    }
+      dispatch(
+        genericInfoACreator(
+          useRequest('deleteSkill', 0),
+          SKILLS,
+          CAN_DELETE_SKILL
+        )
+      );
+    };
   },
   () => {
     return dispatch => {
-      dispatch(genericInfoACreator( useRequest('editSkill', 0, {}), SKILLS, CAN_EDIT_SKILL))
-    }
+      dispatch(
+        genericInfoACreator(
+          useRequest('editSkill', 0, {}),
+          SKILLS,
+          CAN_EDIT_SKILL
+        )
+      );
+    };
   },
 
   //STATS
   () => {
     return dispatch => {
-      dispatch(genericInfoACreator( useRequest('getStats'), STATS, CAN_GET_STATS))
-    }
+      dispatch(
+        genericInfoACreator(useRequest('getStats'), STATS, CAN_GET_STATS)
+      );
+    };
   },
 
   //ROLES
   () => {
     return dispatch => {
-      dispatch(genericInfoACreator( useRequest('getAllRoles'), ROLES, CAN_GET_ALL_ROLES))
-    }
+      dispatch(
+        genericInfoACreator(useRequest('getAllRoles'), ROLES, CAN_GET_ALL_ROLES)
+      );
+    };
   },
   () => {
     return dispatch => {
-      dispatch(genericInfoACreator( useRequest('addRole', {}), ROLES, CAN_ADD_ROLE))
-    }
+      dispatch(
+        genericInfoACreator(useRequest('addRole', {}), ROLES, CAN_ADD_ROLE)
+      );
+    };
   },
   () => {
     return dispatch => {
-      dispatch(genericInfoACreator( useRequest('editRole', 0, {}), ROLES, CAN_EDIT_ROLE))
-    }
+      dispatch(
+        genericInfoACreator(useRequest('editRole', 0, {}), ROLES, CAN_EDIT_ROLE)
+      );
+    };
   },
   () => {
     return dispatch => {
-      dispatch(genericInfoACreator( useRequest('deleteRole', 0), ROLES, CAN_DELETE_ROLE))
-    }
+      dispatch(
+        genericInfoACreator(useRequest('deleteRole', 0), ROLES, CAN_DELETE_ROLE)
+      );
+    };
   },
 
   //SHARE PROJECT
   () => {
     return dispatch => {
-      dispatch(genericInfoACreator( useRequest('shareProject', 0, {}), SHARE_PROJECTS, CAN_SHARE_PROJECT))
-    }
+      dispatch(
+        genericInfoACreator(
+          useRequest('shareProject', 0, {}),
+          SHARE_PROJECTS,
+          CAN_SHARE_PROJECT
+        )
+      );
+    };
   },
   () => {
     return dispatch => {
-      dispatch(genericInfoACreator( useRequest('getManagersSharedProject', 0), SHARE_PROJECTS, CAN_GET_MANAGERS_SHARED_PROJECT))
-    }
+      dispatch(
+        genericInfoACreator(
+          useRequest('getManagersSharedProject', 0),
+          SHARE_PROJECTS,
+          CAN_GET_MANAGERS_SHARED_PROJECT
+        )
+      );
+    };
   },
   () => {
     return dispatch => {
-      dispatch(genericInfoACreator( useRequest('getAlreadySharedManagers', 0), SHARE_PROJECTS, CAN_GET_ALREADY_SHARED_MANAGERS))
-    }
+      dispatch(
+        genericInfoACreator(
+          useRequest('getAlreadySharedManagers', 0),
+          SHARE_PROJECTS,
+          CAN_GET_ALREADY_SHARED_MANAGERS
+        )
+      );
+    };
   },
-  
+
   //WORK EXPERIENCE
   () => {
     return dispatch => {
-      dispatch(genericInfoACreator( useRequest('addWorkExperience', {}), WORK_EXPERIENCE, CAN_ADD_WORK_EXPERIENCE))
-    }
+      dispatch(
+        genericInfoACreator(
+          useRequest('addWorkExperience', {}),
+          WORK_EXPERIENCE,
+          CAN_ADD_WORK_EXPERIENCE
+        )
+      );
+    };
   },
   () => {
     return dispatch => {
-      dispatch(genericInfoACreator( useRequest('getWorkExperience', 0), WORK_EXPERIENCE, CAN_GET_WORK_EXPERIENCE))
-    }
+      dispatch(
+        genericInfoACreator(
+          useRequest('getWorkExperience', 0),
+          WORK_EXPERIENCE,
+          CAN_GET_WORK_EXPERIENCE
+        )
+      );
+    };
   },
   () => {
     return dispatch => {
-      dispatch(genericInfoACreator( useRequest('editWorkExperience', 0, {}), WORK_EXPERIENCE, CAN_EDIT_WORK_EXPERIENCE))
-    }
+      dispatch(
+        genericInfoACreator(
+          useRequest('editWorkExperience', 0, {}),
+          WORK_EXPERIENCE,
+          CAN_EDIT_WORK_EXPERIENCE
+        )
+      );
+    };
   },
   () => {
     return dispatch => {
-      dispatch(genericInfoACreator( useRequest('deleteWorkExperience', 0), WORK_EXPERIENCE, CAN_DELETE_WORK_EXPERIENCE))
-    }
+      dispatch(
+        genericInfoACreator(
+          useRequest('deleteWorkExperience', 0),
+          WORK_EXPERIENCE,
+          CAN_DELETE_WORK_EXPERIENCE
+        )
+      );
+    };
   },
   () => {
     return dispatch => {
-      dispatch(genericInfoACreator( useRequest('getWorkExperienceByEmployeeId', 0), WORK_EXPERIENCE, CAN_GET_WORK_EXPERIENCE_BY_EMPLOYEEID))
-    }
-  },
-]
+      dispatch(
+        genericInfoACreator(
+          useRequest('getWorkExperienceByEmployeeId', 0),
+          WORK_EXPERIENCE,
+          CAN_GET_WORK_EXPERIENCE_BY_EMPLOYEEID
+        )
+      );
+    };
+  }
+];
