@@ -1,10 +1,11 @@
-import * as types from "../constants";
+import * as types from '../constants';
 import { updateObject } from '../services/methods';
 const initialState = {
   isAuthenticated: false,
   loading: false,
+  login: '',
   tokens: {},
-  language: "pl",
+  language: 'pl',
   pem: {
     hasDeveloperAccesss: false,
     hasHumanResourcesAccess: false,
@@ -14,33 +15,34 @@ const initialState = {
     hasAdministrativeAccess: false
   },
   binPem: 0,
-  oneDriveToken: "",
+  oneDriveToken: '',
   authCodeStatus: null,
   authCodeErrors: [],
-  refreshToken: "",
-  accountRequest: false
+  refreshToken: '',
+  accountRequest: false,
+  azureToken: ''
 };
 
-let pem = (userBlock) => {
+let pem = userBlock => {
   return {
-    hasDeveloperAccesss: userBlock.roles.indexOf("Developer") >= 0,
-    hasHumanResourcesAccess: userBlock.roles.indexOf("Human Resources") >= 0,
-    hasSalesmanAccess: userBlock.roles.indexOf("Tradesman") >= 0,
-    hasTeamLeaderAccess: userBlock.roles.indexOf("Team Leader") >= 0,
-    hasManagerAccess: userBlock.roles.indexOf("Manager") >= 0,
-    hasAdministrativeAccess: userBlock.roles.indexOf("Administrator") >= 0
+    hasDeveloperAccesss: userBlock.roles.indexOf('Developer') >= 0,
+    hasHumanResourcesAccess: userBlock.roles.indexOf('Human Resources') >= 0,
+    hasSalesmanAccess: userBlock.roles.indexOf('Tradesman') >= 0,
+    hasTeamLeaderAccess: userBlock.roles.indexOf('Team Leader') >= 0,
+    hasManagerAccess: userBlock.roles.indexOf('Manager') >= 0,
+    hasAdministrativeAccess: userBlock.roles.indexOf('Administrator') >= 0
   };
 };
 
-let binPem = (userBlock) => {
+let binPem = userBlock => {
   let _pem = 0;
 
-  userBlock.roles.indexOf("Developer") >= 0 ? _pem += 1 : _pem += 0;
-  userBlock.roles.indexOf("Human Resources") >= 0 ? _pem += 2 : _pem += 0;
-  userBlock.roles.indexOf("Tradesman") >= 0 ? _pem += 4 : _pem += 0;
-  userBlock.roles.indexOf("Team Leader") >= 0 ? _pem += 8 : _pem += 0;
-  userBlock.roles.indexOf("Manager") >= 0 ? _pem += 16 : _pem += 0;
-  userBlock.roles.indexOf("Administrator") >= 0 ? _pem += 32 : _pem += 0;
+  userBlock.roles.indexOf('Developer') >= 0 ? (_pem += 1) : (_pem += 0);
+  userBlock.roles.indexOf('Human Resources') >= 0 ? (_pem += 2) : (_pem += 0);
+  userBlock.roles.indexOf('Tradesman') >= 0 ? (_pem += 4) : (_pem += 0);
+  userBlock.roles.indexOf('Team Leader') >= 0 ? (_pem += 8) : (_pem += 0);
+  userBlock.roles.indexOf('Manager') >= 0 ? (_pem += 16) : (_pem += 0);
+  userBlock.roles.indexOf('Administrator') >= 0 ? (_pem += 32) : (_pem += 0);
 
   return _pem;
 };
@@ -48,9 +50,12 @@ let binPem = (userBlock) => {
 export const authReducer = (state = initialState, action) => {
   switch (action.type) {
     case types.SEND_CODE_TO_GET_TOKEN:
-      return updateObject(state, { oneDriveToken: action.oneDriveToken,
-        authCodeStatus: action.authCodeStatus, authCodeErrors: action.authCodeErrors,
-        refreshToken: action.refreshToken })
+      return updateObject(state, {
+        oneDriveToken: action.oneDriveToken,
+        authCodeStatus: action.authCodeStatus,
+        authCodeErrors: action.authCodeErrors,
+        refreshToken: action.refreshToken
+      });
     case types.AUTH_SUCCESS:
       return {
         ...state,
@@ -75,18 +80,25 @@ export const authReducer = (state = initialState, action) => {
         isAuthenticated: false,
         loading: false,
         tokens: {},
-        language: "pl"
+        language: 'pl'
       };
     case types.AUTH_ERROR_ACCOUNT_REQUEST:
       return {
         ...state,
+        login: action.login,
+        loading: false,
         accountRequest: true
+      };
+    case types.AUTH_ERROR_ACCOUNT_ALREADY_REQUESTED:
+      return {
+        ...state,
+        loading: false
       };
     case types.AUTH_CLEAR_ACCOUNT_REQUEST:
       return {
         ...state,
         accountRequest: false
-      }
+      };
     default:
       return state;
   }

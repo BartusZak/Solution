@@ -1,46 +1,63 @@
-import axios from "axios";
-import { resolve as BluebirdResolve } from "bluebird/js/browser/bluebird.core.min.js";
-import * as usersMocks from "./mock/users";
-import * as projectsMocks from "./mock/projects";
-import storeCreator from "./../store";
-import { push } from "react-router-redux";
-import { logout } from "./../actions/authActions";
-import ResponseParser from "./responseParser";
-import Config from "Config";
-import { addAlert } from '../actions/alertsActions';
+import axios from 'axios';
+// import * as jwtDecode from "jwt-decode";
+import { resolve as BluebirdResolve } from 'bluebird/js/browser/bluebird.core.min.js';
+import * as usersMocks from './mock/users';
+import * as projectsMocks from './mock/projects';
+import redux from 'redux';
+import storeCreator from './../store';
+import storage from 'redux-persist/lib/storage';
+import { push } from 'react-router-redux';
+import { logout } from './../actions/authActions';
+import {
+  refreshToken,
+  authOneDrive,
+  getFolderACreator
+} from '../actions/oneDriveActions';
+import ResponseParser from './responseParser';
+import Config from 'Config';
+import { loginACreator } from '../actions/persistHelpActions';
+import { Certificate } from 'crypto';
+import { addAlert, removeAlert } from '../actions/alertsActions';
 import * as fromAlertSettings from './request-settings';
 const { store } = storeCreator;
 
 export const API_ENDPOINT = Config.serverUrl;
-export const selectLang = state =>
-  state.languageReducer.language ? state.languageReducer.language : "pl";
+export const AZURE_AD_REDIRECT_URI = Config.azureAdRedirectUri;
+
 
 store.subscribe(listener);
 
+const select = state =>
+  state.authReducer.tokens !== undefined ? state.authReducer.tokens.token : '';
+
+export const selectLang = state =>
+  state.languageReducer.language ? state.languageReducer.language : 'pl';
 
 
 let lang = '';
 function listener() {
   let langHeader = '';
   switch (selectLang(store.getState())) {
-    case "pl":
-      langHeader = "pl-PL";
+    case 'pl':
+      langHeader = 'pl-PL';
       lang = 'pl';
       break;
-    case "en":
-      langHeader = "en-US";
+    case 'en':
+      langHeader = 'en-US';
       lang = 'en';
       break;
   }
 
   axios.defaults.withCredentials = true;
-  axios.defaults.headers.common["Accept-Language"] = langHeader;
+  axios.defaults.headers.common['Accept-Language'] = langHeader;
 }
 
 const authValidator = response => {
-  if(response.response.status === 401 || response.response === undefined){
-    store.dispatch(logout());
-    store.dispatch(push("/"));
+  if (response.status) {
+    if (response.response.status === 401 || response.response === undefined) {
+      store.dispatch(logout());
+      store.dispatch(push('/'));
+    }
   }
 
   throw response;
@@ -50,21 +67,52 @@ const parseSuccess = (response, key) => {
   let parser = new ResponseParser(response);
   parser.parse();
   const succMessage = fromAlertSettings.succOperationsWhiteObject[key];
+
   if (succMessage) {
-    store.dispatch(addAlert({ id: key, content: succMessage[lang], type: 'ok', time: 5000 }));
+    store.dispatch(
+      addAlert({ id: key, content: succMessage[lang], type: 'ok', time: 5000 })
+    );
   }
 
   return BluebirdResolve(parser);
 };
 
 const parseFailure = (response, key) => {
-  if (response instanceof Error && response.request === undefined)
+  if (response instanceof Error && response.request === undefined) {
     throw response;
+  }
 
-  const isKeyInBlackList = fromAlertSettings.errorsBlackList.findIndex(item => item === key);
+  const isKeyInBlackList = fromAlertSettings.errorsBlackList.findIndex(
+    item => item === key
+  );
+
   let parser = new ResponseParser(response);
+
+  const failMessage =
+    fromAlertSettings.failOperationsWhiteObject['networkError'];
+
   if (isKeyInBlackList === -1) {
-    store.dispatch(addAlert({ id: key, content: parser.parse().message, type: 'err', time: 5000 }));
+    //400 ERROR NOT HANDLED
+    if (!response.response) {
+      // network error
+      store.dispatch(
+        addAlert({
+          id: 'networkError',
+          content: failMessage[lang],
+          type: 'err',
+          time: 5000
+        })
+      );
+    } else {
+      store.dispatch(
+        addAlert({
+          id: key,
+          content: parser.parse().message,
+          type: 'err',
+          time: 5000
+        })
+      );
+    }
   }
 
   throw parser;
@@ -93,8 +141,18 @@ const requestTypes = {
   delete: 'delete'
 };
 const requests = {
+  //Login
+  login: () =>
+    execute(
+      fromAlertSettings.login,
+      `account/login?redirectUrl=${AZURE_AD_REDIRECT_URI}`
+    ),
+  loginAzureAD: code =>
+    execute(fromAlertSettings.loginAzureAD, `signin-oidc?code=${code}`),
+
   //CLIENTS
-  getClientsSlim: settings => execute(fromAlertSettings.getClientsSlim, 'Clients?lessDetailed=true'),
+  getClientsSlim: settings =>
+    execute(fromAlertSettings.getClientsSlim, 'Clients?lessDetailed=true'),
 
   //EMPLOYEES
   getEmployees: settings => execute(fromAlertSettings.getEmployees, 'employees', requestTypes.post, settings),
@@ -106,8 +164,20 @@ const requests = {
   addProjectPhase: model => execute(fromAlertSettings.addProjectPhase, 'projects/add', requestTypes.post, model),
 
   //RESPINSIBLE PERSON
-  createResponsiblePerson: model => execute(fromAlertSettings.createResponsiblePerson, 'responsiblepersons', requestTypes.post, model),
-  editResponsiblePerson: (model, id) => execute(fromAlertSettings.editResponsiblePerson, `responsiblepersons/${id}`, requestTypes.put, model),
+  createResponsiblePerson: model =>
+    execute(
+      fromAlertSettings.createResponsiblePerson,
+      'responsiblepersons',
+      requestTypes.post,
+      model
+    ),
+  editResponsiblePerson: (model, id) =>
+    execute(
+      fromAlertSettings.editResponsiblePerson,
+      `responsiblepersons/${id}`,
+      requestTypes.put,
+      model
+    ),
 
   //QUATER TALKS
   reactivateQuaterTalk: id => execute(fromAlertSettings.reactivateQuaterTalk, `QuarterTalks/Reactivate/${id}`, requestTypes.put),
@@ -352,7 +422,6 @@ const WebApi = {
     put: educationId => {},
     post: () => {}
   },
-  // quarterTalks: {
   //   get: {
   //     questions: () => {
   //       return WebAround.get(`${API_ENDPOINT}/QuarterTalks/questions`);
@@ -513,243 +582,7 @@ const WebApi = {
   //     }
   //   }
   // },
-  foreignLanguages: {
-    get: {
-      all: () => {},
-      byForeignLanguage: foreignLanguageId => {}
-    },
-    post: () => {},
-    delete: foreignLanguageId => {},
-    put: foreignLanguageId => {}
-  },
-  projects: {
-    get: {
-      projects: (projectId, onlyActiveAssignments = true) => {
-        return WebAround.get(
-          `${API_ENDPOINT}/projects/${projectId}?onlyActiveAssignments=${onlyActiveAssignments}`
-        );
-      },
-      suggestEmployees: projectId => {
-        return WebAround.get(
-          `${API_ENDPOINT}/projects/EmployeeWithFreeCapacity?projectId=${projectId}`
-        );
-      }
-    },
-    post: {
-      list: (settings = {}) => {
-        return WebAround.post(`${API_ENDPOINT}/projects/`, settings);
-      },
-      add: projectModel => {
-        return WebAround.post(`${API_ENDPOINT}/projects/add`, projectModel);
-      }
-    },
-    put: {
-      project: (projectId, projectModel) => {
-        return WebAround.put(
-          `${API_ENDPOINT}/projects/${projectId}`,
-          projectModel
-        );
-      },
-      owner: (projectId, ownersIdsArray) => {
-        return WebAround.put(`${API_ENDPOINT}/projects/owner/${projectId}`, {
-          usersIds: ownersIdsArray
-        });
-      },
-      closeProject: projectId => {
-        return WebAround.put(`${API_ENDPOINT}/projects/close/${projectId}`);
-      },
-      close: model => {
-        return WebAround.put(`${API_ENDPOINT}/projects/close/${model[0]}`);
-      },
-      reactivate: model => {
-        return WebAround.put(`${API_ENDPOINT}/projects/reactivate/${model[0]}`);
-      },
-      reactivateProject: projectId => {
-        return WebAround.put(
-          `${API_ENDPOINT}/projects/reactivate/${projectId}`
-        );
-      },
-      skills: (projectId, skillsArray) => {
-        return WebAround.put(
-          `${API_ENDPOINT}/projects/skills/${projectId}`,
-          skillsArray
-        );
-      }
-    },
-    delete: {
-      owner: model => {
-        return WebAround.delete(`${API_ENDPOINT}/projects/owner/${model[0]}`, {
-          data: {
-            userId: model[1]
-          }
-        });
-      },
-      project: model => {
-        return WebAround.delete(`${API_ENDPOINT}/projects/delete/${model[0]}`);
-      },
-      deleteProject: projectId => {
-        return WebAround.delete(`${API_ENDPOINT}/projects/delete/${projectId}`);
-      }
-    }
-  },
-  shareProject: {
-    get: {
-      managers: projectId => {
-        return WebAround.get(
-          `${API_ENDPOINT}/shareProject/DestinationManagers/${projectId}`
-        );
-      },
-      alreadySharedManagers: projectId => {
-        return WebAround.get(
-          `${API_ENDPOINT}/shareProject/AlreadySharedManagers/${projectId}`
-        );
-      }
-    },
-    post: {
-      add: (projectId, shareProjectModel) => {
-        return WebAround.post(
-          `${API_ENDPOINT}/shareProject/${projectId}`,
-          shareProjectModel
-        );
-      }
-    },
-    delete: {
-      cancel: (projectId, shareProjectId) => {
-        return WebAround.delete(
-          `${API_ENDPOINT}/shareProject/${projectId}/${shareProjectId}`
-        );
-      }
-    }
-  },
-  reports: {
-    get: {
-      developers: fileName => {
-        return WebAround.get(
-          `${API_ENDPOINT}/reports/developers`,
-          params({ fileName })
-        );
-      },
-      cv: employeeId => {
-        return WebAround.get(`${API_ENDPOINT}/reports/cv/${employeeId}`);
-      },
-      teams: () => {
-        return WebAround.get(`${API_ENDPOINT}/reports/teams/`);
-      },
-      report: fileName => {
-        return WebAround.get(
-          `${API_ENDPOINT}/reports/developers?fileName=${fileName}`
-        );
-      },
-      recentReports: numberOfReports =>
-        WebAround.get(
-          `${API_ENDPOINT}/reports/recentAndFavorites?numberOfReports=${numberOfReports}`
-        ),
-      reportZip: fileName => {
-        return WebAround.get(
-          `${API_ENDPOINT}/reports/reportzip/${fileName}`
-          )
-        },
-    },
-    post: {
-      report: (model, hyperlinksOnGDrive, hyperlinksOnOneDrive) => {
-        return WebAround.post(
-          `${API_ENDPOINT}/reports/developers?hyperlinksOnGDrive=${hyperlinksOnGDrive}&hyperlinksOnOneDrive=${hyperlinksOnOneDrive}`,
-          model
-        );
-      },
-      cv: employeeId => {
-        return WebAround.post(
-          `${API_ENDPOINT}/reports/cv/${employeeId}?forceIncompletePDF=true`
-        );
-      },
-      wordcv: employeeId => {
-        return WebAround.post(`${API_ENDPOINT}/reports/WordCv/${employeeId}`);
-      }
-    },
-    delete: {
-      report: reportId =>
-        WebAround.delete(`${API_ENDPOINT}/reports/unfavorite/${reportId}`)
-    }
-  },
-  CvImport: {
-    post: files => {
-      return WebAround.post(
-        `${API_ENDPOINT}/CvImport/ImportCv`,
-        files
-        // {
-        //   headers: { "Content-Type": "multipart/form-data" }
-        // }
-      );
-    }
-  },
-  // gDrive: { // 
-  //   get: {
-  //     login: () => {
-  //       return WebAround.get(`${API_ENDPOINT}/gdrive/Login`);
-  //     }
-  //   },
-  //   post: {
-  //     generateShareLink: model => {
-  //       return WebAround.post(
-  //         `${API_ENDPOINT}/GDrive/GenerateShareLink`,
-  //         model
-  //       );
-  //     },
-  //     getFolders: model => {
-  //       return WebAround.post(`${API_ENDPOINT}/GDrive/Get`, model);
-  //     },
-  //     deleteFolder: model => {
-  //       return WebAround.post(`${API_ENDPOINT}/GDrive/Delete`, model);
-  //     },
-  //     updateFolder: model => {
-  //       return WebAround.post(`${API_ENDPOINT}/GDrive/Update`, model);
-  //     },
-  //     createFolder: model => {
-  //       return WebAround.post(`${API_ENDPOINT}/GDrive/Create`, model);
-  //     },
-  //     uploadFile: (model, config) => {
-  //       return WebAround.post(`${API_ENDPOINT}/GDrive/Upload`, model, config);
-  //     }
-  //   }
-  // },
-  // oneDrive: { 
-  //   get: {
-  //     getRedirectLink: shouldRedirectOnCalendar => {
-  //       return WebAround.get(
-  //         `${API_ENDPOINT}/onedrive/auth?=${
-  //           shouldRedirectOnCalendar ? shouldRedirectOnCalendar : false
-  //         }`
-  //       );
-  //     },
-  //     sendQuertToAuth: (code, shouldRedirectOnCalendar) => {
-  //       return WebAround.get(
-  //         `${API_ENDPOINT}/onedrive/authenticated?code=${code}&calendar=${
-  //           shouldRedirectOnCalendar ? shouldRedirectOnCalendar : false
-  //         }`
-  //       );
-  //     },
-  //     refreshToken: oldToken => {
-  //       return WebAround.get(
-  //         `${API_ENDPOINT}/Onedrive/refresh?refresh_token=${oldToken}`
-  //       );
-  //     }
-  //   },
-  //   post: {
-  //     generateShareLink: model => {
-  //       return WebAround.post(`${API_ENDPOINT}/onedrive/share`, model);
-  //     },
-  //     getFolders: model => {
-  //       return WebAround.post(`${API_ENDPOINT}/onedrive/files`, model);
-  //     },
-  //     createFolder: model => {
-  //       return WebAround.post(`${API_ENDPOINT}/onedrive/createFolder`, model);
-  //     },
-  //     deleteFolder: model => {
-  //       return WebAround.post(`${API_ENDPOINT}/onedrive/deleteFolder`, model);
-  //     },
-  //     updateFolder: model => {
-  //       return WebAround.post(`${API_ENDPOINT}/onedrive/updateFolder`, model);
-  //     },
+  // foreignLanguages: {
   //     uploadFile: (model, config) => {
   //       return WebAround.post(`${API_ENDPOINT}/onedrive/upload`, model, config);
   //     }
@@ -1183,7 +1016,7 @@ class DCMTWebApi {
 class DCMTMockApi extends DCMTWebApi {
   pretendResponse(dtoObject, simulateError) {
     const status = simulateError ? 400 : 200;
-    const statusText = simulateError ? "Internal Server Error" : "OK";
+    const statusText = simulateError ? 'Internal Server Error' : 'OK';
     return {
       data: {
         dtoObject,
@@ -1197,8 +1030,8 @@ class DCMTMockApi extends DCMTWebApi {
 
   auth(username, password) {
     return BluebirdResolve({
-      email: "jane.doe@kappa.com",
-      extra: "Jane Doe"
+      email: 'jane.doe@kappa.com',
+      extra: 'Jane Doe'
     });
   }
 

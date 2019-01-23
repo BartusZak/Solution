@@ -1,3 +1,10 @@
+//Login
+export const login = 'login';
+export const loginAzureAD = 'loginAzureAD';
+
+//Users
+export const searchAD = 'searchAD';
+
 // Employees
 export const getEmployees = 'getEmployees';
 export const getClientsSlim = 'getClientsSlim';
@@ -124,19 +131,29 @@ export const oneDriveDeleteFolder = 'oneDriveDeleteFolder';
 export const oneDriveUpdateFolder = 'oneDriveUpdateFolder';
 export const oneDriveUploadFile = 'oneDriveUploadFile';
 
-export const errorsBlackList = [
 
-];
+export const errorsBlackList = ['loginAzureAD'];
 
 export const succOperationsWhiteObject = {
+  //Login
+  loggedIn: {
+    pl: 'Zalogowano pomyślnie!',
+    en: 'Logged in successfully!'
+  },
   // Projects
   addProject: {pl: 'Projekt został pomyślnie dodany', en: 'Project has been succesfully added'},
   editProject: {pl: 'Projekt został pomyślnie edytowany', en: 'Project has been succesfully modified'},
   addProjectPhase: {pl: 'Faza projektu została pomyślnie stworzona', en: 'Project phase has been succesfully created'},
 
   // Reponsible person
-  createResponsiblePerson: {pl: 'Osoba odpowiedzialna została pomyślnie dodana', en: 'Responsible person has been succesfully added'},
-  editResponsiblePerson: {pl: 'Pomyślnie edytowano dane osoby odpowiedzialnej', en: 'Responsible person data has been succesfully edited'},
+  createResponsiblePerson: {
+    pl: 'Osoba odpowiedzialna została pomyślnie dodana',
+    en: 'Responsible person has been succesfully added'
+  },
+  editResponsiblePerson: {
+    pl: 'Pomyślnie edytowano dane osoby odpowiedzialnej',
+    en: 'Responsible person data has been succesfully edited'
+  },
 
   // Quarter talks
   editQuarterTalk: {pl: 'Zaznaczona rozmowa kwartalna została pomyślnie edytowana', en: 'Marked quarter talk has been succesfully edited'},
@@ -193,4 +210,22 @@ export const succOperationsWhiteObject = {
   deleteOnBoardEmployee: {pl: 'OnBoard został usunięty pomyślnie', en:'OnBoard has been succesfully deleted'},
   editSkype: {pl: 'Skype id został pomyślnie edytowany', en: 'Skype id has been successfully edited'}
 
-}
+};
+
+export const warnOperationsWhiteObject = {
+  choosePreferedRoles: {
+    pl: 'Wybierz preferowaną role.',
+    en: 'Choose prefered role.'
+  }
+};
+
+export const failOperationsWhiteObject = {
+  networkError: {
+    pl: 'Brak połączenia z serwerem.',
+    en: 'Server Error'
+  },
+  azureADAuthentication: {
+    pl: 'Wystąpił problem podczas autoryzacji z Azure AD!',
+    en: 'Problem has occured during Azure AD authorization!'
+  }
+};

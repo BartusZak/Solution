@@ -37,24 +37,35 @@ class UserSelector extends Component {
     // }
     return useRequest('getUserByAdSearch', user)
       .then(response => {
-        this.setState({
-          errorBlock: response
-        });
-        return response;
+        console.log(response);
       })
-      .then(responsex => {
-        let usersRequest = responsex.extractData();
-        let usersList = [];
-        usersRequest.map((i, index) => {
-          let OneUser = Object.assign(i, i.hasAccount && { disabled: true });
-          usersList.push(OneUser);
-        });
-        return { options: usersList };
-      })
-      .catch(errorBlock => {
-        this.setState({ errorBlock });
-        // this.refs.StageOne.stopLoading();
+      .catch(response => {
+        console.log(response);
       });
+    // if (!user) {
+    //   return Promise.resolve({ options: [] });
+    // }
+    // return WebApi.users.get
+    //   .adSearch(user)
+    //   .then(response => {
+    //     this.setState({
+    //       errorBlock: response
+    //     });
+    //     return response;
+    //   })
+    //   .then(responsex => {
+    //     let usersRequest = responsex.extractData();
+    //     let usersList = [];
+    //     usersRequest.map((i, index) => {
+    //       let OneUser = Object.assign(i, i.hasAccount && { disabled: true });
+    //       usersList.push(OneUser);
+    //     });
+    //     return { options: usersList };
+    //   })
+    //   .catch(errorBlock => {
+    //     this.setState({ errorBlock });
+    //     // this.refs.StageOne.stopLoading();
+    //   });
   };
 
   doAddUser = newUser => {
