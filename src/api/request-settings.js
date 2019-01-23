@@ -9,16 +9,6 @@ export const searchAD = 'searchAD';
 export const getEmployees = 'getEmployees';
 export const getClientsSlim = 'getClientsSlim';
 export const getEmployeesBySkill = 'getEmployeesBySkill';
-
-// Projects
-export const getProjects = 'getProjects';
-export const addProject = 'addProject';
-export const editProject = 'editProject';
-export const addProjectPhase = 'addProjectPhase';
-
-// Reponsible person
-export const createResponsiblePerson = 'createResponsiblePerson';
-export const editResponsiblePerson = 'editResponsiblePerson';
 export const getEmployeeById = 'getEmployeeById';
 export const getEmployeeCapacity = 'getEmployeeCapacity'
 export const getEmployeesAndManagers = 'getEmployeesAndManagers'
@@ -35,6 +25,12 @@ export const editSkype = 'editSkype';
 export const editOnBoardEmployee = 'editOnBoardEmployee';
 export const editEmployee = 'editEmployee';
 export const reactivateEmployee = 'reactivateEmployee';
+
+// Projects
+export const getProjects = 'getProjects';
+export const addProject = 'addProject';
+export const editProject = 'editProject';
+export const addProjectPhase = 'addProjectPhase';
 
 // Quarter talks
 export const getQuarterTalks = 'getquarterTalks';
@@ -128,6 +124,64 @@ export const oneDriveDeleteFolder = 'oneDriveDeleteFolder';
 export const oneDriveUpdateFolder = 'oneDriveUpdateFolder';
 export const oneDriveUploadFile = 'oneDriveUploadFile';
 
+// export const getQuestions = 'getQuestions';
+// export const getQuarterTalkForEmployee = 'getQuarterTalkForEmployee';
+// export const generateQuarterTalkDoc = 'generateQuarterTalkDoc';
+// export const deleteQuestion = 'deleteQuestion';
+// export const addQuestion = 'addQuestion';
+// export const createQuarterTalk = 'createQuarterTalk';
+// export const planQuarterTalk = 'planQuarterTalk';
+// export const getQuarterTalksReservedDates = 'getQuarterTalksReservedDates';
+
+// Reports
+export const generateReport = 'generateReport';
+export const getReportExcel = 'getReportExcel';
+export const getCv = 'getCv';
+export const getFeedback = 'getFeedback';
+export const getTeams = 'getTeams';
+export const getRecentReports = 'getRecentReports';
+export const getReportZip = 'getReportZip';
+export const generateCv = 'generateCv';
+export const generateCvWord = 'generateCvWord';
+export const unfavoriteReport = 'unfavoriteReport';
+
+//Responsible person
+export const getResponsiblePersonByClientId = 'getResponsiblePersonByClientId';
+export const getByResponsiblePersonId = 'getByResponsiblePersonId'
+export const editResponsiblePerson = 'editResponsiblePerson';
+export const addResponsiblePerson = 'addResponsiblePerson';
+export const deleteResponsiblePerson = 'deleteResponsiblePerson';
+export const reactivateResponsiblePerson = 'reactivateResponsiblePerson';
+export const createResponsiblePerson = 'createResponsiblePerson';
+
+//Skills
+export const getAllSkills = 'getAllSkills';
+export const getSkillById = 'getSkillById';
+export const addSkill = 'addSkill';
+export const deleteSkill = 'deleteSkill';
+export const editSkill = 'editSkill';
+
+//Stats
+export const getStats = 'getStats';
+
+//Roles
+export const getAllRoles = 'getAllRoles';
+export const addRole = 'addRole';
+export const editRole = 'editRole';
+export const deleteRole = 'deleteRole';
+
+//Share Project
+export const shareProject = 'shareProject';
+export const getManagersSharedProject = 'getManagersSharedProject';
+export const getAlreadySharedManagers = 'getAlreadySharedManagers';
+export const cancelShareProject = 'cancelShareProject';
+
+//Work experience
+export const addWorkExperience = 'addWorkExperience';
+export const getWorkExperience = 'getWorkExperience';
+export const editWorkExperience = 'editWorkExperience';
+export const deleteWorkExperience = 'deleteWorkExperience';
+export const getWorkExperienceByEmployeeId = 'getWorkExperienceByEmployeeId';
 
 export const errorsBlackList = ['loginAzureAD'];
 

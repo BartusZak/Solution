@@ -314,8 +314,71 @@ export const CAN_DELETE_FOLDER_ONEDRIVE = 'canDeleteFolderOneDrive';
 export const CAN_UPDATE_FOLDER_ONEDRIVE = 'canUpdateFolderOneDrive';
 export const CAN_UPLOAD_FILE_ONEDRIVE = 'canUploadFileOneDrive';
 
-export const ADD_ALERT = '[Alerts] ADD_ALERT';
-export const EDIT_ALERT = '[Alerts] EDIT_ALERT';
-export const REMOVE_ALERT = '[Alerts] REMOVE_ALERT';
+export const QUARTERTALKS = 'QuarterTalks'
+export const CAN_GET_QUARTERS_FOR_EMPLOYEE = "canGetQuartersForEmployee";
+export const CAN_ADD_QUARTER_TALK = "canAddQuarterTalk";
+export const CAN_PLAN_QUARTER_TALK = "canPlanQuarterTalk";
+export const CAN_GET_QUESTIONS = "canGetQuestions";
+export const CAN_ADD_QUESTION = "canAddQuestion";
+export const CAN_DELETE_QUESTION = "canDeleteQuestion";
+export const CAN_REACTIVATE_QUARTER_TALK = "canReactivateQuarterTalk"
+export const CAN_DELETE_QUARTER_TALK = "canDeleteQuarterTalk"
+export const CAN_EDIT_QUARTER_TALK = "canEditQuarterTalk"
+export const CAN_GENERATE_QUARTER_TALK_DOC = "canGenerateQuarterTalkDoc"
+export const CAN_GET_QUARTER_TALK_RESERVED_DATES = "canGetQuarterTalkReservedDates"
+
+export const REPORTS = 'Reports';
+export const CAN_GET_DEVELOPERS_EXCEL_REPORT = 'canGetDevelopersExcelReport';
+export const CAN_GET_CLIENTS_EXCEL_REPORT = 'canGetClientsExcelReport';
+export const CAN_GET_ZIP_REPORT = 'canGetZipReport';
+export const CAN_GENERATE_REPORT = 'canGenerateReport';
+export const CAN_GET_RECENT_AND_FAVORITES_REPORTS = 'canGetRecentAndFavoritesReports';
+export const CAN_UNFAVORITE_REPORT = 'canUnfavoriteReport';
+export const CAN_GET_FEEDBACK = 'canGetFeedback';
+export const CAN_GENERATE_CV_PDF = 'canGenerateCvPdf';
+export const CAN_GET_CV = 'canGetCV';
+export const CAN_GENERATE_CV_WORD = 'canGenerateCvWord';
+export const CAN_GET_TEAMS = 'canGetTeams';
+
+export const RESPONSIBLE_PERSON = 'ResponsiblePerson';
+export const CAN_GET_RESPONSIBLE_PERSON_BY_CLIENTID = 'canGetResponsiblePersonByClientId';
+export const CAN_GET_RESPONSIBLEPERSON_BY_ID = 'canGetResponsiblePersonById'
+export const CAN_EDIT_RESPONSIBLE_PERSON = 'canEditResponsiblePerson';
+export const CAN_ADD_RESPONSIBLE_PERSON = 'canAddResponsiblePerson';
+export const CAN_DELETE_RESPONSIBLE_PERSON = 'canDeleteResponsiblePerson';
+export const CAN_REACTIVATE_RESPONSIBLE_PERSON = 'canReactivateResponsiblePerson';
+
+export const SKILLS = 'Skills'
+export const CAN_GET_ALL_SKILLS = 'canGetAllSkills';
+export const CAN_GET_SKILL_BY_ID = 'canGetSkillById';
+export const CAN_ADD_SKILL = 'canAddSkill';
+export const CAN_DELETE_SKILL = 'canDeleteSkill';
+export const CAN_EDIT_SKILL = 'canEditSkill';
+
+export const STATS = 'Stats'
+export const CAN_GET_STATS = 'canGetStats';
+
+export const ROLES = 'Roles'
+export const CAN_GET_ALL_ROLES = 'canGetAllRoles';
+export const CAN_ADD_ROLE = 'canAddRole';
+export const CAN_EDIT_ROLE = 'canEditRole';
+export const CAN_DELETE_ROLE = 'canDeleteRole';
+
+export const SHARE_PROJECTS = 'ShareProject';
+export const CAN_SHARE_PROJECT = 'canShareProject';
+export const CAN_GET_MANAGERS_SHARED_PROJECT = 'canGetManagersSharedProject';
+export const CAN_GET_ALREADY_SHARED_MANAGERS = 'canGetAlreadySharedManagers';
+
+export const WORK_EXPERIENCE = 'WorkExperience';
+export const CAN_ADD_WORK_EXPERIENCE = 'canAddWorkExperience';
+export const CAN_GET_WORK_EXPERIENCE = 'canGetWorkExperience';
+export const CAN_EDIT_WORK_EXPERIENCE = 'canEditWorkExperience';
+export const CAN_DELETE_WORK_EXPERIENCE = 'canDeleteWorkExperience';
+export const CAN_GET_WORK_EXPERIENCE_BY_EMPLOYEEID = 'canGetWorkExperienceByEmployeeId';
+
+export const ADD_ALERT = "[Alerts] ADD_ALERT";
+export const EDIT_ALERT = "[Alerts] EDIT_ALERT";
+export const REMOVE_ALERT = "[Alerts] REMOVE_ALERT";
+
 
 // RESPONSIBLE PERSON

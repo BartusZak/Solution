@@ -303,7 +303,64 @@ const requests = {
   oneDriveCreateFolder: model => execute(fromAlertSettings.oneDriveCreateFolder, `onedrive/createFolder`, requestTypes.post, model),
   oneDriveDeleteFolder: model => execute(fromAlertSettings.oneDriveDeleteFolder, `onedrive/deleteFolder`, requestTypes.post, model), 
   oneDriveUpdateFolder: model => execute(fromAlertSettings.oneDriveUpdateFolder, `onedrive/updateFolder`, requestTypes.post, model),
-  oneDriveUploadFile: (model, config) => execute(fromAlertSettings.oneDriveUpdateFolder, `onedrive/upload`, requestTypes.post, model, config) 
+  oneDriveUploadFile: (model, config) => execute(fromAlertSettings.oneDriveUpdateFolder, `onedrive/upload`, requestTypes.post, model, config),
+
+  // getQuestions: () => execute(fromAlertSettings.getQuestions, 'QuarterTalks/questions', requestTypes.get),
+  // getQuarterForEmployee: employeeId =>   execute(fromAlertSettings.getQuarterTalkForEmployee, `QuarterTalks/ForEmployee/${employeeId}`, requestTypes.get),
+  // generateQuarterTalkDoc: quarterId => execute(fromAlertSettings.generateQuarterTalkDoc, `QuarterTalks/GenerateDocx/${quarterId}`, requestTypes.get),
+  // deleteQuestion: id => execute(fromAlertSettings.deleteQuestion, `QuarterTalks/Question/${id}`, requestTypes.delete),
+  // addQuestion: model => execute(fromAlertSettings.addQuestion, `QuarterTalks/Question`, requestTypes.post, model),
+  // createQuarterTalk: model => execute(fromAlertSettings.createQuarterTalk, `QuarterTalks`, requestTypes.post, model),
+  // planQuarterTalk: (model, shouldSync) => execute(fromAlertSettings.planQuarterTalk, `QuarterTalks/Planned?syncCalendar=${shouldSync}`, requestTypes.post, model),
+  // getQuarterTalksReservedDates: (model, checkOutlook) => execute(fromAlertSettings.getQuarterTalksReservedDates, `QuarterTalks/GetReservedDates?checkOutlook=${checkOutlook}`, requestTypes.post, model),
+
+  //REPORTS
+  generateReport: (model, hyperlinksOnGDrive, hyperlinksOnOneDrive) => execute(fromAlertSettings.generateReport, `reports/developers?hyperlinksOnGDrive=${hyperlinksOnGDrive}&hyperlinksOnOneDrive=${hyperlinksOnOneDrive}`, requestTypes.post, model),
+  generateCv: employeeId => execute(fromAlertSettings.generateCv, `reports/cv/${employeeId}`, requestTypes.post),
+  generateCvWord: employeeId => execute(fromAlertSettings.generateCvWord, `reports/wordcv/${employeeId}`, requestTypes.post),
+  getFeedback: filename => execute(fromAlertSettings.getFeedback, `reports/feedback/${filename}`, requestTypes.get),
+  getCv: filename => execute(fromAlertSettings.getCv, `reports/cv/${filename}`, requestTypes.get),
+  getTeams: () => execute(fromAlertSettings.getTeams, `reports/teams`, requestTypes.get),
+  getReportExcel: filename => execute(fromAlertSettings.getReportExcel, `reports/developers`, requestTypes.get, filename),
+  getReportZip: filename => execute(fromAlertSettings.getReportZip, `reports/reportzip/${filename}`, requestTypes.get),
+  getRecentReports: numberOfReports => execute(fromAlertSettings.getRecentReports, `reports/recentandfavorites`, requestTypes.get, numberOfReports),
+  unfavoriteReport: reportId => execute(fromAlertSettings.unfavoriteReport, `reports/unfavorite/${reportId}`, requestTypes.delete),
+
+  //RESPONSIBLE PERSON
+  getResponsiblePersonByClientId: clientId => execute(fromAlertSettings.getResponsiblePersonByClientId, `responsiblepersons/client/${clientId}`, requestTypes.get),
+  getResponsiblePersonById: Id => execute(fromAlertSettings.getByResponsiblePersonId, `responsiblepersons/${Id}`, requestTypes.get),
+  editResponsiblePerson: (model, Id) => execute(fromAlertSettings.editResponsiblePerson, `responsiblepersons/${Id}`, requestTypes.put, model),
+  addResponsiblePerson: model => execute(fromAlertSettings.addResponsiblePerson, `responsiblepersons`, requestTypes.post, model),
+  deleteResponsiblePerson: Id => execute(fromAlertSettings.deleteResponsiblePerson, `responsiblepersons`, requestTypes.delete, Id),
+  reactivateResponsiblePerson: Id => execute(fromAlertSettings.reactivateResponsiblePerson, `responsiblepersons/${Id}/reactivate`, requestTypes.put),
+
+  //SKILLS
+  getAllSkills: () => execute(fromAlertSettings.getAllSkills, `skills`, requestTypes.get),
+  getSkillById: Id => execute(fromAlertSettings.getSkillById, `skills/${Id}`, requestTypes.get),
+  addSkill: model => execute(fromAlertSettings.addSkill, `skills`, requestTypes.post, model),
+  deleteSkill: Id => execute(fromAlertSettings.deleteSkill, `skills/${Id}`, requestTypes.delete),
+  editSkill: (Id, model) => execute(fromAlertSettings.editSkill, `skills/${Id}`, requestTypes.put, model),
+
+  //STATS
+  getStats: () => execute(fromAlertSettings.getStats,`stats/basic`, requestTypes.get),
+
+  //ROLES
+  getAllRoles: () => execute(fromAlertSettings.getAllRoles, `role`, requestTypes.get),
+  addRole: model => execute(fromAlertSettings.addRole, 'role', requestTypes.post, model),
+  editRole: (Id, model) => execute(fromAlertSettings.editRole, `role/${Id}`, requestTypes.put, model),
+  deleteRole: Id => execute(fromAlertSettings.deleteRole, `role/${Id}`, requestTypes.delete),
+
+  //SHARE PROJECT
+  shareProject: (projectId, model) => execute(fromAlertSettings.shareProject, `shareproject/${projectId}`, requestTypes.post, model),
+  getManagersSharedProject: projectId => execute(fromAlertSettings.getManagersSharedProject, `shareproject/alreadysharedmanagers/${projectId}`, requestTypes.get),
+  getAlreadySharedManagers: projectId => execute(fromAlertSettings.getAlreadySharedManagers, `shareproject/destinationmanagers/${projectId}`, requestTypes.get),
+  
+  //WORK EXPERIENCE
+  addWorkExperience: model => execute(fromAlertSettings.addWorkExperience, `workexperience`, requestTypes.post, model),
+  getWorkExperience: id => execute(fromAlertSettings.getWorkExperience, `workexperience/${id}`, requestTypes.get),
+  editWorkExperience: (id, model) => execute(fromAlertSettings.editWorkExperience, `workexperience/${id}`, requestTypes.put, model),
+  deleteWorkExperience: id => execute(fromAlertSettings.deleteWorkExperience, `workexperience/${id}`, requestTypes.delete),
+  getWorkExperienceByEmployeeId: employeeId => execute(fromAlertSettings.getWorkExperienceByEmployeeId, `workexperience/employee/${employeeId}`, requestTypes.get)
 };
 
 export const useRequest = (name, ...params) => requests[name](...params);
