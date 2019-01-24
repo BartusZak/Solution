@@ -1,6 +1,8 @@
 import React from 'react';
 import FancyForm, { defaultDatePickerConfig } from '../../../common/fancy-form/fancy-form';
 import { InputSettings, runSingleValidation } from '../../../common/fancy-form/index';
+import { assignEmployeeIntoProject } from '../../../../actions/projectsActions';
+import { connect } from 'react-redux';
 import EmployeeSearcher from '../../../shared/employee-searcher/employee-searcher';
 import TypeAndSelect from '../../../common/fancy-form/fancy-data-list';
 import DatePicker from 'react-datepicker';
@@ -17,12 +19,12 @@ class EmployeeProjectForm extends React.PureComponent {
   roles = [{value: 'Developer', displayValue: 'Developer'}, {value: 'Human Resources', displayValue: 'Human Resources'}];
   initValues = { employee: '', role: '', startDate: moment(), endDate: moment(), fte: 50, responsibilities: [] };
   settings = {
-    employee: new InputSettings('', { required: true } ),
-    role: new InputSettings('', { required: true, minLength: 2, maxLength: 150 } ),
-    startDate: new InputSettings('', { required: true } ),
-    endDate: new InputSettings('', { required: true } ),
-    fte: new InputSettings('', { required: true } ),
-    responsibilities: new InputSettings('', { required: true } )
+    employee: new InputSettings('employee', { required: true } ),
+    role: new InputSettings('role', { required: true, minLength: 2, maxLength: 150 } ),
+    startDate: new InputSettings('start date', { required: true } ),
+    endDate: new InputSettings('end date', { required: true } ),
+    fte: new InputSettings('fte', { required: true } ),
+    responsibilities: new InputSettings('responsibilities', { isNotEmptyList: true } )
   };
   responsibilitiesConfig = { required: true, minLength: 3, maxLength: 100, isInList: [] };
 
@@ -46,13 +48,21 @@ class EmployeeProjectForm extends React.PureComponent {
     }
   }
 
+  handleAssigningEmployee = formData => {
+    this.setState({isSubmitting: true});
+    this.props.assignEmployeeIntoProject(formData,
+      () => this.setState({isSubmitting: false}),
+      () => this.setState({isSubmitting: false}));
+  }
+
   render() {
     const { close } = this.props;
     const { inputError } = this.state;
     return (
       <FancyForm
         initialValues={this.initValues}
-        settings={this.settings}>
+        settings={this.settings}
+        onSubmit={this.handleAssigningEmployee}>
         {
           (formKeys, values, errors, isFormInvalid, isFormDirty, handleChangeFromEvent, putChanges, handleSubmit) => (
             <form className="employees-project-form" onSubmit={handleSubmit}>
@@ -103,7 +113,6 @@ class EmployeeProjectForm extends React.PureComponent {
                     <i className="fa fa-times"></i>
                   </Button>
                 </div>
-
               </div>
               <div className="form-right box-circle">
                 <p className="important-par">responsibilities in project</p>
@@ -136,4 +145,11 @@ class EmployeeProjectForm extends React.PureComponent {
   }
 }
 
-export default EmployeeProjectForm;
+
+const mapDispatchToProps = dispatch => {
+  return {
+    assignEmployeeIntoProject: (model, succ, err) => dispatch(assignEmployeeIntoProject(model, succ, err))
+  };
+};
+
+export default connect(null, mapDispatchToProps)(EmployeeProjectForm);

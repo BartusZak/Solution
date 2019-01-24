@@ -1,3 +1,6 @@
+//Assignments
+export const assignEmployeeToProject = 'assignEmployeeToProject';
+
 // Employees
 export const getEmployees = 'getEmployees';
 export const getClientsSlim = 'getClientsSlim';
@@ -27,6 +30,9 @@ export const errorsBlackList = [
 ];
 
 export const succOperationsWhiteObject = {
+  // Assignments
+  assignEmployeeToProject: { pl: 'Pracownik został pomyślnie przypisany do projektu', en: 'Employee has been succesfully assigned into project'},
+
   // Projects
   addProject: {pl: 'Projekt został pomyślnie dodany', en: 'Project has been succesfully added'},
   editProject: {pl: 'Projekt został pomyślnie edytowany', en: 'Project has been succesfully modified'},

@@ -91,6 +91,9 @@ const requestTypes = {
   delete: 'delete'
 };
 const requests = {
+  //ASSIGNMENTS
+  assignEmployeeToProject: model => execute(fromAlertSettings.assignEmployeeToProject, 'Assignments', requestTypes.post, model),
+
   //CLIENTS
   getClientsSlim: () => execute(fromAlertSettings.getClientsSlim, 'Clients?lessDetailed=true'),
 
