@@ -318,4 +318,4 @@ UsersList.propTypes = {
   resultBlock: PropTypes.object
 };
 
-export default connect(mapStateToProps)(translate('UsersList')(UsersList));
+export default translate('UsersList')(connect(mapStateToProps)(UsersList));
