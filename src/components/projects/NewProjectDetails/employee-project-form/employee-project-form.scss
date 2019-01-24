@@ -1,35 +1,51 @@
 @import '../../../../scss//new-color-schema.scss';
 .employees-project-form {
   grid-column: 1/4;
-  @media(min-width: 930px) {
-    display: flex;
-    justify-content: space-between;
-    .form-right {
-      width: 40%;
+  display: grid;
+  grid-template-rows: auto auto auto;
+  grid-template-columns: 100%;
+  grid-gap: 30px;
+  grid-template-areas:
+    "form"
+    "responsibilities"
+    "buttons";
+  @media(min-width: 1000px) {
+    grid-template-columns: 55% 40%;
+    grid-template-rows: 1fr 50px;
+    grid-gap: 0 40px;
+    grid-template-areas:
+      "form responsibilities"
+      "buttons responsibilities";
+    #confirm {
+      button {
+        margin-right: 15px;
+      }
     }
-    .form-left {
-      width: 55%;
+  }
+  .form-left {
+    grid-area: form;
+  }
+  .form-right {
+    grid-area: responsibilities;
+  }
+  #confirm {
+    grid-area: buttons;
+    align-self: flex-end;
+    button {
+      margin: 0 15px 15px 0;
     }
   }
   .form-left {
     display: grid;
     grid-gap: 0 25px;
     grid-template-columns: 1fr 1fr;
-    grid-template-rows: 50px auto auto auto 80px;
+    grid-template-rows: 50px auto auto auto;
     grid-template-areas:
       "header header"
       "employee role"
       "sdate edate"
-      "fte fte"
-      "confirm confirm";
+      "fte fte";
     #header { grid-area: header; color: $dcmt-light; }
-    #confirm {
-      grid-area: confirm;
-      align-self: flex-end;
-      button {
-        margin-right: 15px;
-      }
-    };
     .progress-marker {
       grid-area: fte;
       .progress-title {
@@ -39,10 +55,26 @@
         right: -15px;
       }
     }
+    @media(max-width: 999px) {
+      .progress-marker {
+        margin: 15px 0;
+      }
+    }
+    @media(max-width: 550px) {
+      grid-template-rows: 50px auto auto auto auto auto;
+      grid-template-columns: 1fr;
+      grid-template-areas:
+        "header"
+        "employee"
+        "role"
+        "sdate"
+        "edate"
+        "fte";
+    }
   }
   .form-right {
     display: grid;
-    grid-template-rows: auto 1fr 30px auto;
+    grid-template-rows: auto 1fr auto auto;
     p.important-par {
       font-size: 16px;
       color: $dcmt-light;
@@ -52,7 +84,7 @@
       margin: 0 15px 15px 15px;
     }
     .field-error {
-      padding: 0 15px;
+      padding: 10px 15px;
       height: unset;
     }
     .responsibilities {
@@ -64,8 +96,11 @@
         margin-bottom: 10px;
         color: $font-grey;
         font-size: 14px;
-        .fa-times {
-          font-size: 16px;
+        .element-toolbox {
+          top: 0; bottom: 0;
+          .fa-times {
+            font-size: 16px;
+          }
         }
       }
     }

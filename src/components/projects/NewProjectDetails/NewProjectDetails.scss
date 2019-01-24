@@ -12,7 +12,7 @@
     }
   }
   .project-data-wrapper {
-    @media(min-width: 900px) {
+    @media(min-width: 1000px) {
       display: grid;
       grid-gap: 30px;
       width: 65%;
@@ -22,7 +22,7 @@
       "skills team rest"
       "phases phases phases";
     }
-    @media(max-width: 899px) {
+    @media(max-width: 999px) {
       div.project-skills-wrapper {
         margin: 15px 0 50px 0;
       }

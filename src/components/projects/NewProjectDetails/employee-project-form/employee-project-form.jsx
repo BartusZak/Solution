@@ -104,16 +104,17 @@ class EmployeeProjectForm extends React.PureComponent {
 
                 <ProgressMarker emitChange={value => putChanges(value, 'fte')}
                   label="fte" jump={25} />
-
-                <div id="confirm" className="submit-wrapper">
-                  <Button type="submit" title="ADD EMPLOYEE" mainClass="dcmt-main-btn dcmt-light-btn animated-icon-btn">
-                    <i className="fa fa-plus"></i>
-                  </Button>
-                  <Button type="button" onClick={close} title="CLOSE ADDING" mainClass="dcmt-main-btn dcmt-grey-btn animated-icon-btn">
-                    <i className="fa fa-times"></i>
-                  </Button>
-                </div>
               </div>
+
+              <div id="confirm" className="submit-wrapper">
+                <Button type="submit" title="ADD EMPLOYEE" mainClass="dcmt-main-btn dcmt-light-btn animated-icon-btn">
+                  <i className="fa fa-plus"></i>
+                </Button>
+                <Button type="button" onClick={close} title="CLOSE ADDING" mainClass="dcmt-main-btn dcmt-grey-btn animated-icon-btn">
+                  <i className="fa fa-times"></i>
+                </Button>
+              </div>
+
               <div className="form-right box-circle">
                 <p className="important-par">responsibilities in project</p>
                 <ul className="responsibilities">

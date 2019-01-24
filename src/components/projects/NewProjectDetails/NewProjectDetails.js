@@ -16,7 +16,7 @@ import './NewProjectDetails.scss';
 const { Provider } = ProjectDetailsContext;
 class NewProjectDetails extends React.Component {
   state = {
-    isLoading: true, editProjectForm: false, addPhaseForm: false, addEmployeeForm: false
+    isLoading: true, editProjectForm: false, addPhaseForm: false, addEmployeeForm: true
   }
   componentDidMount = () => this.getProjectDetails();
   componentDidUpdate = prevProps => {
