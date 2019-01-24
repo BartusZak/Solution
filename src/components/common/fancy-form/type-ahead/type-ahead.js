@@ -51,7 +51,7 @@ class TypeAhead extends React.PureComponent {
 
   render() {
     const { isLoading, isListEmpty, error, value, dataList } = this.state;
-    const { icon, type, label, wrapperClass, placeholder, renderDataList } = this.props;
+    const { icon, type, label, wrapperClass, placeholder, renderDataList, showLabel } = this.props;
     const { Consumer } = AheadClassContext;
 
     return (
@@ -64,7 +64,7 @@ class TypeAhead extends React.PureComponent {
                 <div className="fancy-modal-backdrop" />
               </React.Fragment>
             }
-            {classVal === "aheadClass" &&
+            {(classVal === "aheadClass" || showLabel) &&
               <label className="field-label">{label}</label>
             }
             <div className={classVal ? classVal : 'field-block'}>

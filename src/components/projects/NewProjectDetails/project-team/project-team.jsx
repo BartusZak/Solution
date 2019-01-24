@@ -18,7 +18,7 @@ class ProjectTeam extends React.PureComponent {
 
   render() {
     const { markedMembers } = this.state;
-    const { team } = this.props;
+    const { team, togleAddEmployeeForm } = this.props;
     const teamCount = team.length;
 
     return (
@@ -34,9 +34,9 @@ class ProjectTeam extends React.PureComponent {
         </p>
 
         {teamCount === 0 ?
-          <div className="empty-list-comunicate ">
+          <div onClick={togleAddEmployeeForm} className="empty-list-comunicate ">
             <p>Project team list is already empty. Click button bellow if you want add new one</p>
-            <i className="fa fa-user-plus"></i>
+            <i onClick={togleAddEmployeeForm} className="fa fa-user-plus"></i>
           </div> :
           <React.Fragment>
             <ul>

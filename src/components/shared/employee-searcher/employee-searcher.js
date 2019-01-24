@@ -21,10 +21,11 @@ class EmployeeSearcher extends React.PureComponent {
   employeeValidators = { minLength: 2, maxLength: 15 };
 
   render(){
-      const { t, emitEmployeeClick, placeholder } = this.props;
+      const { t, emitEmployeeClick, placeholder, showLabel } = this.props;
       return (
         <TypeAhead label={t("Employee")}
           placeholder={t(placeholder)}
+          showLabel={showLabel}
           requestFunction={value => this.getEmployees(value)}
           validators={this.employeeValidators}
           renderDataList={(dataList, resetAll, isListEmpty) => {

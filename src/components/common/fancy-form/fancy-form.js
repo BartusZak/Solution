@@ -12,7 +12,7 @@ import './fancy-form.scss';
 export const minDate = "1994/01/01";
 export const maxDate = "2100/01/01";
 
-const defaultDatePickerConfig = {
+export const defaultDatePickerConfig = {
   minDate: moment(minDate),
   maxDate: moment(maxDate),
   dateFormat: dFormat,
@@ -82,7 +82,6 @@ class FancyForm extends React.PureComponent {
     }
 
     handleChangeFromEvent = (e, key) => this.putChanges(e.target.value, key);
-    handleDateChange = (date, key) => this.putChanges(date, key);
     handleChangeValues = values => { this.detectInitialValuesChanges(values); }
 
     checkSubmitedData = () => {
@@ -93,9 +92,9 @@ class FancyForm extends React.PureComponent {
         this.setState({errors, isFormInvalid, isFormDirty: true});
     }
 
-    handleSubmit = (e, values) => {
-        e.preventDefault();
-        this.checkSubmitedData();
+    handleSubmit = e => {
+      e.preventDefault();
+      this.checkSubmitedData();
     }
 
 
@@ -108,7 +107,7 @@ class FancyForm extends React.PureComponent {
         case 'date-picker':
           return (
             <DatePicker {...defaultDatePickerConfig} {...settings.componentProps}
-              onChange={date => this.handleDateChange(date, props.key)} selected={props.value ? props.value : null}
+              onChange={date => this.putChanges(date, props.key)} selected={props.value ? props.value : null}
           />
           );
         case 'type-and-select':
@@ -120,11 +119,11 @@ class FancyForm extends React.PureComponent {
 
     render() {
         const { formKeys, values, errors, isFormInvalid, isFormDirty, settings } = this.state;
-        const { renderForm, renderSubmitBtn, btnTitle, formClass, inputWrapperClass, labelClass, errorClass, btnClass,
+        const { children, renderSubmitBtn, btnTitle, formClass, inputWrapperClass, labelClass, errorClass, btnClass,
           isSubmiting } = this.props;
         return (
             <React.Fragment>
-                {renderForm ? renderForm(formKeys, values, errors, isFormInvalid, isFormDirty, this.handleChangeFromEvent, this.handleSubmit) :
+                {children ? children(formKeys, values, errors, isFormInvalid, isFormDirty, this.handleChangeFromEvent, this.putChanges, this.handleSubmit) :
                 <form className={formClass} onSubmit={this.handleSubmit}>
                     {formKeys.map(key => {
                         if (settings[key].needsSlot && this.props[this.slots[key]])

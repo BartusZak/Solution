@@ -365,7 +365,6 @@ export const editProject = (project, succ, err) => dispatch =>
   .catch(() => err());
 
 export const editSkillsInProject = (id, skills, succ, err) => dispatch => {
-  console.log(id, skills);
   useRequest('editSkillsInProject', id, skills)
   .then(() => { dispatch(putSkillsIntoProject(skills)); succ(); })
   .catch(() => err());

@@ -1,0 +1,73 @@
+@import '../../../../scss//new-color-schema.scss';
+.employees-project-form {
+  grid-column: 1/4;
+  @media(min-width: 930px) {
+    display: flex;
+    justify-content: space-between;
+    .form-right {
+      width: 40%;
+    }
+    .form-left {
+      width: 55%;
+    }
+  }
+  .form-left {
+    display: grid;
+    grid-gap: 0 25px;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 50px auto auto auto 80px;
+    grid-template-areas:
+      "header header"
+      "employee role"
+      "sdate edate"
+      "fte fte"
+      "confirm confirm";
+    #header { grid-area: header; color: $dcmt-light; }
+    #confirm {
+      grid-area: confirm;
+      align-self: flex-end;
+      button {
+        margin-right: 15px;
+      }
+    };
+    .progress-marker {
+      grid-area: fte;
+      .progress-title {
+        right: -12px;
+      }
+      .progress-number-value {
+        right: -15px;
+      }
+    }
+  }
+  .form-right {
+    display: grid;
+    grid-template-rows: auto 1fr 30px auto;
+    p.important-par {
+      font-size: 16px;
+      color: $dcmt-light;
+      padding: 15px 15px 0 15px;
+    }
+    .field-block {
+      margin: 0 15px 15px 15px;
+    }
+    .field-error {
+      padding: 0 15px;
+      height: unset;
+    }
+    .responsibilities {
+      overflow-y: auto;
+      margin: 20px 0 15px 0;
+      .element-toolbox-wrapper {
+        padding: 15px;
+        background: $modal-header-bg;
+        margin-bottom: 10px;
+        color: $font-grey;
+        font-size: 14px;
+        .fa-times {
+          font-size: 16px;
+        }
+      }
+    }
+  }
+}

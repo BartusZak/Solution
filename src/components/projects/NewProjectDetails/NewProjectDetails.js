@@ -10,12 +10,13 @@ import ProjectSkills from './project-skills/project-skills';
 import ProjectTeam from './project-team/project-team';
 import ProjectPhases from './project-phases/project-phases';
 import ProjectPhaseForm from '../phase-project-form/phase-project-form';
+import EmployeeProjectForm from './employee-project-form/employee-project-form';
 
 import './NewProjectDetails.scss';
 const { Provider } = ProjectDetailsContext;
 class NewProjectDetails extends React.Component {
   state = {
-    isLoading: true, editProjectForm: false, addPhaseForm: false
+    isLoading: true, editProjectForm: false, addPhaseForm: false, addEmployeeForm: false
   }
   componentDidMount = () => this.getProjectDetails();
   componentDidUpdate = prevProps => {
@@ -33,6 +34,7 @@ class NewProjectDetails extends React.Component {
 
   togleEditForm = () => this.setState({editProjectForm: !this.state.editProjectForm});
   toglePhaseForm = () => this.setState({addPhaseForm: !this.state.addPhaseForm});
+  togleAddEmployeeForm = () => this.setState({addEmployeeForm: !this.state.addEmployeeForm});
 
   componentWillUnmount = () => this.props.putAllSkills();
 
@@ -43,14 +45,20 @@ class NewProjectDetails extends React.Component {
     else if(!projectResult.status) return null;
     else {
       const { id, skills, team, projectPhases: phases, client, cloud, responsiblePerson } = project;
-      const { editProjectForm, addPhaseForm } = this.state;
+      const { editProjectForm, addPhaseForm, addEmployeeForm } = this.state;
       return (
         <div className="project-details-wrapper">
           <Provider value={project}>
             <ProjectInformations project={project} t={t} togleEditForm={this.togleEditForm} toglePhaseForm={this.toglePhaseForm}/>
             <div className="project-data-wrapper">
-              <ProjectSkills projectSkills={skills} />
-              <ProjectTeam team={team} />
+
+              {!addEmployeeForm ?
+                <React.Fragment>
+                  <ProjectSkills projectSkills={skills} />
+                  <ProjectTeam team={team} togleAddEmployeeForm={this.togleAddEmployeeForm}/>
+                </React.Fragment> :
+                <EmployeeProjectForm close={this.togleAddEmployeeForm} />
+              }
 
               {!project.parentId &&
                 <ProjectPhases openAddingPhase={this.toglePhaseForm}
@@ -60,9 +68,9 @@ class NewProjectDetails extends React.Component {
           </Provider>
 
           {editProjectForm &&
-          <ProjectPhaseForm projectToEdit={project}
-            onSubmitSucc={this.togleEditForm}
-            close={this.togleEditForm}/>
+            <ProjectPhaseForm projectToEdit={project}
+              onSubmitSucc={this.togleEditForm}
+              close={this.togleEditForm}/>
           }
 
           {addPhaseForm &&
@@ -76,7 +84,6 @@ class NewProjectDetails extends React.Component {
     }
   }
 }
-
 
 const mapStateToProps = state => {
   return {

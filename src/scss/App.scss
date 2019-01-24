@@ -360,6 +360,9 @@ a:visited {
 .dcmt-light-color {
   color: $dcmt-light;
 }
+.dcmt-grey-color {
+  color: $font-grey;
+}
 .dcmt-color {
   color: $dcmt;
 }
@@ -417,7 +420,7 @@ a:visited {
   overflow: hidden;
   &:hover {
     .element-toolbox {
-      right: 0;
+      transform: translateX(0);
       opacity: 1;
     }
   }
@@ -425,9 +428,9 @@ a:visited {
     position: absolute;
     opacity: 0;
     top: 0;
-    right: -30px;
-    transition-property: right;
-    transition: .3s;
+    right: 0;
+    transform: translateX(30px);
+    transition: .3s transform;
     padding: 10px;
     display: flex;
     align-items: center;
@@ -441,7 +444,7 @@ a:visited {
   }
   .element-toolbox-expanded {
     opacity: 1;
-    right: 0;
+    transform: translateX(0);
   }
 }
 .progress-marker {
@@ -450,10 +453,21 @@ a:visited {
   position: relative;
   .progress-value {
     background: $dcmt-light;
+    position: relative;
     border-bottom-right-radius: 10px;
     height: 10px;
     width: 0;
     transition: .3s;
+    .progress-title, .progress-number-value {
+      position: absolute; right: 0; font-size: 12px;
+    }
+    .progress-title {
+      top: -25px;
+    }
+    .progress-number-value {
+      bottom: -22.5px;
+      color: $font-grey;
+    }
   }
 }
 .carousel {

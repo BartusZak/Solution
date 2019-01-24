@@ -38,7 +38,8 @@ export const validatorsFunctions = {
   maxLength: (value, limit, title) => value.trim().length > limit ? translateMessage('maxLength', title, limit) : '',
   cannotBeLike: (value, notLikeValue, title) => value === notLikeValue ? translateMessage('cannotBeLike', title, notLikeValue) : '',
   filesFormats: (fileFormat, formats, title) => checkIsFileFormatValid(fileFormat, formats, translateMessage('filesFormats', title, formats)),
-  regexp: (value, patternKey, title) => patterns[patternKey].test(value) ? '' : translateMessage(patternKey, title)
+  regexp: (value, patternKey, title) => patterns[patternKey].test(value) ? '' : translateMessage(patternKey, title),
+  isInList: (value, list, title) => list.indexOf(value) !== -1 ? translateMessage('isInList', title) : ''
 };
 
 const translateMessage = (key, title, expVal) => {
@@ -53,7 +54,8 @@ export const messages = {
   maxLength: (title, expVal) => ({ pl: `Pole ${title} musi posidać mniej niż ${expVal} znaki`, en: `Field ${title} must have less than ${expVal} characters`}),
   cannotBeLike: (title, expVal) => ({ pl: `Pole ${title} musi posiadać inną wartość niż ${expVal}`, en: `Field ${title} must have other value than ${expVal}`}),
   filesFormats: (title, expVal) => ({ pl: `Pole ${title} musi posiadac` , en: `File ${title} have incorrect format. Only ${expVal.join(', ')} allowed`}),
-  text: title => ({ pl: `Pole ${title} musi zawiera niedozwolone znaki`, en: `Field ${title} contains not allowed characters`})
+  text: title => ({ pl: `Pole ${title} musi zawiera niedozwolone znaki`, en: `Field ${title} contains not allowed characters`}),
+  isInList: title => ({ pl: `Lista ${title} zawiera już podany element`, en: `List of ${title} already contains given value`})
 };
 
 export const patterns = {

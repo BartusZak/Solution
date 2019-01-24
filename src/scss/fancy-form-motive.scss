@@ -131,7 +131,7 @@ div.circle-searcher {
 .field {
   border: 1px solid $input-border;
   border-radius: 4px;
-  padding: 10px;
+  padding: 8.5px;
   width: 100%;
   box-sizing: border-box;
   &:focus {
@@ -143,7 +143,7 @@ select.field, input.field, textarea.field {
 }
 .field-label {
   color: $dcmt;
-  font-size: 16px;
+  font-size: 14px;
 }
 .fields-wrapper-row {
   display: flex;
