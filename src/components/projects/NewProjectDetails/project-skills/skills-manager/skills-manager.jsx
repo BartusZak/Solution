@@ -1,53 +1,17 @@
 import React from 'react';
 import FancyModal from '../../../../common/fancy-modal/fancy-modal';
-import Button from '../../../../common/button/button';
-import ProjectSkill from '../project-skill/project-skill';
+import ManagerContent from './manager-content';
 import { loadAllSkills } from '../../../../../actions/skillsActions';
+import { editSkillsInProject } from '../../../../../actions/projectsActions';
 import { getRandomColor } from '../../../../../services/methods';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { ProjectDetailsContext } from '../../index';
 
 import './skills-manager.scss';
-const ManagerContent = ({allSkills, allSkillsCount, status, skillsData, reloadSkills, handleMarking}) => {
-  if (!status)
-    return (
-      <div className="empty-list-comunicate">
-        <p>There is a problem with loading skills...</p>
-        <i onClick={reloadSkills} className="fas fa-sync-alt"></i>
-      </div>
-    );
-  if (allSkillsCount === 0)
-    return (
-      <div className="empty-list-comunicate">
-        <p>Skills list is empty. You need to populate list firstly on skills view. Click button bellow for being redirect</p>
-        <Link to="/main/skills"><i className="fas fa-crosshairs fa-lg"></i></Link>
-      </div>
-    );
-  return (
-    <React.Fragment>
-      <ul className="skills-list">
-        {allSkills.map(({name}) => (
-          <ProjectSkill
-            skillLevel={skillsData[name].skillLevel} markerWidth={skillsData[name].markerWidth}
-            color={skillsData[name].color} checked={skillsData[name].marked}
-            key={name} name={name} handleMarking={handleMarking} />
-        ))}
-      </ul>
-
-      <div className="skills-footer flex-between-c">
-        <div className='field-block'>
-          <input placeholder='type here for find skill...' />
-          <div className="field-icon"><i className='fa fa-search' /></div>
-        </div>
-        <Button title="FINISH" mainClass="label-btn"></Button>
-      </div>
-    </React.Fragment>
-  );
-}
-
+const { Consumer } = ProjectDetailsContext;
 class SkillsManagement extends React.Component {
   state = {
-    isLoadingAllSkills: true, skillsData: null
+    isLoadingAllSkills: true, skillsData: null, isAddingSkills: false, countOfMarkedSkills: 0
   }
 
   componentDidMount = () => {
@@ -69,8 +33,12 @@ class SkillsManagement extends React.Component {
 
   generateSkillData = () => {
     const skillsData = {};
-    this.props.allSkills.forEach(({name}) => {
-      skillsData[name] = { color: getRandomColor(), markerWidth: 40, skillLevel: 3, marked: false }
+    const { allSkills } = this.props;
+    const allSkillsKeys = Object.keys(allSkills);
+    allSkillsKeys.forEach(key => {
+      const name = allSkills[key].name;
+      const skillData = { skillId: key, name, color: getRandomColor(), markerWidth: 40, skillLevel: 3, marked: false };
+      skillsData[name] = skillData;
     });
     this.setState({skillsData, isLoadingAllSkills: false});
   }
@@ -86,25 +54,39 @@ class SkillsManagement extends React.Component {
     this.setState({skillsData});
   }
 
+  handleEditSkillsInProject = id => {
+    const { skillsData } = this.state;
+    const skills = Object.values(skillsData)
+      .filter(skillData => skillData.marked)
+      .map(({skillId, skillLevel}) => ({skillId, skillLevel}));
+
+    this.setState({isAddingSkills: true});
+    this.props.editSkillsInProject(id, skills,
+      () => this.setState({isAddingSkills: false}),
+      () => this.setState({isAddingSkills: false}));
+  }
+
   render() {
-    const { isLoadingAllSkills, skillsData } = this.state;
+    const { isLoadingAllSkills, skillsData, isAddingSkills, countOfMarkedSkills } = this.state;
     const { close, allSkills, loadAllSkillsResult, skillManagerClass } = this.props;
     const allSkillsCount = allSkills.length;
+
     return (
-      <FancyModal backdropClass={skillManagerClass}
-        positionClass={`skills-modal flex-column ${skillManagerClass}`} close={close} renderHeader={() => (
-        <h3 className="flex-between-c">
-          Manage skills {isLoadingAllSkills || `(${allSkillsCount})`}
-          {(!isLoadingAllSkills && loadAllSkillsResult.status && allSkillsCount > 0) && <i className="fa fa-sort"></i>}
-        </h3>
-      )}>
-        { isLoadingAllSkills ? <div className="spinner-new spinner-new-big spinner-new-center" /> :
-          <ManagerContent
-            reloadSkills={this.getSkills} handleMarking={this.handleMarking}
-            allSkills={allSkills} allSkillsCount={allSkillsCount}
-            status={loadAllSkillsResult.status} skillsData={skillsData} />
-        }
-      </FancyModal>
+      <Consumer>
+        {(project) => (
+          <FancyModal backdropClass={skillManagerClass} isLoading={isAddingSkills}
+            positionClass={`skills-modal flex-column ${skillManagerClass}`} close={close}>
+            { isLoadingAllSkills ? <div className="spinner-new spinner-new-big spinner-new-center" /> :
+              <ManagerContent countOfMarkedSkills={countOfMarkedSkills}
+                saveSkills={() => this.handleEditSkillsInProject(project.id)}
+                reloadSkills={this.getSkills} handleMarking={this.handleMarking}
+                allSkills={allSkills} allSkillsCount={allSkillsCount}
+                status={loadAllSkillsResult.status} skillsData={skillsData} />
+            }
+          </FancyModal>
+        )}
+
+      </Consumer>
     );
   }
 }
@@ -118,7 +100,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    loadAllSkills: () => dispatch(loadAllSkills())
+    loadAllSkills: () => dispatch(loadAllSkills()),
+    editSkillsInProject: (id, skills, succ, err) => dispatch(editSkillsInProject(id, skills, succ, err))
   };
 };
 

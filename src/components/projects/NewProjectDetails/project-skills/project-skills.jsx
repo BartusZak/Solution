@@ -35,7 +35,6 @@ class ProjectSkills extends React.PureComponent {
     const { skillsMarkers, skillManager, skillManagerClass } = this.state;
     const { projectSkills } = this.props;
     const skillsCount = projectSkills.length;
-    console.log(skillManagerClass);
     return (
       <div className={`project-skills-wrapper flex-column ${skillsCount === 0 ? 'empty-list-bg' : ''}`}>
         <p className="important-par">Project skills ({skillsCount})</p>

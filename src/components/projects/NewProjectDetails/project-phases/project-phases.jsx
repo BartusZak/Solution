@@ -2,7 +2,7 @@ import React from 'react';
 import { calculateProjectState } from '../index';
 
 import './project-phases.scss';
-const projectPhases = ({phases, push}) => {
+const projectPhases = ({phases, push, openAddingPhase}) => {
   const phasesCount = phases.length;
   return (
   <div className={`phases-wrapper flex-column ${phasesCount === 0 ? 'empty-list-bg' : ''}`}>
@@ -11,7 +11,7 @@ const projectPhases = ({phases, push}) => {
     {phasesCount === 0 ?
     <div className="empty-list-comunicate">
       <p>Phases list is already empty. Click here for add new one</p>
-      <i className="fas fa-briefcase fa-lg "></i>
+      <i onClick={openAddingPhase} className="fas fa-briefcase fa-lg "></i>
     </div> :
     <ul className="phases carousel element-scroll flex-row-center">
     {phases.map(({id, name, description, startDate, estimatedEndDate, isDeleted, status}) => (

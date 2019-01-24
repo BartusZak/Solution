@@ -4,15 +4,18 @@ import { translate } from 'react-translate';
 import { withRouter } from 'react-router-dom';
 import { getProject } from '../../../actions/projectsActions';
 import { putAllSkills } from '../../../actions/skillsActions';
+import { ProjectDetailsContext } from './index';
 import ProjectInformations from './project-informations/project-informations';
 import ProjectSkills from './project-skills/project-skills';
 import ProjectTeam from './project-team/project-team';
 import ProjectPhases from './project-phases/project-phases';
+import ProjectPhaseForm from '../phase-project-form/phase-project-form';
 
 import './NewProjectDetails.scss';
+const { Provider } = ProjectDetailsContext;
 class NewProjectDetails extends React.Component {
   state = {
-    isLoading: true
+    isLoading: true, editProjectForm: false, addPhaseForm: false
   }
   componentDidMount = () => this.getProjectDetails();
   componentDidUpdate = prevProps => {
@@ -28,6 +31,9 @@ class NewProjectDetails extends React.Component {
     getProject(match.params.id);
   }
 
+  togleEditForm = () => this.setState({editProjectForm: !this.state.editProjectForm});
+  toglePhaseForm = () => this.setState({addPhaseForm: !this.state.addPhaseForm});
+
   componentWillUnmount = () => this.props.putAllSkills();
 
   render() {
@@ -36,18 +42,35 @@ class NewProjectDetails extends React.Component {
       return <div style={{position: 'fixed'}} className="spinner-new spinner-new-big spinner-new-center"></div>;
     else if(!projectResult.status) return null;
     else {
-      const { skills, team, projectPhases: phases } = project;
+      const { id, skills, team, projectPhases: phases, client, cloud, responsiblePerson } = project;
+      const { editProjectForm, addPhaseForm } = this.state;
       return (
         <div className="project-details-wrapper">
-          <ProjectInformations project={project} t={t} />
-          <div className="project-data-wrapper">
-            <ProjectSkills projectSkills={skills} />
-            <ProjectTeam team={team} />
+          <Provider value={project}>
+            <ProjectInformations project={project} t={t} togleEditForm={this.togleEditForm} toglePhaseForm={this.toglePhaseForm}/>
+            <div className="project-data-wrapper">
+              <ProjectSkills projectSkills={skills} />
+              <ProjectTeam team={team} />
 
-            {!project.parentId &&
-              <ProjectPhases phases={phases} push={id => history.push('/main/projects/' + id)} />
-            }
-          </div>
+              {!project.parentId &&
+                <ProjectPhases openAddingPhase={this.toglePhaseForm}
+                  phases={phases} push={id => history.push('/main/projects/' + id)} />
+              }
+            </div>
+          </Provider>
+
+          {editProjectForm &&
+          <ProjectPhaseForm projectToEdit={project}
+            onSubmitSucc={this.togleEditForm}
+            close={this.togleEditForm}/>
+          }
+
+          {addPhaseForm &&
+            <ProjectPhaseForm parentId={id} isPhaseForm
+              projectToEdit={{name: '', description: '', client, cloud, responsiblePerson}}
+              onSubmitSucc={this.toglePhaseForm}
+              close={this.toglePhaseForm} />
+          }
         </div>
       );
     }

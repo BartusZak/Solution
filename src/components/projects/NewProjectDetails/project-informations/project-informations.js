@@ -5,7 +5,6 @@ import { deleteProject, reactivateProject, closeProject, addOwnerToProject } fro
 import { connect } from 'react-redux';
 import Button from '../../../common/button/button';
 import EmployeeSearcher from '../../../shared/employee-searcher/employee-searcher';
-import ProjectPhaseForm from '../../phase-project-form/phase-project-form';
 import { AheadClassContext } from '../../../common/fancy-form/type-ahead/index';
 
 import './project-informations.scss';
@@ -14,12 +13,10 @@ const { Provider } = AheadClassContext;
 
 class ProjectInformations extends React.Component {
   state = {
-    editProjectForm: false, addPhaseForm: false, isAddingOwner: false,
+    isAddingOwner: false,
     currentChangeStatusOperationName: ''
   }
 
-  togleEditForm = () => this.setState({editProjectForm: !this.state.editProjectForm});
-  toglePhaseForm = () => this.setState({addPhaseForm: !this.state.addPhaseForm});
   clearOperation = () => this.setState({currentChangeStatusOperationName: ''});
 
   deleteProject = id => {
@@ -51,26 +48,13 @@ class ProjectInformations extends React.Component {
   }
 
   render() {
-    const { editProjectForm, addPhaseForm, currentChangeStatusOperationName: operationName, isAddingOwner } = this.state;
-    const { project } = this.props;
+    const { currentChangeStatusOperationName: operationName, isAddingOwner } = this.state;
+    const { project, togleEditForm, toglePhaseForm } = this.props;
     const { id, name, description, responsiblePerson, owners, status, isDeleted, startDate, estimatedEndDate, client, cloud, parentId } = project;
     const projectState = calculateProjectState(status, isDeleted);
     const disableStatusButtons = operationName !== '';
     return (
       <div className="project-informations-wrapper flex-column">
-
-        {editProjectForm &&
-          <ProjectPhaseForm projectToEdit={project}
-            onSubmitSucc={this.togleEditForm}
-            close={this.togleEditForm}/>
-        }
-
-        {addPhaseForm &&
-          <ProjectPhaseForm parentId={id} isPhaseForm
-            projectToEdit={{name: '', description: '', client, cloud, responsiblePerson}}
-            onSubmitSucc={this.toglePhaseForm}
-            close={this.toglePhaseForm} />
-        }
 
         <h2 className="project-name flex-column">
           <span className={`project-state-label ${projectState}`}>{projectState}</span>
@@ -147,12 +131,12 @@ class ProjectInformations extends React.Component {
         </div>
 
         <div className="project-operations">
-          <Button onClick={this.togleEditForm} title="EDIT PROJECT" mainClass="dcmt-main-btn dcmt-light-btn animated-icon-btn">
+          <Button onClick={togleEditForm} title="EDIT PROJECT" mainClass="dcmt-main-btn dcmt-light-btn animated-icon-btn">
             <i className="fa fa-edit"></i>
           </Button>
 
           {!parentId &&
-            <Button onClick={this.toglePhaseForm} title="ADD PHASE" mainClass="dcmt-main-btn dcmt-light-btn animated-icon-btn">
+            <Button onClick={toglePhaseForm} title="ADD PHASE" mainClass="dcmt-main-btn dcmt-light-btn animated-icon-btn">
               <i className="fa fa-plus"></i>
             </Button>
           }

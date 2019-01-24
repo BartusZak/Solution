@@ -12,6 +12,7 @@ div.skills-modal {
   h3 {
     font-size: 18px;
     grid-area: header;
+    margin-bottom: 30px;
     i {
       color: $dark-font;
     }
@@ -21,7 +22,6 @@ div.skills-modal {
     display: flex;
     flex-flow: column;
     .skills-list {
-      margin: 30px 0 15px 0;
       overflow-y: auto;
       max-height: 80%;
     }

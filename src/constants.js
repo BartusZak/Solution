@@ -80,11 +80,11 @@ export const SET_PROJECT_DATA = "[Projects] SET_PROJECT_DATA";
 export const ADD_PHASE = "[Projects] ADD_PHASE";
 export const CHANGE_PROJECT_STATUS = "[Projects] CHANGE_PROJECT_STATUS";
 export const ADD_OWNER = "[Projects] ADD_OWNER";
+export const PUT_SKILLS_INTO_PROJECT = "[Projects] PUT_SKILLS_INTO_PROJECT";
 export const closed = 2;
 export const inactive = 1;
 export const active = 0;
 
-export const CHANGE_PROJECT_SKILLS = "CHANGE_PROJECT_SKILLS";
 export const GET_SUGGEST_EMPLOYEES = "GET_SUGGEST_EMPLOYEES";
 export const CHANGE_GET_SUGGEST_EMPLOYEES_STATUS =
   "CHANGE_GET_SUGGEST_EMPLOYEES_STATUS";
@@ -126,7 +126,6 @@ export const invalidTokenError =
 // SKILLS
 
 export const GET_ALL_SKILLS = "GET_ALL_SKILLS";
-export const ADD_SKILLS_TO_PROJECT = "ADD_SKILLS_TO_PROJECT";
 export const ADD_NEW_SKILL = "ADD_NEW_SKILL";
 
 //GDRIVE

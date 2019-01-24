@@ -106,6 +106,7 @@ const requests = {
   closeProject: id => execute(fromAlertSettings.closeProject, `projects/close/${id}`, requestTypes.put),
   deleteProject: id => execute(fromAlertSettings.deleteProject, `projects/delete/${id}`, requestTypes.delete),
   addOwnerToProject: (id, usersIds) => execute(fromAlertSettings.addOwnerToProject, `projects/owner/${id}`, requestTypes.put, {usersIds}),
+  editSkillsInProject: (id, skills) => execute(fromAlertSettings.editSkillsInProject, `projects/skills/${id}`, requestTypes.put, skills),
 
   //RESPINSIBLE PERSON
   createResponsiblePerson: model => execute(fromAlertSettings.createResponsiblePerson, 'responsiblepersons', requestTypes.post, model),

@@ -2,7 +2,6 @@ import React from 'react';
 import FancyForm from '../../common/fancy-form/fancy-form';
 import FancyModal from '../../common/fancy-modal/fancy-modal';
 import { translate } from 'react-translate';
-import { connect } from 'react-redux';
 import { createResponsiblePerson, editResponsiblePerson } from '../../../actions/clientsActions';
 import { InputSettings } from '../../common/fancy-form/index';
 
@@ -28,7 +27,7 @@ class ResponsiblePersonForm extends React.Component {
   }
 
   handleSubmit = formData => {
-    const { shouldEdit, createResponsiblePerson, editResponsiblePerson, afterSuccAdd, afterSuccEdit, personToEdit } = this.props;
+    const { shouldEdit, afterSuccAdd, afterSuccEdit, personToEdit } = this.props;
 
     this.setState({isSubmitting: true});
     if (shouldEdit) {
@@ -68,11 +67,4 @@ class ResponsiblePersonForm extends React.Component {
   }
 }
 
-const mapDispatchToProps = dispatch => {
-  return {
-    createResponsiblePerson: model => dispatch(createResponsiblePerson(model)),
-    editResponsiblePerson: (model, id) => dispatch(editResponsiblePerson(model, id)),
-  };
-};
-
-export default connect(null, mapDispatchToProps)(translate("ResponsiblePersonForm")(ResponsiblePersonForm));
+export default translate("ResponsiblePersonForm")(ResponsiblePersonForm);

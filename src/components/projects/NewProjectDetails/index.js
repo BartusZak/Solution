@@ -1,3 +1,4 @@
+import React from 'react';
 import { closed, inactive, active } from '../../../constants';
 export const calculateProjectState = (statusCode, isDeleted) => {
   if (isDeleted) return "deleted"
@@ -8,3 +9,4 @@ export const calculateProjectState = (statusCode, isDeleted) => {
 export const deleting = 'deleting';
 export const reactivating = 'reactivating';
 export const closing = 'closing';
+export const ProjectDetailsContext = React.createContext('project');

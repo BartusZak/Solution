@@ -72,13 +72,13 @@ export const getClientsSlim = () => dispatch =>
   useRequest('getClientsSlim')
   .then(res => dispatch(putSlimClients(transformArrayIntoObject('name', res.extractData()))));
 
-export const createResponsiblePerson = model => dispatch => new Promise((resolve, reject) => {
+export const createResponsiblePerson = model => new Promise((resolve, reject) => {
   useRequest('createResponsiblePerson', model)
   .then(res => resolve(res.extractData()))
   .catch(() => reject());
 });
 
-export const editResponsiblePerson = (model, id) => dispatch => new Promise((resolve, reject) => {
+export const editResponsiblePerson = (model, id) => new Promise((resolve, reject) => {
   useRequest('editResponsiblePerson', model, id)
   .then(() => resolve())
   .catch(() => reject());

@@ -1,12 +1,10 @@
 import {
   LOAD_PROJECTS_SUCCESS,
   ADD_EMPLOYEE_TO_PROJECT,
-  CHANGE_PROJECT_SKILLS,
   ADD_FEEDBACK,
   GET_FEEDBACKS,
   DELETE_FEEDBACK,
   EDIT_FEEDBACK,
-  ADD_SKILLS_TO_PROJECT,
   GET_SUGGEST_EMPLOYEES,
   CHANGE_GET_SUGGEST_EMPLOYEES_STATUS,
   EDIT_EMPLOYEE_ASSIGNMENT,
@@ -15,7 +13,8 @@ import {
   SET_PROJECT_DATA,
   ADD_PHASE,
   CHANGE_PROJECT_STATUS,
-  ADD_OWNER
+  ADD_OWNER,
+  PUT_SKILLS_INTO_PROJECT
 } from "../constants";
 import WebApi from "../api";
 import {
@@ -298,93 +297,6 @@ export const editFeedbackACreator = (feedbackId, description, projectId, onlyAct
   };
 };
 
-export const changeProjectSkills = (
-  changeProjectSkillsStatus,
-  changeProjectSkillsErrors
-) => {
-  return {
-    type: CHANGE_PROJECT_SKILLS,
-    changeProjectSkillsStatus,
-    changeProjectSkillsErrors
-  };
-};
-export const changeProjectSkillsACreator = (
-  projectId,
-  skills,
-  onlyActiveAssignments
-) => {
-  return dispatch => {
-    const skillsToSend = [];
-    let somethingChanged = false;
-    for (let key in skills) {
-      if (skills[key].startValue !== skills[key].obj.skillLevel) {
-        skillsToSend.push({
-          skillId: skills[key].obj.skillId,
-          skillLevel: skills[key].startValue
-        });
-        somethingChanged = true;
-      } else {
-        skillsToSend.push({
-          skillId: skills[key].obj.skillId,
-          skillLevel: skills[key].obj.skillLevel
-        });
-      }
-    }
-
-    if (somethingChanged) {
-      WebApi.projects.put
-        .skills(projectId, skillsToSend)
-        .then(response => {
-          dispatch(changeProjectSkills(true, []));
-          dispatch(getProjectACreator(projectId, onlyActiveAssignments));
-        })
-        .catch(error => {
-          dispatch(changeProjectSkills(false, errorCatcher(error)));
-        });
-    } else
-      dispatch(changeProjectSkills(false, ["Nie zmieniono żadnej wartości"]));
-  };
-};
-
-export const addSkillsToProject = (
-  addSkillsToProjectStatus,
-  addSkillsToProjectErrors
-) => {
-  return {
-    type: ADD_SKILLS_TO_PROJECT,
-    addSkillsToProjectStatus,
-    addSkillsToProjectErrors
-  };
-};
-
-export const addSkillsToProjectACreator = (
-  projectId,
-  currentAddedSkills,
-  onlyActiveAssignments
-) => {
-  return dispatch => {
-    const skillsToSend = [];
-    for (let key in currentAddedSkills) {
-      const whichIdIsExist = currentAddedSkills[key].obj.id
-        ? currentAddedSkills[key].obj.id
-        : currentAddedSkills[key].obj.skillId;
-      skillsToSend.push({
-        skillId: whichIdIsExist,
-        skillLevel: currentAddedSkills[key].startValue
-      });
-    }
-    WebApi.projects.put
-      .skills(projectId, skillsToSend)
-      .then(response => {
-        dispatch(addSkillsToProject(true, []));
-        dispatch(getProjectACreator(projectId, onlyActiveAssignments));
-      })
-      .catch(error => {
-        dispatch(addSkillsToProject(false, errorCatcher(error)));
-      });
-  };
-};
-
 export const getSuggestEmployeesStatus = (
   getSuggestEmployeesStatus,
   getSuggestEmployeesError
@@ -421,6 +333,7 @@ export const updateProject = project => ({ type: UPDATE_PROJECT, project });
 export const addPhase = phase => ({ type: ADD_PHASE, phase });
 export const changeProjectStatus = (status, isDeleted) => ({ type: CHANGE_PROJECT_STATUS, status, isDeleted });
 export const addOwner = owner => ({ type: ADD_OWNER, owner });
+export const putSkillsIntoProject = skills => ({ type: PUT_SKILLS_INTO_PROJECT, skills });
 
 export const getProject = id => dispatch =>
   useRequest('getProject', id)
@@ -450,6 +363,13 @@ export const editProject = (project, succ, err) => dispatch =>
   useRequest('editProject', project, project.id)
   .then(() => { dispatch(updateProject(project)); succ(); } )
   .catch(() => err());
+
+export const editSkillsInProject = (id, skills, succ, err) => dispatch => {
+  console.log(id, skills);
+  useRequest('editSkillsInProject', id, skills)
+  .then(() => { dispatch(putSkillsIntoProject(skills)); succ(); })
+  .catch(() => err());
+}
 
 export const addProjectPhase = (model, succ, err) => dispatch =>
   useRequest('addProjectPhase', model)

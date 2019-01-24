@@ -7,8 +7,6 @@ import {
   GET_FEEDBACKS,
   EDIT_FEEDBACK,
   DELETE_FEEDBACK,
-  CHANGE_PROJECT_SKILLS,
-  ADD_SKILLS_TO_PROJECT,
   GET_SUGGEST_EMPLOYEES,
   CHANGE_GET_SUGGEST_EMPLOYEES_STATUS,
   EDIT_EMPLOYEE_ASSIGNMENT,
@@ -16,7 +14,8 @@ import {
   UPDATE_PROJECT,
   ADD_PHASE,
   ADD_OWNER,
-  CHANGE_PROJECT_STATUS
+  CHANGE_PROJECT_STATUS,
+  PUT_SKILLS_INTO_PROJECT
 } from "../constants";
 import { updateObject } from "../services/methods";
 const initialState = {
@@ -47,12 +46,6 @@ const initialState = {
 
   editFeedbackStatus: null,
   editFeedbackErrors: [],
-
-  changeProjectSkillsStatus: null,
-  changeProjectSkillsErrors: [],
-
-  addSkillsToProjectStatus: null,
-  addSkillsToProjectErrors: [],
 
   getSuggestEmployeesStatus: null,
   getSuggestEmployeesError: [],
@@ -88,6 +81,11 @@ export const projectsReducer = (state = initialState, action) => {
     case ADD_OWNER:
       return {
         ...state, project: {...state.project, owners: [action.owner, ...state.project.owners] }
+      };
+    case PUT_SKILLS_INTO_PROJECT:
+    console.log(action.skills);
+      return {
+        ...state, project: { ...state.project, skills: action.skills }
       };
     case LOAD_PROJECTS_SUCCESS:
       return updateObject(state, {
@@ -145,17 +143,6 @@ export const projectsReducer = (state = initialState, action) => {
         deleteFeedbackErrors: action.deleteFeedbackErrors
       });
 
-    case CHANGE_PROJECT_SKILLS:
-      return updateObject(state, {
-        changeProjectSkillsStatus: action.changeProjectSkillsStatus,
-        changeProjectSkillsErrors: action.changeProjectSkillsErrors
-      });
-
-    case ADD_SKILLS_TO_PROJECT:
-      return updateObject(state, {
-        addSkillsToProjectStatus: action.addSkillsToProjectStatus,
-        addSkillsToProjectErrors: action.addSkillsToProjectErrors
-      });
     case GET_SUGGEST_EMPLOYEES:
       return updateObject(state, { suggestEmployees: action.suggestEmployees });
     case CHANGE_GET_SUGGEST_EMPLOYEES_STATUS:

@@ -104,10 +104,10 @@ module.exports = {
     Config: JSON.stringify(
       process.env.NODE_ENV === 'production'
         ? {
-            serverUrl: "https://dev.dcmtbillennium.com"
+            serverUrl: "http://localhost:58926"
           }
         : {
-            serverUrl: "https://dev.dcmtbillennium.com"
+            serverUrl: "http://localhost:58926"
 
           }
     )
