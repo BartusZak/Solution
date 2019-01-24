@@ -32,10 +32,12 @@ class UserSelector extends Component {
   };
 
   getUsers = user => {
+    if (!user) {
+      return Promise.resolve({ options: [] });
+    }
     return useRequest('getUserByAdSearch', user)
-      .then(responsex => {
-        debugger;
-        let usersRequest = responsex.extractData();
+      .then(response => {
+        let usersRequest = response.extractData();
         let usersList = [];
         usersRequest.map((i, index) => {
           let OneUser = Object.assign(i, i.hasAccount && { disabled: true });
@@ -45,45 +47,12 @@ class UserSelector extends Component {
       })
       .catch(errorBlock => {
         this.setState({ errorBlock });
-        // this.refs.StageOne.stopLoading();
+        this.refs.StageOne.stopLoading();
       });
-    // if (!user) {
-    //   return Promise.resolve({ options: [] });
-    // }
-    // .then(response => {
-    //   console.log(response);
-    // })
-    // .catch(response => {
-    //   console.log(response);
-    // });
-    // if (!user) {
-    //   return Promise.resolve({ options: [] });
-    // }
-    // return WebApi.users.get
-    //   .adSearch(user)
-    //   .then(response => {
-    //     this.setState({
-    //       errorBlock: response
-    //     });
-    //     return response;
-    //   })
-    //   .then(responsex => {
-    //     let usersRequest = responsex.extractData();
-    //     let usersList = [];
-    //     usersRequest.map((i, index) => {
-    //       let OneUser = Object.assign(i, i.hasAccount && { disabled: true });
-    //       usersList.push(OneUser);
-    //     });
-    //     return { options: usersList };
-    //   })
-    //   .catch(errorBlock => {
-    //     this.setState({ errorBlock });
-    //     // this.refs.StageOne.stopLoading();
-    //   });
   };
 
   doAddUser = newUser => {
-    useRequest('addUser', newUser.id, newUser.roles)
+    useRequest('addUser', newUser.azureAdId, newUser.roles)
       .then(response => {
         this.setState({
           errorBlock: response,

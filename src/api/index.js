@@ -135,7 +135,6 @@ const execute = (
         store.getState().authReducer.azureData.access_token
       }`
     : `${API_ENDPOINT}/${path}`;
-
   return axios[type](fullPath, payload)
     .then(response => parseSuccess(response, key))
     .catch(response => authValidator(response))

@@ -1,16 +1,18 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
-import { translate } from "react-translate";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { translate } from 'react-translate';
 import { Link } from 'react-router-dom';
 class LoggedInUser extends Component {
   render() {
     const { t, firstName, login, lastName } = this.props;
     return (
       <span className="logged-in-user">
-        {t("LoggedIn") + ": "}
+        {t('LoggedIn') + ': '}
         <strong className="underline-anchors">
-          <Link to={`/main/employees/${login}`}>{firstName + " " + lastName}</Link>
+          <Link to={`/main/employees/${login}`}>
+            {firstName + ' ' + lastName}
+          </Link>
         </strong>
       </span>
     );
@@ -30,6 +32,6 @@ LoggedInUser.propTypes = {
   lastName: PropTypes.string.isRequired
 };
 
-export default connect(mapStateToProps)(
-  translate("LoggedInUser")(LoggedInUser)
+export default translate('LoggedInUser')(
+  connect(mapStateToProps)(LoggedInUser)
 );
