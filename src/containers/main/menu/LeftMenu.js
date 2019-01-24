@@ -69,7 +69,7 @@ class LeftMenu extends React.Component {
           <VerticalMenuElement
             match={match}
             extended={extended}
-            path="users"
+            path="/users"
             icon="user-circle"
             iconType="fas"
             title={t('Users')}
@@ -79,7 +79,7 @@ class LeftMenu extends React.Component {
           <VerticalMenuElement
             match={match}
             extended={extended}
-            path="clients"
+            path="/clients"
             icon="users"
             iconType="fas"
             title={t('Clients')}
@@ -89,7 +89,7 @@ class LeftMenu extends React.Component {
           <VerticalMenuElement
             match={match}
             extended={extended}
-            path="employees"
+            path="/employees"
             icon="address-card"
             iconType="fas"
             title={t('Employees')}
@@ -99,7 +99,7 @@ class LeftMenu extends React.Component {
           <VerticalMenuElement
             match={match}
             extended={extended}
-            path="projects"
+            path="/projects"
             icon="briefcase"
             iconType="fas"
             title={t('Projects')}
@@ -110,7 +110,7 @@ class LeftMenu extends React.Component {
           <VerticalMenuElement
             match={match}
             extended={extended}
-            path="skills"
+            path="/skills"
             icon="crosshairs"
             iconType="fas"
             title={t('Skills')}
@@ -120,7 +120,7 @@ class LeftMenu extends React.Component {
           <VerticalMenuElement
             match={match}
             extended={extended}
-            path="reports"
+            path="/reports"
             icon="file-alt"
             iconType="fas"
             title={t('Reports')}
@@ -131,7 +131,7 @@ class LeftMenu extends React.Component {
           <VerticalMenuElement
             match={match}
             extended={extended}
-            path="import-cv"
+            path="/import-cv"
             icon="archive"
             iconType="fas"
             title={t('ImportCV')}
@@ -141,7 +141,7 @@ class LeftMenu extends React.Component {
         <VerticalMenuElement
           match={match}
           extended={extended}
-          path="info"
+          path="/info"
           icon="info-circle"
           iconType="fas"
           title={t('Info')}

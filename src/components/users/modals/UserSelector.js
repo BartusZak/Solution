@@ -32,16 +32,30 @@ class UserSelector extends Component {
   };
 
   getUsers = user => {
+    return useRequest('getUserByAdSearch', user)
+      .then(responsex => {
+        debugger;
+        let usersRequest = responsex.extractData();
+        let usersList = [];
+        usersRequest.map((i, index) => {
+          let OneUser = Object.assign(i, i.hasAccount && { disabled: true });
+          usersList.push(OneUser);
+        });
+        return { options: usersList };
+      })
+      .catch(errorBlock => {
+        this.setState({ errorBlock });
+        // this.refs.StageOne.stopLoading();
+      });
     // if (!user) {
     //   return Promise.resolve({ options: [] });
     // }
-    return useRequest('getUserByAdSearch', user)
-      .then(response => {
-        console.log(response);
-      })
-      .catch(response => {
-        console.log(response);
-      });
+    // .then(response => {
+    //   console.log(response);
+    // })
+    // .catch(response => {
+    //   console.log(response);
+    // });
     // if (!user) {
     //   return Promise.resolve({ options: [] });
     // }

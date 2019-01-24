@@ -131,7 +131,7 @@ const execute = (
   sendAzureToken
 ) => {
   let fullPath = sendAzureToken
-    ? `${API_ENDPOINT}/${path}?azureToken=${
+    ? `${API_ENDPOINT}/${path}azureToken=${
         store.getState().authReducer.azureData.access_token
       }`
     : `${API_ENDPOINT}/${path}`;
@@ -665,12 +665,24 @@ const requests = {
   //USERS
   getUserById: id => execute(fromAlertSettings.getUserById, `account/${id}`),
   getUserByAdSearch: query =>
-    execute(fromAlertSettings.getUserByAdSearch, `account/searchAD/${query}`),
+    execute(
+      fromAlertSettings.getUserByAdSearch,
+      `account/searchAD?query=${query}&`,
+      requestTypes.get,
+      {},
+      true
+    ),
   addUser: (id, roles) =>
-    execute(fromAlertSettings.addUser, `account/add`, requestTypes.post, {
-      azureAdId: id,
-      roles
-    }),
+    execute(
+      fromAlertSettings.addUser,
+      `account/add?`,
+      requestTypes.post,
+      {
+        azureAdId: id,
+        roles
+      },
+      true
+    ),
   searchUsers: (settings = {}) =>
     execute(
       fromAlertSettings.searchUsers,
@@ -681,7 +693,7 @@ const requests = {
   searchRequestsUsers: (settings = {}) =>
     execute(
       fromAlertSettings.searchRequestsUsers,
-      `account/requests`,
+      `account/requests?`,
       requestTypes.post,
       settings,
       true

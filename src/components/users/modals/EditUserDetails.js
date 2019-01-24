@@ -40,7 +40,9 @@ class EditUserDetails extends Component {
           .catch(error => {
             if (
               'userNotFoundError' in
-              error.replyBlock.data.errorObjects[0].errors
+                error.replyBlock.data.errorObjects[0].errors ||
+              'userIdRequiredError' in
+                error.replyBlock.data.errorObjects[0].errors
             ) {
               useRequest('addUser', id, roles)
                 .then(response => {
