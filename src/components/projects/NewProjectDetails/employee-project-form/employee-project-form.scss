@@ -9,6 +9,13 @@
     "form"
     "responsibilities"
     "buttons";
+  #confirm {
+    grid-area: buttons;
+    align-self: flex-end;
+    button {
+      margin: 0 15px 15px 0;
+    }
+  }
   @media(min-width: 1000px) {
     grid-template-columns: 55% 40%;
     grid-template-rows: 1fr 50px;
@@ -18,7 +25,7 @@
       "buttons responsibilities";
     #confirm {
       button {
-        margin-right: 15px;
+        margin: 0 15px 0 0;
       }
     }
   }
@@ -27,13 +34,6 @@
   }
   .form-right {
     grid-area: responsibilities;
-  }
-  #confirm {
-    grid-area: buttons;
-    align-self: flex-end;
-    button {
-      margin: 0 15px 15px 0;
-    }
   }
   .form-left {
     display: grid;
