@@ -5,7 +5,7 @@ import { deleteProject, reactivateProject, closeProject, addOwnerToProject } fro
 import { connect } from 'react-redux';
 import Button from '../../../common/button/button';
 import EmployeeSearcher from '../../../shared/employee-searcher/employee-searcher';
-import ShareProjectForm from '../share-project-form/share-project-form';
+import ShareProjectForm from './share-project-form/share-project-form';
 import { AheadClassContext } from '../../../common/fancy-form/type-ahead/index';
 
 import './project-informations.scss';
@@ -16,7 +16,7 @@ class ProjectInformations extends React.Component {
   state = {
     isAddingOwner: false,
     currentChangeStatusOperationName: '',
-    shareProjectform: true
+    shareProjectform: false
   }
 
   clearOperation = () => this.setState({currentChangeStatusOperationName: ''});

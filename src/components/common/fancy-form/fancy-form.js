@@ -120,11 +120,16 @@ class FancyForm extends React.PureComponent {
     render() {
         const { formKeys, values, errors, isFormInvalid, isFormDirty, settings } = this.state;
         const { children, renderSubmitBtn, btnTitle, formClass, inputWrapperClass, labelClass, errorClass, btnClass,
-          isSubmiting } = this.props;
+          isSubmiting, animateInputs } = this.props;
+        let formClasses = '';
+        if (animateInputs) {
+          formClasses += 'animate-form-content';
+        }
+        if (formClass) formClasses += ' ' + formClass;
         return (
             <React.Fragment>
                 {children ? children(formKeys, values, errors, isFormInvalid, isFormDirty, this.handleChangeFromEvent, this.putChanges, this.handleSubmit) :
-                <form className={formClass} onSubmit={this.handleSubmit}>
+                <form className={formClasses} onSubmit={this.handleSubmit}>
                     {formKeys.map(key => {
                         if (settings[key].needsSlot && this.props[this.slots[key]])
                             return this.props[this.slots[key]](key, values, this.handleChangeFromEvent, settings[key], errors, this.handleChangeValues);
@@ -159,7 +164,7 @@ class FancyForm extends React.PureComponent {
 }
 
 FancyForm.defaultProps = {
-    formClass: 'form animate-form-content',
+    animateInputs: true,
     inputWrapperClass: 'fields-wrapper-col',
     labelClass: 'field-label',
     errorClass: 'field-error',

@@ -36,7 +36,7 @@ const ManagerContent = ({ allSkills, allSkillsCount, status, skillsData, reloadS
               </div> :
               <SkillsList allSkills={filteredList} skillsData={skillsData} handleMarking={handleMarking} />
             }
-            <div className="skills-footer flex-between-c">
+            <div className="skills-footer">
               <div className='field-block'>
                 <input onChange={handleSearching} placeholder='type here for find skill...' />
                 <div className="field-icon"><i className='fa fa-search' /></div>

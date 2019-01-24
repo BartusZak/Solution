@@ -1,8 +1,16 @@
-h3.fancy-modal-title {
-  display: flex;
-  justify-content: space-between;
-  i {
-    margin-left: auto;
-    font-size: 20px;
+.responsible-person-modal {
+  width: 96%;
+  form {
+    padding: 15px;
+    .label-btn {
+      margin: 0 auto;
+      display: block;
+    }
+  }
+  @media(min-width: 550px) {
+    width: 480px;
+    form {
+      padding: 20px;
+    }
   }
 }

@@ -15,7 +15,7 @@
   @media(max-width: 899px) {
     margin-bottom: 20px;
   }
-  ul {
+  & > ul {
     overflow-y: auto;
     margin-bottom: 20px;
     height: 100%;

@@ -6,14 +6,12 @@ const translations = {
     Employee: 'Znajdź pracownika',
     EmptyEmployeeQuery: 'Nie znaleziono pracowników o podanych parametrach'
   },
-  FancyModal: {
-    Step: 'Krok'
-  },
   DragAndDrop: {
     DroppedMessage: 'Pliki zostały upuszczone',
     TooManyFilesError: 'Upuszczono za dużo plików. Limit to '
   },
   PhaseProjectForm: {
+    Step: 'Krok',
     firstStepTitleForPhases: 'Wypełnij szczegóły fazy projektu',
     secondStepTitleForPhases: 'Uzupełnij informacje o kliencie dla fazy projektu',
     firstStepTitleForProjects: 'Uzupełnij szczegóły projektu',

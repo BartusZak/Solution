@@ -50,12 +50,11 @@ class ResponsiblePersonForm extends React.Component {
     const { initValues, isSubmitting } = this.state;
     const { backIntoProjectForm, close, shouldEdit, t } = this.props;
     return (
-      <FancyModal isLoading={isSubmitting} close={close} renderHeader={() => (
-          <h3 className="fancy-modal-title title-padding">
-            {t(`${shouldEdit ? 'modalHeaderEdit' : 'modalHeaderAdd'}`)}
-            <i onClick={backIntoProjectForm} className="fa fa-arrow-left clickable"></i>
-          </h3>
-        )}>
+      <FancyModal positionClass="responsible-person-modal m-w-h-center" isLoading={isSubmitting} close={close}>
+        <h3 className="fancy-modal-header flex-between-c">
+          {t(`${shouldEdit ? 'modalHeaderEdit' : 'modalHeaderAdd'}`)}
+          <i onClick={backIntoProjectForm} className="fa fa-arrow-left clickable"></i>
+        </h3>
         <FancyForm
           onSubmit={formData => this.handleSubmit(formData)}
           isSubmitting={isSubmitting}

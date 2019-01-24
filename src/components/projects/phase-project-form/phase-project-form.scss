@@ -1,6 +1,45 @@
 
-.fancy-modal {
-  min-width: 480px;
+.project-phase-modal {
+  width: 96%;
+  .steps-navigation {
+    display: flex;
+    height: 35px;
+    button.label-btn {
+      width: 100%;
+    }
+  }
+  h3.fancy-modal-header {
+    background: transparent;
+  }
+  .project-phase-first, .project-phase-second {
+    padding: 0 15px 15px 15px;
+    display: grid;
+    .btn-submit-form {
+      align-self: flex-end;
+      justify-self: center;
+    }
+  }
+  .project-phase-first {
+    grid-template-rows: repeat(4, auto) 40px;
+  }
+  .project-phase-second {
+    grid-template-rows: repeat(3, auto) 40px;
+  }
+  @media(min-width: 550px) {
+    width: 480px;
+    .steps-navigation {
+      height: 50px;
+      button.label-btn {
+        font-size: 16px;
+      }
+    }
+    .fancy-modal-header {
+      margin-bottom: 15px;
+    }
+    .project-phase-first, .project-phase-second {
+      padding: 0 20px 20px 20px;
+    }
+  }
 }
 .responsible-persons-select {
   i.field-icon {

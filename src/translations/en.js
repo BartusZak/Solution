@@ -6,14 +6,12 @@ const translations = {
     Employee: 'Find employee',
     EmptyEmployeeQuery: 'There is no employees for given parameters'
   },
-  FancyModal: {
-    Step: 'Step'
-  },
   DragAndDrop: {
     DroppedMessage: 'Files succesfully dropped',
     TooManyFilesError: 'Too many files dropped. Limit is '
   },
   PhaseProjectForm: {
+    Step: 'Step',
     firstStepTitleForPhases: 'Populate project phase details',
     secondStepTitleForPhases: 'Populate client details for project phase',
     firstStepTitleForProjects: 'Populate project details',

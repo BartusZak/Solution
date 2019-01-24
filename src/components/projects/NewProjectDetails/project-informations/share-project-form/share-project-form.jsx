@@ -1,7 +1,7 @@
 import React from 'react';
-import FancyModal from '../../../common/fancy-modal/fancy-modal';
-import EmployeeSearcher from '../../../shared/employee-searcher/employee-searcher';
-import Button from '../../../common/button/button';
+import FancyModal from '../../../../common/fancy-modal/fancy-modal';
+import EmployeeSearcher from '../../../../shared/employee-searcher/employee-searcher';
+import Button from '../../../../common/button/button';
 
 import './share-project-form.scss';
 class ShareProjectForm extends React.Component {
@@ -10,7 +10,6 @@ class ShareProjectForm extends React.Component {
   };
 
   addPerson = employee => {
-    console.log(employee);
     const employees = [...this.state.employees, employee];
     this.setState({employees});
   }
@@ -23,15 +22,17 @@ class ShareProjectForm extends React.Component {
     const { close } = this.props;
     const { employees } = this.state;
     return (
-      <FancyModal positionClass="share-project-form m-w-h-center" close={close} renderHeader={() => (
-        <h3 className="modal-header">Share project for person</h3>
-      )}>
+      <FancyModal positionClass="share-project-form m-w-h-center" close={close}>
 
-        <EmployeeSearcher
-          showLabel
-          employeeFilter={{ hasAccount: true, capacity: 0 }}
-          emitEmployeeClick={this.addPerson}
-        />
+        <h3 className="fancy-modal-header">Share project for person</h3>
+
+        <div className="searcher-wrapper">
+          <EmployeeSearcher
+            showLabel
+            employeeFilter={{ hasAccount: true, capacity: 0 }}
+            emitEmployeeClick={this.addPerson}
+          />
+        </div>
 
         <p className="important-par">Employees made avaible ({employees.length})</p>
 

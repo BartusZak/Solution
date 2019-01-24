@@ -81,7 +81,7 @@ class EmployeeProjectForm extends React.PureComponent {
 
 
                 <div id="role" className="fields-wrapper-col">
-                  <label className="field-label">role</label>
+                  <label className="field-label">role *</label>
 
                   <TypeAndSelect value={values.role} className="field" listName="roles" listData={this.roles}
                     placeholder="select role in project..." onChange={e => handleChangeFromEvent(e, 'role')} />
@@ -91,13 +91,13 @@ class EmployeeProjectForm extends React.PureComponent {
                 </div>
 
                 <div id="sdate" className="fields-wrapper-col">
-                  <label className="field-label">start date</label>
+                  <label className="field-label">start date *</label>
                   <DatePicker {...defaultDatePickerConfig} className="field" selected={values.startDate} onChange={date => putChanges(date, 'startDate')} />
                   <p className="field-error">{errors.startDate}</p>
                 </div>
 
                 <div id="edate" className="fields-wrapper-col">
-                  <label className="field-label">end date</label>
+                  <label className="field-label">end date *</label>
                   <DatePicker {...defaultDatePickerConfig} className="field" selected={values.endDate} onChange={date => putChanges(date, 'endDate')} />
                   <p className="field-error">{errors.endDate}</p>
                 </div>
@@ -116,7 +116,7 @@ class EmployeeProjectForm extends React.PureComponent {
               </div>
 
               <div className="form-right box-circle">
-                <p className="important-par">responsibilities in project</p>
+                <p className="important-par">responsibilities in project *</p>
                 <ul className="responsibilities">
                   {values.responsibilities.map(responsibility => (
                     <li className="element-toolbox-wrapper" key={responsibility}>
@@ -131,7 +131,7 @@ class EmployeeProjectForm extends React.PureComponent {
                 <div className="field-block">
                   <input onKeyPress={e => this.handleKeyPress(e, putChanges, values.responsibilities)}
                     onChange={this.handleResponsibilitiesChange}
-                    placeholder='type here for find skill...' />
+                    placeholder='add responsibility...' />
                   <div className="field-icon">
                     <i className={`fa fa-plus ${inputError ? 'dcmt-grey-color' : 'dcmt-light-color'}`} />
                   </div>

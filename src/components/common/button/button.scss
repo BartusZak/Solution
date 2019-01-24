@@ -202,10 +202,7 @@ button.dcmt-btn-light {
 .btn-submit-form {
   font-size: 18px;
   color: $dcmt;
-  font-weight: 500;
   text-transform: uppercase;
-  margin: 30px auto 0 auto;
-  display: block;
   &:disabled {
     color: $font-grey;
   }

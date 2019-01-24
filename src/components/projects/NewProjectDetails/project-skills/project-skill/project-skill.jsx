@@ -28,10 +28,6 @@ class ProjectSkill extends React.Component {
               </div>
             </div>
           </div>
-          <div className="detail-label">
-            <span className="dcmt-light-color">years of experience</span>
-            <span>{skillLevel}</span>
-          </div>
         </div>
 
         {handleMarking &&

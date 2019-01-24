@@ -75,7 +75,7 @@ class SkillsManagement extends React.Component {
       <Consumer>
         {(project) => (
           <FancyModal backdropClass={skillManagerClass} isLoading={isAddingSkills}
-            positionClass={`skills-modal flex-column ${skillManagerClass}`} close={close}>
+            positionClass={`skills-modal m-w-h-center ${skillManagerClass}`} close={close}>
             { isLoadingAllSkills ? <div className="spinner-new spinner-new-big spinner-new-center" /> :
               <ManagerContent countOfMarkedSkills={countOfMarkedSkills}
                 saveSkills={() => this.handleEditSkillsInProject(project.id)}

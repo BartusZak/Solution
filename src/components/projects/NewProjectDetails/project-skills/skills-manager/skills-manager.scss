@@ -1,37 +1,50 @@
 @import '../../../../../scss//new-color-schema.scss';
 div.skills-modal {
-  position: absolute;
-  padding: 20px;
   height: 500px;
-  top: 0;
   box-sizing: border-box;
-  width: 350px;
-  right: -500px;
+  width: 480px;
+  padding: 20px;
   border-radius: 5px;
   color: $font-grey;
   h3 {
     font-size: 18px;
-    grid-area: header;
     margin-bottom: 30px;
     i {
       color: $dark-font;
     }
   }
-  .not-scaled-content {
-    height: 100%;
+  .skills-footer {
     display: flex;
-    flex-flow: column;
-    .skills-list {
-      overflow-y: auto;
-      max-height: 80%;
+    justify-content: space-between;
+    .label-btn {
+      font-size: 16px;
     }
+    .field-block {
+      width: 280px;
+    }
+  }
+  .skills-list {
+    overflow-y: auto;
+  }
+  & > div {
+    display: grid;
+    height: 100%;
+    grid-template-rows: auto 1fr auto;
+    grid-gap: 20px;
+  }
+  @media(min-width: 1500px) {
+    right: -500px;
+    top: 0;
+    position: absolute;
+    left: unset; transform: none;
+  }
+  @media(max-width: 550px) {
+    width: 94%;
     .skills-footer {
-      margin-top: auto;
+      flex-flow: column;
       .field-block {
-        width: 280px;
-      }
-      .label-btn {
-        font-size: 16px;
+        margin-bottom: 25px;
+        width: 100%;
       }
     }
   }
