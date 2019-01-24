@@ -35,9 +35,9 @@ class UserSelector extends Component {
     if (!user) {
       return Promise.resolve({ options: [] });
     }
-    return useRequest('getUserByAdSearch', {})
-      .then(responsex => {
-        let usersRequest = responsex.extractData();
+    return useRequest('getUserByAdSearch', user)
+      .then(respons => {
+        let usersRequest = respons.extractData();
         let usersList = [];
         usersRequest.map((i, index) => {
           let OneUser = Object.assign(i, i.hasAccount && { disabled: true });
