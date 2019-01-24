@@ -68,7 +68,7 @@ class EmployeeProjectForm extends React.PureComponent {
             <form className="employees-project-form" onSubmit={handleSubmit}>
 
               <div className="form-left">
-                <p id="header" className="important-par">Add employee to project</p>
+                <p id="header" className="important-par">Add employee to project {values.length}</p>
 
                 <div id="employee" className="fields-wrapper-col">
                   <EmployeeSearcher
@@ -122,18 +122,18 @@ class EmployeeProjectForm extends React.PureComponent {
                     <li className="element-toolbox-wrapper" key={responsibility}>
                       {responsibility}
                       <div className="element-toolbox">
-                        <i className="fa fa-times"></i>
+                        <i onClick={() => putChanges(values.responsibilities.filter(r => r !== responsibility), 'responsibilities')} className="fa fa-times"></i>
                       </div>
                     </li>
                   ))}
                 </ul>
-                <p className="field-error">{errors.responsibilities || inputError}</p>
+                <p className="field-error">{inputError || errors.responsibilities}</p>
                 <div className="field-block">
                   <input onKeyPress={e => this.handleKeyPress(e, putChanges, values.responsibilities)}
                     onChange={this.handleResponsibilitiesChange}
                     placeholder='type here for find skill...' />
                   <div className="field-icon">
-                    <i className={`fa fa-plus ${(errors.responsibilities || inputError) ? 'dcmt-grey-color' : 'dcmt-light-color'}`} />
+                    <i className={`fa fa-plus ${inputError ? 'dcmt-grey-color' : 'dcmt-light-color'}`} />
                   </div>
                 </div>
               </div>
@@ -145,7 +145,6 @@ class EmployeeProjectForm extends React.PureComponent {
     );
   }
 }
-
 
 const mapDispatchToProps = dispatch => {
   return {

@@ -5,6 +5,7 @@ import { deleteProject, reactivateProject, closeProject, addOwnerToProject } fro
 import { connect } from 'react-redux';
 import Button from '../../../common/button/button';
 import EmployeeSearcher from '../../../shared/employee-searcher/employee-searcher';
+import ShareProjectForm from '../share-project-form/share-project-form';
 import { AheadClassContext } from '../../../common/fancy-form/type-ahead/index';
 
 import './project-informations.scss';
@@ -14,10 +15,12 @@ const { Provider } = AheadClassContext;
 class ProjectInformations extends React.Component {
   state = {
     isAddingOwner: false,
-    currentChangeStatusOperationName: ''
+    currentChangeStatusOperationName: '',
+    shareProjectform: true
   }
 
   clearOperation = () => this.setState({currentChangeStatusOperationName: ''});
+  togleShareProjectForm = () => this.setState({shareProjectform: !this.state.shareProjectform});
 
   deleteProject = id => {
     this.setState({currentChangeStatusOperationName: deleting});
@@ -48,7 +51,7 @@ class ProjectInformations extends React.Component {
   }
 
   render() {
-    const { currentChangeStatusOperationName: operationName, isAddingOwner } = this.state;
+    const { currentChangeStatusOperationName: operationName, isAddingOwner, shareProjectform } = this.state;
     const { project, togleEditForm, toglePhaseForm } = this.props;
     const { id, name, description, responsiblePerson, owners, status, isDeleted, startDate, estimatedEndDate, client, cloud, parentId } = project;
     const projectState = calculateProjectState(status, isDeleted);
@@ -117,12 +120,12 @@ class ProjectInformations extends React.Component {
         <div className="project-owners flex-row-center carousel element-scroll">
 
           {owners.map(({id, fullName}) => (
-            <div key={id} className="owner flex-row-center">
+            <div key={id} className="name-and-avatar">
               <div className="user-avatar-medium">
                 <img src="https://dev.dcmtbillennium.com/ProfiledPhotos/bploszynski.jpg" />
               </div>
 
-              <div className="owner-details">
+              <div className="details">
                 <span>{fullName}</span>
               </div>
             </div>
@@ -141,7 +144,7 @@ class ProjectInformations extends React.Component {
             </Button>
           }
 
-          <Button title="SHARE PROJECT" mainClass="dcmt-main-btn dcmt-light-btn animated-icon-btn">
+          <Button onClick={this.togleShareProjectForm} title="SHARE PROJECT" mainClass="dcmt-main-btn dcmt-light-btn animated-icon-btn">
             <i className="fa fa-share-alt-square"></i>
           </Button>
 
@@ -165,6 +168,9 @@ class ProjectInformations extends React.Component {
           }
         </div>
 
+        {shareProjectform &&
+          <ShareProjectForm close={this.togleShareProjectForm}/>
+        }
       </div>
     );
   }
