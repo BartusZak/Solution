@@ -1,17 +1,17 @@
-import React, { Component } from "react";
-import Icon from "../common/Icon";
-import SmoothTable from "../common/SmoothTable";
-import { connect } from "react-redux";
-import Confirmation from "../common/modals/Confirmation";
-import { setActionConfirmation } from "../../actions/asyncActions";
-import Modal from "react-responsive-modal";
-import EditUserDetails from "../users/modals/EditUserDetails";
-import WebApi from "../../api";
-import PropTypes from "prop-types";
-import { translate } from "react-translate";
-import IntermediateBlock from "./../common/IntermediateBlock";
-import binaryPermissioner from "./../../api/binaryPermissioner";
-import "../../scss/components/users/UsersList.scss";
+import React, { Component } from 'react';
+import Icon from '../common/Icon';
+import SmoothTable from '../common/SmoothTable';
+import { connect } from 'react-redux';
+import Confirmation from '../common/modals/Confirmation';
+import { setActionConfirmation } from '../../actions/asyncActions';
+import Modal from 'react-responsive-modal';
+import EditUserDetails from '../users/modals/EditUserDetails';
+import WebApi from '../../api';
+import PropTypes from 'prop-types';
+import { translate } from 'react-translate';
+import IntermediateBlock from './../common/IntermediateBlock';
+import binaryPermissioner from './../../api/binaryPermissioner';
+import '../../scss/components/users/UsersList.scss';
 
 class UsersList extends Component {
   constructor(props) {
@@ -21,8 +21,8 @@ class UsersList extends Component {
       user: {},
       responseBlock: {},
       loading: false,
-      show: "isActivated",
-      searchQuery: "",
+      show: 'isActivated',
+      searchQuery: '',
       settings: {}
     };
   }
@@ -49,21 +49,21 @@ class UsersList extends Component {
 
   handleCloseModal = object => {
     this.setState({ showModal: false }, () => {
-      object && object.afterClose === "reloadList"
+      object && object.afterClose === 'reloadList'
         ? this.props.pageChange(1, Object.assign({ isNotActivated: true }))
         : null;
     });
   };
 
   rolesArrayToSignificantSymbol(rolesArray) {
-    const symbol = ["D", "S", "H", "T", "A", "M"];
+    const symbol = ['D', 'S', 'H', 'T', 'A', 'M'];
     const roles = [
-      "Developer",
-      "Tradesman",
-      "Human Resources",
-      "Team Leader",
-      "Administrator",
-      "Manager"
+      'Developer',
+      'Tradesman',
+      'Human Resources',
+      'Team Leader',
+      'Administrator',
+      'Manager'
     ];
     let symbols = [];
 
@@ -71,7 +71,7 @@ class UsersList extends Component {
       if (rolesArray.indexOf(roles[i]) >= 0)
         symbols.push(
           <span
-            className={"user-role-symbol " + roles[i]}
+            className={'user-role-symbol ' + roles[i]}
             key={i}
             title={roles[i]}
           >
@@ -79,39 +79,45 @@ class UsersList extends Component {
           </span>
         );
       else {
-        symbols.push(<span className={"user-role-symbol"} key={i} />);
+        symbols.push(<span className={'user-role-symbol'} key={i} />);
       }
     }
     return symbols;
   }
 
-  handleChangeSettings = (settings) => {
+  handleChangeSettings = settings => {
     this.setState({
       settings: settings
-    })
-  }
+    });
+  };
 
   render() {
     const { t } = this.props;
 
     let construct = {
-      rowClass: "user-block",
-      tableClass: "users-list-container",
-      keyField: "id",
+      rowClass: 'user-block',
+      tableClass: 'users-list-container',
+      keyField: 'id',
       pageChange: this.props.pageChange,
-      defaultSortField: "lastName",
+      defaultSortField: 'lastName',
       defaultSortAscending: true,
       filtering: true,
-      filterClass: "UserFilter",
-      showDeletedCheckbox: binaryPermissioner(false)(1)(0)(1)(1)(1)(1)(this.props.binPem),
-      showNotActivatedAccountsCheckbox: binaryPermissioner(false)(1)(0)(1)(1)(1)(1)(this.props.binPem),
-      showActivatedCheckbox: binaryPermissioner(false)(1)(0)(1)(1)(1)(1)(this.props.binPem),
+      filterClass: 'UserFilter',
+      showDeletedCheckbox: binaryPermissioner(false)(1)(0)(1)(1)(1)(1)(
+        this.props.binPem
+      ),
+      showNotActivatedAccountsCheckbox: binaryPermissioner(false)(1)(0)(1)(1)(
+        1
+      )(1)(this.props.binPem),
+      showActivatedCheckbox: binaryPermissioner(false)(1)(0)(1)(1)(1)(1)(
+        this.props.binPem
+      ),
       disabledRowComparator: object => {
         return object.isDeleted;
       },
       operators: [
         {
-          pretty: t("Add"),
+          pretty: t('Add'),
           click: () => {
             this.props.openAddUserModal();
           },
@@ -122,37 +128,37 @@ class UsersList extends Component {
       columns: [
         {
           width: 1,
-          pretty: "Role",
+          pretty: 'Role',
           manualResolver: (user, column) => {
             return this.rolesArrayToSignificantSymbol(user.roles);
           }
         },
         {
           width: 20,
-          field: "firstName",
-          pretty: t("Name"),
-          type: "text",
+          field: 'firstName',
+          pretty: t('Name'),
+          type: 'text',
           filter: true
         },
         {
           width: 30,
-          field: "lastName",
-          pretty: t("Surname"),
-          type: "text",
+          field: 'lastName',
+          pretty: t('Surname'),
+          type: 'text',
           filter: true
         },
         {
           width: 30,
-          field: "email",
-          pretty: t("Email"),
-          type: "text",
+          field: 'email',
+          pretty: t('Email'),
+          type: 'text',
           filter: true
         },
         {
           width: 19,
-          field: "phoneNumber",
-          pretty: t("Phone"),
-          type: "text",
+          field: 'phoneNumber',
+          pretty: t('Phone'),
+          type: 'text',
           filter: true
         },
         {
@@ -161,17 +167,17 @@ class UsersList extends Component {
             binaryPermissioner(false)(0)(0)(0)(0)(0)(1)(this.props.binPem),
           toolBox: [
             {
-              icon: { icon: "sync-alt" },
-              title: t("ReactivateUserImperativus"),
+              icon: { icon: 'sync-alt' },
+              title: t('ReactivateUserImperativus'),
               click: object => {
                 this.props.dispatch(
                   setActionConfirmation(true, {
-                    key: "reactivateUser",
-                    string: `${t("ReactivateUserInfinitive")} ${
+                    key: 'reactivateUser',
+                    string: `${t('ReactivateUserInfinitive')} ${
                       object.firstName
                     } ${object.lastName}`,
                     id: object.id,
-                    successMessage: t("UserReactivated")
+                    successMessage: t('UserReactivated')
                   })
                 );
               },
@@ -180,17 +186,17 @@ class UsersList extends Component {
                 binaryPermissioner(false)(0)(0)(0)(0)(0)(1)(this.props.binPem)
             },
             {
-              icon: { icon: "times" },
-              title: t("DeleteUserImperativus"),
+              icon: { icon: 'times' },
+              title: t('DeleteUserImperativus'),
               click: object => {
                 this.props.dispatch(
                   setActionConfirmation(true, {
-                    key: "deleteUser",
-                    string: `${t("DeleteUserInfinitive")} ${object.firstName} ${
+                    key: 'deleteUser',
+                    string: `${t('DeleteUserInfinitive')} ${object.firstName} ${
                       object.lastName
                     }`,
                     id: object.id,
-                    successMessage: t("UserDeleted")
+                    successMessage: t('UserDeleted')
                   })
                 );
               },
@@ -199,8 +205,8 @@ class UsersList extends Component {
                 binaryPermissioner(false)(0)(0)(0)(0)(0)(1)(this.props.binPem)
             },
             {
-              icon: { icon: "edit", iconType: "far" },
-              title: t("EditUserImperativus"),
+              icon: { icon: 'edit', iconType: 'far' },
+              title: t('EditUserImperativus'),
               click: object => {
                 this.handleGetUser(Object.assign({}, object));
               },
@@ -209,31 +215,31 @@ class UsersList extends Component {
                 binaryPermissioner(false)(0)(0)(0)(0)(0)(1)(this.props.binPem)
             }
           ],
-          pretty: t("DeleteEdit")
+          pretty: t('DeleteEdit')
         }
       ]
     };
 
-    if (this.props.show === "isNotActivated") {
+    if (this.props.show === 'isNotActivated') {
       construct.columns[0] = {
         width: 25,
-        field: "dateOfRequest",
-        pretty: t("Date"),
-        type: "date",
+        field: 'dateOfRequest',
+        pretty: t('Date'),
+        type: 'date',
         filter: true
       };
-      construct.defaultSortField = "dateOfRequest";
+      construct.defaultSortField = 'dateOfRequest';
       construct.columns[5].toolBox = [
         {
-          icon: { icon: "times" },
-          title: t("DeleteUserRequestImperativus"),
+          icon: { icon: 'times' },
+          title: t('DeleteUserRequestImperativus'),
           click: object => {
             this.props.dispatch(
               setActionConfirmation(true, {
-                key: "deleteUserRequest",
-                string: `${t("DeleteUserRequestInfinitive")} ${object.id}`,
+                key: 'deleteUserRequest',
+                string: `${t('DeleteUserRequestInfinitive')} ${object.id}`,
                 id: object.id,
-                successMessage: t("UserRequestDeleted")
+                successMessage: t('UserRequestDeleted')
               })
             );
           },
@@ -241,8 +247,8 @@ class UsersList extends Component {
             binaryPermissioner(false)(0)(0)(0)(0)(0)(1)(this.props.binPem)
         },
         {
-          icon: { icon: "plus" },
-          title: t("AddUserWhenRequestImperativus"),
+          icon: { icon: 'plus' },
+          title: t('AddUserWhenRequestImperativus'),
           click: object => {
             this.handleGetUser(object);
           },
@@ -264,7 +270,7 @@ class UsersList extends Component {
         />
         <Modal
           open={this.state.showModal}
-          classNames={{ modal: "Modal Modal-users" }}
+          classNames={{ modal: 'Modal Modal-users' }}
           contentLabel="Edit users details"
           onClose={this.handleCloseModal}
         >
@@ -286,7 +292,7 @@ class UsersList extends Component {
         loaded={!this.state.loading}
         render={render}
         resultBlock={this.props.resultBlock}
-        _className={"content-container"}
+        _className={'content-container'}
       />
     );
   }
@@ -312,4 +318,4 @@ UsersList.propTypes = {
   resultBlock: PropTypes.object
 };
 
-export default connect(mapStateToProps)(translate("UsersList")(UsersList));
+export default connect(mapStateToProps)(translate('UsersList')(UsersList));
