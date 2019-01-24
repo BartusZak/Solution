@@ -1,8 +1,8 @@
-import React, { Component } from "react";
-import StageOne from "./StageOne";
-import StageTwo from "./StageTwo";
-import WebApi, { useRequest } from "../../../api";
-import PropTypes from "prop-types";
+import React, { Component } from 'react';
+import StageOne from './StageOne';
+import StageTwo from './StageTwo';
+import WebApi, { useRequest } from '../../../api';
+import PropTypes from 'prop-types';
 
 const initialState = {
   selectedUser: {},

@@ -123,8 +123,18 @@ const params = obj => {
   };
 };
 
-const execute = (key, path = '', type = requestTypes.get, payload = {}) => {
-  const fullPath = `${API_ENDPOINT}/${path}`;
+const execute = (
+  key,
+  path = '',
+  type = requestTypes.get,
+  payload = {},
+  sendAzureToken
+) => {
+  let fullPath = sendAzureToken
+    ? `${API_ENDPOINT}/${path}?azureToken=${
+        store.getState().authReducer.azureData.access_token
+      }`
+    : `${API_ENDPOINT}/${path}`;
 
   return axios[type](fullPath, payload)
     .then(response => parseSuccess(response, key))
@@ -658,7 +668,7 @@ const requests = {
     execute(fromAlertSettings.getUserByAdSearch, `account/searchAD/${query}`),
   addUser: (id, roles) =>
     execute(fromAlertSettings.addUser, `account/add`, requestTypes.post, {
-      id,
+      azureAdId: id,
       roles
     }),
   searchUsers: (settings = {}) =>
@@ -673,8 +683,10 @@ const requests = {
       fromAlertSettings.searchRequestsUsers,
       `account/requests`,
       requestTypes.post,
-      settings
+      settings,
+      true
     ),
+
   // login: (login, password) => execute(fromAlertSettings.login, `account/login`, requestTypes.post, {login, password})
   //   .then(response => response.data.dtoObject),
   // logout: () => execute(fromAlertSettings.logout, `account/logout`, requestTypes.post),
