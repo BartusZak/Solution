@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import WebApi from '../../api';
+import { useRequest } from '../../api';
 import Chart from 'react-c3-component';
 import 'c3/c3.min.css';
 import IntermediateBlock from './../common/IntermediateBlock';
@@ -42,8 +42,7 @@ class StatsContainer extends Component {
   }
 
   loadStats = () => {
-    WebApi.stats.get
-      .basic()
+    useRequest('getStats')
       .then(result => {
         this.setState({
           loaded: true,
