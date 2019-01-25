@@ -1,22 +1,21 @@
 import {
   LOAD_PROJECTS_SUCCESS,
   LOGOUT,
-  GET_PROJECT,
+  SET_PROJECT_DATA,
   ADD_EMPLOYEE_TO_PROJECT,
   ADD_FEEDBACK,
   GET_FEEDBACKS,
   EDIT_FEEDBACK,
   DELETE_FEEDBACK,
-  CHANGE_PROJECT_SKILLS,
-  ADD_SKILLS_TO_PROJECT,
-  CHANGE_PROJECT_STATE,
   GET_SUGGEST_EMPLOYEES,
   CHANGE_GET_SUGGEST_EMPLOYEES_STATUS,
-  ADD_PROJECT_OWNER_TO_PROJECT,
   EDIT_EMPLOYEE_ASSIGNMENT,
   DELETE_EMPLOYEE_ASSIGNMENT,
   UPDATE_PROJECT,
-  ADD_PHASE
+  ADD_PHASE,
+  ADD_OWNER,
+  CHANGE_PROJECT_STATUS,
+  PUT_SKILLS_INTO_PROJECT
 } from "../constants";
 import { updateObject } from "../services/methods";
 const initialState = {
@@ -26,12 +25,7 @@ const initialState = {
   clients: [],
   resultBlock: null,
 
-  project: null,
-  loadProjectStatus: null,
-  loadProjectErrors: [],
-
-  responsiblePersonKeys: [],
-  overViewKeys: [],
+  project: null, projectResult: {status: null},
 
   addEmployeeToProjectStatus: null,
   addEmployeeToProjectErrors: [],
@@ -53,23 +47,10 @@ const initialState = {
   editFeedbackStatus: null,
   editFeedbackErrors: [],
 
-  changeProjectSkillsStatus: null,
-  changeProjectSkillsErrors: [],
-
-  addSkillsToProjectStatus: null,
-  addSkillsToProjectErrors: [],
-
-  changeProjectStateStatus: null,
-  changeProjectStateErrors: [],
-  currentOperation: "",
-
   getSuggestEmployeesStatus: null,
   getSuggestEmployeesError: [],
 
-  suggestEmployees: {},
-
-  addProjectOwnerToProjectStatus: null,
-  addProjectOwnerToProjectErrors: []
+  suggestEmployees: {}
 };
 
 export const projectsReducer = (state = initialState, action) => {
@@ -88,11 +69,24 @@ export const projectsReducer = (state = initialState, action) => {
       return {
         ...state, project: {...state.project, projectPhases: [...state.project.projectPhases, action.phase]}
       };
-    case ADD_PROJECT_OWNER_TO_PROJECT:
-      return updateObject(state, {
-        addProjectOwnerToProjectStatus: action.addProjectOwnerToProjectStatus,
-        addProjectOwnerToProjectErrors: action.addProjectOwnerToProjectErrors
-      });
+    case CHANGE_PROJECT_STATUS:
+      const project = { ...state.project, isDeleted: action.isDeleted };
+      if (action.status !== null)
+        project.status = action.status;
+      return { ...state, project };
+    case SET_PROJECT_DATA:
+      return {
+        ...state, project: action.project, projectResult: action.projectResult
+      }
+    case ADD_OWNER:
+      return {
+        ...state, project: {...state.project, owners: [action.owner, ...state.project.owners] }
+      };
+    case PUT_SKILLS_INTO_PROJECT:
+    console.log(action.skills);
+      return {
+        ...state, project: { ...state.project, skills: action.skills }
+      };
     case LOAD_PROJECTS_SUCCESS:
       return updateObject(state, {
         projects: action.projects.results,
@@ -106,14 +100,6 @@ export const projectsReducer = (state = initialState, action) => {
         currentPage: 1,
         totalPageCount: 1
       };
-    case GET_PROJECT:
-      return updateObject(state, {
-        project: action.project,
-        loadProjectStatus: action.loadProjectStatus,
-        loadProjectErrors: action.loadProjectErrors,
-        responsiblePersonKeys: action.responsiblePersonKeys,
-        overViewKeys: action.overViewKeys
-      });
     case ADD_EMPLOYEE_TO_PROJECT:
       return updateObject(state, {
         addEmployeeToProjectStatus: action.addEmployeeToProjectStatus,
@@ -157,23 +143,6 @@ export const projectsReducer = (state = initialState, action) => {
         deleteFeedbackErrors: action.deleteFeedbackErrors
       });
 
-    case CHANGE_PROJECT_SKILLS:
-      return updateObject(state, {
-        changeProjectSkillsStatus: action.changeProjectSkillsStatus,
-        changeProjectSkillsErrors: action.changeProjectSkillsErrors
-      });
-
-    case ADD_SKILLS_TO_PROJECT:
-      return updateObject(state, {
-        addSkillsToProjectStatus: action.addSkillsToProjectStatus,
-        addSkillsToProjectErrors: action.addSkillsToProjectErrors
-      });
-    case CHANGE_PROJECT_STATE:
-      return updateObject(state, {
-        changeProjectStateStatus: action.changeProjectStateStatus,
-        changeProjectStateErrors: action.changeProjectStateErrors,
-        currentOperation: action.currentOperation
-      });
     case GET_SUGGEST_EMPLOYEES:
       return updateObject(state, { suggestEmployees: action.suggestEmployees });
     case CHANGE_GET_SUGGEST_EMPLOYEES_STATUS:

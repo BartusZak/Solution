@@ -1,4 +1,5 @@
-//Login
+//Assignments
+export const assignEmployeeToProject = 'assignEmployeeToProject';
 export const login = 'login';
 export const loginAzureAD = 'loginAzureAD';
 
@@ -24,10 +25,19 @@ export const editEmployee = 'editEmployee';
 export const reactivateEmployee = 'reactivateEmployee';
 
 // Projects
+export const getProject = 'getProject';
 export const getProjects = 'getProjects';
 export const addProject = 'addProject';
 export const editProject = 'editProject';
 export const addProjectPhase = 'addProjectPhase';
+export const reactivateProject = 'reactivateProject';
+export const closeProject = 'closeProject';
+export const deleteProject = 'deleteProject';
+export const addOwnerToProject = 'addOwnerToProject';
+export const editSkillsInProject = 'editSkillsInProject';
+
+// Skills
+export const loadAllSkills = 'loadAllSkills';
 
 // Quarter talks
 export const getQuarterTalks = 'getquarterTalks';
@@ -75,7 +85,7 @@ export const deleteCertificate = 'deleteCertificate';
 // Feedbacks
 export const getFeedbacksByEmployee = 'getFeedbacksByEmployee';
 export const getFeedbacksbyEmployeeInProject = 'getFeedbacksbyEmployeeInProject';
-export const addFeedback = 'addFeedback'; 
+export const addFeedback = 'addFeedback';
 export const editFeedback = 'editFeedback';
 export const deleteFeedback = 'deleteFeedback';
 
@@ -85,10 +95,10 @@ export const addSharedEmployee = 'addSharedEmployee';
 export const deleteSharedEmployee = 'deleteSharedEmployee';
 
 // Users
-export const getUserById = 'getUserById'; 
+export const getUserById = 'getUserById';
 export const getUserByAdSearch = 'getUserByAdSearch';
 export const addUser = 'addUser';
-export const searchUsers = 'searchUsers'; 
+export const searchUsers = 'searchUsers';
 export const searchRequestsUsers = 'searchRequestsUsers';
 export const deleteUser = 'deleteUser';
 export const deleteUserRequest = 'deleteUserRequest';
@@ -177,6 +187,8 @@ export const importCV = 'importCV';
 export const errorsBlackList = ['loginAzureAD'];
 
 export const succOperationsWhiteObject = {
+  // Assignments
+  assignEmployeeToProject: { pl: 'Pracownik został pomyślnie przypisany do projektu', en: 'Employee has been succesfully assigned into project'},
   //Login
   loggedIn: {
     pl: 'Zalogowano pomyślnie!',
@@ -186,6 +198,11 @@ export const succOperationsWhiteObject = {
   addProject: {pl: 'Projekt został pomyślnie dodany', en: 'Project has been succesfully added'},
   editProject: {pl: 'Projekt został pomyślnie edytowany', en: 'Project has been succesfully modified'},
   addProjectPhase: {pl: 'Faza projektu została pomyślnie stworzona', en: 'Project phase has been succesfully created'},
+  reactivateProject: {pl: 'Projekt został pomyślnie aktywowany', en: 'Project has been succesfully activated'},
+  closeProject: {pl: 'Projekt został pomyślnie zamknięty', en: 'Project has been succesfully closed'},
+  deleteProject: {pl: 'Projekt został pomyślnie usunięty', en: 'Project has been succesfully deleted'},
+  addOwnerToProject: {pl: 'Dodano noweg właściciela', en: 'New owner has been added'},
+  editSkillsInProject: {pl: 'Umiejętności projektu zostały zmienione', en: 'Skills is project has been changed'},
 
   // Reponsible person
   createResponsiblePerson: {
@@ -227,16 +244,16 @@ export const succOperationsWhiteObject = {
 
   deleteNotifications: {pl: 'Pomyślnie usunięto powiadomienie', en: 'Successfully deleted notification'},
   deleteAllNotifications: {pl: 'Pomyślnie usunięto powiadomienia', en: 'Successfully deleted notifications'},
-  
+
   addClient: {pl: "Pomyślnie dodano klienta", en: "Client has been succesfully added"},
   editInfoClient: {pl: 'Pomyślnie edytowano klienta', en: 'Client has been succesfully edited'},
   reactivateClient: {pl: 'Pomyślnie przywrócono klienta', en: 'Client has been successfully reactivated'},
 
   addCertificate: {pl:'Certyfikat został pomyślnie dodany', en: 'Certificate has been successfully added'},
-  editCertificate: {pl: 'Certyfikat został pomyślnie edytowany', en: 'Certificate has been successfully edited'},  
+  editCertificate: {pl: 'Certyfikat został pomyślnie edytowany', en: 'Certificate has been successfully edited'},
   deleteCertificate: {pl: 'Certyfikat został pomyślnie usunięty', en: 'Certificate has been successfully deleted'},
 
-  addFeedback: {pl: 'Opinia została dodana pomyślnie', en: 'Feedback has been succesfully added'}, 
+  addFeedback: {pl: 'Opinia została dodana pomyślnie', en: 'Feedback has been succesfully added'},
   editFeedback: {pl: 'Opinia została edytowana pomyślnie', en: 'Feedback has been succesfully edited'},
   deleteFeedback: {pl: 'Opinia została usunięta pomyślnie', en: 'Feedback has been succesfully deleted'},
 

@@ -1,13 +1,13 @@
-import React from 'react';
-import { Route, withRouter } from 'react-router-dom';
-import Header from './header/Header';
-import Content from './Content';
-import '../../scss/containers/MainContainer.scss';
-import PropTypes from 'prop-types';
-import 'react-responsive-modal/lib/react-responsive-modal.css';
+import React from "react";
+import Header from "./header/Header";
+import Content from "./Content";
+import PropTypes from "prop-types";
+
+import "../../scss/containers/MainContainer.scss";
+import "react-responsive-modal/lib/react-responsive-modal.css";
 
 class MainContainer extends React.Component {
-  constructor(props, match) {
+  constructor(props) {
     super(props);
   }
 

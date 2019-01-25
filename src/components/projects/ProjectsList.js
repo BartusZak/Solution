@@ -1,17 +1,15 @@
-import React from 'react';
-import Icon from '../common/Icon';
-import SmoothTable from '../common/SmoothTable';
-import { setActionConfirmation } from './../../actions/asyncActions';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
-import { translate } from 'react-translate';
+import React from "react";
+import SmoothTable from "../common/SmoothTable";
+import { setActionConfirmation } from "./../../actions/asyncActions";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
+import { translate } from "react-translate";
 import { withRouter } from 'react-router-dom';
-import binaryPermissioner from './../../api/binaryPermissioner';
-import specialPermissioner from './../../api/specialPermissioner';
-import { bindActionCreators } from 'redux';
+import binaryPermissioner from "./../../api/binaryPermissioner";
+import specialPermissioner from "./../../api/specialPermissioner";
 import PhaseProjectForm from './phase-project-form/phase-project-form';
 
-import '../../scss/components/projects/ProjectsList.scss';
+import "../../scss/components/projects/ProjectsList.scss";
 class ProjectsList extends React.Component {
   state = {
     project: {},
@@ -23,26 +21,26 @@ class ProjectsList extends React.Component {
 
   componentDidUpdate = prevProps => {
     if (prevProps.projects !== this.props.projects) {
-      this.setState({ projectToEdit: null, openProjectForm: false });
+      this.setState({projectToEdit: null, openProjectForm: false});
     }
-  };
+  }
 
   render() {
     const { openProjectForm, projectToEdit } = this.state;
     const { t, match, history } = this.props;
     const construct = {
-      rowClass: 'project-block',
-      tableClass: 'projects-list-container',
-      keyField: 'id',
+      rowClass: "project-block",
+      tableClass: "projects-list-container",
+      keyField: "id",
       pageChange: this.props.pageChange,
-      defaultSortField: 'name',
+      defaultSortField: "name",
       defaultSortAscending: true,
       filtering: true,
-      filterClass: 'ProjectFilter',
+      filterClass: "ProjectFilter",
       rowDetailUnfurl: true,
       showDeletedCheckbox: true,
       showAllCheckbox: true,
-      redirectPath: '/main/projects/',
+      redirectPath: "/main/projects/",
       disabledRowComparator: object => {
         return object.isDeleted;
       },
@@ -52,27 +50,27 @@ class ProjectsList extends React.Component {
         },
         ownerDelete: (ownerId, projectId) => {
           this.props.setActionConfirmation(true, {
-            key: 'deleteProjectOwner',
-            string: t('DeleteOwnerFuture', { ownerId, projectId }),
+            key: "deleteProjectOwner",
+            string: t("DeleteOwnerFuture", { ownerId, projectId }),
             ownerId,
             projectId,
-            successMessage: t('OwnerHasBeenDeleted')
+            successMessage: t("OwnerHasBeenDeleted")
           });
         },
         putSkills: (projectId, skillsArray) => {
           this.props.setActionConfirmation(true, {
-            key: 'putProjectSkills',
-            string: t('ChangeSkillSettingsFuture', { projectId }),
+            key: "putProjectSkills",
+            string: t("ChangeSkillSettingsFuture", { projectId }),
             skillsArray,
             projectId,
-            successMessage: t('SettingsHaveBeenSaved')
+            successMessage: t("SettingsHaveBeenSaved")
           });
         }
       },
       operators: [
         {
-          pretty: t('Add'),
-          click: () => this.setState({ openProjectForm: true }),
+          pretty: t("Add"),
+          click: () => this.setState({openProjectForm: true}),
           comparator: () =>
             binaryPermissioner(false)(0)(0)(0)(1)(1)(1)(this.props.binPem)
         }
@@ -80,59 +78,59 @@ class ProjectsList extends React.Component {
       columns: [
         {
           width: 20,
-          field: 'name',
-          pretty: t('ProjectName'),
-          type: 'text',
+          field: "name",
+          pretty: t("ProjectName"),
+          type: "text",
           filter: true
         },
         {
           width: 20,
-          field: 'client',
-          pretty: t('Client'),
-          type: 'text',
+          field: "client",
+          pretty: t("Client"),
+          type: "text",
           filter: true
         },
         {
           width: 20,
-          field: 'startDate',
-          pretty: t('StartDate'),
-          type: 'date',
+          field: "startDate",
+          pretty: t("StartDate"),
+          type: "date",
           filter: true,
-          filterFieldOverride: 'fromDate'
+          filterFieldOverride: "fromDate"
         },
         {
           width: 20,
-          field: 'estimatedEndDate',
-          pretty: t('EndDate'),
-          type: 'date',
+          field: "estimatedEndDate",
+          pretty: t("EndDate"),
+          type: "date",
           filter: true,
-          filterFieldOverride: 'toDate'
+          filterFieldOverride: "toDate"
         },
         {
           width: 10,
-          field: 'status',
-          pretty: t('Status'),
+          field: "status",
+          pretty: t("Status"),
           multiState: {
-            null: t('SelectStatus'),
-            0: t('Activated'),
-            1: t('NotActivated'),
-            2: t('Closed')
+            null: t("SelectStatus"),
+            0: t("Activated"),
+            1: t("NotActivated"),
+            2: t("Closed")
           },
-          type: 'multiState',
+          type: "multiState",
           filter: true
         },
         {
           width: 1,
           toolBox: [
             {
-              icon: { icon: 'minus-square', iconType: 'fas' },
-              title: t('CloseProjectImperativus'),
+              icon: { icon: "minus-square", iconType: "fas" },
+              title: t("CloseProjectImperativus"),
               click: object => {
                 this.props.setActionConfirmation(true, {
-                  key: 'closeProject',
-                  string: `${t('CloseProjectInfinitive')} ${object.name}`,
+                  key: "closeProject",
+                  string: `${t("CloseProjectInfinitive")} ${object.name}`,
                   id: object.id,
-                  successMessage: t('ProjectClosed')
+                  successMessage: t("ProjectClosed")
                 });
               },
               comparator: object => {
@@ -150,14 +148,14 @@ class ProjectsList extends React.Component {
               }
             },
             {
-              icon: { icon: 'eject', iconType: 'fas' },
-              title: t('ReactivateProjectImperativus'),
+              icon: { icon: "eject", iconType: "fas" },
+              title: t("ReactivateProjectImperativus"),
               click: object => {
                 this.props.setActionConfirmation(true, {
-                  key: 'reactivateProject',
-                  string: `${t('ReactivateProjectInfinitive')} ${object.name}`,
+                  key: "reactivateProject",
+                  string: `${t("ReactivateProjectInfinitive")} ${object.name}`,
                   id: object.id,
-                  successMessage: t('ProjectReactivated')
+                  successMessage: t("ProjectReactivated")
                 });
               },
               comparator: object => {
@@ -174,14 +172,14 @@ class ProjectsList extends React.Component {
               }
             },
             {
-              icon: { icon: 'times' },
-              title: t('DeleteProjectImperativus'),
+              icon: { icon: "times" },
+              title: t("DeleteProjectImperativus"),
               click: object => {
                 this.props.setActionConfirmation(true, {
-                  key: 'deleteProject',
-                  string: `${t('DeleteProjectInfinitive')} ${object.name}`,
+                  key: "deleteProject",
+                  string: `${t("DeleteProjectInfinitive")} ${object.name}`,
                   id: object.id,
-                  successMessage: t('ProjectDeleted')
+                  successMessage: t("ProjectDeleted")
                 });
               },
               comparator: object => {
@@ -198,9 +196,9 @@ class ProjectsList extends React.Component {
               }
             },
             {
-              icon: { icon: 'pen-square', iconType: 'fas' },
-              title: t('EditProject'),
-              click: project => this.setState({ projectToEdit: project }),
+              icon: { icon: "pen-square", iconType: "fas" },
+              title: t("EditProject"),
+              click: project => this.setState({projectToEdit: project}),
               comparator: object => {
                 return (
                   specialPermissioner().projects.isOwner(
@@ -212,8 +210,8 @@ class ProjectsList extends React.Component {
               }
             },
             {
-              icon: { icon: 'sign-in-alt', iconType: 'fas' },
-              title: t('SeeMore'),
+              icon: { icon: "sign-in-alt", iconType: "fas" },
+              title: t("SeeMore"),
               click: object => {
                 history.push(`${match.url}/${object.id}`);
               },
@@ -228,7 +226,7 @@ class ProjectsList extends React.Component {
               }
             }
           ],
-          pretty: ''
+          pretty: ""
         }
       ]
     };
@@ -243,18 +241,14 @@ class ProjectsList extends React.Component {
           construct={construct}
         />
 
-        {(openProjectForm || projectToEdit) && (
-          <PhaseProjectForm
-            projectToEdit={projectToEdit}
+        {(openProjectForm || projectToEdit) &&
+          <PhaseProjectForm projectToEdit={projectToEdit}
             onSubmitSucc={projectId => {
-              this.setState({ openProjectForm: false });
-              if (projectId) history.push(match.url + '/' + projectId);
+              this.setState({openProjectForm: false});
+              if (projectId) history.push(match.url + "/" + projectId);
             }}
-            close={() =>
-              this.setState({ openProjectForm: false, projectToEdit: null })
-            }
-          />
-        )}
+            close={() => this.setState({openProjectForm: false, projectToEdit: null})} />
+        }
       </div>
     );
   }
@@ -283,9 +277,7 @@ ProjectsList.propTypes = {
   projectActions: PropTypes.object
 };
 
-export default translate('ProjectsList')(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(withRouter(ProjectsList))
-);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(translate("ProjectsList")(withRouter(ProjectsList)));

@@ -1,0 +1,72 @@
+@import '../../../../scss//new-color-schema.scss';
+.project-team-wrapper {
+  padding-bottom: 15px;
+  position: relative;
+  grid-area: team;
+  color: $font-grey;
+  .name, .title, .seniority {
+    font-size: 14px;
+  }
+  .name {
+    margin-bottom: 5px;
+    font-weight: 300;
+  }
+  .title {
+    color: $dcmt-light;
+    font-weight: 500;
+  }
+  .seniority {
+    font-weight: 300;
+  }
+  .label-btn {
+    display: block;
+    margin-top: auto;
+  }
+  p.important-par {
+    padding: 15px 15px 20px 15px;
+    i {
+      cursor: pointer;
+      font-size: 20px;
+    }
+    .fa-user-times {
+      margin-left: auto;
+      margin-right: 15px;
+    }
+  }
+  ul {
+    overflow-y: auto;
+    margin-bottom: 15px;
+    li {
+      background: $modal-header-bg;
+      padding: 10px 15px;
+      margin-bottom: 5px;
+      .user-info {
+        display: grid;
+        grid-template-rows: 1fr 1fr;
+        padding-left: 15px;
+      }
+      .dates-info {
+        margin-left: auto;
+        @media(max-width: 400px) {
+          display: flex;
+          margin: 10px auto 0 auto;
+        }
+        div.detail-row {
+          flex-flow: row;
+          justify-content: flex-end;
+          span {
+            margin-right: 5px;
+          }
+        }
+      }
+      .element-toolbox {
+        background: $modal-header-bg;
+        i {
+          color: $dcmt-light;
+        }
+      }
+    }
+  }
+}
+
+

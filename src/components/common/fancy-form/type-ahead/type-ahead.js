@@ -1,8 +1,8 @@
 import React from 'react';
+import { runSingleValidation } from '../index';
+import { AheadClassContext } from './index';
+
 import './type-ahead.scss';
-
-import { validatorsFunctions, runSingleValidation } from '../index';
-
 class TypeAhead extends React.PureComponent {
   state = {
     isLoading: false,
@@ -26,16 +26,13 @@ class TypeAhead extends React.PureComponent {
     if (error) {
       this.setState({isLoading: false});
     }
-    else {
+    else if(value.length > 0) {
       this.delayTimeout = setTimeout(() => {
 
         this.setState({isLoading: true, touched: true});
 
         requestFunction(value).then(dataList => {
-          if (dataList) this.setState({isLoading: false, dataList, isListEmpty: dataList.length === 0});
-
-          else this.setState({isLoading: false});
-
+          this.setState({isLoading: false, dataList, isListEmpty: dataList.length === 0});
         }).catch(error => this.setState({isLoading: false, error}));
 
       }, delay);
@@ -48,29 +45,42 @@ class TypeAhead extends React.PureComponent {
     this.setState({dataList: [], value: '', error: '', isListEmpty: null});
   }
 
+  typeAheadStyles = {
+    position: 'relative'
+  };
+
   render() {
     const { isLoading, isListEmpty, error, value, dataList } = this.state;
-    const { icon, type, label, wrapperClass, placeholder, renderDataList } = this.props;
+    const { icon, type, label, wrapperClass, placeholder, renderDataList, showLabel } = this.props;
+    const { Consumer } = AheadClassContext;
 
     return (
-      <React.Fragment>
+      <Consumer>
+        {({isLoadingByParent, classVal}) => (
+          <div style={this.typeAheadStyles} className={wrapperClass}>
+            {isLoadingByParent &&
+              <React.Fragment>
+                <div className="spinner-new spinner-new-small field-spinner" />
+                <div className="fancy-modal-backdrop" />
+              </React.Fragment>
+            }
+            {(classVal === "aheadClass" || showLabel) &&
+              <label className="field-label">{label}</label>
+            }
+            <div className={classVal ? classVal : 'field-block'}>
 
-        <div className={wrapperClass}>
-          <label className="field-label">{label}</label>
-          <div className="field-block">
+              <input onChange={this.handleRequest} type={type} placeholder={placeholder} value={value} />
+              <div className="field-icon">
+                { isLoading ? <div className="spinner-new spinner-new-small field-spinner" />: <i className={`fa ${icon}`} /> }
+              </div>
 
-            <input onChange={this.handleRequest} type={type} placeholder={placeholder} value={value} />
-            <div className="field-icon">
-              { isLoading ? <div className="spinner-new spinner-new-small field-spinner" />: <i className={`fa ${icon}`} /> }
+              {renderDataList && renderDataList(dataList, this.resetAll, isListEmpty, isLoading)}
+
+              {error && <div onClick={this.resetAll} className="empty-data-list field-error-color">{error}</div>}
             </div>
-
-            {renderDataList && renderDataList(dataList, this.resetAll, isListEmpty, isLoading)}
-
-            {error && <div onClick={this.resetAll} className="empty-data-list field-error-color">{error}</div>}
-          </div>
         </div>
-
-      </React.Fragment>
+        )}
+      </Consumer>
     );
   }
 }

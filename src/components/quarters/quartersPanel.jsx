@@ -12,7 +12,7 @@ import PlanQuarter from './planQuarter/planQuarter';
 import AuthWithOutlook from './authWithOutlookComponent/authWithOutlookComponent';
 import { translate } from 'react-translate';
 import { API_ENDPOINT } from '../../api';
-import EmployeeSearcher from '../employees/employee-searcher/employee-searcher.js';
+import EmployeeSearcher from '../shared/employee-searcher/employee-searcher';
 const linkTypes = {
     "plan": "/employees/plan/",
     "addquarter": "/employees/addquarter/",
@@ -94,7 +94,7 @@ class Quarters extends React.PureComponent{
                 }
 
                 <nav className="quarter-talks-navigation">
-                  <EmployeeSearcher emitEmployeeClick={id => this.changeActualWatchedUser(id)} />
+                  <EmployeeSearcher emitEmployeeClick={employee => this.changeActualWatchedUser(employee.id)} />
 
                   <div className="btns-nav-wrapper">
                     <Button onClick={() => this.handleBtnClick(`${match.url}/employees`, true)}
