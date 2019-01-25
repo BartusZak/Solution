@@ -2,9 +2,6 @@
 export const login = 'login';
 export const loginAzureAD = 'loginAzureAD';
 
-//Users
-export const searchAD = 'searchAD';
-
 // Employees
 export const getEmployees = 'getEmployees';
 export const getClientsSlim = 'getClientsSlim';
@@ -124,15 +121,6 @@ export const oneDriveDeleteFolder = 'oneDriveDeleteFolder';
 export const oneDriveUpdateFolder = 'oneDriveUpdateFolder';
 export const oneDriveUploadFile = 'oneDriveUploadFile';
 
-// export const getQuestions = 'getQuestions';
-// export const getQuarterTalkForEmployee = 'getQuarterTalkForEmployee';
-// export const generateQuarterTalkDoc = 'generateQuarterTalkDoc';
-// export const deleteQuestion = 'deleteQuestion';
-// export const addQuestion = 'addQuestion';
-// export const createQuarterTalk = 'createQuarterTalk';
-// export const planQuarterTalk = 'planQuarterTalk';
-// export const getQuarterTalksReservedDates = 'getQuarterTalksReservedDates';
-
 // Reports
 export const generateReport = 'generateReport';
 export const getReportExcel = 'getReportExcel';
@@ -145,7 +133,7 @@ export const generateCv = 'generateCv';
 export const generateCvWord = 'generateCvWord';
 export const unfavoriteReport = 'unfavoriteReport';
 
-//Responsible person
+// Responsible person
 export const getResponsiblePersonByClientId = 'getResponsiblePersonByClientId';
 export const getByResponsiblePersonId = 'getByResponsiblePersonId'
 export const editResponsiblePerson = 'editResponsiblePerson';
@@ -154,34 +142,37 @@ export const deleteResponsiblePerson = 'deleteResponsiblePerson';
 export const reactivateResponsiblePerson = 'reactivateResponsiblePerson';
 export const createResponsiblePerson = 'createResponsiblePerson';
 
-//Skills
+// Skills
 export const getAllSkills = 'getAllSkills';
 export const getSkillById = 'getSkillById';
 export const addSkill = 'addSkill';
 export const deleteSkill = 'deleteSkill';
 export const editSkill = 'editSkill';
 
-//Stats
+// Stats
 export const getStats = 'getStats';
 
-//Roles
+// Roles
 export const getAllRoles = 'getAllRoles';
 export const addRole = 'addRole';
 export const editRole = 'editRole';
 export const deleteRole = 'deleteRole';
 
-//Share Project
+// Share Project
 export const shareProject = 'shareProject';
 export const getManagersSharedProject = 'getManagersSharedProject';
 export const getAlreadySharedManagers = 'getAlreadySharedManagers';
 export const cancelShareProject = 'cancelShareProject';
 
-//Work experience
+// Work experience
 export const addWorkExperience = 'addWorkExperience';
 export const getWorkExperience = 'getWorkExperience';
 export const editWorkExperience = 'editWorkExperience';
 export const deleteWorkExperience = 'deleteWorkExperience';
 export const getWorkExperienceByEmployeeId = 'getWorkExperienceByEmployeeId';
+
+//CV Import
+export const importCV = 'importCV';
 
 export const errorsBlackList = ['loginAzureAD'];
 

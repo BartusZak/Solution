@@ -472,6 +472,7 @@ const requests = {
     execute(
       fromAlertSettings.checkOutlookReservedDates,
       `quarterTalks/GetReservedDates?checkOutlook=${checkOutlook}`,
+      requestTypes.post,
       model
     ),
   getQuestions: () =>
@@ -1049,7 +1050,15 @@ const requests = {
       fromAlertSettings.getWorkExperienceByEmployeeId,
       `workexperience/employee/${employeeId}`,
       requestTypes.get
-    )
+    ),
+
+  //CvImport
+  importCV: files => execute(
+    fromAlertSettings.importCv,
+    `CvImport/ImportCv`,
+    requestTypes.post,
+    files
+    ),
 };
 
 export const useRequest = (name, ...params) => requests[name](...params);
@@ -1108,17 +1117,17 @@ const WebApi = {
       }
     }
   },
-  CvImport: {
-    post: files => {
-      return WebAround.post(
-        `${API_ENDPOINT}/CvImport/ImportCv`,
-        files
-        // {
-        //   headers: { "Content-Type": "multipart/form-data" }
-        // }
-      );
-    }
-  },
+  // CvImport: {
+  //   post: files => {
+  //     return WebAround.post(
+  //       `${API_ENDPOINT}/CvImport/ImportCv`,
+  //       files
+  //       // {
+  //       //   headers: { "Content-Type": "multipart/form-data" }
+  //       // }
+  //     );
+  //   }
+  // },
   projects: {
     get: {
       projects: (projectId, onlyActiveAssignments = true) => {
