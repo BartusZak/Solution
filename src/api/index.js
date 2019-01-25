@@ -1041,7 +1041,7 @@ const requests = {
 
   //CvImport
   importCV: files => execute(
-    fromAlertSettings.importCv,
+    fromAlertSettings.importCV,
     `CvImport/ImportCv`,
     requestTypes.post,
     files

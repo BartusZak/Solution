@@ -82,7 +82,7 @@ class ProjectInformations extends React.Component {
           </div>
           {cloud &&
             <div className="detail-label">
-              <span className="dcmt-light-color">{T("Cloud")}}</span>
+              <span className="dcmt-light-color">{t("Cloud")}}</span>
               <span>{cloud}</span>
             </div>
           }

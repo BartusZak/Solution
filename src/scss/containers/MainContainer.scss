@@ -1,22 +1,46 @@
 @import "../ColorSchema.scss";
 @import '../new-color-schema.scss';
 @import url("https://use.fontawesome.com/releases/v5.0.6/css/all.css");
+
+::-webkit-scrollbar-track {
+  border: 1px solid $main-color;
+  background-color: #f5f5f5;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  background-color: #f5f5f5;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: $main-color;
+}
+
 .wrapper {
-  .header {
+  width: 100%;
+  overflow-y: scroll;
+
+  & > .header {
     height: 55px;
     overflow: hidden;
     white-space: nowrap;
-    box-shadow: $shadow;
+    box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.75);
     top: 0;
     width: 100%;
     position: fixed;
-    background: $dcmt;
     z-index: 11;
+
+    .first-bar {
+      height: 9px;
+      width: 100%;
+      background: darken($main-color, 5%);
+    }
     .second-bar {
       height: 100%;
       width: 100%;
-      background: $dcmt;
+      background: $main-color;
     }
+
     .left-menu {
       background: $left-menu-background;
       position: fixed;
@@ -31,9 +55,10 @@
       transition-property: width;
       transition-duration: 0.3s;
 
-      box-shadow: $shadow;
+      box-shadow: 0px 4px 3px 3px rgba(0, 0, 0, 0.75);
 
       li {
+        // height: 53px;
         width: 100%;
         line-height: 1.5em;
         vertical-align: baseline;
@@ -177,12 +202,24 @@
     }
   }
   .content {
-    margin: 55px 0 0 62px;
+    height: 94vh;
+    margin-left: 5%;
+    margin-right: auto;
+    width: 95%;
+    padding: 1.1vh;
+    box-sizing: border-box;
+    margin-top: 6vh;
     color: $content-color;
+    @media screen and (max-width: 900px) {
+      padding: 0;
+      margin-top: 10vh;
+    }
   }
 }
 @media (max-width: 1366px) {
   .wrapper {
+    height: auto;
+    overflow: auto;
     font-size: 120%;
     .header {
       width: 100%;
@@ -231,6 +268,8 @@
 @media (max-width: 1000px) {
   margin-top: 0px;
   .wrapper {
+    height: auto;
+    overflow: auto;
     font-size: 270%;
 
     .header {

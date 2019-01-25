@@ -36,11 +36,9 @@ export const deleteProject = 'deleteProject';
 export const addOwnerToProject = 'addOwnerToProject';
 export const editSkillsInProject = 'editSkillsInProject';
 
-// Reponsible person
-export const createResponsiblePerson = 'createResponsiblePerson';
-export const editResponsiblePerson = 'editResponsiblePerson';
 // Skills
 export const loadAllSkills = 'loadAllSkills';
+
 // Quarter talks
 export const getQuarterTalks = 'getquarterTalks';
 export const getQuarterTalksForEmployee = 'getQuarterTalksForEmployee';
@@ -87,7 +85,7 @@ export const deleteCertificate = 'deleteCertificate';
 // Feedbacks
 export const getFeedbacksByEmployee = 'getFeedbacksByEmployee';
 export const getFeedbacksbyEmployeeInProject = 'getFeedbacksbyEmployeeInProject';
-export const addFeedback = 'addFeedback'; 
+export const addFeedback = 'addFeedback';
 export const editFeedback = 'editFeedback';
 export const deleteFeedback = 'deleteFeedback';
 
@@ -97,10 +95,10 @@ export const addSharedEmployee = 'addSharedEmployee';
 export const deleteSharedEmployee = 'deleteSharedEmployee';
 
 // Users
-export const getUserById = 'getUserById'; 
+export const getUserById = 'getUserById';
 export const getUserByAdSearch = 'getUserByAdSearch';
 export const addUser = 'addUser';
-export const searchUsers = 'searchUsers'; 
+export const searchUsers = 'searchUsers';
 export const searchRequestsUsers = 'searchRequestsUsers';
 export const deleteUser = 'deleteUser';
 export const deleteUserRequest = 'deleteUserRequest';
@@ -246,16 +244,16 @@ export const succOperationsWhiteObject = {
 
   deleteNotifications: {pl: 'Pomyślnie usunięto powiadomienie', en: 'Successfully deleted notification'},
   deleteAllNotifications: {pl: 'Pomyślnie usunięto powiadomienia', en: 'Successfully deleted notifications'},
-  
+
   addClient: {pl: "Pomyślnie dodano klienta", en: "Client has been succesfully added"},
   editInfoClient: {pl: 'Pomyślnie edytowano klienta', en: 'Client has been succesfully edited'},
   reactivateClient: {pl: 'Pomyślnie przywrócono klienta', en: 'Client has been successfully reactivated'},
 
   addCertificate: {pl:'Certyfikat został pomyślnie dodany', en: 'Certificate has been successfully added'},
-  editCertificate: {pl: 'Certyfikat został pomyślnie edytowany', en: 'Certificate has been successfully edited'},  
+  editCertificate: {pl: 'Certyfikat został pomyślnie edytowany', en: 'Certificate has been successfully edited'},
   deleteCertificate: {pl: 'Certyfikat został pomyślnie usunięty', en: 'Certificate has been successfully deleted'},
 
-  addFeedback: {pl: 'Opinia została dodana pomyślnie', en: 'Feedback has been succesfully added'}, 
+  addFeedback: {pl: 'Opinia została dodana pomyślnie', en: 'Feedback has been succesfully added'},
   editFeedback: {pl: 'Opinia została edytowana pomyślnie', en: 'Feedback has been succesfully edited'},
   deleteFeedback: {pl: 'Opinia została usunięta pomyślnie', en: 'Feedback has been succesfully deleted'},
 
