@@ -73,43 +73,41 @@ const parseSuccess = (response, key) => {
 };
 
 const parseFailure = (response, key) => {
-  if (response instanceof Error && response.request === undefined) {
+  const isInfoComponent = window.location.href.indexOf('info') > -1;
+
+  if (isInfoComponent) {
     throw response;
   }
 
-  const isKeyInBlackList = fromAlertSettings.errorsBlackList.findIndex(
+  const isKeyInBlackList = !fromAlertSettings.errorsBlackList.findIndex(
     item => item === key
   );
 
   let parser = new ResponseParser(response);
 
-  const failMessage =
-    fromAlertSettings.failOperationsWhiteObject['networkError'];
-
-  const isInfoComponent = window.location.href.search('info') === -1;
-  if (isKeyInBlackList === -1 && isInfoComponent) {
-    //400 ERROR NOT HANDLED
-    if (!response.response) {
-      // network error
-      store.dispatch(
-        addAlert({
-          id: 'networkError',
-          content: failMessage[lang],
-          type: 'err',
-          time: 5000
-        })
-      );
-    } else {
-      store.dispatch(
-        addAlert({
-          id: key,
-          content: parser.parse().message,
-          type: 'err',
-          time: 5000
-        })
-      );
-    }
+  if (isKeyInBlackList) {
+    return parser;
   }
+
+  let parserData = parser.parse();
+  let message;
+  const noInternetConnection = !response.response;
+
+  if (noInternetConnection) {
+    message = fromAlertSettings.failOperationsWhiteObject['networkError'][lang];
+  } else if (parserData.status === 500) {
+    message = parserData.diagnosis;
+  } else {
+    message = parserData.message;
+  }
+  store.dispatch(
+    addAlert({
+      id: key,
+      content: message,
+      type: 'err',
+      time: 5000
+    })
+  );
 
   throw parser;
 };
@@ -127,11 +125,11 @@ const execute = (
   payload = {},
   sendAzureToken
 ) => {
-  let fullPath = sendAzureToken
-    ? `${API_ENDPOINT}/${path}azureToken=${
-        store.getState().authReducer.azureData.access_token
-      }`
-    : `${API_ENDPOINT}/${path}`;
+  let fullPath = `${API_ENDPOINT}/${path}`;
+
+  if (sendAzureToken) {
+    payload.azureToken = store.getState().authReducer.azureData.access_token;
+  }
   return axios[type](fullPath, payload)
     .then(response => parseSuccess(response, key))
     .catch(response => authValidator(response))
@@ -147,10 +145,17 @@ const requestTypes = {
 };
 const requests = {
   // ASSIGNMENTS
-  assignEmployeeToProject: model => execute(fromAlertSettings.assignEmployeeToProject, 'Assignments', requestTypes.post, model),
+  assignEmployeeToProject: model =>
+    execute(
+      fromAlertSettings.assignEmployeeToProject,
+      'Assignments',
+      requestTypes.post,
+      model
+    ),
 
   // CLIENTS
-  getClientsSlim: () => execute(fromAlertSettings.getClientsSlim, 'Clients?lessDetailed=true'),
+  getClientsSlim: () =>
+    execute(fromAlertSettings.getClientsSlim, 'Clients?lessDetailed=true'),
 
   // LOGIN
   login: () =>
@@ -165,9 +170,10 @@ const requests = {
   getEmployees: settings =>
     execute(
       fromAlertSettings.getEmployees,
-      'employees',
+      'employees?',
       requestTypes.post,
-      settings
+      settings,
+      true
     ),
   getEmployeeById: id =>
     execute(fromAlertSettings.getEmployeeById, `employees/${id}`),
@@ -267,14 +273,59 @@ const requests = {
 
   //PROJECTS
   getProject: id => execute(fromAlertSettings.getProject, `projects/${id}`),
-  addProject: model => execute(fromAlertSettings.addProject, 'projects/add', requestTypes.post, model),
-  editProject: (model, id) => execute(fromAlertSettings.editProject, `projects/${id}`, requestTypes.put, model),
-  addProjectPhase: model => execute(fromAlertSettings.addProjectPhase, 'projects/add', requestTypes.post, model),
-  reactivateProject: id => execute(fromAlertSettings.reactivateProject, `projects/reactivate/${id}`, requestTypes.put),
-  closeProject: id => execute(fromAlertSettings.closeProject, `projects/close/${id}`, requestTypes.put),
-  deleteProject: id => execute(fromAlertSettings.deleteProject, `projects/delete/${id}`, requestTypes.delete),
-  addOwnerToProject: (id, usersIds) => execute(fromAlertSettings.addOwnerToProject, `projects/owner/${id}`, requestTypes.put, {usersIds}),
-  editSkillsInProject: (id, skills) => execute(fromAlertSettings.editSkillsInProject, `projects/skills/${id}`, requestTypes.put, skills),
+  addProject: model =>
+    execute(
+      fromAlertSettings.addProject,
+      'projects/add',
+      requestTypes.post,
+      model
+    ),
+  editProject: (model, id) =>
+    execute(
+      fromAlertSettings.editProject,
+      `projects/${id}`,
+      requestTypes.put,
+      model
+    ),
+  addProjectPhase: model =>
+    execute(
+      fromAlertSettings.addProjectPhase,
+      'projects/add',
+      requestTypes.post,
+      model
+    ),
+  reactivateProject: id =>
+    execute(
+      fromAlertSettings.reactivateProject,
+      `projects/reactivate/${id}`,
+      requestTypes.put
+    ),
+  closeProject: id =>
+    execute(
+      fromAlertSettings.closeProject,
+      `projects/close/${id}`,
+      requestTypes.put
+    ),
+  deleteProject: id =>
+    execute(
+      fromAlertSettings.deleteProject,
+      `projects/delete/${id}`,
+      requestTypes.delete
+    ),
+  addOwnerToProject: (id, usersIds) =>
+    execute(
+      fromAlertSettings.addOwnerToProject,
+      `projects/owner/${id}`,
+      requestTypes.put,
+      { usersIds }
+    ),
+  editSkillsInProject: (id, skills) =>
+    execute(
+      fromAlertSettings.editSkillsInProject,
+      `projects/skills/${id}`,
+      requestTypes.put,
+      skills
+    ),
   //RESPINSIBLE PERSON
   createResponsiblePerson: model =>
     execute(
@@ -1040,12 +1091,13 @@ const requests = {
     ),
 
   //CvImport
-  importCV: files => execute(
-    fromAlertSettings.importCV,
-    `CvImport/ImportCv`,
-    requestTypes.post,
-    files
-    ),
+  importCV: files =>
+    execute(
+      fromAlertSettings.importCV,
+      `CvImport/ImportCv`,
+      requestTypes.post,
+      files
+    )
 };
 
 export const useRequest = (name, ...params) => requests[name](...params);
@@ -1509,13 +1561,13 @@ const WebApi = {
       return WebAround.put(`${API_ENDPOINT}/skills/${skillId}`, skillModel);
     }
   },
-  stats: {
-    get: {
-      basic: () => {
-        return WebAround.get(`${API_ENDPOINT}/stats/basic`);
-      }
-    }
-  },
+  // stats: {
+  //   get: {
+  //     basic: () => {
+  //       return WebAround.get(`${API_ENDPOINT}/stats/basic`);
+  //     }
+  //   }
+  // },
   // users: {
   //   get: {
   //     byUser: userId => {
