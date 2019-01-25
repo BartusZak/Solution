@@ -1,12 +1,12 @@
-import React from "react";
-import { withRouter } from "react-router-dom";
-import VerticalMenuElement from "./VerticalMenuElement";
-import Icon from "../../../components/common/Icon";
-import PropTypes from "prop-types";
-import { putNotificationIconInSideBar } from "../../../actions/persistHelpActions";
-import { translate } from "react-translate";
-import { connect } from "react-redux";
-import binaryPermissioner from "./../../../api/binaryPermissioner";
+import React from 'react';
+import { withRouter } from 'react-router-dom';
+import VerticalMenuElement from './VerticalMenuElement';
+import Icon from '../../../components/common/Icon';
+import PropTypes from 'prop-types';
+import { putNotificationIconInSideBar } from '../../../actions/persistHelpActions';
+import { translate } from 'react-translate';
+import { connect } from 'react-redux';
+import binaryPermissioner from './../../../api/binaryPermissioner';
 class LeftMenu extends React.Component {
   constructor(props) {
     super(props);
@@ -16,19 +16,19 @@ class LeftMenu extends React.Component {
   }
 
   componentDidMount() {
-    document.addEventListener("mousedown", this.handleClickOutside);
+    document.addEventListener('mousedown', this.handleClickOutside);
   }
 
   componentWillUnmount() {
-    document.removeEventListener("mousedown", this.handleClickOutside);
+    document.removeEventListener('mousedown', this.handleClickOutside);
   }
 
   handleClickOutside(event) {
     if (
       event.target.className
         .toString()
-        .split(" ")
-        .indexOf("menu-hide-exclusion") !== -1
+        .split(' ')
+        .indexOf('menu-hide-exclusion') !== -1
     )
       return;
     if (this.menuRef && !this.menuRef.contains(event.target)) {
@@ -53,7 +53,7 @@ class LeftMenu extends React.Component {
         ref={this.setMenuRef}
         onMouseEnter={this.handleExtend}
         onMouseLeave={this.handleExtend}
-        className={"left-menu" + (extended ? " extended" : "")}
+        className={'left-menu' + (extended ? ' extended' : '')}
       >
         {binaryPermissioner(false)(1)(1)(1)(1)(1)(1)(this.props.binPem) ? (
           <VerticalMenuElement
@@ -62,7 +62,7 @@ class LeftMenu extends React.Component {
             path=""
             icon="chart-pie"
             iconType="fas"
-            title={t("Stats")}
+            title={t('Stats')}
           />
         ) : null}
         {binaryPermissioner(false)(0)(1)(0)(0)(1)(1)(this.props.binPem) ? (
@@ -72,7 +72,7 @@ class LeftMenu extends React.Component {
             path="/users"
             icon="user-circle"
             iconType="fas"
-            title={t("Users")}
+            title={t('Users')}
           />
         ) : null}
         {binaryPermissioner(false)(0)(0)(0)(1)(1)(1)(this.props.binPem) ? (
@@ -82,7 +82,7 @@ class LeftMenu extends React.Component {
             path="/clients"
             icon="users"
             iconType="fas"
-            title={t("Clients")}
+            title={t('Clients')}
           />
         ) : null}
         {binaryPermissioner(false)(0)(1)(1)(1)(1)(1)(this.props.binPem) ? (
@@ -92,7 +92,7 @@ class LeftMenu extends React.Component {
             path="/employees"
             icon="address-card"
             iconType="fas"
-            title={t("Employees")}
+            title={t('Employees')}
           />
         ) : null}
         {binaryPermissioner(false)(1)(0)(1)(1)(1)(1)(this.props.binPem) ? (
@@ -102,7 +102,7 @@ class LeftMenu extends React.Component {
             path="/projects"
             icon="briefcase"
             iconType="fas"
-            title={t("Projects")}
+            title={t('Projects')}
           />
         ) : null}
 
@@ -113,7 +113,7 @@ class LeftMenu extends React.Component {
             path="/skills"
             icon="crosshairs"
             iconType="fas"
-            title={t("Skills")}
+            title={t('Skills')}
           />
         ) : null}
         {binaryPermissioner(false)(0)(0)(0)(1)(1)(1)(this.props.binPem) ? (
@@ -123,7 +123,7 @@ class LeftMenu extends React.Component {
             path="/reports"
             icon="file-alt"
             iconType="fas"
-            title={t("Reports")}
+            title={t('Reports')}            
           />
         ) : null}
         {binaryPermissioner(false)(0)(0)(0)(1)(1)(1)(this.props.binPem) ? (
@@ -133,7 +133,7 @@ class LeftMenu extends React.Component {
             path="/import-cv"
             icon="archive"
             iconType="fas"
-            title={t("ImportCV")}
+            title={t('ImportCV')}            
           />
         ) : null}
         <VerticalMenuElement
@@ -142,7 +142,7 @@ class LeftMenu extends React.Component {
           path="/info"
           icon="info-circle"
           iconType="fas"
-          title={t("Info")}
+          title={t('Info')}          
         />
         {isNotificationIconInSideBar && (
           <li onClick={() => putNotificationIconInSideBar(false)}>
@@ -180,7 +180,7 @@ export default withRouter(
   connect(
     mapStateToProps,
     mapDispatchToProps
-  )(translate("LeftMenu")(LeftMenu))
+  )(translate('LeftMenu')(LeftMenu))
 );
 
 /*

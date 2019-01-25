@@ -1,8 +1,8 @@
-import React, { Component } from "react";
-import StageOne from "./StageOne";
-import StageTwo from "./StageTwo";
-import WebApi from "../../../api";
-import PropTypes from "prop-types";
+import React, { Component } from 'react';
+import StageOne from './StageOne';
+import StageTwo from './StageTwo';
+import WebApi, { useRequest } from '../../../api';
+import PropTypes from 'prop-types';
 
 const initialState = {
   selectedUser: {},
@@ -32,19 +32,12 @@ class UserSelector extends Component {
   };
 
   getUsers = user => {
-    // if (!user) {
-    //   return Promise.resolve({ options: [] });
-    // }
-    return WebApi.users.get
-      .adSearch(user)
+    if (!user) {
+      return Promise.resolve({ options: [] });
+    }
+    return useRequest('getUserByAdSearch', user)
       .then(response => {
-        this.setState({
-          errorBlock: response
-        });
-        return response;
-      })
-      .then(responsex => {
-        let usersRequest = responsex.extractData();
+        let usersRequest = response.extractData();
         let usersList = [];
         usersRequest.map((i, index) => {
           let OneUser = Object.assign(i, i.hasAccount && { disabled: true });
@@ -54,13 +47,12 @@ class UserSelector extends Component {
       })
       .catch(errorBlock => {
         this.setState({ errorBlock });
-        // this.refs.StageOne.stopLoading();
+        this.refs.StageOne.stopLoading();
       });
   };
 
   doAddUser = newUser => {
-    WebApi.users.post
-      .add(newUser.id, newUser.roles)
+    useRequest('addUser', newUser.azureAdId, newUser.roles)
       .then(response => {
         this.setState({
           errorBlock: response,

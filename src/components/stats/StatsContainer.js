@@ -1,10 +1,9 @@
-import React, { Component } from "react";
-import WebApi from "../../api";
-import Chart from "react-c3-component";
-import "c3/c3.min.css";
-import IntermediateBlock from "./../common/IntermediateBlock";
-import { translate } from "react-translate";
-
+import React, { Component } from 'react';
+import WebApi from '../../api';
+import Chart from 'react-c3-component';
+import 'c3/c3.min.css';
+import IntermediateBlock from './../common/IntermediateBlock';
+import { translate } from 'react-translate';
 const SIZE_MOBILE = {
   width: 270
 };
@@ -31,7 +30,7 @@ class StatsContainer extends Component {
     var w = window,
       d = document,
       documentElement = d.documentElement,
-      body = d.getElementsByTagName("body")[0],
+      body = d.getElementsByTagName('body')[0],
       width = w.innerWidth || documentElement.clientWidth || body.clientWidth,
       height =
         w.innerHeight || documentElement.clientHeight || body.clientHeight;
@@ -69,10 +68,10 @@ class StatsContainer extends Component {
     localizations &&
       Object.entries(localizations).map(
         ([_i, { localization, count }], index) => {
-          if(localization === "ZDALNIE") {
-            cols.push([t("Remote"), count]);
-          } else if(localization === "INNE") {
-            cols.push([t("Others"), count]);
+          if (localization === 'ZDALNIE') {
+            cols.push([t('Remote'), count]);
+          } else if (localization === 'INNE') {
+            cols.push([t('Others'), count]);
           } else {
             cols.push([localization, count]);
           }
@@ -80,21 +79,21 @@ class StatsContainer extends Component {
       );
 
     const data = {
-      type: "pie",
+      type: 'pie',
       columns: cols
     };
 
     const tooltip = {
       format: {
-        value: function (value, ratio, id) {
+        value: function(value, ratio, id) {
           return `${value}`;
         }
       }
     };
-    
+
     return (
       <span className="chart-container">
-        <span>{t("DevLocalization")}</span>
+        <span>{t('DevLocalization')}</span>
         <Chart
           config={{
             data,
@@ -108,17 +107,17 @@ class StatsContainer extends Component {
 
   createEWPChart = t => {
     let cols = [
-      [t("Without"), this.state.stats.employees.withoutProjects],
-      [t("With"), this.state.stats.employees.withProjects]
+      [t('Without'), this.state.stats.employees.withoutProjects],
+      [t('With'), this.state.stats.employees.withProjects]
     ];
     const data = {
-      type: "pie",
+      type: 'pie',
       columns: cols
     };
 
     const tooltip = {
       format: {
-        value: function (value, ratio, id) {
+        value: function(value, ratio, id) {
           return `${value}`;
         }
       }
@@ -126,7 +125,7 @@ class StatsContainer extends Component {
 
     return (
       <span className="chart-container">
-        <span>{t("EmployeesWithoutProjects")}</span>
+        <span>{t('EmployeesWithoutProjects')}</span>
         <Chart
           config={{
             data,
@@ -140,17 +139,17 @@ class StatsContainer extends Component {
 
   createPAChart = t => {
     let cols = [
-      [t("Active"), this.state.stats.projects.active],
-      [t("Archive"), this.state.stats.projects.inactive]
+      [t('Active'), this.state.stats.projects.active],
+      [t('Archive'), this.state.stats.projects.inactive]
     ];
     const data = {
-      type: "pie",
+      type: 'pie',
       columns: cols
     };
 
     const tooltip = {
       format: {
-        value: function (value, ratio, id) {
+        value: function(value, ratio, id) {
           return `${value}`;
         }
       }
@@ -158,7 +157,7 @@ class StatsContainer extends Component {
 
     return (
       <span className="chart-container">
-        <span>{t("ActiveProjects")}</span>
+        <span>{t('ActiveProjects')}</span>
         <Chart
           config={{
             data,
@@ -172,17 +171,17 @@ class StatsContainer extends Component {
 
   createFTEChart = t => {
     let cols = [
-      [t("UnUsed"), this.state.stats.employeesFte.unusedFte],
-      [t("Used"), this.state.stats.employeesFte.usedFte]
+      [t('UnUsed'), this.state.stats.employeesFte.unusedFte],
+      [t('Used'), this.state.stats.employeesFte.usedFte]
     ];
     const data = {
-      type: "pie",
+      type: 'pie',
       columns: cols
     };
 
     const tooltip = {
       format: {
-        value: function (value, ratio, id) {
+        value: function(value, ratio, id) {
           return `${value}`;
         }
       }
@@ -190,7 +189,7 @@ class StatsContainer extends Component {
 
     return (
       <span className="chart-container">
-        <span>{t("EmployeesFTE")}</span>
+        <span>{t('EmployeesFTE')}</span>
         <Chart
           config={{
             data,
@@ -227,4 +226,4 @@ class StatsContainer extends Component {
   }
 }
 
-export default translate("StatsContainer")(StatsContainer);
+export default translate('StatsContainer')(StatsContainer);

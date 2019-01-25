@@ -97,8 +97,7 @@ export const addEmployeeToProjectACreator = (
     assignedCapacity: assignedCapacity / 10,
     responsibilities: responsibilites
   };
-  WebApi.assignments
-    .post(assignmentModel)
+  useRequest("addAssignment", assignmentModel)
     .then(response => {
       dispatch(addEmployeeToProject(true, []));
       dispatch(getProjectACreator(projectId, onlyActiveAssignments));
@@ -139,8 +138,7 @@ export const editEmployeeAssignmentACreator = (
     assignedCapacity: assignedCapacity / 10,
     responsibilities: responsibilites
   };
-  WebApi.assignments
-    .put(assignmentId, assignmentModel)
+  useRequest("editAssignment", assignmentId, assignmentModel)
     .then(response => {
       dispatch(editEmployeeAssignment(true, []));
       dispatch(getProjectACreator(projectId, onlyActiveAssignments));
@@ -169,8 +167,7 @@ export const deleteEmployeeAssignmentACreator = (
   projectId,
   onlyActiveAssignments
 ) => dispatch => {
-  WebApi.assignments
-    .delete(assignmentId)
+  useRequest("deleteAssignment", assignmentId)
     .then(response => {
       dispatch(deleteEmployeeAssignment(true, []));
       dispatch(getProjectACreator(projectId, onlyActiveAssignments));
@@ -206,8 +203,7 @@ export const addFeedbackACreator = (projectId, employeeId, description, onlyActi
       employeeId: employeeId,
       description: description
     };
-    WebApi.feedbacks.post
-      .feedback(objectToSend)
+    useRequest('addFeedback', objectToSend)
       .then(response => {
         dispatch(addFeedback(true, []));
         setTimeout(() => dispatch(addFeedback(null, [])), 3000);
@@ -234,8 +230,7 @@ export const getFeedbacks = (
 
 export const getFeedbacksACreator = (employeeId, projectId) => {
   return dispatch => {
-    WebApi.feedbacks.get
-    .byEmployeeInProject(employeeId, projectId)
+    useRequest('getFeedbacksbyEmployeeInProject', employeeId, projectId)
     .then(response => {
       dispatch(getFeedbacks(response.replyBlock.data.dtoObjects, true, []));
     })
@@ -258,8 +253,7 @@ export const deleteFeedback = (
 
 export const deleteFeedbackACreator = (feedbackId, projectId, onlyActiveAssignments) => dispatch => {
   return new Promise((resolve, reject) => {
-    WebApi.feedbacks.delete
-    .deleteById(feedbackId)
+    useRequest('deleteFeedback', feedbackId)
     .then((response) => {
       dispatch(deleteFeedback(true, []));
       setTimeout(() => dispatch(deleteFeedback(null, [])), 3000);
@@ -283,8 +277,7 @@ export const editFeedback = (editFeedbackStatus, editFeedbackErrors) => {
 
 export const editFeedbackACreator = (feedbackId, description, projectId, onlyActiveAssignments) => {
   return dispatch => {
-    WebApi.feedbacks.put
-    .feedback(feedbackId, description)
+    useRequest('editFeedback', feedbackId, description)
     .then(response => {
       dispatch(editFeedback(true, []));
       setTimeout(() => dispatch(editFeedback(null, [])), 3000);

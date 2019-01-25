@@ -60,7 +60,7 @@ class StageOne extends Component {
     return (
       <div className="stage-one-container">
         <header>
-          <h3 className="section-heading">{t("SearchAD")}</h3>
+          <h3 className="section-heading">{t("getUserByAdSearch")}</h3>
         </header>
         <div className="search-container">
           <AsyncComponent

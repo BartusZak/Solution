@@ -1,22 +1,20 @@
-import React from "react";
-import "../../scss/LoginForm.scss";
-import colors from "../../scss/ColorSchema.scss";
-import LoginForm from "../login/LoginForm";
-import Logo from "components/common/Logo";
-import { connect } from "react-redux";
-import { push } from "react-router-redux";
-import { authSuccess } from "actions/authActions";
+import React from 'react';
 import { withRouter } from 'react-router-dom';
+import { translate } from 'react-translate';
+
+import colors from '../../scss/ColorSchema.scss';
+import Logo from 'components/common/Logo';
+import LoginContainer from './LoginContainer';
+
 class LoginScreen extends React.Component {
   constructor(props) {
     super(props);
   }
 
-
-  componentWillMount(){
+  componentWillMount() {
     document.body.style.backgroundColor = colors.mainColor;
   }
-  componentWillUnmount(){
+  componentWillUnmount() {
     document.body.style.backgroundColor = colors.contentBackground;
   }
 
@@ -24,15 +22,10 @@ class LoginScreen extends React.Component {
     return (
       <div className="login-screen">
         <Logo size="vector_cut" container />
-        <LoginForm languageSwitch={this.props.languageSwitch} />
+        <LoginContainer />
       </div>
     );
   }
 }
 
-export default connect(null, dispatch => ({
-  login: credentials => {
-    dispatch(authSuccess());
-    dispatch(push("/main"));
-  }
-}))(withRouter(LoginScreen));
+export default translate('LoginScreen')(withRouter(LoginScreen));

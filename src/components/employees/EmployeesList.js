@@ -1,15 +1,15 @@
-import React, { Component } from "react";
-import Icon from "../common/Icon";
-import SmoothTable from "../common/SmoothTable";
-import { connect } from "react-redux";
-import Confirmation from "../common/modals/Confirmation";
-import { setActionConfirmation } from "../../actions/asyncActions";
-import Modal from "react-responsive-modal";
-import PropTypes from "prop-types";
-import { translate } from "react-translate";
-import "../../scss/components/employees/employeesList.scss";
-import IntermediateBlock from "./../common/IntermediateBlock";
-import binaryPermissioner from "./../../api/binaryPermissioner";
+import React, { Component } from 'react';
+import Icon from '../common/Icon';
+import SmoothTable from '../common/SmoothTable';
+import { connect } from 'react-redux';
+import Confirmation from '../common/modals/Confirmation';
+import { setActionConfirmation } from '../../actions/asyncActions';
+import Modal from 'react-responsive-modal';
+import PropTypes from 'prop-types';
+import { translate } from 'react-translate';
+import '../../scss/components/employees/employeesList.scss';
+import IntermediateBlock from './../common/IntermediateBlock';
+import binaryPermissioner from './../../api/binaryPermissioner';
 
 class EmployeesList extends Component {
   constructor(props) {
@@ -18,9 +18,13 @@ class EmployeesList extends Component {
   }
 
   showSharedSymbod(employee) {
-    if(employee && employee.employeeShared) {
-      return <span><i className="fa fa-share-alt"></i> {employee.firstName} </span>;
-    }else{
+    if (employee && employee.employeeShared) {
+      return (
+        <span>
+          <i className="fa fa-share-alt" /> {employee.firstName}{' '}
+        </span>
+      );
+    } else {
       return employee.firstName;
     }
   }
@@ -28,18 +32,18 @@ class EmployeesList extends Component {
   render() {
     const { t } = this.props;
     const construct = {
-      rowClass: "employee-block",
-      tableClass: "employees-list-container",
-      keyField: "id",
+      rowClass: 'employee-block',
+      tableClass: 'employees-list-container',
+      keyField: 'id',
       pageChange: this.props.pageChange,
-      defaultSortField: "lastName",
+      defaultSortField: 'lastName',
       defaultSortAscending: true,
       filtering: true,
-      filterClass: "EmployeeFilter",
+      filterClass: 'EmployeeFilter',
       rowDetailUnfurl: true,
       showDeletedCheckbox: true,
       showAllCheckbox: true,
-      redirectPath: "/main/employees/",
+      redirectPath: '/main/employees/',
       disabledRowComparator: object => {
         return object.isDeleted;
       },
@@ -52,77 +56,77 @@ class EmployeesList extends Component {
       columns: [
         {
           width: 20,
-          pretty: t("Name"),
-          type: "text",
-          field: "firstName",
-          filter: true,
-        },
-        {
-          width: 20,
-          field: "lastName",
-          pretty: t("Surname"),
-          type: "text",
+          pretty: t('Name'),
+          type: 'text',
+          field: 'firstName',
           filter: true
         },
         {
           width: 20,
-          field: "title",
-          pretty: t("Position"),
-          type: "text",
+          field: 'lastName',
+          pretty: t('Surname'),
+          type: 'text',
           filter: true
         },
         {
           width: 20,
-          field: "localization",
-          pretty: t("Location"),
-          type: "text",
+          field: 'title',
+          pretty: t('Position'),
+          type: 'text',
+          filter: true
+        },
+        {
+          width: 20,
+          field: 'localization',
+          pretty: t('Location'),
+          type: 'text',
           filter: true
         },
         {
           width: 10,
-          field: "hasAccount",
-          pretty: t("Status"),
+          field: 'hasAccount',
+          pretty: t('Status'),
           multiState: {
-            false: t("AccountInactive"),
-            true: t("AccountActive")
+            false: t('AccountInactive'),
+            true: t('AccountActive')
           },
-          type: "multiState",
+          type: 'multiState',
           filter: true
         },
         {
           width: 1,
           toolBox: [
             {
-              icon: { icon: "download" },
-              title: t("DownloadEmployeeCVInWordFormat"),
+              icon: { icon: 'download' },
+              title: t('DownloadEmployeeCVInWordFormat'),
               click: object => {
-                this.props.getCV("word", object.id);
+                this.props.getCV('word', object.id);
               },
               comparator: object => !!object.seniority
             },
             {
-              icon: { icon: "download" },
-              title: t("DownloadEmployeeCVInPdfFormat"),
+              icon: { icon: 'download' },
+              title: t('DownloadEmployeeCVInPdfFormat'),
               click: object => {
-                this.props.getCV("pdf", object.id);
+                this.props.getCV('pdf', object.id);
               },
               comparator: object => !!object.seniority
             },
             {
-              icon: { icon: "plus-square" },
-              title: t("ActivateEmployee"),
+              icon: { icon: 'plus-square' },
+              title: t('ActivateEmployee'),
               click: object => {
                 this.props.activateEmployee(object, t);
               },
               comparator: object =>
-              binaryPermissioner(false)(0)(0)(0)(1)(0)(1)(
+                binaryPermissioner(false)(0)(0)(0)(1)(0)(1)(
                   this.props.binPem
                 ) &&
                 (!object.seniority || object.isDeleted)
             },
             {
-              icon: { icon: "minus-square" },
-              title: t("DeleteEmployee"),
+              icon: { icon: 'minus-square' },
+              title: t('DeleteEmployee'),
               click: object => {
                 this.props.removeEmployee(object, t);
               },
@@ -134,7 +138,7 @@ class EmployeesList extends Component {
                 object.seniority
             }
           ],
-          pretty: t("Options")
+          pretty: t('Options')
         }
       ]
     };
@@ -158,7 +162,7 @@ class EmployeesList extends Component {
         loaded={true}
         render={render}
         resultBlock={this.props.resultBlock}
-        _className={"content-container"}
+        _className={'content-container'}
       />
     );
   }
@@ -181,6 +185,6 @@ EmployeesList.propTypes = {
   removeEmployee: PropTypes.func.isRequired
 };
 
-export default connect(mapStateToProps)(
-  translate("EmployeesList")(EmployeesList)
+export default translate('EmployeesList')(
+  connect(mapStateToProps)(EmployeesList)
 );

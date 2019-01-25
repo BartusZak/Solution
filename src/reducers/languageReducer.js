@@ -1,10 +1,7 @@
-import {
-  LANGUAGE_CHANGE,
-  LANGUAGE_CHANGED
-} from "../constants";
+import { LANGUAGE_CHANGE, LANGUAGE_CHANGED } from '../constants';
 
 const initialState = {
-  language: "pl"
+  language: 'pl'
 };
 
 export const languageReducer = (state = initialState, action) => {

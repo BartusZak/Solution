@@ -10,6 +10,8 @@ import { errorCatcher } from "../services/errorsHandler";
 import { sendTokenToGetAuth } from './authActions';
 import { clearAfterTimeByFuncRef } from '../services/methods';
 import storeCreator from "./../store";
+import { useRequest } from '../api/index';
+
 const { store } = storeCreator;
 const selectSortType = state =>
   state.persistHelpReducer.driveSortType
@@ -20,7 +22,7 @@ export const generateShareLink = (generateShareLinkStatus, generateShareLinkErro
 }
 
 export const generateShareLinkACreator = (token, fileId) => (dispatch) => {
-  WebApi.oneDrive.post.generateShareLink({token, fileId}).then(response => {
+  useRequest('oneDriveGenerateShareLink', {token, fileId}).then(response => {
     const { shareLink } = response.replyBlock.data.dtoObject;
     dispatch(generateShareLink(true, [], shareLink));
   }).catch(error => {
@@ -30,7 +32,7 @@ export const generateShareLinkACreator = (token, fileId) => (dispatch) => {
 
 export const refreshToken = currentToken => (dispatch) => {
   return new Promise((resolve, reject) => {
-    WebApi.oneDrive.get.refreshToken(currentToken).then(response => {
+    useRequest('oneDriveRefreshToken', currentToken).then(response => {
       const { access_token, refresh_token } = response.replyBlock.data.dtoObject;
       dispatch(sendTokenToGetAuth(access_token, true, [], refresh_token));
       resolve(access_token);
@@ -52,19 +54,18 @@ export const authOneDrive = (authStatus, authErrors, authRedirectLink) => {
 
 export const authOneDriveACreator = (shouldRedirectOnCalendar) => dispatch => {
   return new Promise((resolve, reject) => {
-    WebApi.oneDrive.get
-    .getRedirectLink(shouldRedirectOnCalendar)
-    .then(response => {
-      dispatch(
-        authOneDrive(true, [], response.replyBlock.data.dtoObject.link)
-      );
-      resolve(response.replyBlock.data.dtoObject.link);
-    })
-    .catch(error => {
-      const catchedError = errorCatcher(error);
-      dispatch(authOneDrive(false, catchedError, ""));
-      dispatch(clearAfterTimeByFuncRef(authOneDrive, 5000, null, []));
-      reject(catchedError);
+    useRequest('oneDriveGetRedirectLink', shouldRedirectOnCalendar)
+      .then(response => {
+        dispatch(
+          authOneDrive(true, [], response.replyBlock.data.dtoObject.link)
+        );
+        resolve(response.replyBlock.data.dtoObject.link);
+      })
+      .catch(error => {
+        const catchedError = errorCatcher(error);
+        dispatch(authOneDrive(false, catchedError, ""));
+        dispatch(clearAfterTimeByFuncRef(authOneDrive, 5000, null, []));
+        reject(catchedError);
     });
   })
 }
@@ -124,8 +125,7 @@ export const getFoldersPromise = (token, path) => dispatch => {
       token: token,
       path: path
     };
-    WebApi.oneDrive.post
-      .getFolders(model)
+    useRequest('oneDriveGetFolders', model)
       .then(response => {
         resolve(response.replyBlock.data.dtoObjects);
       })
@@ -137,7 +137,7 @@ export const getFoldersPromise = (token, path) => dispatch => {
 
 export const sendAuthCodePromise = (url, shouldRedirectOnCalendar) => dispatch => {
   return new Promise((resolve, reject) => {
-    WebApi.oneDrive.get.sendQuertToAuth(extractCodeFromUrl(url), shouldRedirectOnCalendar)
+    useRequest('oneDriveSendQueryToAuth', extractCodeFromUrl(url), shouldRedirectOnCalendar)
       .then(response => {
         const { access_token, refresh_token } = response.replyBlock.data.dtoObject;
         dispatch(sendTokenToGetAuth(access_token, true, [], refresh_token));
@@ -160,8 +160,7 @@ export const createFolderACreator = (folderName, path, token) => {
       "path": path,
       "token": token
     };
-    WebApi.oneDrive.post
-      .createFolder(model)
+    useRequest('oneDriveCreateFolder', model)
       .then(response => {
         dispatch(createFolder(true, []));
         dispatch(getFolderACreator(token, path));
@@ -187,8 +186,7 @@ export const deleteFolderACreator = (folderId, token, path, choosenFolder) => di
       "folderId": folderId,
       "token": token
     };
-      WebApi.oneDrive.post
-      .deleteFolder(model)
+      useRequest('oneDriveDeleteFolder', model)
       .then(response => {
         if(choosenFolder){
           if(choosenFolder.id === folderId){
@@ -217,8 +215,7 @@ export const updateFolderACreator = (newName, folderId, token, path) => {
       folderId: folderId,
       token: token
     };
-    WebApi.oneDrive.post
-      .updateFolder(model)
+    useRequest('oneDriveUpdateFolder', model)
       .then(response => {
         dispatch(updateFolder(true, []));
         dispatch(getFolderACreator(token, path));
@@ -272,7 +269,7 @@ export const uploadFileACreator = (token, path, file, currentFilesList) => {
         const config = {
              headers: {'Content-Type': 'multipart/form-data' }
         }
-        WebApi.oneDrive.post.uploadFile(model, config).then(response => {
+        useRequest('oneDriveUploadFile', model, config).then(response => {
             dispatch(uploadFile(true, []));
             dispatch(getFolderACreator(token, path));
             setTimeout(() => {

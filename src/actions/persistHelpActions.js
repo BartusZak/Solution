@@ -2,7 +2,7 @@
 import { FETCH_LISTS, CHOOSE_FOLDER_TO_GENERATE_REPORT, G_DRIVE_LOGIN, FETCH_FORM_CLIENTS, PUT_NOTIFICATION_ICON_IN_SIDE_BAR,
     CHANGE_SORT_BY, CREATE_LAST_WATCHED_PERSONS, CHANGE_LINK_BEFORE_REDIRECT, CHANGE_CURRENT_WATCHED_USER }
 from "../constants";
-import WebApi from '../api/index';
+import useRequest from '../api/index';
 import { getFolders } from './oneDriveActions';
 import { errorCatcher } from '../services/errorsHandler';
 import storeCreator from '../store/index';
@@ -23,8 +23,7 @@ export const login = (loginStatus, loginErrors, redirectUrl) => {
 
 export const loginACreator = () => {
   return dispatch => {
-    WebApi.gDrive.get
-      .login()
+    useRequest('gDriveLogin')
       .then(response => {
         const { redirectUri } = response.replyBlock.data.dtoObject;
         dispatch(login(true, [], redirectUri));
@@ -49,11 +48,11 @@ export const fetchFormClients = (
 };
 export const fetchFormClientsACreator = () => {
     return dispatch => {
-        WebApi.clients.get.all().then(response => {
-            dispatch(fetchFormClients(response.replyBlock.data.dtoObjects, true, []));
-        }).catch(error => {
-            dispatch(fetchFormClients([], false, errorCatcher(error)));
-        });
+      useRequest('getClients').then(response => {
+          dispatch(fetchFormClients(response.replyBlock.data.dtoObjects, true, []));
+      }).catch(error => {
+          dispatch(fetchFormClients([], false, errorCatcher(error)));
+      });
     }
 
 }

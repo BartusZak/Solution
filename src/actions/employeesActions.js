@@ -24,7 +24,8 @@ import {
   ADD_EMPLOYEE_ONBOARD,
   CHANGE_GET_EMPLOYEE_ONBOARDS_STATUS,
   GET_EMPLOYEE_ONBOARDS,
-  UPDATE_EMPLOYEE_ONBOARD
+  UPDATE_EMPLOYEE_ONBOARD,
+  GET_EMPLOYEES_BY_SKILL
 } from "../constants";
 import WebApi from "../api";
 import {
@@ -58,6 +59,24 @@ export const updateSkypeResult = (resultBlock, loading) => {
     loading
   };
 };
+
+export const getEmployeeBySkill = employeesBySkill => {
+  return {
+    type: GET_EMPLOYEES_BY_SKILL,
+    employeesBySkill
+  };
+};
+
+export const getEmployeesBySkillACreator = (skillId) => {
+  return dispatch => {
+    useRequest('getEmployeesBySkill', skillId)
+      .then(response => {
+        if (!response.errorOccurred()) {
+          dispatch(getEmployeeBySkill(response.extractData()))
+        }
+      })
+  }
+}
 
 export const downloadCV = (format, employeeId) => {
   return dispatch => {
@@ -101,8 +120,7 @@ export const getUserCv = (
 export const updateSkype = (skypeId, employeeId) => {
   return dispatch => {
     dispatch(updateSkypeResult(null, true));
-    WebApi.employees.put
-      .updateSkype(skypeId, employeeId)
+    useRequest('editSkype', skypeId, employeeId)
       .then(response => {
         if (!response.errorOccurred()) {
           dispatch(updateSkypeResult(response, false)),
@@ -171,8 +189,7 @@ export const getEmployeeFeedbacks = employeeFeedbacks => {
 
 export const loadEmployeeFeedbacks = employeeId => {
   return dispatch => {
-    WebApi.feedbacks.get
-      .byEmployee(employeeId)
+    useRequest('getFeedbacksByEmployee', employeeId)
       .then(response => {
         if (!response.errorOccurred()) {
           dispatch(getEmployeeFeedbacks(response.extractData()));
@@ -205,8 +222,7 @@ export const getSharedEmployeesForManager = sharedEmployeesForManager => {
 
 export const loadSharedEmployeesForManager = managerId => {
   return dispatch => {
-    WebApi.sharedEmployees.get
-      .forManager(managerId)
+    useRequest('getSharedEmployeesForManager', managerId)
       .then(response => {
         if (!response.errorOccurred()) {
           dispatch(getSharedEmployeesForManager(response.extractData()));
@@ -233,8 +249,7 @@ export const addSharedEmployee = (
   destManagerId
 ) => dispatch => {
   return new Promise((resolve, reject) => {
-    WebApi.sharedEmployees.post
-      .add(sharedEmployeeModel)
+    useRequest('addSharedEmployee', sharedEmployeeModel)
       .then(response => {
         dispatch(addSharedEmployeeResult(response));
 
@@ -267,8 +282,7 @@ export const deleteSharedEmployee = (
   destManagerId
 ) => dispatch => {
   return new Promise((resolve, reject) => {
-    WebApi.sharedEmployees.delete
-      .deleteById(sharedEmployeeId)
+    useRequest('deleteSharedEmployee', sharedEmployeeId)
       .then(response => {
         dispatch(setActionConfirmationResult(response));
         dispatch(loadSharedEmployeesForManager(destManagerId));
@@ -305,8 +319,7 @@ export const getTeamLeadersAndManagers = teamLeadersAndManagers => {
 
 export const loadTeamLeadersAndManagers = () => {
   return dispatch => {
-    WebApi.employees.get
-      .employeesAndManagers()
+    useRequest('getEmployeesAndManagers')
       .then(response => {
         if (!response.errorOccurred()) {
           dispatch(getTeamLeadersAndManagers(response.extractData()));
@@ -339,8 +352,7 @@ export const getCertificates = certificates => {
 
 export const loadCertificates = employeeId => {
   return dispatch => {
-    WebApi.certificates.get
-      .byEmployee(employeeId)
+    useRequest("getCertificates", employeeId)
       .then(response => {
         if (!response.errorOccurred()) {
           dispatch(getCertificates(response.extractData()));
@@ -370,8 +382,7 @@ export const getEmployee = employee => {
 
 export const getEmployeePromise = employeeId => dispatch => {
   return new Promise(resolve => {
-    WebApi.employees.get
-      .byEmployee(employeeId)
+    useRequest('getEmployeeById', employeeId)
       .then(response => {
         const dtoObject = { ...response.replyBlock.data.dtoObject };
         let quarterTalks = [...dtoObject.quarterTalks];
@@ -409,8 +420,7 @@ const clearAfterTime = delay => {
 
 export const deleteEmployee = employeeId => {
   return dispatch => {
-    WebApi.employees
-      .delete(employeeId)
+    useRequest('deleteEmployee', employeeId)
       .then(response => {
         dispatch(getEmployeePromise(employeeId));
       })
@@ -427,8 +437,7 @@ export const deleteEmployeeOnList = (
   setActionConfirmationResult
 ) => {
   return dispatch => {
-    WebApi.employees
-      .delete(employeeId)
+    useRequest('deleteEmployee', employeeId)
       .then(response => {
         setActionConfirmationResult(response);
         pageChange();
@@ -445,8 +454,7 @@ export const reActivateEmployeeOnList = (
   setActionConfirmationResult
 ) => {
   return dispatch => {
-    WebApi.employees.patch
-      .reactivate(employeeId)
+    useRequest('reactivateEmployee', employeeId)
       .then(response => {
         setActionConfirmationResult(response);
         pageChange();
@@ -459,8 +467,7 @@ export const reActivateEmployeeOnList = (
 
 export const reactivateEmployee = employeeId => {
   return dispatch => {
-    WebApi.employees.patch
-      .reactivate(employeeId)
+    useRequest('reactivateEmployee', employeeId)
       .then(response => {
         dispatch(getEmployeePromise(employeeId)).then(secondResponse => {
           dispatch(loadAssignmentsACreator(employeeId));
@@ -485,8 +492,7 @@ export const editStatistics = (
       capacity: capacity,
       cloudsIds: currentClouds
     };
-    WebApi.employees.patch
-      .data(employeeId, model)
+    useRequest('editEmployee', employeeId, model)
       .then(response => {
         dispatch(getEmployeePromise(employeeId));
       })
@@ -524,8 +530,7 @@ export const activateEmployeeOnList = (
       capacity: capacity
     };
 
-    WebApi.employees.post
-      .add(model)
+    useRequest('addEmployee', model)
       .then(response => {
         setActionConfirmationResult(response);
         pageChange();
@@ -543,8 +548,8 @@ export const activateEmployee = (employeeId, seniority, capacity) => {
       seniority: seniority,
       capacity: capacity
     };
-    WebApi.employees.post
-      .add(model)
+
+    useRequest('addEmployee', model)
       .then(response => {
         dispatch(getEmployeePromise(employeeId)).then(() => {
           dispatch(loadAssignmentsACreator(employeeId));
@@ -579,8 +584,7 @@ export const loadAssignments = (
 
 export const loadAssignmentsACreator = employeeId => dispatch => {
   return new Promise((resolve, reject) => {
-    WebApi.assignments.get
-      .byEmployee(employeeId)
+    useRequest('getAssignmentByEmployee', employeeId)
       .then(response => {
         dispatch(
           loadAssignments(true, [], response.replyBlock.data.dtoObjects)
@@ -623,8 +627,7 @@ export const changeEmployeeSkillsACreator = (employeeId, currentArray) => {
         yearsOfExperience: currentArray[key].skill.yearsOfExperience
       });
     }
-    WebApi.employees.put
-      .skills(employeeId, skillsArray)
+    useRequest('editSkills', employeeId, skillsArray)
       .then(response => {
         dispatch(changeEmployeeSkills(true, []));
         dispatch(clearAfterTimeByFuncRef(changeEmployeeSkills, 1500, null, []));
@@ -663,8 +666,7 @@ export const addNewSkillsToEmployeeACreator = (
     }
     model = model.concat(populateSkillArrayWithConstData(newSkills));
 
-    WebApi.employees.put
-      .skills(employeeId, model)
+    useRequest('editSkills',employeeId, model)
       .then(response => {
         dispatch(addNewSkillsToEmployee(true, []));
         dispatch(getEmployeePromise(employeeId));
@@ -682,10 +684,9 @@ export const addCertificateResult = resultBlockAddCertificate => {
   };
 };
 
-export const addCertificate = (cretificate, userId) => {
+export const addCertificate = (certificate, userId) => {
   return dispatch => {
-    WebApi.certificates.post
-      .add(cretificate)
+    useRequest('addCertificate', certificate)
       .then(response => {
         dispatch(addCertificateResult(response));
 
@@ -705,9 +706,8 @@ export const addCertificate = (cretificate, userId) => {
 };
 
 export const deleteCertificate = (certificateId, employeeId) => {
-  return dispatch => {
-    WebApi.certificates.delete
-      .deleteById(certificateId)
+  return dispatch => {    
+    useRequest('deleteCertificate', certificateId)
       .then(response => {
         dispatch(setActionConfirmationResult(response));
         dispatch(loadCertificates(employeeId));
@@ -718,10 +718,9 @@ export const deleteCertificate = (certificateId, employeeId) => {
   };
 };
 
-export const editCertificate = (certificateId, newCretificate, userId) => {
+export const editCertificate = (certificateId, newCertificate, userId) => {
   return dispatch => {
-    WebApi.certificates.put
-      .update(certificateId, newCretificate)
+    useRequest('editCertificate', certificateId, newCertificate)
       .then(response => {
         dispatch(addCertificateResult(response));
 
@@ -753,8 +752,7 @@ export const changeGetEmployeeOnBoardsStatus = (getEmployeeOnBoardStatus, getEmp
 
 export const loadEmployeeOnBoardsACreator = employeeId => {
   return dispatch => {
-    WebApi.employees.get
-      .onBoards(employeeId)
+    useRequest('getOnBoardsByEmployeeId', employeeId)
       .then(response => {
         if (!response.errorOccurred()) {
           dispatch(getEmployeeOnBoards(response.extractData()));
@@ -769,7 +767,7 @@ export const loadEmployeeOnBoardsACreator = employeeId => {
 
 export const deleteOnBoard = (onBoardId) => dispatch => {
   return new Promise((resolve, reject) => {
-    WebApi.employees.deleteOnBoard(onBoardId)
+    useRequest('deleteOnBoardEmployee', onBoardId)
       .then(response => {
         dispatch(setActionConfirmationResult(response));
         resolve()
@@ -787,8 +785,7 @@ export const addEmployeeOnBoard = (addEmployeeOnBoardStatus, addEmployeeOnBoardE
 
 export const addEmployeeOnBoardACreator = (onBoardModel) => dispatch => {
   return new Promise((resolve, reject) => {
-    WebApi.employees.post
-      .addOnBoard(onBoardModel)
+    useRequest('addOnBoardEmployee', onBoardModel)
       .then(response => {
         dispatch(addEmployeeOnBoard(true, []));
         resolve(response.replyBlock.data.dtoObject);
@@ -806,8 +803,7 @@ export const updateEmployeeOnBoard = (updateEmployeeOnBoardStatus, updateEmploye
 
 export const updateEmployeeOnBoardACreator = (onBoardModel, onBoardId) => dispatch => {
   return new Promise((resolve, reject) => {
-    WebApi.employees.put
-      .updateOnBoard(onBoardModel, onBoardId)
+    useRequest('editOnBoardEmployee', onBoardId, onBoardModel)
       .then(response => {
         dispatch(updateEmployeeOnBoard(true, []));
         resolve(response.replyBlock.data.dtoObject);

@@ -104,11 +104,13 @@ module.exports = {
     Config: JSON.stringify(
       process.env.NODE_ENV === 'production'
         ? {
-            serverUrl: "http://localhost:58926"
+            serverUrl: 'https://dev.dcmtbillennium.com',
+            azureAdRedirectUri: 'http://localhost:8080/signin-oidc'
           }
         : {
-            serverUrl: "http://localhost:58926"
-
+            serverUrl: 'http://prod-dcmt-billennium-webapi.azurewebsites.net',
+            // azureAdRedirectUri: 'http://localhost:8080/signin-oidc'
+            azureAdRedirectUri: 'http://localhost:8080/signin-oidc'
           }
     )
   }

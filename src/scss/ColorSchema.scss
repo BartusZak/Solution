@@ -1,6 +1,8 @@
 $body-background: rgb(197, 197, 197);
 $wrapper-background: #e8e8e8;
+$wrapper-background-brighter: #f8f8f8;
 $main-color: #006064;
+$main-color-hover: #027a7e;
 $main-color-hover-light: lighten(desaturate($main-color, 60%), 70%);
 $menu-element-text-color: white;
 $content-background: $wrapper-background;
@@ -22,6 +24,10 @@ $left-menu-li-border-bottom-color: darken($left-menu-background, 5%);
 $left-menu-li-hover-background: darken($left-menu-background, 5%);
 $left-menu-li-hover-icon-color: lighten($menu-element-icon-hover-color, 35%);
 $left-menu-li-active-background: darken($left-menu-background, 15%);
+
+$dark-select: #707070;
+$dark-select-option: #888888;
+$dark-select-option-selected: #cacaca;
 
 :export { mainColor: $main-color; contentBackground: $content-background; }
 

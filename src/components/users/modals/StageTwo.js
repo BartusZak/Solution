@@ -1,10 +1,10 @@
-import React, { Component } from "react";
-import "../../../scss/components/users/modals/StageTwo.scss";
-import FoundUsersTable from "../FoundUsersTable";
-import UserDetailsBlock from "./UserDetailsBlock";
-import UserRoleAssigner from "./UserRoleAssigner";
-import LoaderHorizontal from "../../../components/common/LoaderHorizontal";
-import ResultBlock from "../../common/ResultBlock";
+import React, { Component } from 'react';
+import '../../../scss/components/users/modals/StageTwo.scss';
+import FoundUsersTable from '../FoundUsersTable';
+import UserDetailsBlock from './UserDetailsBlock';
+import UserRoleAssigner from './UserRoleAssigner';
+import LoaderHorizontal from '../../../components/common/LoaderHorizontal';
+import ResultBlock from '../../common/ResultBlock';
 import PropTypes from 'prop-types';
 import { translate } from 'react-translate';
 
@@ -12,11 +12,11 @@ class StageTwo extends Component {
   constructor() {
     super();
     this.state = {
-      firstName: "",
-      lastName: "",
-      email: "",
-      phoneNumber: "",
-      id: "",
+      firstName: '',
+      lastName: '',
+      email: '',
+      phoneNumber: '',
+      id: '',
       roles: []
     };
   }
@@ -28,11 +28,12 @@ class StageTwo extends Component {
       id,
       email,
       phoneNumber,
-      roles
+      roles,
+      azureAdId
     } = this.props.selectedUser;
 
     if (phoneNumber === null) {
-      phoneNumber = "";
+      phoneNumber = '';
     }
 
     this.setState({
@@ -40,7 +41,8 @@ class StageTwo extends Component {
       lastName,
       email,
       phoneNumber,
-      id
+      id,
+      azureAdId
     });
   }
 
@@ -56,7 +58,7 @@ class StageTwo extends Component {
     event.preventDefault();
 
     if (this.state.roles.length === 0) {
-      alert(this.props.t("AddRoles"));
+      alert(this.props.t('AddRoles'));
     } else {
       this.props.doAddUser(this.state);
     }
@@ -80,7 +82,7 @@ class StageTwo extends Component {
           <div className="form-navigation">
             <div className="button-back-container">
               <button className="dcmt-button" onClick={this.handleBack}>
-                {t("Back")}
+                {t('Back')}
               </button>
             </div>
             <div>
@@ -88,21 +90,19 @@ class StageTwo extends Component {
                 type="modalInParent"
                 errorBlock={this.props.errorBlock}
                 errorOnly={false}
-                successMessage={t("UserAddedSuccessfully")}
+                successMessage={t('UserAddedSuccessfully')}
               />
             </div>
             <div className="submit-button-container">
-              {
-                this.state.roles[0] !== undefined ?
+              {this.state.roles[0] !== undefined ? (
                 <button
                   className="dcmt-button"
                   type="submit"
                   onClick={this.handleSubmit}
                 >
-                  {t("Add")}
+                  {t('Add')}
                 </button>
-                : null
-              }
+              ) : null}
             </div>
           </div>
         </div>
@@ -122,4 +122,4 @@ StageTwo.propTypes = {
   errorBlock: PropTypes.object
 };
 
-export default translate("StageTwo")(StageTwo);
+export default translate('StageTwo')(StageTwo);

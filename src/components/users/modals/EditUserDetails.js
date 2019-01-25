@@ -1,11 +1,12 @@
-import React, { Component } from "react";
-import UserDetailsBlock from "./UserDetailsBlock";
-import UserRoleAssigner from "./UserRoleAssigner";
-import LoaderHorizontal from "./../../common/LoaderHorizontal";
-import ResultBlock from "./../../common/ResultBlock";
-import PropTypes from "prop-types";
-import { translate } from "react-translate";
-import WebApi from "api/index";
+import React, { Component } from 'react';
+import UserDetailsBlock from './UserDetailsBlock';
+import UserRoleAssigner from './UserRoleAssigner';
+import LoaderHorizontal from './../../common/LoaderHorizontal';
+import ResultBlock from './../../common/ResultBlock';
+import PropTypes from 'prop-types';
+import { translate } from 'react-translate';
+import WebApi from 'api/index';
+import { useRequest } from '../../../api';
 
 class EditUserDetails extends Component {
   constructor(props) {
@@ -25,8 +26,7 @@ class EditUserDetails extends Component {
         disabledButton: !this.props.disabledButton
       },
       () => {
-        WebApi.users.patch
-          .roles(id, roles)
+        useRequest('editUserRoles', id, roles)
           .then(response => {
             this.props.pageChange(this.props.currentPage, this.props.settings),
               this.setState({
@@ -39,11 +39,12 @@ class EditUserDetails extends Component {
           })
           .catch(error => {
             if (
-              "userNotFoundError" in
-              error.replyBlock.data.errorObjects[0].errors
+              'userNotFoundError' in
+                error.replyBlock.data.errorObjects[0].errors ||
+              'userIdRequiredError' in
+                error.replyBlock.data.errorObjects[0].errors
             ) {
-              WebApi.users.post
-                .add(id, roles)
+              useRequest('addUser', id, roles)
                 .then(response => {
                   this.setState({
                     responseBlock: response,
@@ -52,7 +53,7 @@ class EditUserDetails extends Component {
                   });
 
                   setTimeout(() => {
-                    this.props.closeModal({ afterClose: "reloadList" });
+                    this.props.closeModal({ afterClose: 'reloadList' });
                   }, 1500);
                 })
                 .catch(errorResponse => {
@@ -92,7 +93,7 @@ class EditUserDetails extends Component {
                   onClick={this.changeUserRoles}
                   disabled={this.state.disabledButton}
                 >
-                  {t("Confirm")}
+                  {t('Confirm')}
                 </button>
               ) : null
             ) : null}
@@ -101,7 +102,11 @@ class EditUserDetails extends Component {
             <ResultBlock
               type="modalInParent"
               errorOnly={false}
-              successMessage={this.state.addedNewUser ? t("UserSuccesfullyAdded") : t("RolesSuccessfullyEdited")}
+              successMessage={
+                this.state.addedNewUser
+                  ? t('UserSuccesfullyAdded')
+                  : t('RolesSuccessfullyEdited')
+              }
               errorBlock={this.state.responseBlock}
             />
           </div>
@@ -121,4 +126,4 @@ EditUserDetails.propTypes = {
   pageChange: PropTypes.func
 };
 
-export default translate("EditUserDetails")(EditUserDetails);
+export default translate('EditUserDetails')(EditUserDetails);

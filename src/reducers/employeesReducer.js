@@ -21,7 +21,8 @@ import {
   CHANGE_LOAD_EMPLOYEES_FEEDBACKS,
   GET_USER_CV,
   CHANGE_GET_EMPLOYEE_ONBOARDS_STATUS,
-  GET_EMPLOYEE_ONBOARDS
+  GET_EMPLOYEE_ONBOARDS,
+  GET_EMPLOYEES_BY_SKILL
 } from "../constants";
 import { updateObject } from "../services/methods";
 const initialState = {
@@ -79,7 +80,9 @@ const initialState = {
 
   onBoards: [],
   loadEmployeesOnBoardsStatus: null,
-  loadEmployeesOnBoardsErrors: []
+  loadEmployeesOnBoardsErrors: [],
+
+  employeesBySkill: []
 };
 
 export const employeesReducer = (state = initialState, action) => {
@@ -199,6 +202,10 @@ export const employeesReducer = (state = initialState, action) => {
         addNewSkillsStatus: action.addNewSkillsStatus,
         addNewSkillsErrors: action.addNewSkillsErrors
       });
+    case GET_EMPLOYEES_BY_SKILL:
+      return updateObject(state, {
+        employeesBySkill: action.employeesBySkill
+      })
     default:
       return state;
   }
