@@ -60,13 +60,13 @@ const translations = {
   EmployeeProjectForm: {
     AddEmployeeToProject: 'Dodaj pracownika do projektu',
     Role: 'rola',
-    RolePlaceholder: 'wybierz role w projekcie...',
     StartDate: 'data rozpoczęcia',
     EndDate: 'data zakończenia',
     AddEmployee: 'DODAJ PRACOWNIKA',
     CloseAdding: 'ZAKOŃCZ DODAWANIE',
     ResponsibilitiesInProject: 'obowiązki w projekcie',
-    AddResponsibilityPlaceholder: 'dodaj obowiązek...'
+    AddResponsibilityPlaceholder: 'dodaj obowiązek',
+    Capacity: 'długość etatu'
   },
   EmployeeSearcher: {
     EmployeeSearcherPlaceholder: 'zacznij pisać aby rozpocząć wyszukiwanie...',

@@ -60,13 +60,13 @@ const translations = {
   EmployeeProjectForm: {
     AddEmployeeToProject: 'Add employee to project',
     Role: 'role',
-    RolePlaceholder: 'select role in project...',
     StartDate: 'start date',
     EndDate: 'end date',
     AddEmployee: 'ADD EMPLOYEE',
     CloseAdding: 'CLOSE ADDING',
     ResponsibilitiesInProject: 'responsibilities in project',
-    AddResponsibilityPlaceholder: 'add responsibility...'
+    AddResponsibilityPlaceholder: 'add responsibility...',
+    Capacity: 'capacity'
   },
   EmployeeSearcher: {
     EmployeeSearcherPlaceholder: 'start typing for searching employee...',

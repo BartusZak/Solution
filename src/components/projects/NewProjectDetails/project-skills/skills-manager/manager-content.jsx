@@ -35,7 +35,15 @@ const ManagerContent = ({ allSkills, allSkillsCount, status, skillsData, reloadS
                 <p>{t("EmptyFilteringMessage")}</p>
                 <i className="fas fa-crosshairs fa-lg"></i>
               </div> :
-              <SkillsList allSkills={filteredList} skillsData={skillsData} handleMarking={handleMarking} t={t} />
+              <ul className="skills-list">
+                {allSkills.map(({name}) => (
+                  <ProjectSkill
+                    label={t("SkillLevel")}
+                    skillLevel={skillsData[name].skillLevel} markerWidth={skillsData[name].markerWidth}
+                    color={skillsData[name].color} checked={skillsData[name].marked}
+                    key={name} name={name} handleMarking={handleMarking} />
+                ))}
+              </ul>
             }
             <div className="skills-footer">
               <div className='field-block'>
@@ -50,17 +58,5 @@ const ManagerContent = ({ allSkills, allSkillsCount, status, skillsData, reloadS
     </Filter>
   );
 }
-
-const SkillsList = ({allSkills, skillsData, handleMarking, t}) => (
-  <ul className="skills-list">
-    {allSkills.map(({name}) => (
-      <ProjectSkill
-        label={t("SkillLevel")}
-        skillLevel={skillsData[name].skillLevel} markerWidth={skillsData[name].markerWidth}
-        color={skillsData[name].color} checked={skillsData[name].marked}
-        key={name} name={name} handleMarking={handleMarking} />
-    ))}
-  </ul>
-);
 
 export default translate("ManagerContent")(ManagerContent);

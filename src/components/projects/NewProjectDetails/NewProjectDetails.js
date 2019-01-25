@@ -15,14 +15,16 @@ import './NewProjectDetails.scss';
 const { Provider } = ProjectDetailsContext;
 class NewProjectDetails extends React.Component {
   state = {
-    isLoading: true, editProjectForm: false, addPhaseForm: false, addEmployeeForm: false
+    isLoading: true, editProjectForm: false, addPhaseForm: false, addEmployeeForm: true
   }
   componentDidMount = () => this.getProjectDetails();
   componentDidUpdate = prevProps => {
     if(prevProps.projectResult !== this.props.projectResult)
       this.setState({isLoading: false});
-    if(prevProps.match.params.id !== this.props.match.params.id)
+    if(prevProps.match.params.id !== this.props.match.params.id) {
+      console.log(this.props.match.params.id)
       this.getProjectDetails();
+    }
   }
 
   getProjectDetails = () => {

@@ -186,4 +186,4 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default connect(null, mapDispatchToProps)(translate('ProjectInformations')(ProjectInformations));
+export default translate("ProjectInformations")(connect(null, mapDispatchToProps)(ProjectInformations));

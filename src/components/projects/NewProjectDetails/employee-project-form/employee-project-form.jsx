@@ -5,7 +5,6 @@ import { assignEmployeeIntoProject } from '../../../../actions/projectsActions';
 import { connect } from 'react-redux';
 import { translate } from 'react-translate';
 import EmployeeSearcher from '../../../shared/employee-searcher/employee-searcher';
-import TypeAndSelect from '../../../common/fancy-form/fancy-data-list';
 import DatePicker from 'react-datepicker';
 import Button from '../../../common/button/button';
 import ProgressMarker from '../../../shared/progress-marker/progress-marker';
@@ -17,14 +16,14 @@ class EmployeeProjectForm extends React.PureComponent {
   state = {
     isSubmitting: false, inputError: '', inputValue: ''
   }
-  roles = [{value: 'Developer', displayValue: 'Developer'}, {value: 'Human Resources', displayValue: 'Human Resources'}];
-  initValues = { employee: '', role: '', startDate: moment(), endDate: moment(), fte: 50, responsibilities: [] };
+  roles = ['Developer', 'Human Resources'];
+  initValues = { employeeId: '', role: 'Developer', startDate: moment(), endDate: moment(), assignedCapacity: 50, responsibilities: [] };
   settings = {
-    employee: new InputSettings('employee', { required: true } ),
+    employeeId: new InputSettings('employee', { required: true } ),
     role: new InputSettings('role', { required: true, minLength: 2, maxLength: 150 } ),
     startDate: new InputSettings('start date', { required: true } ),
     endDate: new InputSettings('end date', { required: true } ),
-    fte: new InputSettings('fte', { required: true } ),
+    assignedCapacity: new InputSettings('fte', { required: true } ),
     responsibilities: new InputSettings('responsibilities', { isNotEmptyList: true } )
   };
   responsibilitiesConfig = { required: true, minLength: 3, maxLength: 100, isInList: [] };
@@ -50,6 +49,7 @@ class EmployeeProjectForm extends React.PureComponent {
   }
 
   handleAssigningEmployee = formData => {
+    console.log(formData);
     this.setState({isSubmitting: true});
     this.props.assignEmployeeIntoProject(formData,
       () => this.setState({isSubmitting: false}),
@@ -75,17 +75,22 @@ class EmployeeProjectForm extends React.PureComponent {
                   <EmployeeSearcher
                     showLabel
                     employeeFilter={{ hasAccount: true, capacity: 0 }}
-                    emitEmployeeClick={employee => putChanges(employee, 'employee')}
+                    emitEmployeeClick={employee => putChanges(employee, 'employeeId')}
                   />
-                  <p className="field-error">{errors.employee}</p>
+                  <p className="field-error">{errors.employeeId}</p>
                 </div>
 
 
                 <div id="role" className="fields-wrapper-col">
                   <label className="field-label">{t("Role")} *</label>
 
-                  <TypeAndSelect value={values.role} className="field" listName="roles" listData={this.roles}
-                    placeholder={t("RolePlaceholder")} onChange={e => handleChangeFromEvent(e, 'role')} />
+                  <div className="field-block">
+                    <select value={values.role} onChange={e => handleChangeFromEvent(e, 'role')}>
+                      {this.roles.map(role => (
+                        <option key={role}>{role}</option>
+                      ))}
+                    </select>
+                  </div>
 
                   <p className="field-error">{errors.role}</p>
 
@@ -103,8 +108,7 @@ class EmployeeProjectForm extends React.PureComponent {
                   <p className="field-error">{errors.endDate}</p>
                 </div>
 
-                <ProgressMarker emitChange={value => putChanges(value, 'fte')}
-                  label="fte" jump={25} />
+                <ProgressMarker emitChange={value => putChanges(value, 'assignedCapacity')} label="fte" jump={10} />
               </div>
 
               <div id="confirm" className="submit-wrapper">
@@ -153,4 +157,4 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default connect(null, mapDispatchToProps)(translate('EmployeeProjectForm')(EmployeeProjectForm));
+export default translate("EmployeeProjectForm")(connect(null, mapDispatchToProps)(EmployeeProjectForm));

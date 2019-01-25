@@ -5,7 +5,7 @@ import './project-skill.scss';
 
 class ProjectSkill extends React.Component {
   shouldComponentUpdate = prevProps => {
-    if (prevProps.checked !== this.props.checked || prevProps.markerWidth !== this.props.markerWidth)
+    if (prevProps.checked !== this.props.checked || prevProps.markerWidth !== this.props.markerWidth || prevProps.label !== this.props.label)
       return true;
     return false;
   }
