@@ -1,13 +1,12 @@
 import React from 'react';
 import Button from '../../../common/button/button';
 import SkillsManager from './skills-manager/skills-manager';
-import ProjectSkill from './project-skill/project-skill';
 import { translate } from 'react-translate';
 
 import './project-skills.scss';
 class ProjectSkills extends React.PureComponent {
   state = {
-    skillsMarkers: {}, skillManager: false, skillManagerClass: 'manager-open'
+    skillsMarkers: {}, skillManager: true, skillManagerClass: 'manager-open'
   }
 
   componentDidMount = () => this.setMarkers();
@@ -49,8 +48,19 @@ class ProjectSkills extends React.PureComponent {
           <React.Fragment>
             <ul>
               {projectSkills.map(({skillId, skillName: name, skillLevel, color}) => (
-                <ProjectSkill markerWidth={skillsMarkers[skillId]}
-                  key={skillId} name={name} skillLevel={skillLevel} color={color} />
+                <li className="project-skill" key={skillId}>
+                  <div className="skill-head flex-row-center">
+                    <div className="skill-dot" style={{background: color}} />
+                    <span className="skill-name">{name}</span>
+                  </div>
+
+                  <label className="field-label">{t("SkillLevel")}</label>
+                  <div className="progress-marker">
+                    <div className="progress-value" style={{width: `${skillsMarkers[skillId]}%`}}>
+                      <span className="progress-number-value">{skillsMarkers[skillId]}%</span>
+                    </div>
+                  </div>
+                </li>
               ))}
             </ul>
 

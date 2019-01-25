@@ -13,14 +13,15 @@ const translations = {
   ProjectSkills: {
     ProjectSkills: 'Project skills',
     SkillsListEmpty: 'Project skill list is already empty',
-    OpenManagement: 'OPEN MANAGEMENT'
+    OpenManagement: 'OPEN MANAGEMENT',
+    SkillLevel: 'skill level'
   },
   ManagerContent: {
     LoadingSkillsProblem: 'There is a problem with loading skills...',
     EmptySkills: 'Skills list is empty',
     ManageSkillsLabel: 'Manage skills',
     EmptyFilteringMessage: 'Not results for typed value...',
-    FinishButton: 'FINISH',
+    FinishButton: 'SAVE',
     FilterPlaceholder: 'type here for find skill...',
     SkillLevel: 'skill level'
   },

@@ -1,8 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { translate } from 'react-translate';
-import ProjectSkill from '../project-skill/project-skill';
 import Button from '../../../../common/button/button';
+import Checkbox from '../../../../common/checkbox/checkbox';
+import ProgressMarker from '../../../../shared/progress-marker/progress-marker';
 import Filter from '../../../../../hocs/filter';
 
 const filterConfig = { search: true,  sort: { key: 'name' } };
@@ -28,7 +29,7 @@ const ManagerContent = ({ allSkills, allSkillsCount, status, skillsData, reloadS
           <React.Fragment>
             <h3 className="flex-between-c">
               {t("ManageSkillsLabel")} {`(${filteredList.length})`}
-              {(filteredList.length > 0) && <i onClick={handleSorting} className="fa fa-sort clickable"></i>}
+              {(filteredList.length > 5) && <i onClick={handleSorting} className="fa fa-sort clickable"></i>}
             </h3>
             {filteredList.length === 0 ?
               <div className="empty-list-comunicate">
@@ -36,12 +37,21 @@ const ManagerContent = ({ allSkills, allSkillsCount, status, skillsData, reloadS
                 <i className="fas fa-crosshairs fa-lg"></i>
               </div> :
               <ul className="skills-list">
-                {allSkills.map(({name}) => (
-                  <ProjectSkill
-                    label={t("SkillLevel")}
-                    skillLevel={skillsData[name].skillLevel} markerWidth={skillsData[name].markerWidth}
-                    color={skillsData[name].color} checked={skillsData[name].marked}
-                    key={name} name={name} handleMarking={handleMarking} />
+                {filteredList.map(({name}) => (
+                <li className="project-skill" key={name}>
+                  <div className="skill-head flex-row-center">
+                    <div className="skill-dot" style={{background: skillsData[name].color}} />
+                    <span className="skill-name">{name}</span>
+                  </div>
+
+                  <label className="field-label">{t("SkillLevel")}</label>
+                  <ProgressMarker initialValue={skillsData[name].markerWidth} jump={20} />
+
+                  <div className="checkbox-wrapper">
+                    <Checkbox checked={skillsData[name].marked} id={name}
+                      handleChange={() => handleMarking(name)} />
+                  </div>
+                </li>
                 ))}
               </ul>
             }

@@ -37,7 +37,7 @@ class SkillsManagement extends React.Component {
     const allSkillsKeys = Object.keys(allSkills);
     allSkillsKeys.forEach(key => {
       const name = allSkills[key].name;
-      const skillData = { skillId: key, name, color: getRandomColor(), markerWidth: 40, skillLevel: 3, marked: false };
+      const skillData = { skillId: key, name, color: getRandomColor(), markerWidth: 20, skillLevel: 3, marked: false };
       skillsData[name] = skillData;
     });
     this.setState({skillsData, isLoadingAllSkills: false});
@@ -51,7 +51,8 @@ class SkillsManagement extends React.Component {
   handleMarking = name => {
     const skillsData = {...this.state.skillsData};
     skillsData[name].marked = !skillsData[name].marked;
-    this.setState({skillsData});
+    const countOfMarkedSkills = Object.values(skillsData).filter(item => item.marked).length;
+    this.setState({skillsData, countOfMarkedSkills});
   }
 
   handleEditSkillsInProject = id => {
@@ -73,8 +74,8 @@ class SkillsManagement extends React.Component {
 
     return (
       <Consumer>
-        {(project) => (
-          <FancyModal backdropClass={skillManagerClass} isLoading={isAddingSkills}
+        {project => (
+          <FancyModal backdropClass={skillManagerClass} scale={false} isLoading={isAddingSkills}
             positionClass={`skills-modal m-w-h-center ${skillManagerClass}`} close={close}>
             { isLoadingAllSkills ? <div className="spinner-new spinner-new-big spinner-new-center" /> :
               <ManagerContent countOfMarkedSkills={countOfMarkedSkills}

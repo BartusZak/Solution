@@ -13,14 +13,15 @@ const translations = {
   ProjectSkills: {
     ProjectSkills: 'Lista umiejętności',
     SkillsListEmpty: 'Lista umiejętności w tym projekcie jest pusta',
-    OpenManagement: 'ZARZĄDZAJ'
+    OpenManagement: 'ZARZĄDZAJ',
+    SkillLevel: 'poziom umiejętności'
   },
   ManagerContent: {
     LoadingSkillsProblem: 'Wystapił problem podczas ładowania umiejętności...',
     EmptySkills: 'Lista umiejętności jest pusta',
     ManageSkillsLabel: 'Zarządzaj umiejętnościami',
     EmptyFilteringMessage: 'Brak rezultatów dla podanej wartości...',
-    FinishButton: 'ZAKOŃCZ',
+    FinishButton: 'ZAPISZ',
     FilterPlaceholder: 'zacznij pisać, aby znaleźć umiejętność...',
     SkillLevel: 'poziom umiejętności'
   },
