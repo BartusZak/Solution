@@ -2,6 +2,7 @@ import React from 'react';
 import FancyModal from '../../../../common/fancy-modal/fancy-modal';
 import EmployeeSearcher from '../../../../shared/employee-searcher/employee-searcher';
 import Button from '../../../../common/button/button';
+import { translate } from 'react-translate';
 
 import './share-project-form.scss';
 class ShareProjectForm extends React.Component {
@@ -19,12 +20,12 @@ class ShareProjectForm extends React.Component {
   }
 
   render() {
-    const { close } = this.props;
+    const { close, t } = this.props;
     const { employees } = this.state;
     return (
       <FancyModal positionClass="share-project-form m-w-h-center" close={close}>
 
-        <h3 className="fancy-modal-header">Share project for person</h3>
+        <h3 className="fancy-modal-header">{t("ShareProjectLabel")}</h3>
 
         <div className="searcher-wrapper">
           <EmployeeSearcher
@@ -34,7 +35,7 @@ class ShareProjectForm extends React.Component {
           />
         </div>
 
-        <p className="important-par">Employees made avaible ({employees.length})</p>
+        <p className="important-par">{t("EmployeesMadeAvaible")} ({employees.length})</p>
 
         <div className="employees flex-row-center carousel element-scroll">
           <div className="name-and-avatar">
@@ -71,10 +72,10 @@ class ShareProjectForm extends React.Component {
           ))} */}
         </div>
 
-        <Button onClick={this.handleSharingProject} title="SHARE" mainClass="label-btn btn-submit-form" />
+        <Button onClick={this.handleSharingProject} title={t("Share")} mainClass="label-btn btn-submit-form" />
       </FancyModal>
     );
   }
 }
 
-export default ShareProjectForm;
+export default translate('ShareProjectForm')(ShareProjectForm);

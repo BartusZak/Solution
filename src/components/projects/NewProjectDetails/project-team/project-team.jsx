@@ -1,6 +1,7 @@
 import React from 'react';
 import Button from '../../../common/button/button';
 import Checkbox from '../../../common/checkbox/checkbox';
+import { translate } from 'react-translate';
 
 import './project-team.scss';
 
@@ -18,13 +19,13 @@ class ProjectTeam extends React.PureComponent {
 
   render() {
     const { markedMembers } = this.state;
-    const { team, togleAddEmployeeForm } = this.props;
+    const { team, togleAddEmployeeForm, t } = this.props;
     const teamCount = team.length;
 
     return (
       <div className="project-team-wrapper box-circle flex-column">
         <p style={{paddingBottom: teamCount === 0 ? '0' : '20px'}} className="important-par flex-between-c">
-          Project team ({teamCount})
+          {t("ProjectTeam")} ({teamCount})
           {Object.keys(markedMembers).length > 0 &&
             <i className="fa fa-user-times"></i>
           }
@@ -35,7 +36,7 @@ class ProjectTeam extends React.PureComponent {
 
         {teamCount === 0 ?
           <div onClick={togleAddEmployeeForm} className="empty-list-comunicate ">
-            <p>Project team list is already empty. Click button bellow if you want add new one</p>
+            <p>{t("ProjectTeamEmpty")}</p>
             <i onClick={togleAddEmployeeForm} className="fa fa-user-plus"></i>
           </div> :
           <React.Fragment>
@@ -56,13 +57,13 @@ class ProjectTeam extends React.PureComponent {
 
                   <div className="dates-info">
                     <div className={`detail-label ${endDate ? 'detail-row' : ''}`}>
-                      <span className="dcmt-light-color">since</span>
+                      <span className="dcmt-light-color">{t("SinceLabel")}</span>
                       <span>{startDate}</span>
                     </div>
 
                     {endDate &&
                     <div className="detail-label detail-row">
-                      <span className="dcmt-light-color">to</span>
+                      <span className="dcmt-light-color">{t("ToLabel")}</span>
                       <span>{endDate}</span>
                     </div>
                     }
@@ -76,7 +77,7 @@ class ProjectTeam extends React.PureComponent {
                 </li>
                 ))}
               </ul>
-              <Button title="ADD NEW TEAM MEMBER" mainClass="label-btn dcmt-light-color" />
+              <Button title={t("AddMemeber")} mainClass="label-btn dcmt-light-color" />
             </React.Fragment>
         }
       </div>
@@ -84,4 +85,4 @@ class ProjectTeam extends React.PureComponent {
   }
 }
 
-export default ProjectTeam;
+export default translate("ProjectTeam")(ProjectTeam);

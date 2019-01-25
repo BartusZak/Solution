@@ -1,6 +1,5 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { translate } from 'react-translate';
 import { withRouter } from 'react-router-dom';
 import { getProject } from '../../../actions/projectsActions';
 import { putAllSkills } from '../../../actions/skillsActions';
@@ -99,4 +98,4 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(translate("NewProjectDetails")(withRouter(NewProjectDetails)));
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(NewProjectDetails));

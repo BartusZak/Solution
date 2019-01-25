@@ -2,6 +2,7 @@ import React from 'react';
 import Button from '../../../common/button/button';
 import SkillsManager from './skills-manager/skills-manager';
 import ProjectSkill from './project-skill/project-skill';
+import { translate } from 'react-translate';
 
 import './project-skills.scss';
 class ProjectSkills extends React.PureComponent {
@@ -33,15 +34,15 @@ class ProjectSkills extends React.PureComponent {
 
   render() {
     const { skillsMarkers, skillManager, skillManagerClass } = this.state;
-    const { projectSkills } = this.props;
+    const { projectSkills, t } = this.props;
     const skillsCount = projectSkills.length;
     return (
       <div className={`project-skills-wrapper flex-column ${skillsCount === 0 ? 'empty-list-bg' : ''}`}>
-        <p className="important-par">Project skills ({skillsCount})</p>
+        <p className="important-par">{t("ProjectSkills")} ({skillsCount})</p>
 
         {skillsCount === 0 ?
           <div className="empty-list-comunicate">
-            <p>Project skill list is already empty. Click button bellow if you want add new one</p>
+            <p>{t("SkillsListEmpty")}</p>
             <i onClick={skillManager ? this.setManagerOpenClass : this.togleManager} className="fas fa-crosshairs fa-lg"></i>
           </div> :
 
@@ -53,7 +54,7 @@ class ProjectSkills extends React.PureComponent {
               ))}
             </ul>
 
-            <Button onClick={skillManager ? this.setManagerOpenClass : this.togleManager} title="OPEN MANAGEMENT" mainClass="dcmt-main-btn dcmt-light-btn" />
+            <Button onClick={skillManager ? this.setManagerOpenClass : this.togleManager} title={t("OpenManagement")} mainClass="dcmt-main-btn dcmt-light-btn" />
 
           </React.Fragment>
         }
@@ -67,4 +68,4 @@ class ProjectSkills extends React.PureComponent {
   }
 }
 
-export default ProjectSkills;
+export default translate("ProjectSkills")(ProjectSkills);

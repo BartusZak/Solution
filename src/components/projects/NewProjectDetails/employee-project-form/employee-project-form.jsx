@@ -3,6 +3,7 @@ import FancyForm, { defaultDatePickerConfig } from '../../../common/fancy-form/f
 import { InputSettings, runSingleValidation } from '../../../common/fancy-form/index';
 import { assignEmployeeIntoProject } from '../../../../actions/projectsActions';
 import { connect } from 'react-redux';
+import { translate } from 'react-translate';
 import EmployeeSearcher from '../../../shared/employee-searcher/employee-searcher';
 import TypeAndSelect from '../../../common/fancy-form/fancy-data-list';
 import DatePicker from 'react-datepicker';
@@ -56,7 +57,7 @@ class EmployeeProjectForm extends React.PureComponent {
   }
 
   render() {
-    const { close } = this.props;
+    const { close, t } = this.props;
     const { inputError } = this.state;
     return (
       <FancyForm
@@ -68,7 +69,7 @@ class EmployeeProjectForm extends React.PureComponent {
             <form className="employees-project-form" onSubmit={handleSubmit}>
 
               <div className="form-left">
-                <p id="header" className="important-par">Add employee to project {values.length}</p>
+                <p id="header" className="important-par">{t("AddEmployeeToProject")} {values.length}</p>
 
                 <div id="employee" className="fields-wrapper-col">
                   <EmployeeSearcher
@@ -81,23 +82,23 @@ class EmployeeProjectForm extends React.PureComponent {
 
 
                 <div id="role" className="fields-wrapper-col">
-                  <label className="field-label">role *</label>
+                  <label className="field-label">{t("Role")} *</label>
 
                   <TypeAndSelect value={values.role} className="field" listName="roles" listData={this.roles}
-                    placeholder="select role in project..." onChange={e => handleChangeFromEvent(e, 'role')} />
+                    placeholder={t("RolePlaceholder")} onChange={e => handleChangeFromEvent(e, 'role')} />
 
                   <p className="field-error">{errors.role}</p>
 
                 </div>
 
                 <div id="sdate" className="fields-wrapper-col">
-                  <label className="field-label">start date *</label>
+                  <label className="field-label">{t("StartDate")} *</label>
                   <DatePicker {...defaultDatePickerConfig} className="field" selected={values.startDate} onChange={date => putChanges(date, 'startDate')} />
                   <p className="field-error">{errors.startDate}</p>
                 </div>
 
                 <div id="edate" className="fields-wrapper-col">
-                  <label className="field-label">end date *</label>
+                  <label className="field-label">{t("EndDate")} *</label>
                   <DatePicker {...defaultDatePickerConfig} className="field" selected={values.endDate} onChange={date => putChanges(date, 'endDate')} />
                   <p className="field-error">{errors.endDate}</p>
                 </div>
@@ -107,16 +108,16 @@ class EmployeeProjectForm extends React.PureComponent {
               </div>
 
               <div id="confirm" className="submit-wrapper">
-                <Button type="submit" title="ADD EMPLOYEE" mainClass="dcmt-main-btn dcmt-light-btn animated-icon-btn">
+                <Button type="submit" title={t("AddEmployee")} mainClass="dcmt-main-btn dcmt-light-btn animated-icon-btn">
                   <i className="fa fa-plus"></i>
                 </Button>
-                <Button type="button" onClick={close} title="CLOSE ADDING" mainClass="dcmt-main-btn dcmt-grey-btn animated-icon-btn">
+                <Button type="button" onClick={close} title={t("CloseAdding")} mainClass="dcmt-main-btn dcmt-grey-btn animated-icon-btn">
                   <i className="fa fa-times"></i>
                 </Button>
               </div>
 
               <div className="form-right box-circle">
-                <p className="important-par">responsibilities in project *</p>
+                <p className="important-par">{t("ResponsibilitiesInProject")} *</p>
                 <ul className="responsibilities">
                   {values.responsibilities.map(responsibility => (
                     <li className="element-toolbox-wrapper" key={responsibility}>
@@ -131,7 +132,7 @@ class EmployeeProjectForm extends React.PureComponent {
                 <div className="field-block">
                   <input onKeyPress={e => this.handleKeyPress(e, putChanges, values.responsibilities)}
                     onChange={this.handleResponsibilitiesChange}
-                    placeholder='add responsibility...' />
+                    placeholder={t("AddResponsibilityPlaceholder")} />
                   <div className="field-icon">
                     <i className={`fa fa-plus ${inputError ? 'dcmt-grey-color' : 'dcmt-light-color'}`} />
                   </div>
@@ -152,4 +153,4 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default connect(null, mapDispatchToProps)(EmployeeProjectForm);
+export default connect(null, mapDispatchToProps)(translate('EmployeeProjectForm')(EmployeeProjectForm));

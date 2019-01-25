@@ -10,7 +10,7 @@ class ProjectSkill extends React.Component {
     return false;
   }
   render() {
-    const { name, color, skillLevel, markerWidth, checked, handleMarking } = this.props;
+    const { name, color, skillLevel, markerWidth, checked, handleMarking, label } = this.props;
     return (
       <li className="project-skill">
         <div className="skill-head flex-row-center">
@@ -20,7 +20,7 @@ class ProjectSkill extends React.Component {
 
         <div className="skill-details flex-row-center">
           <div className="detail-label">
-            <span className="dcmt-light-color">experience level</span>
+            <span className="dcmt-light-color">{label}</span>
             <div className="flex-row-center">
               <span className="skill-number">{skillLevel}</span>
               <div className="progress-marker" style={{width: '100px'}}>

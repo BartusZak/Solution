@@ -1,16 +1,17 @@
 import React from 'react';
 import { calculateProjectState } from '../index';
+import { translate } from 'react-translate';
 
 import './project-phases.scss';
-const projectPhases = ({phases, push, openAddingPhase}) => {
+const ProjectPhases = ({phases, push, openAddingPhase, t}) => {
   const phasesCount = phases.length;
   return (
   <div className={`phases-wrapper flex-column ${phasesCount === 0 ? 'empty-list-bg' : ''}`}>
-    <p className="important-par">Project phases ({phasesCount})</p>
+    <p className="important-par">{t("ProjectPhases")} ({phasesCount})</p>
 
     {phasesCount === 0 ?
     <div className="empty-list-comunicate">
-      <p>Phases list is already empty. Click here for add new one</p>
+      <p>{t("EmptyPhases")}</p>
       <i onClick={openAddingPhase} className="fas fa-briefcase fa-lg "></i>
     </div> :
     <ul className="phases carousel element-scroll flex-row-center">
@@ -23,15 +24,15 @@ const projectPhases = ({phases, push, openAddingPhase}) => {
         </article>
         <div className="phase-details flex-row-center">
           <div className="detail-label">
-            <span className="dcmt-light-color">start date</span>
+            <span className="dcmt-light-color">{t("StartDate")}</span>
             <span>{startDate}</span>
           </div>
           <div className="detail-label">
-            <span className="dcmt-light-color">status</span>
+            <span className="dcmt-light-color">{t("Status")}</span>
             <span>{calculateProjectState(status, isDeleted)}</span>
           </div>
           <div className="detail-label">
-            <span className="dcmt-light-color">estimated end date</span>
+            <span className="dcmt-light-color">{t("EstimatedEndDate")}</span>
             <span>{estimatedEndDate}</span>
           </div>
         </div>
@@ -42,4 +43,4 @@ const projectPhases = ({phases, push, openAddingPhase}) => {
   </div>
   );
 }
-export default projectPhases;
+export default translate("ProjectPhases")(ProjectPhases);
