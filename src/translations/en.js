@@ -1163,7 +1163,8 @@ const translations = {
     CreatingLink: 'Link for share is generating',
     CreatedLink: 'Created link for sharing',
     OpenIn: 'Open in',
-    Open: 'Open'
+    Open: 'Open',
+    Close: 'Close',
   }
 };
 

@@ -408,7 +408,9 @@ class OneDriveContent extends React.PureComponent {
                 operationPrompt={false}
                 />
             }
-            <GenerateLinkModal copyLink={this.copyLink}
+            {folderToGenerateShareLink &&
+            <GenerateLinkModal
+            copyLink={this.copyLink}
             path={path}
             isOneDrive={true}
             fileToShare={folderToGenerateShareLink}
@@ -416,6 +418,7 @@ class OneDriveContent extends React.PureComponent {
             generateShareLinkErrors={generateShareLinkErrors} generatedShareLink={generatedShareLink}
             closeModal={this.closeShareLinkModal}
             shouldOpenModal={folderToGenerateShareLink !== null} />
+            }
         </div>
 
         );
