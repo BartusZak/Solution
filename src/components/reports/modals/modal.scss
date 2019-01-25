@@ -1,19 +1,19 @@
 .modal-gen-link{
     @media(min-width: 701px){
-        bottom: 0;
-        margin: auto 0;
-        height: 350px;
-        top: 0;
-    }
-    @media(max-width: 700px){
-      width: 96% !important;
-      height: 80vh !important;
+        min-height: 350px;
     }
     @media(max-width: 500px){
         height: 96vh !important;
     }
     .whole-page-error{
         font-size: 22px;
+    }
+    h3 .fa-times{
+      position: absolute;
+      right: 20px;
+      top: 20px;
+      cursor: pointer
+
     }
     .gen-link-modal-container{
         width: 100%;
@@ -78,15 +78,15 @@
                 color: rgba(69, 69, 209, 0.81);
             }
             button{
-                width: 150px;
-                position: absolute;
-                bottom: 0;
-                left: 0;
-                right: 0;
-                margin: 0 auto;
-                i{
-                    margin-left: 5px;
-                }
+              display: block;
+              width: 150px;
+              bottom: 0;
+              left: 0;
+              right: 0;
+              margin: 10px auto;
+              i{
+                  margin-right: 5px;
+              }
             }
         }
     }
