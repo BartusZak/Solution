@@ -1,6 +1,7 @@
 .modal-gen-link{
     @media(min-width: 701px){
         min-height: 350px;
+        min-width: 500px;
     }
     @media(max-width: 500px){
         height: 96vh !important;
