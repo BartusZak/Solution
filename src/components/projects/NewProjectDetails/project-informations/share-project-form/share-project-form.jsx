@@ -2,28 +2,38 @@ import React from 'react';
 import FancyModal from '../../../../common/fancy-modal/fancy-modal';
 import EmployeeSearcher from '../../../../shared/employee-searcher/employee-searcher';
 import Button from '../../../../common/button/button';
+import { shareProject, getDestinationManagers } from '../../../../../actions/projectsActions';
 import { translate } from 'react-translate';
 
 import './share-project-form.scss';
 class ShareProjectForm extends React.Component {
   state = {
-    employees: [], isSharing: false
+    employees: [], isSharing: false, isLoadingDestinationManagers: true
   };
 
-  addPerson = employee => {
-    const employees = [...this.state.employees, employee];
-    this.setState({employees});
+  componentDidMount = () => this.handleGetManagers();
+
+  handleGetManagers = () => {
+    this.setState({isLoadingDestinationManagers: true});
+    getDestinationManagers(this.props.projectId,
+      () => this.setState({isLoadingDestinationManagers: false}),
+      () => this.setState({isLoadingDestinationManagers: false}));
   }
 
   handleSharingProject = () => {
     this.setState({isSharing: true});
+    const model = { projectId: this.props.projectId, destinationManagersIds: [] };
+    shareProject(model,
+      () => this.setState({isSharing: false}),
+      () => this.setState({isSharing: false}));
   }
 
   render() {
     const { close, t } = this.props;
-    const { employees } = this.state;
+    const { employees, isSharing, isLoadingDestinationManagers } = this.state;
     return (
-      <FancyModal positionClass="share-project-form m-w-h-center" close={close}>
+      <FancyModal isLoading={isSharing || isLoadingDestinationManagers}
+        positionClass="share-project-form m-w-h-center" close={close}>
 
         <h3 className="fancy-modal-header">{t("ShareProjectLabel")}</h3>
 
@@ -78,4 +88,5 @@ class ShareProjectForm extends React.Component {
   }
 }
 
-export default translate('ShareProjectForm')(ShareProjectForm);
+export default translate("ShareProjectForm")(ShareProjectForm);
+

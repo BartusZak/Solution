@@ -37,7 +37,7 @@ class SkillsManagement extends React.Component {
     const allSkillsKeys = Object.keys(allSkills);
     allSkillsKeys.forEach(key => {
       const name = allSkills[key].name;
-      const skillData = { skillId: key, name, color: getRandomColor(), markerWidth: 20, skillLevel: 3, marked: false };
+      const skillData = { skillId: key, name, color: getRandomColor(), markerWidth: 20, marked: false };
       skillsData[name] = skillData;
     });
     this.setState({skillsData, isLoadingAllSkills: false});
@@ -59,12 +59,18 @@ class SkillsManagement extends React.Component {
     const { skillsData } = this.state;
     const skills = Object.values(skillsData)
       .filter(skillData => skillData.marked)
-      .map(({skillId, skillLevel}) => ({skillId, skillLevel}));
+      .map(({skillId, markerWidth}) => ({skillId, skillLevel: markerWidth/20}));
 
     this.setState({isAddingSkills: true});
     this.props.editSkillsInProject(id, skills,
       () => this.setState({isAddingSkills: false}),
       () => this.setState({isAddingSkills: false}));
+  }
+
+  handleChangingSkill = (value, name) => {
+    const skillsData = {...this.state.skillsData};
+    skillsData[name].markerWidth = value;
+    this.setState({skillsData});
   }
 
   render() {
@@ -78,8 +84,10 @@ class SkillsManagement extends React.Component {
           <FancyModal backdropClass={skillManagerClass} scale={false} isLoading={isAddingSkills}
             positionClass={`skills-modal m-w-h-center ${skillManagerClass}`} close={close}>
             { isLoadingAllSkills ? <div className="spinner-new spinner-new-big spinner-new-center" /> :
-              <ManagerContent countOfMarkedSkills={countOfMarkedSkills}
+              <ManagerContent
+                countOfMarkedSkills={countOfMarkedSkills}
                 saveSkills={() => this.handleEditSkillsInProject(project.id)}
+                handleChangingSkill={this.handleChangingSkill}
                 reloadSkills={this.getSkills} handleMarking={this.handleMarking}
                 allSkills={allSkills} allSkillsCount={allSkillsCount}
                 status={loadAllSkillsResult.status} skillsData={skillsData} />

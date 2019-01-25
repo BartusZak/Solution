@@ -57,7 +57,7 @@ class NewProjectDetails extends React.Component {
                   <ProjectSkills projectSkills={skills} />
                   <ProjectTeam team={team} togleAddEmployeeForm={this.togleAddEmployeeForm}/>
                 </React.Fragment> :
-                <EmployeeProjectForm close={this.togleAddEmployeeForm} />
+                <EmployeeProjectForm close={this.togleAddEmployeeForm} projectId={id} />
               }
 
               {!project.parentId &&

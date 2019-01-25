@@ -1,9 +1,9 @@
 div.share-project-form {
-  width: 400px;
+  width: 500px;
   & > div {
     display: grid;
     grid-template-rows: repeat(5, auto);
-    grid-gap: 20px;
+    grid-gap: 30px;
     padding-bottom: 20px;
   }
   .searcher-wrapper, .important-par, .employees {

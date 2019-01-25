@@ -377,27 +377,44 @@ export const addProjectPhase = (model, succ, err) => dispatch =>
 export const deleteProject = (id, succ, err) => dispatch =>
   useRequest('deleteProject', id)
     .then(() => { dispatch(changeProjectStatus(null, true)); succ();})
-    .catch(() => err())
+    .catch(() => err());
+
 export const reactivateProject = (id, succ, err) => dispatch =>
   useRequest('reactivateProject', id)
     .then(() => { dispatch(changeProjectStatus(active, false)); succ(); })
     .catch(() => err());
+
 export const closeProject = (id, succ, err) => dispatch =>
    useRequest('closeProject', id)
     .then(() => { dispatch(changeProjectStatus(closed, false)); succ(); })
     .catch(() => err());
+
 export const addOwnerToProject = (projectId, employee, succ, err) => dispatch =>
    useRequest('addOwnerToProject', projectId, [employee.id])
     .then(() => { dispatch(addOwner({ id: employee.id, fullName: employee.fullName })); succ(); })
     .catch(() => err());
+
 export const assignEmployeeIntoProject = (model, succ, err) => dispatch => {
   useRequest('assignEmployeeToProject', model)
+    .then(() => succ())
+    .catch(() => err());
+}
+
+export const shareProject = (model, succ, err) => {
+  useRequest('shareProject', model.projectId, model)
     .then(res => {
-      console.log(res)
+      console.log(res);
       succ();
-    })
-    .catch(() => {
-      console.log(err)
+    }).catch(() => {
+      console.log(err);
       err();
     })
+}
+
+export const getDestinationManagers = (projectId, succ, err) => {
+  useRequest('getDestinationManagers', projectId)
+    .then(res => {
+      const managers = res.extractData();
+      succ(managers);
+    }).catch(() => err());
 }

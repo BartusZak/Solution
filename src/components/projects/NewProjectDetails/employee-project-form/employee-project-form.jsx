@@ -49,16 +49,17 @@ class EmployeeProjectForm extends React.PureComponent {
   }
 
   handleAssigningEmployee = formData => {
-    console.log(formData);
     this.setState({isSubmitting: true});
-    this.props.assignEmployeeIntoProject(formData,
+    const { projectId, assignEmployeeIntoProject } = this.props;
+    const model = {...formData, assignedCapacity: formData.assignedCapacity/100, projectId };
+    assignEmployeeIntoProject(model,
       () => this.setState({isSubmitting: false}),
       () => this.setState({isSubmitting: false}));
   }
 
   render() {
     const { close, t } = this.props;
-    const { inputError } = this.state;
+    const { inputError, isSubmitting } = this.state;
     return (
       <FancyForm
         initialValues={this.initValues}
@@ -112,10 +113,10 @@ class EmployeeProjectForm extends React.PureComponent {
               </div>
 
               <div id="confirm" className="submit-wrapper">
-                <Button type="submit" title={t("AddEmployee")} mainClass="dcmt-main-btn dcmt-light-btn animated-icon-btn">
+                <Button isLoading={isSubmitting} type="submit" title={t("AddEmployee")} mainClass="dcmt-main-btn dcmt-light-btn animated-icon-btn">
                   <i className="fa fa-plus"></i>
                 </Button>
-                <Button type="button" onClick={close} title={t("CloseAdding")} mainClass="dcmt-main-btn dcmt-grey-btn animated-icon-btn">
+                <Button disable={isSubmitting} type="button" onClick={close} title={t("CloseAdding")} mainClass="dcmt-main-btn dcmt-grey-btn animated-icon-btn">
                   <i className="fa fa-times"></i>
                 </Button>
               </div>

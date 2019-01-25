@@ -170,7 +170,7 @@ class ProjectInformations extends React.Component {
         </div>
 
         {shareProjectform &&
-          <ShareProjectForm close={this.togleShareProjectForm}/>
+          <ShareProjectForm projectId={id} close={this.togleShareProjectForm}/>
         }
       </div>
     );

@@ -6,7 +6,7 @@ import { translate } from 'react-translate';
 import './project-skills.scss';
 class ProjectSkills extends React.PureComponent {
   state = {
-    skillsMarkers: {}, skillManager: true, skillManagerClass: 'manager-open'
+    skillsMarkers: {}, skillManager: false, skillManagerClass: 'manager-open'
   }
 
   componentDidMount = () => this.setMarkers();
@@ -47,7 +47,7 @@ class ProjectSkills extends React.PureComponent {
 
           <React.Fragment>
             <ul>
-              {projectSkills.map(({skillId, skillName: name, skillLevel, color}) => (
+              {projectSkills.map(({skillId, skillName: name, color}) => (
                 <li className="project-skill" key={skillId}>
                   <div className="skill-head flex-row-center">
                     <div className="skill-dot" style={{background: color}} />
@@ -56,8 +56,8 @@ class ProjectSkills extends React.PureComponent {
 
                   <label className="field-label">{t("SkillLevel")}</label>
                   <div className="progress-marker">
-                    <div className="progress-value" style={{width: `${skillsMarkers[skillId]}%`}}>
-                      <span className="progress-number-value">{skillsMarkers[skillId]}%</span>
+                    <div className="progress-value" style={{width: skillsMarkers[skillId]}}>
+                      <span className="progress-number-value">{skillsMarkers[skillId]}</span>
                     </div>
                   </div>
                 </li>

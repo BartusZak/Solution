@@ -171,7 +171,7 @@ export const deleteRole = 'deleteRole';
 // Share Project
 export const shareProject = 'shareProject';
 export const getManagersSharedProject = 'getManagersSharedProject';
-export const getAlreadySharedManagers = 'getAlreadySharedManagers';
+export const getDestinationManagers = 'getDestinationManagers';
 export const cancelShareProject = 'cancelShareProject';
 
 // Work experience

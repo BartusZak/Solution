@@ -7,7 +7,8 @@ import ProgressMarker from '../../../../shared/progress-marker/progress-marker';
 import Filter from '../../../../../hocs/filter';
 
 const filterConfig = { search: true,  sort: { key: 'name' } };
-const ManagerContent = ({ allSkills, allSkillsCount, status, skillsData, reloadSkills, handleMarking, saveSkills, countOfMarkedSkills, t }) => {
+const ManagerContent = ({ allSkills, allSkillsCount, status, skillsData, reloadSkills, handleMarking, saveSkills, countOfMarkedSkills, t,
+  handleChangingSkill }) => {
   if (!status)
     return (
       <div className="empty-list-comunicate">
@@ -45,7 +46,8 @@ const ManagerContent = ({ allSkills, allSkillsCount, status, skillsData, reloadS
                   </div>
 
                   <label className="field-label">{t("SkillLevel")}</label>
-                  <ProgressMarker initialValue={skillsData[name].markerWidth} jump={20} />
+                  <ProgressMarker emitChange={value => handleChangingSkill(value, name)}
+                    initialValue={skillsData[name].markerWidth} jump={20} />
 
                   <div className="checkbox-wrapper">
                     <Checkbox checked={skillsData[name].marked} id={name}

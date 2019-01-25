@@ -165,7 +165,7 @@ const requests = {
   getEmployees: settings =>
     execute(
       fromAlertSettings.getEmployees,
-      'employees',
+      'employees?azureToken=%22eyJ0eXAiOiJKV1QiLCJub25jZSI6IkFRQUJBQUFBQUFDRWZleFh4amFtUWIzT2VHUTRHdWd2MUp0S2M2NWoyMTBqYUU1WEtYVktPWUN0Z01NaFk2Qm5EWDMzY1R3RmJXV051Q1hmUjA2WFYyUWNYTWFJOXBFQ21PcGlaRjNXczFtYnZ6RzFWZmZiNGlBQSIsImFsZyI6IlJTMjU2IiwieDV0IjoibmJDd1cxMXczWGtCLXhVYVh3S1JTTGpNSEdRIiwia2lkIjoibmJDd1cxMXczWGtCLXhVYVh3S1JTTGpNSEdRIn0.eyJhdWQiOiJodHRwczovL2dyYXBoLm1pY3Jvc29mdC5jb20iLCJpc3MiOiJodHRwczovL3N0cy53aW5kb3dzLm5ldC8zOTEyYWE5NS02ZDc4LTQ0NmQtODU0OC1hNDlmZmQ3M2Y1NTAvIiwiaWF0IjoxNTQ4NDIxNjcxLCJuYmYiOjE1NDg0MjE2NzEsImV4cCI6MTU0ODQyNTU3MSwiYWNjdCI6MCwiYWNyIjoiMSIsImFpbyI6IjQySmdZR2cvYkJTVy9zQmVXU2xMMDF1b1dYbzlROWVHUjlkRnJyd09MK1hORTdDKzRBa0EiLCJhbXIiOlsicHdkIl0sImFwcF9kaXNwbGF5bmFtZSI6IkRDTVQtZGV2IiwiYXBwaWQiOiI5Y2ZlY2MwZi04Mzg4LTQ2MTgtYjUzYS0wZTM0NmIzMDgyNTQiLCJhcHBpZGFjciI6IjEiLCJmYW1pbHlfbmFtZSI6IlBvbHViacWEc2tpIiwiZ2l2ZW5fbmFtZSI6IkFkcmlhbiIsImlwYWRkciI6Ijg4LjE1Ni4wLjE5NCIsIm5hbWUiOiJBZHJpYW4gUG9sdWJpxYRza2kiLCJvaWQiOiI5MDVjODVkMS1iMjUxLTQ5YTktOTAzMy03NWQzYmI1NDEzNWMiLCJvbnByZW1fc2lkIjoiUy0xLTUtMjEtMzI1Njk3OTM5MC0yNTU5MjUzNTE3LTQxNzM4MzAyODYtMTUxMzAiLCJwbGF0ZiI6IjMiLCJwdWlkIjoiMTAwMzNGRkZBQzBFNEVDMiIsInNjcCI6IkRpcmVjdG9yeS5SZWFkLkFsbCBlbWFpbCBvcGVuaWQgcHJvZmlsZSBVc2VyLlJlYWQgVXNlci5SZWFkQmFzaWMuQWxsIiwic2lnbmluX3N0YXRlIjpbImttc2kiXSwic3ViIjoiNTFlWUJJUWVjcXFrNjM5bzFiNnhsZDNlbXJ2aHVZYnVlQno1eWNaQml5MCIsInRpZCI6IjM5MTJhYTk1LTZkNzgtNDQ2ZC04NTQ4LWE0OWZmZDczZjU1MCIsInVuaXF1ZV9uYW1lIjoiYWRyaWFuLnBvbHViaW5za2lAYmlsbGVubml1bS5jb20iLCJ1cG4iOiJhZHJpYW4ucG9sdWJpbnNraUBiaWxsZW5uaXVtLmNvbSIsInV0aSI6Im9aR2VQd0g0aDBPcXlqbjhIZDRiQUEiLCJ2ZXIiOiIxLjAiLCJ4bXNfc3QiOnsic3ViIjoiU0pJUy1MQS0zZW9fQ1R1dDA1c0tzaGZmSElrOGhqZ3hENlUzeFk4MW1zUSJ9LCJ4bXNfdGNkdCI6MTQzNTIxMTg1NH0.HSmYZK1PBKgSyTMr8XsqJ8TVayDqHrSYfEmZ8hEcaXuV-QrwvNadkOoYdG3mhMEWBPEkATRJDNfenFFfZ88tPT2XhOQgVAUb6G2EJ2GqXTYtlNxLLo87V5xemTe4O2YDCQd20LjpuoEDiGYuvODyY6Muk7ruPF3gOswkwiqkfJjQBOZKsWqNj5Q8QX6pQJT9CqWie4s0v9x95DFWxrdWkDCGkPdI_icbqCtPwyyxM-Fob4LjCIdPDQVg-E5-eno5AL7p45-U7cSqKnWBpfgZkL5TyN87n0z4arO-dk-4BNqoRF7jS4B2fHwMTDZKvGTSvdmi7-SGzGGyPYdJkS-wIw%22',
       requestTypes.post,
       settings
     ),
@@ -995,14 +995,12 @@ const requests = {
   getManagersSharedProject: projectId =>
     execute(
       fromAlertSettings.getManagersSharedProject,
-      `shareproject/alreadysharedmanagers/${projectId}`,
-      requestTypes.get
+      `shareproject/alreadysharedmanagers/${projectId}`
     ),
-  getAlreadySharedManagers: projectId =>
+    getDestinationManagers: projectId =>
     execute(
-      fromAlertSettings.getAlreadySharedManagers,
-      `shareproject/destinationmanagers/${projectId}`,
-      requestTypes.get
+      fromAlertSettings.getDestinationManagers,
+      `shareproject/destinationmanagers/${projectId}`
     ),
 
   //WORK EXPERIENCE
