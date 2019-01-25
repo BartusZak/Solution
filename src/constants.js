@@ -37,6 +37,7 @@ export const SKILL_ADDED = "SKILL_ADDED";
 export const REMOVE_SKILL = "REMOVE_SKILL";
 export const EDIT_SKILL = "EDIT_SKILL";
 export const EDIT_SKILL_ERROR = "EDIT_SKILL_ERROR";
+export const PUT_ALL_SKILLS = "[Skills] PUT_ALL_SKILLS";
 
 export const LANGUAGE_CHANGED = "LANGUAGE_CHANGED";
 export const LANGUAGE_CHANGE = "LANGUAGE_CHANGE";
@@ -54,7 +55,6 @@ export const ACTION_CONFIRMED = 'ACTION_CONFIRMED';
 export const CHANGE_OPERATION_STATE = 'CHANGE_OPERATION_STATE';
 
 // PROJECTS
-
 export const GET_PROJECT = 'GET_PROJECT';
 export const names = [
   'FirstName',
@@ -71,7 +71,6 @@ export const overViewNames = [
   'EndDate',
   'ParentName'
 ];
-
 export const ADD_PROJECT_OWNER_TO_PROJECT = "ADD_PROJECT_OWNER_TO_PROJECT";
 export const ADD_EMPLOYEE_TO_PROJECT = "ADD_EMPLOYEE_TO_PROJECT";
 export const EDIT_EMPLOYEE_ASSIGNMENT = "EDIT_EMPLOYEE_ASSIGNMENT";
@@ -82,9 +81,15 @@ export const GET_FEEDBACKS = "GET_FEEDBACKS";
 export const DELETE_FEEDBACK = "DELETE_FEEDBACK";
 export const EDIT_FEEDBACK = "EDIT_FEEDBACK";
 export const UPDATE_PROJECT = "[Projects] UPDATE_PROJECT";
+export const SET_PROJECT_DATA = "[Projects] SET_PROJECT_DATA";
 export const ADD_PHASE = "[Projects] ADD_PHASE";
-export const CHANGE_PROJECT_SKILLS = "CHANGE_PROJECT_SKILLS";
-export const CHANGE_PROJECT_STATE = "CHANGE_PROJECT_STATE";
+export const CHANGE_PROJECT_STATUS = "[Projects] CHANGE_PROJECT_STATUS";
+export const ADD_OWNER = "[Projects] ADD_OWNER";
+export const PUT_SKILLS_INTO_PROJECT = "[Projects] PUT_SKILLS_INTO_PROJECT";
+export const closed = 2;
+export const inactive = 1;
+export const active = 0;
+
 export const GET_SUGGEST_EMPLOYEES = "GET_SUGGEST_EMPLOYEES";
 export const CHANGE_GET_SUGGEST_EMPLOYEES_STATUS =
   'CHANGE_GET_SUGGEST_EMPLOYEES_STATUS';
@@ -124,13 +129,11 @@ export const invalidTokenError =
   'Nieprawidłowy token autoryzacyjny do usługi OneDrive.';
 
 // SKILLS
-
 export const GET_ALL_SKILLS = 'GET_ALL_SKILLS';
 export const ADD_SKILLS_TO_PROJECT = 'ADD_SKILLS_TO_PROJECT';
 export const ADD_NEW_SKILL = 'ADD_NEW_SKILL';
 
 //GDRIVE
-
 export const G_DRIVE_LOGIN = 'G_DRIVE_LOGIN';
 export const G_DRIVE_DELETE = 'G_DRIVE_DELETE';
 export const G_DRIVE_CREATE = 'G_DRIVE_CREATE';
@@ -138,7 +141,6 @@ export const SET_PARENT_DETAILS = 'SET_PARENT_DETAILS';
 export const GENERATE_G_DRIVE_SHARE_LINK = 'GENERATE_G_DRIVE_SHARE_LINK';
 
 //EMPLOYEES
-
 export const EDIT_EMPLOYEES_DETAILS = 'EDIT_EMPLOYEES_DETAILS';
 
 export const GET_EMPLOYEE = 'GET_EMPLOYEE';
@@ -380,5 +382,4 @@ export const ADD_ALERT = "[Alerts] ADD_ALERT";
 export const EDIT_ALERT = "[Alerts] EDIT_ALERT";
 export const REMOVE_ALERT = "[Alerts] REMOVE_ALERT";
 
-
-// RESPONSIBLE PERSON
+export const dFormat = "YYYY/MM/DD";

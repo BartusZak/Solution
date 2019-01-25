@@ -6,9 +6,11 @@ import { getClientsSlim, updateSlimClient, addSlimClient } from '../../../action
 import { setHeaders, phases } from './index';
 import { addProject, editProject, addProjectPhase } from '../../../actions/projectsActions';
 import { InputSettings } from '../../common/fancy-form/index';
+import { dFormat } from '../../../constants';
 import FancyDataList from '../../common/fancy-form/fancy-data-list';
 import FancyModal from '../../common/fancy-modal/fancy-modal';
-import FancyForm, { dFormat } from '../../common/fancy-form/fancy-form';
+import Button from '../../common/button/button';
+import FancyForm from '../../common/fancy-form/fancy-form';
 import ResponsiblePersonForm from '../../shared/responsible-person-form/responsible-person-form';
 
 import './phase-project-form.scss';
@@ -134,7 +136,7 @@ class PhaseProjectForm extends React.PureComponent {
   }
 
   updateViewAfterEditPerson = (personToEdit, id) => {
-    const { clientsSlim, updateSlimClient, projectToEdit } = this.props;
+    const { clientsSlim, updateSlimClient } = this.props;
     const { client: clientName } = personToEdit;
     const phaseSecondInitValues = {...this.state.phaseSecondInitValues, responsiblePerson: id };
 
@@ -150,7 +152,7 @@ class PhaseProjectForm extends React.PureComponent {
   render() {
     const { phase, phaseFirstInitValues, phaseSecondInitValues, runSubmitingFirstPhase, openResonsiblePersonForm,
       responsiblePersonFormMode, isSubmitting, personToEdit, watchedClient } = this.state;
-    const { close, clientsSlim } = this.props;
+    const { close, clientsSlim, t } = this.props;
 
     const clientsKeys = Object.keys(clientsSlim);
     const countOfClients = clientsKeys.length;
@@ -172,9 +174,22 @@ class PhaseProjectForm extends React.PureComponent {
     }
     else {
       return (
-        <FancyModal close={close} isLoading={isSubmitting} phases={phases} currentPhase={phase} handleClick={this.changePhaseAndRunSubmit} title={this.phasesTitles[phase]}>
+        <FancyModal positionClass="project-phase-modal m-w-h-center" close={close} isLoading={isSubmitting}>
+
+          <div className="steps-navigation">
+            <Button title={`${t("Step")} 1`} onClick={() => this.changePhaseAndRunSubmit(phases.phaseFirstInitValues)}
+              mainClass={`label-btn ${phase === phases.phaseFirstInitValues ? 'dcmt-btn-light' : 'dcmt-grey-btn'}`}
+            />
+            <Button title={`${t("Step")} 2`} onClick={() => this.changePhaseAndRunSubmit(phases.phaseSecondInitValues)}
+              mainClass={`label-btn ${phase === phases.phaseSecondInitValues ? 'dcmt-btn-light' : 'dcmt-grey-btn'}`}
+            />
+          </div>
+
+          <h3 className="fancy-modal-header">{this.phasesTitles[phase]}</h3>
+
           {phase === phases.phaseFirstInitValues &&
             <FancyForm
+              formClass="project-phase-first"
               key={1}
               submitFromFlag={runSubmitingFirstPhase}
               onSubmit={formData => this.changePhaseAndSave(formData, phases.phaseSecondInitValues, phases.phaseFirstInitValues)}
@@ -183,6 +198,7 @@ class PhaseProjectForm extends React.PureComponent {
           }
           {phase === phases.phaseSecondInitValues &&
             <FancyForm
+              formClass="project-phase-second"
               key={2}
               isSubmitting={isSubmitting}
               onSubmit={formData => this.handleSubmitting(formData)}

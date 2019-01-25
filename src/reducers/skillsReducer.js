@@ -1,8 +1,8 @@
-import { LOAD_SKILLS_SUCCESS, SKILL_ADDED, GET_ALL_SKILLS, ADD_NEW_SKILL, REMOVE_SKILL, EDIT_SKILL, EDIT_SKILL_ERROR  } from "../constants";
+import { LOAD_SKILLS_SUCCESS, SKILL_ADDED, GET_ALL_SKILLS, ADD_NEW_SKILL, REMOVE_SKILL, EDIT_SKILL, EDIT_SKILL_ERROR, PUT_ALL_SKILLS } from "../constants";
 import { updateObject } from '../services/methods';
 
 const initialState = {
-  skills: [],
+  skills: [], loadAllSkillsResult: { status: null },
 
   loadedSkills: [],
   loadSkillsStatus: null,
@@ -19,6 +19,10 @@ const initialState = {
 
 export const skillsReducer = (state = initialState, action) => {
   switch (action.type) {
+    case PUT_ALL_SKILLS:
+      return {
+        ...state, skills: action.skills, loadAllSkillsResult: action.loadAllSkillsResult
+      };
     case LOAD_SKILLS_SUCCESS:
       return {
         ...state,

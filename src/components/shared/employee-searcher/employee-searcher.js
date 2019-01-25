@@ -1,59 +1,62 @@
 import React from 'react'
 import { translate } from 'react-translate';
 import { connect } from 'react-redux';
-
-import TypeAhead from '../../common/fancy-form/type-ahead/type-ahead';
 import { loadEmployees } from '../../../actions/employeesActions';
-
+import TypeAhead from '../../common/fancy-form/type-ahead/type-ahead';
 import Button from '../../common/button/button';
 
 class EmployeeSearcher extends React.PureComponent {
 
   getEmployees = value => {
+    const { employeeFilter } = this.props;
     const config = {
-      limit: 1000, ascending: true, query: value,
-      employeeFilter: {
-        hasAccount: true
-      }
+      limit: 1000, ascending: true, query: value, isDeleted: false,
+      employeeFilter: employeeFilter ? employeeFilter : { hasAccount: true }
     };
     const page = 1;
-    const limit = 25;
-
+    const limit = 1000;
     return this.props.loadEmployees(page, limit, config);
   }
 
   employeeValidators = { minLength: 2, maxLength: 15 };
 
   render(){
-      const { t, loadEmployees, emitEmployeeClick } = this.props;
+      const { t, emitEmployeeClick, placeholder, showLabel } = this.props;
       return (
         <TypeAhead label={t("Employee")}
-          placeholder={t("EmployeeSearcherPlaceholder")}
+          placeholder={t(placeholder)}
+          showLabel={showLabel}
           requestFunction={value => this.getEmployees(value)}
           validators={this.employeeValidators}
           renderDataList={(dataList, resetAll, isListEmpty) => {
             if(isListEmpty === false) {
               return (
-                <ul className="input-data-list">
-                  {dataList.map(item => (
-                    <li onClick={() => {
-                      resetAll();
-                      emitEmployeeClick(item.id);
-                    }}
-                      key={item.id}>
-                      {item.fullName}
-                    </li>
-                  ))}
-                  <li className="list-footer">
+                <div className="input-data-list">
+                  <ul>
+                    {dataList.map(item => (
+                      <li onClick={() => {
+                        resetAll();
+                        emitEmployeeClick(item);
+                      }}
+                        key={item.id}>
+                        {item.fullName}
+                      </li>
+                    ))}
+                  </ul>
+                  <div className="list-footer">
                     <Button title="CLOSE" onClick={resetAll} mainClass="label-btn main"/>
-                  </li>
-                </ul>
+                  </div>
+                </div>
               );
             }
             else if(isListEmpty) return <div onClick={resetAll} className="empty-data-list">{t("EmptyEmployeeQuery")}</div>;
           }}/>
       );
   }
+}
+
+EmployeeSearcher.defaultProps = {
+  placeholder: 'EmployeeSearcherPlaceholder'
 }
 
 const mapDispatchToProps = dispatch => {
@@ -63,4 +66,3 @@ const mapDispatchToProps = dispatch => {
 }
 
 export default connect(null, mapDispatchToProps)(translate("EmployeeSearcher")(EmployeeSearcher));
-

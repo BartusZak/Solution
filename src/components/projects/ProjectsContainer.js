@@ -8,7 +8,6 @@ import ProjectsList from "../../components/projects/ProjectsList";
 import WebApi from "../../api/";
 import { ACTION_CONFIRMED } from "./../../constants";
 import { Route, Switch } from "react-router-dom";
-import ProjectDetails from "./ProjectDetails/ProjectDetails";
 import { translate } from "react-translate";
 
 class ProjectsContainer extends React.Component {
@@ -142,7 +141,6 @@ class ProjectsContainer extends React.Component {
     return (
       <Switch>
         <Route exact path={match.url + ""} component={this.pullDOM} />
-        <Route path={match.url + "/:id"} component={ProjectDetails} />
       </Switch>
     );
   }

@@ -1,0 +1,58 @@
+@import '../../../../../scss//new-color-schema.scss';
+div.skills-modal {
+  height: 500px;
+  box-sizing: border-box;
+  width: 480px;
+  padding: 20px;
+  border-radius: 5px;
+  color: $font-grey;
+  h3 {
+    font-size: 18px;
+    margin-bottom: 30px;
+    i {
+      color: $dark-font;
+    }
+  }
+  .skills-footer {
+    display: flex;
+    justify-content: space-between;
+    .label-btn {
+      font-size: 16px;
+    }
+    .field-block {
+      width: 280px;
+    }
+  }
+  .skills-list {
+    overflow-y: auto;
+  }
+  & > div {
+    display: grid;
+    height: 100%;
+    grid-template-rows: auto 1fr auto;
+    grid-gap: 20px;
+  }
+  @media(min-width: 1500px) {
+    right: -500px;
+    top: 0;
+    position: absolute;
+    left: unset; transform: none;
+  }
+  @media(max-width: 550px) {
+    width: 94%;
+    .skills-footer {
+      flex-flow: column;
+      .field-block {
+        margin-bottom: 25px;
+        width: 100%;
+      }
+    }
+  }
+}
+.manager-open {
+  opacity: 1;
+}
+.manager-closed {
+  opacity: 0;
+  z-index: -1;
+}

@@ -1,0 +1,108 @@
+@import '../../../../scss//new-color-schema.scss';
+.employees-project-form {
+  grid-column: 1/4;
+  display: grid;
+  grid-template-rows: auto auto auto;
+  grid-template-columns: 100%;
+  grid-gap: 30px;
+  grid-template-areas:
+    "form"
+    "responsibilities"
+    "buttons";
+  #confirm {
+    grid-area: buttons;
+    align-self: flex-end;
+    button {
+      margin: 0 15px 15px 0;
+    }
+  }
+  @media(min-width: 1000px) {
+    grid-template-columns: 55% 40%;
+    grid-template-rows: 1fr 50px;
+    grid-gap: 0 40px;
+    grid-template-areas:
+      "form responsibilities"
+      "buttons responsibilities";
+    #confirm {
+      button {
+        margin: 0 15px 0 0;
+      }
+    }
+  }
+  .form-left {
+    grid-area: form;
+  }
+  .form-right {
+    grid-area: responsibilities;
+  }
+  .form-left {
+    display: grid;
+    grid-gap: 0 25px;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 50px auto auto auto;
+    grid-template-areas:
+      "header header"
+      "employee role"
+      "sdate edate"
+      "fte fte";
+    #header { grid-area: header; color: $dcmt-light; }
+    .progress-marker {
+      grid-area: fte;
+      .progress-title {
+        right: -12px;
+      }
+      .progress-number-value {
+        right: -15px;
+      }
+    }
+    @media(max-width: 999px) {
+      .progress-marker {
+        margin: 15px 0;
+      }
+    }
+    @media(max-width: 550px) {
+      grid-template-rows: 50px auto auto auto auto auto;
+      grid-template-columns: 1fr;
+      grid-template-areas:
+        "header"
+        "employee"
+        "role"
+        "sdate"
+        "edate"
+        "fte";
+    }
+  }
+  .form-right {
+    display: grid;
+    grid-template-rows: auto 1fr auto auto;
+    p.important-par {
+      font-size: 16px;
+      color: $dcmt-light;
+      padding: 15px 15px 0 15px;
+    }
+    .field-block {
+      margin: 0 15px 15px 15px;
+    }
+    .field-error {
+      padding: 10px 15px;
+      height: unset;
+    }
+    .responsibilities {
+      overflow-y: auto;
+      margin: 20px 0 15px 0;
+      .element-toolbox-wrapper {
+        padding: 15px;
+        background: $modal-header-bg;
+        margin-bottom: 10px;
+        color: $font-grey;
+        font-size: 14px;
+        .element-toolbox {
+          top: 0; bottom: 0;
+          .fa-times {
+            font-size: 16px;
+          }
+        }
+      }
+    }
+  }
+}
