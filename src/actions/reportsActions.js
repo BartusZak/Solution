@@ -8,7 +8,7 @@ import {
   UNFAVORITE_REPORT,
   DOWNLOAD_REPORT_ZIP_FILE
 } from "../constants";
-import WebApi from "../api";
+import { useRequest } from "../api";
 import { errorCatcher } from "../services/errorsHandler";
 import { asyncStarted, asyncEnded } from "./asyncActions";
 import { setIsStarted } from './progressBarActions';
@@ -33,8 +33,7 @@ export const getTeams = (teams, loadTeamsResult, loadTeamsErrors) => {
 
 export const getTeamsACreator = () => {
   return dispatch => {
-    WebApi.reports.get
-      .teams()
+    useRequest('getTeams')
       .then(response => {
         dispatch(getTeams(response.replyBlock.data.dtoObjects, true, []));
       })
@@ -59,11 +58,9 @@ export const getUserCv = (
 export const getUserCVACreator = userId => {
   return dispatch => {
     dispatch(asyncStarted());
-    WebApi.reports.post
-      .cv(userId)
+    useRequest('generateCv', userId)
       .then(response => {
-        WebApi.reports.get
-          .cv("CV_" + userId + ".pdf")
+        useRequest('getCv', `CV_${userId}.pdf`)
           .then(response => {
             dispatch(
               getUserCv(response.replyBlock.request.responseURL, true, [])
@@ -92,7 +89,7 @@ export const getRecentAndFavoriteReports = (
   })
 export const getRecentAndFavoriteReportsACreator = numberOfReports => dispatch => {
   dispatch(asyncStarted());
-  WebApi.reports.get.recentReports(numberOfReports)
+  useRequest('getRecentReports', numberOfReports)
     .then(response => {
       dispatch(
         getRecentAndFavoriteReports(response.replyBlock.data.dtoObject, true, [])
@@ -117,7 +114,7 @@ export const unfavoriteReport = (
 })
 export const unfavoriteReportAPromise = (reportId) => (dispatch) => {
   return new Promise((resolve, reject) => {
-    WebApi.reports.delete.report(reportId).then(response => {
+    useRequest('unfavoriteReport', reportId).then(response => {
       dispatch(
         unfavoriteReport(true, [])
       );
@@ -145,7 +142,7 @@ export const downloadReportZipFile = (downloadReportZipFileStatus, downloadRepor
 };
 
 export const downloadReportZipFileACreator = (fileName) => dispatch =>
-    WebApi.reports.get.reportZip(fileName).then(response => {
+    useRequest('getReportZip', fileName).then(response => {
       dispatch(downloadReportZipFile(true, []));
       window.open(response.replyBlock.request.responseURL);
     }).catch(errors => {
@@ -220,8 +217,7 @@ export const generateReportACreator = (
 
     }
     dispatch(setIsStarted(true, "Generowanie raportu"));
-    WebApi.reports.post
-      .report(model, generateOnGDrive, generateOnOneDrive)
+    useRequest('generateReport', model, generateOnGDrive, generateOnOneDrive)
       .then(response => {
         dispatch(setIsStarted(false, ""));
         dispatch(generateReport(true, []));
@@ -255,8 +251,7 @@ export const generateReportToHardDriveACreator = (addList,pageList,saveAsFavorit
     };
 
     dispatch(setIsStarted(true, "Generowanie raportu"));
-      WebApi.reports.post
-        .report(model, false, false)
+      useRequest('generateReport', model, false, false)
         .then(response => {
           dispatch(setIsStarted(false, ""));
           dispatch(generateReport(true, []));

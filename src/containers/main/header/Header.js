@@ -1,14 +1,13 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import Logo from '../../../components/common/Logo';
-import TopBar from './TopBar';
-import Icon from '../../../components/common/Icon';
-import LeftMenu from '../menu/LeftMenu';
-import { browserHistory } from 'react-router';
-import { putNotificationIconInSideBar } from '../../../actions/persistHelpActions';
+import Logo from "../../../components/common/Logo";
+import TopBar from "./TopBar";
+import Icon from "../../../components/common/Icon";
+import LeftMenu from "../menu/LeftMenu";
+import { putNotificationIconInSideBar } from "../../../actions/persistHelpActions";
 import { Link } from 'react-router-dom';
-import { connect } from 'react-redux';
+import { connect } from "react-redux";
 
 class Header extends React.Component {
   constructor(props) {
@@ -49,7 +48,6 @@ class Header extends React.Component {
   render() {
     const {
       isNotificationIconInSideBar,
-      putNotificationIconInSideBar
     } = this.props;
 
     return (

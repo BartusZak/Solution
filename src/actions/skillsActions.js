@@ -1,9 +1,9 @@
-import { LOAD_SKILLS_SUCCESS, SKILL_ADDED, GET_ALL_SKILLS, ADD_NEW_SKILL, REMOVE_SKILL, EDIT_SKILL, EDIT_SKILL_ERROR } from "../constants";
+import { LOAD_SKILLS_SUCCESS, SKILL_ADDED, GET_ALL_SKILLS, ADD_NEW_SKILL, REMOVE_SKILL, EDIT_SKILL, EDIT_SKILL_ERROR, PUT_ALL_SKILLS } from "../constants";
 import axios from "axios";
-import WebApi from "../api";
+import WebApi, { useRequest } from "../api";
 import { asyncStarted, asyncEnded, setActionConfirmationResult } from "./asyncActions";
 import { errorCatcher } from '../services/errorsHandler';
-import { isArrayContainsByObjectKey, checkForContains, generateSortFunction, sortStrings } from '../services/methods';
+import { isArrayContainsByObjectKey, checkForContains, sortStrings, getRandomColor } from '../services/methods';
 
 export const loadSkillsSuccess = skills => {
   return {
@@ -18,6 +18,17 @@ export const addSkillSuccess = success => {
     success
   };
 };
+
+export const putAllSkills = (skills, loadAllSkillsResult) => ({ type: PUT_ALL_SKILLS, skills, loadAllSkillsResult });
+
+export const loadAllSkills = () => dispatch =>
+  useRequest('loadAllSkills')
+    .then(res => {
+      const skills = res.extractData();
+      const newSkills = Object.values(skills).map(skill => skill);
+      dispatch(putAllSkills(newSkills, {status: true}));
+    })
+    .catch(() => dispatch(putAllSkills([], {status: false})));
 
 export const loadSkills = () => {
   return dispatch => {

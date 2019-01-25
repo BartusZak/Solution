@@ -1,21 +1,85 @@
 const translations = {
-  locale: 'en',
+  locale: "en",
   TranslationsSwitch: {
     CHANGE_LANGUAGE: 'Language'
   },
+  ProjectTeam: {
+    ProjectTeam: 'Project team',
+    ProjectTeamEmpty: 'Project team list is already empty',
+    SinceLabel: 'since',
+    ToLabel: 'to',
+    AddMember: 'ADD NEW TEAM MEMBER'
+  },
+  ProjectSkills: {
+    ProjectSkills: 'Project skills',
+    SkillsListEmpty: 'Project skill list is already empty',
+    OpenManagement: 'OPEN MANAGEMENT'
+  },
+  ManagerContent: {
+    LoadingSkillsProblem: 'There is a problem with loading skills...',
+    EmptySkills: 'Skills list is empty',
+    ManageSkillsLabel: 'Manage skills',
+    EmptyFilteringMessage: 'Not results for typed value...',
+    FinishButton: 'FINISH',
+    FilterPlaceholder: 'type here for find skill...',
+    SkillLevel: 'skill level'
+  },
+  ProjectPhases: {
+    ProjectPhases: 'Project phases',
+    EmptyPhases: 'Phases list is already empty',
+    StartDate: 'start date',
+    EstimatedEndDate: 'estimated end date',
+    Status: 'status'
+  },
+  ProjectInformations: {
+    StartDate: 'start date',
+    EstimatedEndDate: 'estimated end date',
+    Client: 'client',
+    Cloud: 'cloud',
+    ResponsiblePerson: 'Responsible person',
+    FirstName: 'first name',
+    LastName: 'last name',
+    PhoneNumber: 'phone number',
+    ProjectOwners: 'Project owners',
+    EditProject: 'EDIT PROJECT',
+    AddPhase: 'ADD PHASE',
+    ShareProject: 'SHARE PROJECT',
+    ActivateProject: 'ACTIVATE PROJECT',
+    DeleteProject: 'DELETE PROJECT',
+    CloseProject: 'CLOSE PROJECT',
+    deleted: 'deleted',
+    closed: 'closed',
+    inactive: 'inactive',
+    active: 'active'
+  },
+  ShareProjectForm: {
+    ShareProjectLabel: 'Share project for person',
+    Share: 'SHARE',
+    EmployeesMadeAvaible: 'Employees made avaible'
+  },
+  EmployeeProjectForm: {
+    AddEmployeeToProject: 'Add employee to project',
+    Role: 'role',
+    RolePlaceholder: 'select role in project...',
+    StartDate: 'start date',
+    EndDate: 'end date',
+    AddEmployee: 'ADD EMPLOYEE',
+    CloseAdding: 'CLOSE ADDING',
+    ResponsibilitiesInProject: 'responsibilities in project',
+    AddResponsibilityPlaceholder: 'add responsibility...'
+  },
   EmployeeSearcher: {
     EmployeeSearcherPlaceholder: 'start typing for searching employee...',
+    EmployeeSearcherOwnersPlaceholder: 'dodaj owner...',
     Employee: 'Find employee',
     EmptyEmployeeQuery: 'There is no employees for given parameters'
-  },
-  FancyModal: {
-    Step: 'Step'
   },
   DragAndDrop: {
     DroppedMessage: 'Files succesfully dropped',
     TooManyFilesError: 'Too many files dropped. Limit is '
   },
   PhaseProjectForm: {
+    Step: 'Step',
     firstStepTitleForPhases: 'Populate project phase details',
     secondStepTitleForPhases: 'Populate client details for project phase',
     firstStepTitleForProjects: 'Populate project details',
@@ -662,7 +726,7 @@ const translations = {
     UserSuccesfullyAdded: 'Successfully added new user'
   },
   StageOne: {
-    SearchAD: 'Search Active Directory',
+    getUserByAdSearch: 'Search Active Directory',
     UserNotFoundInAD: 'User not found in AD',
     Next: 'Next',
     HasAccount: 'Account already exists for that User',

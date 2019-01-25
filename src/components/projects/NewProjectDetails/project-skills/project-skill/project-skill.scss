@@ -1,0 +1,35 @@
+@import '../../../../../scss//new-color-schema.scss';
+.project-skill {
+  position: relative;
+  &:not(:last-of-type) {
+    margin-bottom: 30px;
+  }
+  .skill-name {
+    font-size: 16px;
+    color: $font-grey;
+    max-width: 70%;
+  }
+  span.skill-number:first-of-type {
+    margin-right: 10px;
+    margin-bottom: 0;
+  }
+  .skill-head {
+    margin-bottom: 15px;
+    .skill-dot {
+      margin-right: 15px;
+      width: 14px; height: 14px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+  }
+  .skill-details .detail-label {
+    margin-right: 30px;
+  }
+  .checkbox-wrapper {
+    position: absolute;
+    right: 20px; height: 18px;
+    top: 0;
+    bottom: 0;
+    margin: auto 0;
+  }
+}

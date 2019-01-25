@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import Dropzone from "react-dropzone";
 import Icon from "../common/Icon";
 
-import WebApi from "../../api/index";
+import WebApi, { useRequest } from "../../api/index";
 import LoaderCircular from "../common/LoaderCircular";
 import ConfirmModal from "../common/confimModal/confirmModal";
 import { translate } from "react-translate";
@@ -33,7 +33,7 @@ class ImportCVContainer extends Component {
       formData.append("files", item);
     });
 
-    WebApi.CvImport.post(formData)
+    useRequest('importCV', formData)
       .then(result =>
         this.setState({
           loading: false,

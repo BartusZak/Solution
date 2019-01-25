@@ -1,21 +1,85 @@
 const translations = {
-  locale: 'pl',
+  locale: "pl",
   TranslationsSwitch: {
     CHANGE_LANGUAGE: 'Język'
   },
+  ProjectTeam: {
+    ProjectTeam: 'Uczestnicy projektu',
+    ProjectTeamEmpty: 'Ten projekt nie posiada uczestników',
+    SinceLabel: 'od',
+    ToLabel: 'do',
+    AddMember: 'DODAJ PRACOWNIKA'
+  },
+  ProjectSkills: {
+    ProjectSkills: 'Lista umiejętności',
+    SkillsListEmpty: 'Lista umiejętności w tym projekcie jest pusta',
+    OpenManagement: 'ZARZĄDZAJ'
+  },
+  ManagerContent: {
+    LoadingSkillsProblem: 'Wystapił problem podczas ładowania umiejętności...',
+    EmptySkills: 'Lista umiejętności jest pusta',
+    ManageSkillsLabel: 'Zarządzaj umiejętnościami',
+    EmptyFilteringMessage: 'Brak rezultatów dla podanej wartości...',
+    FinishButton: 'ZAKOŃCZ',
+    FilterPlaceholder: 'zacznij pisać, aby znaleźć umiejętność...',
+    SkillLevel: 'poziom umiejętności'
+  },
+  ProjectPhases: {
+    ProjectPhases: 'Fazy projektu',
+    EmptyPhases: 'Brak faz dla tego projektu',
+    StartDate: 'data rozpoczęcia',
+    EstimatedEndDate: 'przewidziana data zakończenia',
+    Status: 'status'
+  },
+  ProjectInformations: {
+    StartDate: 'data rozpoczęcia',
+    EstimatedEndDate: 'przewidziana data zakończenia',
+    Client: 'klient',
+    Cloud: 'chmura',
+    ResponsiblePerson: 'Osoba odpowiedzialna',
+    FirstName: 'imię',
+    LastName: 'nazwisko',
+    PhoneNumber: 'numer telefonu',
+    ProjectOwners: 'Właściciele projektu',
+    EditProject: 'EDYTUJ PROJEKT',
+    AddPhase: 'DODAJ FAZE PROJEKTU',
+    ShareProject: 'UDOSTĘPNIJ',
+    ActivateProject: 'AKTYWUJ PROJEKT',
+    DeleteProject: 'USUŃ PROJEKT',
+    CloseProject: 'ZAMKNIJ PROJEKT',
+    deleted: 'usunięty',
+    closed: 'zamknięty',
+    inactive: 'nieaktywny',
+    active: 'aktywny'
+  },
+  ShareProjectForm: {
+    ShareProjectLabel: 'Udostępnij projekt pracownikowi',
+    Share: 'UDOSTĘPNIJ',
+    EmployeesMadeAvaible: 'Pracownicy, którym udostępniono'
+  },
+  EmployeeProjectForm: {
+    AddEmployeeToProject: 'Dodaj pracownika do projektu',
+    Role: 'rola',
+    RolePlaceholder: 'wybierz role w projekcie...',
+    StartDate: 'data rozpoczęcia',
+    EndDate: 'data zakończenia',
+    AddEmployee: 'DODAJ PRACOWNIKA',
+    CloseAdding: 'ZAKOŃCZ DODAWANIE',
+    ResponsibilitiesInProject: 'obowiązki w projekcie',
+    AddResponsibilityPlaceholder: 'dodaj obowiązek...'
+  },
   EmployeeSearcher: {
     EmployeeSearcherPlaceholder: 'zacznij pisać aby rozpocząć wyszukiwanie...',
+    EmployeeSearcherOwnersPlaceholder: 'dodaj właściciela...',
     Employee: 'Znajdź pracownika',
     EmptyEmployeeQuery: 'Nie znaleziono pracowników o podanych parametrach'
-  },
-  FancyModal: {
-    Step: 'Krok'
   },
   DragAndDrop: {
     DroppedMessage: 'Pliki zostały upuszczone',
     TooManyFilesError: 'Upuszczono za dużo plików. Limit to '
   },
   PhaseProjectForm: {
+    Step: 'Krok',
     firstStepTitleForPhases: 'Wypełnij szczegóły fazy projektu',
     secondStepTitleForPhases: 'Uzupełnij informacje o kliencie dla fazy projektu',
     firstStepTitleForProjects: 'Uzupełnij szczegóły projektu',
@@ -673,7 +737,7 @@ const translations = {
     UserSuccesfullyAdded: 'Pomyślnie dodano użytkownika'
   },
   StageOne: {
-    SearchAD: 'Wyszukaj użytkownika w AD',
+    getUserByAdSearch: 'Wyszukaj użytkownika w AD',
     UserNotFoundInAD: 'Nie znaleziono użytkownika w AD',
     Next: 'Dalej',
     HasAccount: 'Ten użytkownik posiada już konto w serwisie',

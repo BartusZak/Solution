@@ -26,9 +26,6 @@ export const AZURE_AD_REDIRECT_URI = Config.azureAdRedirectUri;
 
 store.subscribe(listener);
 
-const select = state =>
-  state.authReducer.tokens !== undefined ? state.authReducer.tokens.token : '';
-
 export const selectLang = state =>
   state.languageReducer.language ? state.languageReducer.language : 'pl';
 
@@ -149,7 +146,13 @@ const requestTypes = {
   delete: 'delete'
 };
 const requests = {
-  //Login
+  // ASSIGNMENTS
+  assignEmployeeToProject: model => execute(fromAlertSettings.assignEmployeeToProject, 'Assignments', requestTypes.post, model),
+
+  // CLIENTS
+  getClientsSlim: () => execute(fromAlertSettings.getClientsSlim, 'Clients?lessDetailed=true'),
+
+  // LOGIN
   login: () =>
     execute(
       fromAlertSettings.login,
@@ -157,10 +160,6 @@ const requests = {
     ),
   loginAzureAD: code =>
     execute(fromAlertSettings.loginAzureAD, `signin-oidc?code=${code}`),
-
-  //CLIENTS
-  getClientsSlim: settings =>
-    execute(fromAlertSettings.getClientsSlim, 'Clients?lessDetailed=true'),
 
   //EMPLOYEES
   getEmployees: settings =>
@@ -267,28 +266,15 @@ const requests = {
     ),
 
   //PROJECTS
-  addProject: model =>
-    execute(
-      fromAlertSettings.addProject,
-      'projects/add',
-      requestTypes.post,
-      model
-    ),
-  editProject: (model, id) =>
-    execute(
-      fromAlertSettings.editProject,
-      `projects/${id}`,
-      requestTypes.put,
-      model
-    ),
-  addProjectPhase: model =>
-    execute(
-      fromAlertSettings.addProjectPhase,
-      'projects/add',
-      requestTypes.post,
-      model
-    ),
-
+  getProject: id => execute(fromAlertSettings.getProject, `projects/${id}`),
+  addProject: model => execute(fromAlertSettings.addProject, 'projects/add', requestTypes.post, model),
+  editProject: (model, id) => execute(fromAlertSettings.editProject, `projects/${id}`, requestTypes.put, model),
+  addProjectPhase: model => execute(fromAlertSettings.addProjectPhase, 'projects/add', requestTypes.post, model),
+  reactivateProject: id => execute(fromAlertSettings.reactivateProject, `projects/reactivate/${id}`, requestTypes.put),
+  closeProject: id => execute(fromAlertSettings.closeProject, `projects/close/${id}`, requestTypes.put),
+  deleteProject: id => execute(fromAlertSettings.deleteProject, `projects/delete/${id}`, requestTypes.delete),
+  addOwnerToProject: (id, usersIds) => execute(fromAlertSettings.addOwnerToProject, `projects/owner/${id}`, requestTypes.put, {usersIds}),
+  editSkillsInProject: (id, skills) => execute(fromAlertSettings.editSkillsInProject, `projects/skills/${id}`, requestTypes.put, skills),
   //RESPINSIBLE PERSON
   createResponsiblePerson: model =>
     execute(
@@ -305,6 +291,8 @@ const requests = {
       model
     ),
 
+  //SKILLS
+  loadAllSkills: () => execute(fromAlertSettings.loadAllSkills, `skills`),
   //QUATER TALKS
   reactivateQuaterTalk: id =>
     execute(
@@ -471,6 +459,7 @@ const requests = {
     execute(
       fromAlertSettings.checkOutlookReservedDates,
       `quarterTalks/GetReservedDates?checkOutlook=${checkOutlook}`,
+      requestTypes.post,
       model
     ),
   getQuestions: () =>
@@ -1048,7 +1037,15 @@ const requests = {
       fromAlertSettings.getWorkExperienceByEmployeeId,
       `workexperience/employee/${employeeId}`,
       requestTypes.get
-    )
+    ),
+
+  //CvImport
+  importCV: files => execute(
+    fromAlertSettings.importCV,
+    `CvImport/ImportCv`,
+    requestTypes.post,
+    files
+    ),
 };
 
 export const useRequest = (name, ...params) => requests[name](...params);
@@ -1107,17 +1104,17 @@ const WebApi = {
       }
     }
   },
-  CvImport: {
-    post: files => {
-      return WebAround.post(
-        `${API_ENDPOINT}/CvImport/ImportCv`,
-        files
-        // {
-        //   headers: { "Content-Type": "multipart/form-data" }
-        // }
-      );
-    }
-  },
+  // CvImport: {
+  //   post: files => {
+  //     return WebAround.post(
+  //       `${API_ENDPOINT}/CvImport/ImportCv`,
+  //       files
+  //       // {
+  //       //   headers: { "Content-Type": "multipart/form-data" }
+  //       // }
+  //     );
+  //   }
+  // },
   projects: {
     get: {
       projects: (projectId, onlyActiveAssignments = true) => {
