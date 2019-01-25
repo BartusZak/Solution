@@ -123,8 +123,7 @@ class LeftMenu extends React.Component {
             path="/reports"
             icon="file-alt"
             iconType="fas"
-            title={t('Reports')}
-            disabled
+            title={t('Reports')}            
           />
         ) : null}
         {binaryPermissioner(false)(0)(0)(0)(1)(1)(1)(this.props.binPem) ? (
@@ -134,8 +133,7 @@ class LeftMenu extends React.Component {
             path="/import-cv"
             icon="archive"
             iconType="fas"
-            title={t('ImportCV')}
-            disabled
+            title={t('ImportCV')}            
           />
         ) : null}
         <VerticalMenuElement
@@ -144,8 +142,7 @@ class LeftMenu extends React.Component {
           path="/info"
           icon="info-circle"
           iconType="fas"
-          title={t('Info')}
-          disabled
+          title={t('Info')}          
         />
         {isNotificationIconInSideBar && (
           <li onClick={() => putNotificationIconInSideBar(false)}>

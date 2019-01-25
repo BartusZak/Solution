@@ -662,7 +662,7 @@ const translations = {
     UserSuccesfullyAdded: 'Successfully added new user'
   },
   StageOne: {
-    SearchAD: 'Search Active Directory',
+    getUserByAdSearch: 'Search Active Directory',
     UserNotFoundInAD: 'User not found in AD',
     Next: 'Next',
     HasAccount: 'Account already exists for that User',

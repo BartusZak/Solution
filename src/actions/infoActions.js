@@ -604,7 +604,7 @@ const infoCreators = [
     return dispatch => {
       dispatch(
         genericInfoACreator(
-          WebApi.CvImport.post(new FormData()),
+          useRequest('importCV', new FormData()),
           CV_IMPORT,
           CAN_IMPORT_CV
         )
@@ -1174,17 +1174,17 @@ const infoCreators = [
       );
     };
   },
-  // () => {
-  //   return dispatch => {
-  //     dispatch(
-  //       genericInfoACreator(
-  //         useRequest('checkOutlookReservedDates', { employeeId: '' }, false),
-  //         QUARTERTALKS,
-  //         CAN_GET_QUARTER_TALK_RESERVED_DATES
-  //       )
-  //     );
-  //   };
-  // },
+  () => {
+    return dispatch => {
+      dispatch(
+        genericInfoACreator(
+          useRequest('checkOutlookReservedDates', { employeeId: '' }, false),
+          QUARTERTALKS,
+          CAN_GET_QUARTER_TALK_RESERVED_DATES
+        )
+      );
+    };
+  },
 
   //REPORTS
   () => {
