@@ -1,6 +1,5 @@
 import {
   LOAD_PROJECTS_SUCCESS,
-  ADD_EMPLOYEE_TO_PROJECT,
   ADD_FEEDBACK,
   GET_FEEDBACKS,
   DELETE_FEEDBACK,
@@ -68,49 +67,6 @@ export const loadProjects = (
         dispatch(asyncEnded());
       });
   };
-};
-
-export const addEmployeeToProject = (
-  addEmployeeToProjectStatus,
-  addEmployeeToProjectErrors
-) => {
-  return {
-    type: ADD_EMPLOYEE_TO_PROJECT,
-    addEmployeeToProjectStatus,
-    addEmployeeToProjectErrors
-  };
-};
-
-export const addEmployeeToProjectACreator = (
-  empId,
-  projectId,
-  strDate,
-  endDate,
-  role,
-  assignedCapacity,
-  responsibilites,
-  onlyActiveAssignments
-) => dispatch => {
-  const assignmentModel = {
-    employeeId: empId,
-    projectId: projectId,
-    startDate: strDate,
-    endDate: endDate,
-    role: role,
-    assignedCapacity: assignedCapacity / 10,
-    responsibilities: responsibilites
-  };
-  useRequest("addAssignment", assignmentModel)
-    .then(response => {
-      dispatch(addEmployeeToProject(true, []));
-      dispatch(getProjectACreator(projectId, onlyActiveAssignments));
-    })
-    .catch(error => {
-      dispatch(addEmployeeToProject(false, errorCatcher(error)));
-    })
-    .then(
-      dispatch(clearAfterTimeByFuncRef(addEmployeeToProject, 5000, null, []))
-    );
 };
 
 export const editEmployeeAssignment = (

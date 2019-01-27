@@ -17,7 +17,7 @@ import Quarters from '../../components/quarters/quartersPanel.jsx';
 import { getNotificationACreator } from '../../actions/notificationActions';
 import { connect } from 'react-redux';
 import Info from './../../components/info/infoContainer';
-import NewProjectDetails from '../../components/projects/NewProjectDetails/NewProjectDetails';
+import ProjectDetails from '../../components/projects/ProjectDetails/ProjectDetails';
 
 class Content extends React.Component {
   componentDidMount() {
@@ -37,7 +37,7 @@ class Content extends React.Component {
         <PromptsCommander history={history} />
         <Switch>
           <Route exact path={match.url} component={StatsContainer} />
-          <Route path={match.url + "/projects/:id"} component={NewProjectDetails} />
+          <Route path={match.url + "/projects/:id"} component={ProjectDetails} />
           <Route path={match.url + "/projects"} component={ProjectsContainer} />
           <Route
             path={match.url + '/employees'}

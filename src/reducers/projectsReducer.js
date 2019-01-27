@@ -2,7 +2,6 @@ import {
   LOAD_PROJECTS_SUCCESS,
   LOGOUT,
   SET_PROJECT_DATA,
-  ADD_EMPLOYEE_TO_PROJECT,
   ADD_FEEDBACK,
   GET_FEEDBACKS,
   EDIT_FEEDBACK,
@@ -31,9 +30,6 @@ const initialState = {
   project: null, projectResult: {status: null},
   destinationManagers: [], dManagersResult: {status: null},
   alreadySharedManagers: [], sManagersResult: {status: null},
-
-  addEmployeeToProjectStatus: null,
-  addEmployeeToProjectErrors: [],
 
   addFeedbackStatus: null,
   addFeedbackErrors: [],
@@ -96,7 +92,6 @@ export const projectsReducer = (state = initialState, action) => {
         ...state, project: {...state.project, owners: [action.owner, ...state.project.owners] }
       };
     case PUT_SKILLS_INTO_PROJECT:
-    console.log(action.skills);
       return {
         ...state, project: { ...state.project, skills: action.skills }
       };
@@ -113,12 +108,6 @@ export const projectsReducer = (state = initialState, action) => {
         currentPage: 1,
         totalPageCount: 1
       };
-    case ADD_EMPLOYEE_TO_PROJECT:
-      return updateObject(state, {
-        addEmployeeToProjectStatus: action.addEmployeeToProjectStatus,
-        addEmployeeToProjectErrors: action.addEmployeeToProjectErrors
-      });
-
     case EDIT_EMPLOYEE_ASSIGNMENT:
       return updateObject(state, {
         addEmployeeToProjectStatus: action.addEmployeeToProjectStatus,

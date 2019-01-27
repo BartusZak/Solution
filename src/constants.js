@@ -56,23 +56,7 @@ export const CHANGE_OPERATION_STATE = 'CHANGE_OPERATION_STATE';
 
 // PROJECTS
 export const GET_PROJECT = 'GET_PROJECT';
-export const names = [
-  'FirstName',
-  'Surname',
-  'Client',
-  'Email',
-  'PhoneNumber',
-  'FullName'
-];
-export const overViewNames = [
-  'Client',
-  'StartDate',
-  'EstimatedEndDate',
-  'EndDate',
-  'ParentName'
-];
 export const ADD_PROJECT_OWNER_TO_PROJECT = "ADD_PROJECT_OWNER_TO_PROJECT";
-export const ADD_EMPLOYEE_TO_PROJECT = "ADD_EMPLOYEE_TO_PROJECT";
 export const EDIT_EMPLOYEE_ASSIGNMENT = "EDIT_EMPLOYEE_ASSIGNMENT";
 export const DELETE_EMPLOYEE_ASSIGNMENT = "DELETE_EMPLOYEE_ASSIGNMENT";
 export const ADD_FEEDBACK = "ADD_FEEDBACK";
