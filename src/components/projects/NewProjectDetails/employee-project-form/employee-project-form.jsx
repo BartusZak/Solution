@@ -125,7 +125,7 @@ class EmployeeProjectForm extends React.PureComponent {
                 <p className="important-par">{t("ResponsibilitiesInProject")} *</p>
                 <ul className="responsibilities">
                   {values.responsibilities.map(responsibility => (
-                    <li className="element-toolbox-wrapper" key={responsibility}>
+                    <li className="element-toolbox-wrapper list-element" key={responsibility}>
                       {responsibility}
                       <div className="element-toolbox">
                         <i onClick={() => putChanges(values.responsibilities.filter(r => r !== responsibility), 'responsibilities')} className="fa fa-times"></i>

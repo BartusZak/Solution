@@ -27,7 +27,7 @@ class Filter extends React.Component {
         const { list } = this.state;
         if (search) {
             if (!this.cache[this.state.searchVal]) {
-                const result = list.filter(el => el.name.toUpperCase().search(this.state.searchVal.toUpperCase()) !== -1);
+                const result = list.filter(el => el[search].toUpperCase().search(this.state.searchVal.toUpperCase()) !== -1);
                 return this.addToCache(this.state.searchVal, result);
             }
             return this.cache[this.state.searchVal];
@@ -47,6 +47,7 @@ class Filter extends React.Component {
     }
 
     render() {
+      console.log(this.props.list)
       return this.props.children(this.applyFilters(), this.handleSearching, this.handleSorting);
     }
 }

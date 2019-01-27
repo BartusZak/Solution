@@ -54,9 +54,15 @@ const translations = {
     active: 'aktywny'
   },
   ShareProjectForm: {
-    ShareProjectLabel: 'Udostępnij projekt pracownikowi',
+    ManagersToShareLabel: 'udostępnij pracownkom',
+    ManagersProvidedLabel: 'udostępniono pracownikom',
     Share: 'UDOSTĘPNIJ',
-    EmployeesMadeAvaible: 'Pracownicy, którym udostępniono'
+    Deny: 'ANULUJ',
+    TypePlaceholder: 'zacznij pisać...',
+    EmptyFilterDestinationManagers: 'Brak wyników dla podanej wartości...',
+    EmptyAddedManagers: 'Nie dodano pracowników. Możesz dodać nowych wybierając z listy',
+    LoadDestinationManagersProblem: 'Wystąpił problem podczas ładowania pracowników. Spróbuj ponownie...',
+    LoadSharedManagersProblem: 'Wystąpił problem podczas pobierania pracowników. Wybierz osoby, którym chcesz udostępnić projekt'
   },
   EmployeeProjectForm: {
     AddEmployeeToProject: 'Dodaj pracownika do projektu',

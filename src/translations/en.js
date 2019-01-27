@@ -54,9 +54,15 @@ const translations = {
     active: 'active'
   },
   ShareProjectForm: {
-    ShareProjectLabel: 'Share project for person',
+    ManagersToShareLabel: 'managers you can provide in',
+    ManagersProvidedLabel: 'managers you provided',
     Share: 'SHARE',
-    EmployeesMadeAvaible: 'Employees made avaible'
+    Deny: 'DENY',
+    TypePlaceholder: 'start typing...',
+    EmptyFilterDestinationManagers: 'No results for given value...',
+    EmptyAddedManagers: 'No managers added. Add new ones by selecting from list',
+    LoadDestinationManagersProblem: 'There is a problem with loading managers. Try again...',
+    LoadSharedManagersProblem: 'There is a problem with loading already shared managers. You can still finish adding new ones'
   },
   EmployeeProjectForm: {
     AddEmployeeToProject: 'Add employee to project',

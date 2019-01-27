@@ -57,7 +57,6 @@ class ResponsiblePersonForm extends React.Component {
         </h3>
         <FancyForm
           onSubmit={formData => this.handleSubmit(formData)}
-          isSubmitting={isSubmitting}
           initialValues={initValues}
           settings={this.responsiblePersonSettings} />
       </FancyModal>

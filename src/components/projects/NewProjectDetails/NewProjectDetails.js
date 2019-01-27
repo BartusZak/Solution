@@ -4,8 +4,10 @@ import { withRouter } from 'react-router-dom';
 import { getProject } from '../../../actions/projectsActions';
 import { putAllSkills } from '../../../actions/skillsActions';
 import { ProjectDetailsContext } from './index';
+import { Route } from 'react-router-dom';
 import ProjectInformations from './project-informations/project-informations';
 import ProjectSkills from './project-skills/project-skills';
+import ShareProjectForm from './share-project-form/share-project-form';
 import ProjectTeam from './project-team/project-team';
 import ProjectPhases from './project-phases/project-phases';
 import ProjectPhaseForm from '../phase-project-form/phase-project-form';
@@ -15,7 +17,7 @@ import './NewProjectDetails.scss';
 const { Provider } = ProjectDetailsContext;
 class NewProjectDetails extends React.Component {
   state = {
-    isLoading: true, editProjectForm: false, addPhaseForm: false, addEmployeeForm: false
+    isLoading: true, editProjectForm: false, addPhaseForm: false
   }
   componentDidMount = () => this.getProjectDetails();
   componentDidUpdate = prevProps => {
@@ -34,36 +36,48 @@ class NewProjectDetails extends React.Component {
 
   togleEditForm = () => this.setState({editProjectForm: !this.state.editProjectForm});
   toglePhaseForm = () => this.setState({addPhaseForm: !this.state.addPhaseForm});
-  togleAddEmployeeForm = () => this.setState({addEmployeeForm: !this.state.addEmployeeForm});
 
   componentWillUnmount = () => this.props.putAllSkills();
 
+  goToStartPage = () => this.props.history.push(this.props.match.url);
+  redirectToAddEmployee = () => this.props.history.push(this.props.match.url + '/add/employee');
+  redirectToSharingProject = () => this.props.history.push(this.props.match.url + '/share');
+
   render() {
-    const { projectResult, project, t, history } = this.props;
+    const { projectResult, project, t, history, match } = this.props;
     if (this.state.isLoading)
       return <div style={{position: 'fixed'}} className="spinner-new spinner-new-big spinner-new-center"></div>;
     else if(!projectResult.status) return null;
     else {
       const { id, skills, team, projectPhases: phases, client, cloud, responsiblePerson } = project;
-      const { editProjectForm, addPhaseForm, addEmployeeForm } = this.state;
+      const { editProjectForm, addPhaseForm } = this.state;
       return (
         <div className="project-details-wrapper">
           <Provider value={project}>
-            <ProjectInformations project={project} t={t} togleEditForm={this.togleEditForm} toglePhaseForm={this.toglePhaseForm}/>
+            <ProjectInformations match={match}
+              project={project} t={t} redirectToSharingProject={this.redirectToSharingProject}
+              togleEditForm={this.togleEditForm} toglePhaseForm={this.toglePhaseForm}/>
             <div className="project-data-wrapper">
 
-              {!addEmployeeForm ?
-                <React.Fragment>
-                  <ProjectSkills projectSkills={skills} />
-                  <ProjectTeam team={team} togleAddEmployeeForm={this.togleAddEmployeeForm}/>
-                </React.Fragment> :
-                <EmployeeProjectForm close={this.togleAddEmployeeForm} projectId={id} />
-              }
+            <Route exact path={`${match.url}/share`} render={() => (
+              <ShareProjectForm close={this.goToStartPage} projectId={id}/>
+            )}/>
 
-              {!project.parentId &&
-                <ProjectPhases openAddingPhase={this.toglePhaseForm}
-                  phases={phases} push={id => history.push('/main/projects/' + id)} />
-              }
+            <Route exact path={`${match.url}/add/employee`} render={() => (
+              <EmployeeProjectForm close={this.goToStartPage} projectId={id}/>
+            )}/>
+
+            <Route exact path={`${match.url}`} render={() => (
+              <React.Fragment>
+                <ProjectSkills projectSkills={skills} />
+                <ProjectTeam team={team} redirectToAddEmployee={this.redirectToAddEmployee} />
+              </React.Fragment>
+            )} />
+
+            {!project.parentId &&
+              <ProjectPhases openAddingPhase={this.toglePhaseForm}
+                phases={phases} push={id => history.push('/main/projects/' + id)} />
+            }
             </div>
           </Provider>
 

@@ -15,7 +15,9 @@ import {
   ADD_PHASE,
   ADD_OWNER,
   CHANGE_PROJECT_STATUS,
-  PUT_SKILLS_INTO_PROJECT
+  PUT_SKILLS_INTO_PROJECT,
+  PUT_DESTINATION_MANAGERS,
+  PUT_ALREADY_SHARED_MANAGERS,
 } from "../constants";
 import { updateObject } from "../services/methods";
 const initialState = {
@@ -26,6 +28,8 @@ const initialState = {
   resultBlock: null,
 
   project: null, projectResult: {status: null},
+  destinationManagers: [], dManagersResult: {status: null},
+  alreadySharedManagers: [], sManagersResult: {status: null},
 
   addEmployeeToProjectStatus: null,
   addEmployeeToProjectErrors: [],
@@ -55,6 +59,12 @@ const initialState = {
 
 export const projectsReducer = (state = initialState, action) => {
   switch (action.type) {
+    case PUT_ALREADY_SHARED_MANAGERS:
+      return { ...state, sManagersResult: action.sManagersResult, sManagersResult: action.sManagersResult }
+    case PUT_DESTINATION_MANAGERS:
+      return {
+        ...state, destinationManagers: action.destinationManagers, dManagersResult: action.dManagersResult
+      };
     case UPDATE_PROJECT:
       const responsiblePerson = {...action.project.responsiblePerson};
       responsiblePerson.client = action.project.client;

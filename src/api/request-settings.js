@@ -35,6 +35,7 @@ export const closeProject = 'closeProject';
 export const deleteProject = 'deleteProject';
 export const addOwnerToProject = 'addOwnerToProject';
 export const editSkillsInProject = 'editSkillsInProject';
+export const getAlreadySharedManagers = 'getAlreadySharedManagers';
 
 // Skills
 export const loadAllSkills = 'loadAllSkills';

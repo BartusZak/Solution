@@ -6,7 +6,7 @@ import Checkbox from '../../../../common/checkbox/checkbox';
 import ProgressMarker from '../../../../shared/progress-marker/progress-marker';
 import Filter from '../../../../../hocs/filter';
 
-const filterConfig = { search: true,  sort: { key: 'name' } };
+const filterConfig = { search: 'name', sort: { key: 'name' } };
 const ManagerContent = ({ allSkills, allSkillsCount, status, skillsData, reloadSkills, handleMarking, saveSkills, countOfMarkedSkills, t,
   handleChangingSkill }) => {
   if (!status)

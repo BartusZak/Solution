@@ -14,7 +14,9 @@ import {
   ADD_PHASE,
   CHANGE_PROJECT_STATUS,
   ADD_OWNER,
-  PUT_SKILLS_INTO_PROJECT
+  PUT_SKILLS_INTO_PROJECT,
+  PUT_DESTINATION_MANAGERS,
+  PUT_ALREADY_SHARED_MANAGERS,
 } from "../constants";
 import WebApi from "../api";
 import {
@@ -327,6 +329,9 @@ export const addPhase = phase => ({ type: ADD_PHASE, phase });
 export const changeProjectStatus = (status, isDeleted) => ({ type: CHANGE_PROJECT_STATUS, status, isDeleted });
 export const addOwner = owner => ({ type: ADD_OWNER, owner });
 export const putSkillsIntoProject = skills => ({ type: PUT_SKILLS_INTO_PROJECT, skills });
+export const putDestinationManagers = (destinationManagers, dManagersResult) => ({ type: PUT_DESTINATION_MANAGERS, destinationManagers, dManagersResult });
+export const putAlreadySharedManagers = (sharedManagers, sManagersResult) => ({ type: PUT_ALREADY_SHARED_MANAGERS, sharedManagers, sManagersResult});
+export const changeInReducer = (value, key) => ( {type: CHANGE_IN_REDUCER, value, key})
 
 export const getProject = id => dispatch =>
   useRequest('getProject', id)
@@ -411,10 +416,16 @@ export const shareProject = (model, succ, err) => {
     })
 }
 
-export const getDestinationManagers = (projectId, succ, err) => {
+export const getDestinationManagers = projectId => dispatch =>
   useRequest('getDestinationManagers', projectId)
+    .then(res => dispatch(putDestinationManagers(res.extractData(), {status: true})))
+    .catch(() => dispatch(putDestinationManagers([], {status: false})));
+
+export const getAlreadySharedManagers = projectId => dispatch =>
+  useRequest('getAlreadySharedManagers', projectId)
     .then(res => {
-      const managers = res.extractData();
-      succ(managers);
-    }).catch(() => err());
-}
+      console.log(res.extractData());
+      dispatch(putAlreadySharedManagers(res.extractData(), { status: true }));
+    }).catch(err => {
+      dispatch(putAlreadySharedManagers([], { status: false }));
+    });

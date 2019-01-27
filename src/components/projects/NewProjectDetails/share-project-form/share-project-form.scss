@@ -1,0 +1,44 @@
+@import '../../../../scss//new-color-schema.scss';
+.share-project-form {
+  grid-column: 1/3;
+  display: grid;
+  grid-template-rows: 1fr auto;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 30px;
+  grid-template-areas:
+    "managers-to-select selected-managers"
+    "footer footer";
+  .managers-to-select, .selected-managers {
+    position: relative;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    grid-gap: 20px;
+    padding: 15px 0;
+    p.important-par {
+      color: $dcmt;
+      font-size: 16px;
+      margin: 0 15px 0 15px;
+    }
+    .field-block {
+      margin: 0 15px 0 15px;
+    }
+    ul {
+      overflow-y: auto;
+    }
+    .on-error-comunicate {
+      grid-row: 1/4;
+    }
+  }
+  .managers-to-select {
+    grid-area: managers-to-select;
+  }
+  .selected-managers {
+    grid-area: selected-managers;
+  }
+  .share-operations {
+    grid-area: footer;
+    button:first-of-type {
+      margin-right: 15px;
+    }
+  }
+}

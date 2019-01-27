@@ -6,7 +6,6 @@ import { connect } from 'react-redux';
 import { translate } from 'react-translate';
 import Button from '../../../common/button/button';
 import EmployeeSearcher from '../../../shared/employee-searcher/employee-searcher';
-import ShareProjectForm from './share-project-form/share-project-form';
 import { AheadClassContext } from '../../../common/fancy-form/type-ahead/index';
 
 import './project-informations.scss';
@@ -16,12 +15,10 @@ const { Provider } = AheadClassContext;
 class ProjectInformations extends React.Component {
   state = {
     isAddingOwner: false,
-    currentChangeStatusOperationName: '',
-    shareProjectform: false
+    currentChangeStatusOperationName: ''
   }
 
   clearOperation = () => this.setState({currentChangeStatusOperationName: ''});
-  togleShareProjectForm = () => this.setState({shareProjectform: !this.state.shareProjectform});
 
   deleteProject = id => {
     this.setState({currentChangeStatusOperationName: deleting});
@@ -52,8 +49,8 @@ class ProjectInformations extends React.Component {
   }
 
   render() {
-    const { currentChangeStatusOperationName: operationName, isAddingOwner, shareProjectform } = this.state;
-    const { project, togleEditForm, toglePhaseForm, t } = this.props;
+    const { currentChangeStatusOperationName: operationName, isAddingOwner } = this.state;
+    const { project, togleEditForm, toglePhaseForm, t, redirectToSharingProject, match } = this.props;
     const { id, name, description, responsiblePerson, owners, status, isDeleted, startDate, estimatedEndDate, client, cloud, parentId } = project;
     const projectState = calculateProjectState(status, isDeleted);
     const disableStatusButtons = operationName !== '';
@@ -145,9 +142,11 @@ class ProjectInformations extends React.Component {
             </Button>
           }
 
-          <Button onClick={this.togleShareProjectForm} title={t("ShareProject")} mainClass="dcmt-main-btn dcmt-light-btn animated-icon-btn">
-            <i className="fa fa-share-alt-square"></i>
-          </Button>
+          {window.location.href.search('share') === -1 &&
+            <Button onClick={redirectToSharingProject} title={t("ShareProject")} mainClass="dcmt-main-btn dcmt-light-btn animated-icon-btn">
+              <i className="fa fa-share-alt-square"></i>
+            </Button>
+          }
 
           {(isDeleted || status !== active) &&
             <Button disable={disableStatusButtons} onClick={() => this.reactivateProject(id)}
@@ -169,9 +168,6 @@ class ProjectInformations extends React.Component {
           }
         </div>
 
-        {shareProjectform &&
-          <ShareProjectForm projectId={id} close={this.togleShareProjectForm}/>
-        }
       </div>
     );
   }
