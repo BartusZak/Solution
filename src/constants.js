@@ -88,6 +88,7 @@ export const ADD_OWNER = "[Projects] ADD_OWNER";
 export const PUT_SKILLS_INTO_PROJECT = "[Projects] PUT_SKILLS_INTO_PROJECT";
 export const PUT_DESTINATION_MANAGERS = "[Projects] PUT_DESTINATION_MANAGERS";
 export const PUT_ALREADY_SHARED_MANAGERS = "[Projects] PUT_ALREADY_SHARED_MANAGERS";
+export const CHANGE_MANAGERS_LISTS = "[Projects] CHANGE_MANAGERS_LISTS";
 export const closed = 2;
 export const inactive = 1;
 export const active = 0;

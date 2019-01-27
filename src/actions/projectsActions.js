@@ -17,6 +17,7 @@ import {
   PUT_SKILLS_INTO_PROJECT,
   PUT_DESTINATION_MANAGERS,
   PUT_ALREADY_SHARED_MANAGERS,
+  CHANGE_MANAGERS_LISTS
 } from "../constants";
 import WebApi from "../api";
 import {
@@ -330,8 +331,8 @@ export const changeProjectStatus = (status, isDeleted) => ({ type: CHANGE_PROJEC
 export const addOwner = owner => ({ type: ADD_OWNER, owner });
 export const putSkillsIntoProject = skills => ({ type: PUT_SKILLS_INTO_PROJECT, skills });
 export const putDestinationManagers = (destinationManagers, dManagersResult) => ({ type: PUT_DESTINATION_MANAGERS, destinationManagers, dManagersResult });
-export const putAlreadySharedManagers = (sharedManagers, sManagersResult) => ({ type: PUT_ALREADY_SHARED_MANAGERS, sharedManagers, sManagersResult});
-export const changeInReducer = (value, key) => ( {type: CHANGE_IN_REDUCER, value, key})
+export const putAlreadySharedManagers = (alreadySharedManagers, sManagersResult) => ({ type: PUT_ALREADY_SHARED_MANAGERS, alreadySharedManagers, sManagersResult});
+export const changeManagersLists = (destinationManagers, alreadySharedManagers) => ({ type: CHANGE_MANAGERS_LISTS, destinationManagers, alreadySharedManagers});
 
 export const getProject = id => dispatch =>
   useRequest('getProject', id)

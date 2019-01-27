@@ -1,5 +1,5 @@
 import React from 'react';
-import { shareProject, getDestinationManagers, getAlreadySharedManagers } from '../../../../actions/projectsActions';
+import { shareProject, getDestinationManagers, getAlreadySharedManagers, changeManagersLists } from '../../../../actions/projectsActions';
 import { translate } from 'react-translate';
 import { connect } from 'react-redux';
 import Button from '../../../common/button/button';
@@ -38,13 +38,28 @@ class ShareProjectForm extends React.Component {
       () => this.setState({isLoadingDestinationManagers: false}));
   }
 
+  handleAddingAleadySharedManager = manager => {
+    const { destinationManagers, alreadySharedManagers, changeManagersLists } = this.props;
+    const newDManagers = destinationManagers.filter(m => m.id !== manager.id);
+    const newASharedManagers = [manager, ...alreadySharedManagers];
+    changeManagersLists(newDManagers, newASharedManagers);
+  }
+
+  handleRemovingAlreadySharedManager = manager => {
+    const { destinationManagers, alreadySharedManagers, changeManagersLists } = this.props;
+    const newDManagers = [manager, ...destinationManagers];
+    const newASharedManagers = alreadySharedManagers.filter(m => m.id !== manager.id);
+    changeManagersLists(newDManagers, newASharedManagers);
+  }
+
   render() {
-    const { close, t, destinationManagers, dManagersResult, alreadySharedManagers, sManagersResult } = this.props;
+    const { close, t, destinationManagers, dManagersResult, alreadySharedManagers, sManagersResult, } = this.props;
     const { isLoadingDestinationManagers, isLoadingAlreadySharedManagers } = this.state;
     return (
       <div className="share-project-form">
         <div className="managers-to-select box-circle">
           <Managers
+            rowOperation={this.handleAddingAleadySharedManager}
             useFilter
             title={t("ManagersToShareLabel")}
             isLoading={isLoadingDestinationManagers}
@@ -56,6 +71,8 @@ class ShareProjectForm extends React.Component {
         </div>
         <div className="selected-managers box-circle">
           <Managers
+            rowIcon='times'
+            rowOperation={this.handleRemovingAlreadySharedManager}
             title={t("ManagersProvidedLabel")}
             isLoading={isLoadingAlreadySharedManagers}
             managers={alreadySharedManagers}
@@ -92,7 +109,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     getDestinationManagers: projectId => dispatch(getDestinationManagers(projectId)),
-    getAlreadySharedManagers: projectId => dispatch(getAlreadySharedManagers(projectId))
+    getAlreadySharedManagers: projectId => dispatch(getAlreadySharedManagers(projectId)),
+    changeManagersLists: (destinationManagers, alreadySharedManagers) => dispatch(changeManagersLists(destinationManagers, alreadySharedManagers))
   };
 };
 

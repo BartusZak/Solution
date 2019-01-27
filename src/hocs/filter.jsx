@@ -47,7 +47,6 @@ class Filter extends React.Component {
     }
 
     render() {
-      console.log(this.props.list)
       return this.props.children(this.applyFilters(), this.handleSearching, this.handleSorting);
     }
 }

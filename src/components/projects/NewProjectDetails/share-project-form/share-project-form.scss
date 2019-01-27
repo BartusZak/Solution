@@ -2,12 +2,20 @@
 .share-project-form {
   grid-column: 1/3;
   display: grid;
-  grid-template-rows: 1fr auto;
-  grid-template-columns: 1fr 1fr;
   grid-gap: 30px;
+  grid-template-rows: 400px 400px auto;
   grid-template-areas:
+    "managers-to-select"
+    "selected-managers"
+    "footer";
+
+  @media(min-width: 900px) {
+    grid-template-areas:
     "managers-to-select selected-managers"
     "footer footer";
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 80% auto;
+  }
   .managers-to-select, .selected-managers {
     position: relative;
     display: grid;
@@ -24,6 +32,9 @@
     }
     ul {
       overflow-y: auto;
+      li span {
+        max-width: 90%;
+      }
     }
     .on-error-comunicate {
       grid-row: 1/4;

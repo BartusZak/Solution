@@ -18,6 +18,7 @@ import {
   PUT_SKILLS_INTO_PROJECT,
   PUT_DESTINATION_MANAGERS,
   PUT_ALREADY_SHARED_MANAGERS,
+  CHANGE_MANAGERS_LISTS
 } from "../constants";
 import { updateObject } from "../services/methods";
 const initialState = {
@@ -59,8 +60,10 @@ const initialState = {
 
 export const projectsReducer = (state = initialState, action) => {
   switch (action.type) {
+    case CHANGE_MANAGERS_LISTS:
+      return { ...state, destinationManagers: action.destinationManagers, alreadySharedManagers: action.alreadySharedManagers }
     case PUT_ALREADY_SHARED_MANAGERS:
-      return { ...state, sManagersResult: action.sManagersResult, sManagersResult: action.sManagersResult }
+      return { ...state, alreadySharedManagers: action.alreadySharedManagers, sManagersResult: action.sManagersResult }
     case PUT_DESTINATION_MANAGERS:
       return {
         ...state, destinationManagers: action.destinationManagers, dManagersResult: action.dManagersResult

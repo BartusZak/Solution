@@ -50,7 +50,7 @@ class ProjectInformations extends React.Component {
 
   render() {
     const { currentChangeStatusOperationName: operationName, isAddingOwner } = this.state;
-    const { project, togleEditForm, toglePhaseForm, t, redirectToSharingProject, match } = this.props;
+    const { project, togleEditForm, toglePhaseForm, t, redirectToSharingProject } = this.props;
     const { id, name, description, responsiblePerson, owners, status, isDeleted, startDate, estimatedEndDate, client, cloud, parentId } = project;
     const projectState = calculateProjectState(status, isDeleted);
     const disableStatusButtons = operationName !== '';

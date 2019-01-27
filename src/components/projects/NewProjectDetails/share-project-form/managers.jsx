@@ -3,7 +3,7 @@ import Filter from '../../../../hocs/filter';
 
 const filterConfig = { search: 'fullName' };
 
-const managers = ({managers, status, t, isLoading, onErrorMessage, refresh, useFilter, title}) => {
+const managers = ({managers, status, t, isLoading, onErrorMessage, refresh, useFilter, title, rowOperation, rowIcon}) => {
 
   if (isLoading) return <div className="spinner-new form-down-right-spinner" />;
 
@@ -24,7 +24,7 @@ const managers = ({managers, status, t, isLoading, onErrorMessage, refresh, useF
                 {filteredList.map(({id, fullName}) => (
                   <li className="list-element flex-between-c" key={id}>
                     <span>{fullName} ({id})</span>
-                    <i className="fa fa-arrow-right clickable"></i>
+                    <i onClick={() => rowOperation({id, fullName})} className={`fa fa-${rowIcon} clickable`}></i>
                   </li>
                 ))}
               </ul>
@@ -54,7 +54,7 @@ const managers = ({managers, status, t, isLoading, onErrorMessage, refresh, useF
           {managers.map(({id, fullName}) => (
             <li className="list-element flex-between-c" key={id}>
               <span>{fullName} ({id})</span>
-              <i className="fa fa-arrow-right clickable"></i>
+              <i onClick={() => rowOperation({id, fullName})} className={`fa fa-${rowIcon} clickable`}></i>
             </li>
           ))}
         </ul>
@@ -69,5 +69,9 @@ const managers = ({managers, status, t, isLoading, onErrorMessage, refresh, useF
       <i onClick={refresh} className="fas fa-sync fa-lg clickable"></i>
     </div>
   )
+}
+
+managers.defaultProps = {
+  rowIcon: 'arrow-right'
 }
 export default managers;

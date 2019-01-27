@@ -19,7 +19,9 @@ class NewProjectDetails extends React.Component {
   state = {
     isLoading: true, editProjectForm: false, addPhaseForm: false
   }
+
   componentDidMount = () => this.getProjectDetails();
+
   componentDidUpdate = prevProps => {
     if(prevProps.projectResult !== this.props.projectResult)
       this.setState({isLoading: false});
@@ -35,12 +37,15 @@ class NewProjectDetails extends React.Component {
   }
 
   togleEditForm = () => this.setState({editProjectForm: !this.state.editProjectForm});
+
   toglePhaseForm = () => this.setState({addPhaseForm: !this.state.addPhaseForm});
 
   componentWillUnmount = () => this.props.putAllSkills();
 
   goToStartPage = () => this.props.history.push(this.props.match.url);
+
   redirectToAddEmployee = () => this.props.history.push(this.props.match.url + '/add/employee');
+
   redirectToSharingProject = () => this.props.history.push(this.props.match.url + '/share');
 
   render() {
@@ -54,7 +59,7 @@ class NewProjectDetails extends React.Component {
       return (
         <div className="project-details-wrapper">
           <Provider value={project}>
-            <ProjectInformations match={match}
+            <ProjectInformations
               project={project} t={t} redirectToSharingProject={this.redirectToSharingProject}
               togleEditForm={this.togleEditForm} toglePhaseForm={this.toglePhaseForm}/>
             <div className="project-data-wrapper">
