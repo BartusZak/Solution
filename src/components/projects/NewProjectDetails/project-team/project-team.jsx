@@ -37,7 +37,7 @@ class ProjectTeam extends React.PureComponent {
         {teamCount === 0 ?
           <div className="empty-list-comunicate ">
             <p>{t("ProjectTeamEmpty")}</p>
-            <i onClick={redirectToAddEmployee} className="fa fa-user-plus"></i>
+            <i onClick={redirectToAddEmployee} className="fa fa-user-plus clickable"></i>
           </div> :
           <React.Fragment>
             <ul>

@@ -15,6 +15,13 @@ class Filter extends React.Component {
 
     cache = {};
 
+    componentDidUpdate = prevProps => {
+      if (prevProps.list !== this.props.list) {
+       this.setState({list: [...this.props.list]});
+       this.cache = {};
+      }
+    }
+
     addToCache = (key, values) => {
         if (!this.cache[key]) {
             this.cache[key] = values;

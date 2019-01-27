@@ -59,8 +59,7 @@ class NewProjectDetails extends React.Component {
       return (
         <div className="project-details-wrapper">
           <Provider value={project}>
-            <ProjectInformations
-              project={project} t={t} redirectToSharingProject={this.redirectToSharingProject}
+            <ProjectInformations project={project} t={t} redirectToSharingProject={this.redirectToSharingProject}
               togleEditForm={this.togleEditForm} toglePhaseForm={this.toglePhaseForm}/>
             <div className="project-data-wrapper">
 

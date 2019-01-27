@@ -13,14 +13,14 @@ const ManagerContent = ({ allSkills, allSkillsCount, status, skillsData, reloadS
     return (
       <div className="empty-list-comunicate">
         <p>{t("LoadingSkillsProblem")}</p>
-        <i onClick={reloadSkills} className="fas fa-sync-alt"></i>
+        <i onClick={reloadSkills} className="fas fa-sync-alt clickable"></i>
       </div>
     );
   if (allSkillsCount === 0)
     return (
       <div className="empty-list-comunicate">
         <p>{t("EmptySkills")}</p>
-        <Link to="/main/skills"><i className="fas fa-crosshairs fa-lg"></i></Link>
+        <Link to="/main/skills"><i className="fas fa-crosshairs fa-lg clickable"></i></Link>
       </div>
     );
   return (

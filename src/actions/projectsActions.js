@@ -406,16 +406,10 @@ export const assignEmployeeIntoProject = (model, succ, err) => dispatch => {
     .catch(() => err());
 }
 
-export const shareProject = (model, succ, err) => {
+export const shareProject = (model, succ, err) =>
   useRequest('shareProject', model.projectId, model)
-    .then(res => {
-      console.log(res);
-      succ();
-    }).catch(() => {
-      console.log(err);
-      err();
-    })
-}
+    .then(() => succ())
+    .catch(() => err());
 
 export const getDestinationManagers = projectId => dispatch =>
   useRequest('getDestinationManagers', projectId)
@@ -424,9 +418,5 @@ export const getDestinationManagers = projectId => dispatch =>
 
 export const getAlreadySharedManagers = projectId => dispatch =>
   useRequest('getAlreadySharedManagers', projectId)
-    .then(res => {
-      console.log(res.extractData());
-      dispatch(putAlreadySharedManagers(res.extractData(), { status: true }));
-    }).catch(err => {
-      dispatch(putAlreadySharedManagers([], { status: false }));
-    });
+    .then(res => dispatch(putAlreadySharedManagers(res.extractData(), { status: true })))
+    .catch(() => dispatch(putAlreadySharedManagers([], { status: false })));

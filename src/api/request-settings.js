@@ -204,6 +204,7 @@ export const succOperationsWhiteObject = {
   deleteProject: {pl: 'Projekt został pomyślnie usunięty', en: 'Project has been succesfully deleted'},
   addOwnerToProject: {pl: 'Dodano noweg właściciela', en: 'New owner has been added'},
   editSkillsInProject: {pl: 'Umiejętności projektu zostały zmienione', en: 'Skills is project has been changed'},
+  shareProject: { pl: 'Projekt został pomyślnie udostępniony', en: 'Project has been succesfully shared'},
 
   // Reponsible person
   createResponsiblePerson: {

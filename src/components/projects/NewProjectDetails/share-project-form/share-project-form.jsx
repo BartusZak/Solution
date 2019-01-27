@@ -8,7 +8,9 @@ import Managers from './managers';
 import './share-project-form.scss';
 class ShareProjectForm extends React.Component {
   state = {
-    isLoadingDestinationManagers: true, isLoadingAlreadySharedManagers: true
+    isLoadingDestinationManagers: true,
+    isLoadingAlreadySharedManagers: true,
+    isSharing: false
   };
 
   componentDidMount = () => {
@@ -52,13 +54,23 @@ class ShareProjectForm extends React.Component {
     changeManagersLists(newDManagers, newASharedManagers);
   }
 
+  handleSharingProject = () => {
+    const { alreadySharedManagers, projectId, close } = this.props;
+    const destinationManagersIds = alreadySharedManagers.map(m => m.id);
+    this.setState({isSharing: true});
+    shareProject({projectId, destinationManagersIds},
+      () => close(),
+      () => this.setState({isSharing: false}));
+  }
+
   render() {
     const { close, t, destinationManagers, dManagersResult, alreadySharedManagers, sManagersResult, } = this.props;
-    const { isLoadingDestinationManagers, isLoadingAlreadySharedManagers } = this.state;
+    const { isLoadingDestinationManagers, isLoadingAlreadySharedManagers, isSharing } = this.state;
     return (
       <div className="share-project-form">
         <div className="managers-to-select box-circle">
           <Managers
+            key={1}
             rowOperation={this.handleAddingAleadySharedManager}
             useFilter
             title={t("ManagersToShareLabel")}
@@ -71,6 +83,7 @@ class ShareProjectForm extends React.Component {
         </div>
         <div className="selected-managers box-circle">
           <Managers
+            key={2}
             rowIcon='times'
             rowOperation={this.handleRemovingAlreadySharedManager}
             title={t("ManagersProvidedLabel")}
@@ -83,10 +96,12 @@ class ShareProjectForm extends React.Component {
         </div>
 
         <div className="share-operations">
-          <Button disable={isLoadingDestinationManagers} title={t("Share")} mainClass="dcmt-main-btn dcmt-light-btn animated-icon-btn">
+          <Button onClick={this.handleSharingProject}
+            isLoading={isSharing || isLoadingDestinationManagers || isLoadingAlreadySharedManagers} title={t("Share")}
+            mainClass="dcmt-main-btn dcmt-light-btn animated-icon-btn">
             <i className="fa fa-check"></i>
           </Button>
-          <Button onClick={close} title={t("Deny")} mainClass="dcmt-main-btn dcmt-grey-btn animated-icon-btn">
+          <Button disable={isSharing} onClick={close} title={t("Deny")} mainClass="dcmt-main-btn dcmt-grey-btn animated-icon-btn">
             <i className="fa fa-times"></i>
           </Button>
         </div>

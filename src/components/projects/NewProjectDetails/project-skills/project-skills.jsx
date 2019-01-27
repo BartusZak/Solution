@@ -42,7 +42,7 @@ class ProjectSkills extends React.PureComponent {
         {skillsCount === 0 ?
           <div className="empty-list-comunicate">
             <p>{t("SkillsListEmpty")}</p>
-            <i onClick={skillManager ? this.setManagerOpenClass : this.togleManager} className="fas fa-crosshairs fa-lg"></i>
+            <i onClick={skillManager ? this.setManagerOpenClass : this.togleManager} className="fas fa-crosshairs fa-lg clickable"></i>
           </div> :
 
           <React.Fragment>

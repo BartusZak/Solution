@@ -79,7 +79,7 @@ class ProjectInformations extends React.Component {
           </div>
           {cloud &&
             <div className="detail-label">
-              <span className="dcmt-light-color">{t("Cloud")}}</span>
+              <span className="dcmt-light-color">{t("Cloud")}</span>
               <span>{cloud}</span>
             </div>
           }
@@ -142,11 +142,9 @@ class ProjectInformations extends React.Component {
             </Button>
           }
 
-          {window.location.href.search('share') === -1 &&
-            <Button onClick={redirectToSharingProject} title={t("ShareProject")} mainClass="dcmt-main-btn dcmt-light-btn animated-icon-btn">
-              <i className="fa fa-share-alt-square"></i>
-            </Button>
-          }
+          <Button onClick={redirectToSharingProject} title={t("ShareProject")} mainClass="dcmt-main-btn dcmt-light-btn animated-icon-btn">
+            <i className="fa fa-share-alt-square"></i>
+          </Button>
 
           {(isDeleted || status !== active) &&
             <Button disable={disableStatusButtons} onClick={() => this.reactivateProject(id)}
