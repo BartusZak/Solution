@@ -13,29 +13,33 @@ import moment from 'moment';
 import './employee-project-form.scss';
 
 class EmployeeProjectForm extends React.PureComponent {
-  state = {
-    isSubmitting: false, inputError: '', inputValue: ''
+  constructor(props) {
+    super(props);
+    const { t } = props;
+    this.settings = {
+      employeeId: new InputSettings(t('Employee'), { required: true } ),
+      role: new InputSettings(t('Role'), { required: true, minLength: 2, maxLength: 150 } ),
+      startDate: new InputSettings(t('StartDate'), { required: true } ),
+      endDate: new InputSettings(t('EndDate'), { required: true } ),
+      assignedCapacity: new InputSettings('fte', { required: true } ),
+      responsibilities: new InputSettings(t('ResponsibilitiesInProject'), { isNotEmptyList: true } )
+    }
+    this.state = {
+      isSubmitting: false, inputError: '', inputValue: ''
+    }
   }
   roles = ['Developer', 'Human Resources'];
   initValues = { employeeId: '', role: 'Developer', startDate: moment(), endDate: moment(), assignedCapacity: 50, responsibilities: [] };
-  settings = {
-    employeeId: new InputSettings('employee', { required: true } ),
-    role: new InputSettings('role', { required: true, minLength: 2, maxLength: 150 } ),
-    startDate: new InputSettings('start date', { required: true } ),
-    endDate: new InputSettings('end date', { required: true } ),
-    assignedCapacity: new InputSettings('fte', { required: true } ),
-    responsibilities: new InputSettings('responsibilities', { isNotEmptyList: true } )
-  };
   responsibilitiesConfig = { required: true, minLength: 3, maxLength: 100, isInList: [] };
 
   handleResponsibilitiesChange = e => {
-    const inputError = runSingleValidation(e.target.value, this.responsibilitiesConfig, 'responsibilities');
+    const inputError = runSingleValidation(e.target.value, this.responsibilitiesConfig, this.props.t('ResponsibilitiesInProject'));
     this.setState({inputError, inputValue: e.target.value});
   }
   handleKeyPress = (e, func, currentValues) => {
     if (e.key === 'Enter') {
       const { inputValue } = this.state;
-      const inputError = runSingleValidation(inputValue, this.responsibilitiesConfig, 'responsibilities');
+      const inputError = runSingleValidation(inputValue, this.responsibilitiesConfig, this.props.t('ResponsibilitiesInProject'));
       e.preventDefault();
       if (!inputError) {
         const responsibilities = [...currentValues, inputValue];
@@ -125,11 +129,9 @@ class EmployeeProjectForm extends React.PureComponent {
                 <p className="important-par">{t("ResponsibilitiesInProject")} *</p>
                 <ul className="responsibilities">
                   {values.responsibilities.map(responsibility => (
-                    <li className="element-toolbox-wrapper list-element" key={responsibility}>
-                      {responsibility}
-                      <div className="element-toolbox">
-                        <i onClick={() => putChanges(values.responsibilities.filter(r => r !== responsibility), 'responsibilities')} className="fa fa-times"></i>
-                      </div>
+                    <li className="list-element flex-between-c" key={responsibility}>
+                      <span>{responsibility}</span>
+                      <i onClick={() => putChanges(values.responsibilities.filter(r => r !== responsibility), 'responsibilities')} className="fa fa-times clickable"></i>
                     </li>
                   ))}
                 </ul>

@@ -62,7 +62,7 @@ const ManagerContent = ({ allSkills, allSkillsCount, status, skillsData, reloadS
                 <input onChange={handleSearching} placeholder={t("FilterPlaceholder")} />
                 <div className="field-icon"><i className='fa fa-search' /></div>
               </div>
-              <Button disable={countOfMarkedSkills < 1} onClick={saveSkills} title={t("FinishButton")} mainClass="label-btn"></Button>
+              <Button disable={countOfMarkedSkills < 1} onClick={saveSkills} title={t("FinishButton")} mainClass="label-btn dcmt-color"></Button>
             </div>
           </React.Fragment>
         )

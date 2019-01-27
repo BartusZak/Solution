@@ -73,12 +73,13 @@ const translations = {
     CloseAdding: 'ZAKOŃCZ DODAWANIE',
     ResponsibilitiesInProject: 'obowiązki w projekcie',
     AddResponsibilityPlaceholder: 'dodaj obowiązek',
-    Capacity: 'długość etatu'
+    Capacity: 'długość etatu',
+    Employee: 'pracownik'
   },
   EmployeeSearcher: {
     EmployeeSearcherPlaceholder: 'zacznij pisać aby rozpocząć wyszukiwanie...',
     EmployeeSearcherOwnersPlaceholder: 'dodaj właściciela...',
-    Employee: 'Znajdź pracownika',
+    Employee: 'znajdź pracownika *',
     EmptyEmployeeQuery: 'Nie znaleziono pracowników o podanych parametrach'
   },
   DragAndDrop: {

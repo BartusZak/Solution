@@ -57,9 +57,11 @@ class SkillsManagement extends React.Component {
 
   handleEditSkillsInProject = id => {
     const { skillsData } = this.state;
-    const skills = Object.values(skillsData)
-      .filter(skillData => skillData.marked)
-      .map(({skillId, markerWidth}) => ({skillId, skillLevel: markerWidth/20}));
+
+    const skills = Object.keys(skillsData)
+      .filter(key => skillsData[key].marked)
+      .map(key => ({skillId: skillsData[key].skillId, color: skillsData[key].color,
+        skillLevel: skillsData[key].markerWidth/20, skillName: key}));
 
     this.setState({isAddingSkills: true});
     this.props.editSkillsInProject(id, skills,

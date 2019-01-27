@@ -73,12 +73,13 @@ const translations = {
     CloseAdding: 'CLOSE ADDING',
     ResponsibilitiesInProject: 'responsibilities in project',
     AddResponsibilityPlaceholder: 'add responsibility...',
-    Capacity: 'capacity'
+    Capacity: 'capacity',
+    Employee: 'employee'
   },
   EmployeeSearcher: {
     EmployeeSearcherPlaceholder: 'start typing for searching employee...',
     EmployeeSearcherOwnersPlaceholder: 'dodaj owner...',
-    Employee: 'Find employee',
+    Employee: 'find employee *',
     EmptyEmployeeQuery: 'There is no employees for given parameters'
   },
   DragAndDrop: {
