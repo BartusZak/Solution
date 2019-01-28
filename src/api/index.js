@@ -88,14 +88,13 @@ const parseFailure = (response, key) => {
   if (isKeyInBlackList) {
     return parser;
   }
-
   let parserData = parser.parse();
   let message;
   const noInternetConnection = !response.response;
 
   if (noInternetConnection) {
     message = fromAlertSettings.failOperationsWhiteObject['networkError'][lang];
-  } else if (parserData.status === 500) {
+  } else if (parser instanceof Error || response instanceof Error) {
     message = parserData.diagnosis;
   } else {
     message = parserData.message;
@@ -279,7 +278,7 @@ const requests = {
   reactivateProject: id => execute(fromAlertSettings.reactivateProject, `projects/reactivate/${id}`, requestTypes.put),
   closeProject: id => execute(fromAlertSettings.closeProject, `projects/close/${id}`, requestTypes.put),
   deleteProject: id => execute(fromAlertSettings.deleteProject, `projects/delete/${id}`, requestTypes.delete),
-  addOwnerToProject: (id, usersIds) => execute(fromAlertSettings.addOwnerToProject, `projects/owner/${id}`, requestTypes.put, {usersIds}),
+  addOwnerToProject: (id, usersIds) => execute(fromAlertSettings.addOwnerToProject, `projects/owner/${id}`, requestTypes.put, { usersIds }),
   editSkillsInProject: (id, skills) => execute(fromAlertSettings.editSkillsInProject, `projects/skills/${id}`, requestTypes.put, skills),
   getAlreadySharedManagers: id => execute(fromAlertSettings.getAlreadySharedManagers, `/shareProject/AlreadySharedManagers/${id}`),
   //RESPINSIBLE PERSON
@@ -688,7 +687,7 @@ const requests = {
   searchRequestsUsers: (settings = {}) =>
     execute(
       fromAlertSettings.searchRequestsUsers,
-      `account/requests?`,
+      `account/requests`,
       requestTypes.post,
       settings,
       true
@@ -700,12 +699,12 @@ const requests = {
   // token: refreshToken => execute(fromAlertSettings.token, `account/login`, requestTypes.post, refreshToken),
   deleteUser: id =>
     execute(fromAlertSettings.deleteUser, `account/${id}`, requestTypes.delete),
-  deleteUserRequest: id =>
+  deleteUserRequest: azureId =>
     execute(
       fromAlertSettings.deleteUserRequest,
       `account/requests`,
       requestTypes.delete,
-      params({ id })
+      params({ azureId })
     ),
   editUserRoles: (id, roles) =>
     execute(fromAlertSettings.editUserRoles, `account`, requestTypes.patch, {
@@ -798,7 +797,7 @@ const requests = {
     execute(
       fromAlertSettings.oneDriveSendQueryToAuth,
       `/onedrive/authenticated?code=${code}&calendar=${shouldRedirectOnCalendar ||
-        false}`
+      false}`
     ),
   oneDriveRefreshToken: oldToken =>
     execute(
@@ -979,7 +978,7 @@ const requests = {
 
   //STATS
   getStats: () =>
-    execute(fromAlertSettings.getStats, `stats/basic`, requestTypes.get),
+    execute(fromAlertSettings.getStats, `stats/basic`, requestTypes.post, {}, true),
 
   //ROLES
   getAllRoles: () =>
@@ -1004,7 +1003,7 @@ const requests = {
       fromAlertSettings.getManagersSharedProject,
       `shareproject/alreadysharedmanagers/${projectId}`
     ),
-    getDestinationManagers: projectId =>
+  getDestinationManagers: projectId =>
     execute(
       fromAlertSettings.getDestinationManagers,
       `shareproject/destinationmanagers/${projectId}`
@@ -1271,11 +1270,11 @@ const WebApi = {
       byEmployee: employeeId => {
         return WebAround.get(`${API_ENDPOINT}/employees/${employeeId}`);
       },
-      byEducation: educationId => {}
+      byEducation: educationId => { }
     },
-    delete: educationId => {},
-    put: educationId => {},
-    post: () => {}
+    delete: educationId => { },
+    put: educationId => { },
+    post: () => { }
   },
   //   get: {
   //     questions: () => {
@@ -1581,12 +1580,12 @@ const WebApi = {
   // },
   workExperience: {
     get: {
-      byExperience: workExperienceId => {},
-      byEmployee: employeeId => {}
+      byExperience: workExperienceId => { },
+      byEmployee: employeeId => { }
     },
-    post: () => {},
-    delete: () => {},
-    put: () => {}
+    post: () => { },
+    delete: () => { },
+    put: () => { }
   }
 };
 

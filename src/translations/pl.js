@@ -169,7 +169,8 @@ const translations = {
     UnUsed: 'Wolne',
     Used: 'Zajęte',
     Remote: 'ZDALNIE',
-    Others: 'INNE'
+    Others: 'INNE',
+    ToFill: 'DO UZUPEŁNIENIA'
   },
   UsersList: {
     Add: 'Dodaj',
