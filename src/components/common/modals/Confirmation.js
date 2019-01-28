@@ -27,7 +27,7 @@ class Confirmation extends Component {
     }
 
     if (nextProps.type === SET_ACTION_CONFIRMATION_RESULT_WITHOUT_ENDING) {
-        this.state.resultBlock = nextProps.resultBlock;
+      this.state.resultBlock = nextProps.resultBlock;
     }
 
     if (nextProps.type === SET_ACTION_CONFIRMATION && !this.props.shown) {

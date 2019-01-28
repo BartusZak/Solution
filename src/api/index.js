@@ -169,7 +169,7 @@ const requests = {
   getEmployees: settings =>
     execute(
       fromAlertSettings.getEmployees,
-      'employees?',
+      'employees',
       requestTypes.post,
       settings,
       true
@@ -207,7 +207,8 @@ const requests = {
       fromAlertSettings.addEmployee,
       `employees/add`,
       requestTypes.post,
-      model
+      model,
+      true
     ),
   addOnBoardEmployee: model =>
     execute(
@@ -346,13 +347,6 @@ const requests = {
       `employees/billenniumemploskills`,
       requestTypes.get,
       params({ employeeId })
-    ),
-  addEmployee: model =>
-    execute(
-      fromAlertSettings.addEmployee,
-      `employees/add`,
-      requestTypes.post,
-      model
     ),
   addOnBoardEmployee: model =>
     execute(
@@ -661,8 +655,8 @@ const requests = {
   getUserByAdSearch: query =>
     execute(
       fromAlertSettings.getUserByAdSearch,
-      `account/searchAD?query=${query}&`,
-      requestTypes.get,
+      `account/searchAD?query=${query}`,
+      requestTypes.post,
       {},
       true
     ),
@@ -809,35 +803,40 @@ const requests = {
       fromAlertSettings.oneDriveGenerateShareLink,
       `onedrive/share`,
       requestTypes.post,
-      model
+      model,
+      true
     ),
   oneDriveGetFolders: model =>
     execute(
       fromAlertSettings.oneDriveGetFolders,
       `onedrive/files`,
       requestTypes.post,
-      model
+      model,
+      true
     ),
   oneDriveCreateFolder: model =>
     execute(
       fromAlertSettings.oneDriveCreateFolder,
       `onedrive/createFolder`,
       requestTypes.post,
-      model
+      model,
+      true
     ),
   oneDriveDeleteFolder: model =>
     execute(
       fromAlertSettings.oneDriveDeleteFolder,
       `onedrive/deleteFolder`,
       requestTypes.post,
-      model
+      model,
+      true
     ),
   oneDriveUpdateFolder: model =>
     execute(
       fromAlertSettings.oneDriveUpdateFolder,
       `onedrive/updateFolder`,
       requestTypes.post,
-      model
+      model,
+      true
     ),
   oneDriveUploadFile: (model, config) =>
     execute(
@@ -845,6 +844,7 @@ const requests = {
       `onedrive/upload`,
       requestTypes.post,
       model,
+      true,
       config
     ),
 
@@ -863,7 +863,8 @@ const requests = {
       fromAlertSettings.generateReport,
       `reports/developers?hyperlinksOnGDrive=${hyperlinksOnGDrive}&hyperlinksOnOneDrive=${hyperlinksOnOneDrive}`,
       requestTypes.post,
-      model
+      model,
+      true
     ),
   generateCv: employeeId =>
     execute(
