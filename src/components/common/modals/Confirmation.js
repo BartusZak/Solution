@@ -13,6 +13,7 @@ import {
 import PropTypes from "prop-types";
 import { translate } from "react-translate";
 import FancyModal from "./../fancy-modal/fancy-modal";
+import Button from './../button/button';
 
 class Confirmation extends Component {
   constructor(props) {
@@ -81,18 +82,8 @@ class Confirmation extends Component {
                 <div className="confirmation-result">
                   {t("ActionRollbackWarning")}
                 </div>
-                <button
-                  className="confirmation-button accept-button"
-                  onClick={this.confirm}
-                >
-                  {t("Accept")}
-                </button>
-                <button
-                  className="confirmation-button deny-button"
-                  onClick={this.invalidate}
-                >
-                  {t("Deny")}
-                </button>
+                <Button onClick={this.confirm} mainClass={"label-btn accept-button"}>{t("Accept")}</Button>
+                <Button onClick={this.invalidate} mainClass={"label-btn"}>{t("Deny")}</Button>
               </div>
             )}
           </FancyModal>
