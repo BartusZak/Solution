@@ -979,7 +979,7 @@ const requests = {
 
   //STATS
   getStats: () =>
-    execute(fromAlertSettings.getStats, `stats/basic`, requestTypes.get),
+    execute(fromAlertSettings.getStats, `stats/basic`, requestTypes.post, {}, true),
 
   //ROLES
   getAllRoles: () =>
