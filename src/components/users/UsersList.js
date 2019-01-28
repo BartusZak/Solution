@@ -175,7 +175,7 @@ class UsersList extends Component {
                     key: 'reactivateUser',
                     string: `${t('ReactivateUserInfinitive')} ${
                       object.firstName
-                    } ${object.lastName}`,
+                      } ${object.lastName}`,
                     id: object.id,
                     successMessage: t('UserReactivated')
                   })
@@ -194,7 +194,7 @@ class UsersList extends Component {
                     key: 'deleteUser',
                     string: `${t('DeleteUserInfinitive')} ${object.firstName} ${
                       object.lastName
-                    }`,
+                      }`,
                     id: object.id,
                     successMessage: t('UserDeleted')
                   })
@@ -237,7 +237,7 @@ class UsersList extends Component {
             this.props.dispatch(
               setActionConfirmation(true, {
                 key: 'deleteUserRequest',
-                string: `${t('DeleteUserRequestInfinitive')} ${object.id}`,
+                string: `${t('DeleteUserRequestInfinitive')} ${object.firstName} ${object.lastName}?`,
                 id: object.id,
                 successMessage: t('UserRequestDeleted')
               })

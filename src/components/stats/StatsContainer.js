@@ -71,6 +71,8 @@ class StatsContainer extends Component {
             cols.push([t('Remote'), count]);
           } else if (localization === 'INNE') {
             cols.push([t('Others'), count]);
+          } else if (localization === 'DO UZUPELNIENIA') {
+            cols.push([t('ToFill'), count]);
           } else {
             cols.push([localization, count]);
           }

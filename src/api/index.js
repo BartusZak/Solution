@@ -88,14 +88,13 @@ const parseFailure = (response, key) => {
   if (isKeyInBlackList) {
     return parser;
   }
-
   let parserData = parser.parse();
   let message;
   const noInternetConnection = !response.response;
 
   if (noInternetConnection) {
     message = fromAlertSettings.failOperationsWhiteObject['networkError'][lang];
-  } else if (parserData.status === 500) {
+  } else if (parser instanceof Error || response instanceof Error) {
     message = parserData.diagnosis;
   } else {
     message = parserData.message;
@@ -170,7 +169,7 @@ const requests = {
   getEmployees: settings =>
     execute(
       fromAlertSettings.getEmployees,
-      'employees?',
+      'employees',
       requestTypes.post,
       settings,
       true
@@ -208,7 +207,8 @@ const requests = {
       fromAlertSettings.addEmployee,
       `employees/add`,
       requestTypes.post,
-      model, true
+      model,
+      true
     ),
   addOnBoardEmployee: model =>
     execute(
@@ -279,7 +279,7 @@ const requests = {
   reactivateProject: id => execute(fromAlertSettings.reactivateProject, `projects/reactivate/${id}`, requestTypes.put),
   closeProject: id => execute(fromAlertSettings.closeProject, `projects/close/${id}`, requestTypes.put),
   deleteProject: id => execute(fromAlertSettings.deleteProject, `projects/delete/${id}`, requestTypes.delete),
-  addOwnerToProject: (id, usersIds) => execute(fromAlertSettings.addOwnerToProject, `projects/owner/${id}`, requestTypes.put, {usersIds}),
+  addOwnerToProject: (id, usersIds) => execute(fromAlertSettings.addOwnerToProject, `projects/owner/${id}`, requestTypes.put, { usersIds }),
   editSkillsInProject: (id, skills) => execute(fromAlertSettings.editSkillsInProject, `projects/skills/${id}`, requestTypes.put, skills),
   getAlreadySharedManagers: id => execute(fromAlertSettings.getAlreadySharedManagers, `/shareProject/AlreadySharedManagers/${id}`),
   //RESPINSIBLE PERSON
@@ -655,8 +655,8 @@ const requests = {
   getUserByAdSearch: query =>
     execute(
       fromAlertSettings.getUserByAdSearch,
-      `account/searchAD?query=${query}&`,
-      requestTypes.get,
+      `account/searchAD?query=${query}`,
+      requestTypes.post,
       {},
       true
     ),
@@ -681,7 +681,7 @@ const requests = {
   searchRequestsUsers: (settings = {}) =>
     execute(
       fromAlertSettings.searchRequestsUsers,
-      `account/requests?`,
+      `account/requests`,
       requestTypes.post,
       settings,
       true
@@ -693,12 +693,12 @@ const requests = {
   // token: refreshToken => execute(fromAlertSettings.token, `account/login`, requestTypes.post, refreshToken),
   deleteUser: id =>
     execute(fromAlertSettings.deleteUser, `account/${id}`, requestTypes.delete),
-  deleteUserRequest: id =>
+  deleteUserRequest: azureId =>
     execute(
       fromAlertSettings.deleteUserRequest,
       `account/requests`,
       requestTypes.delete,
-      params({ id })
+      params({ azureId })
     ),
   editUserRoles: (id, roles) =>
     execute(fromAlertSettings.editUserRoles, `account`, requestTypes.patch, {
@@ -791,7 +791,7 @@ const requests = {
     execute(
       fromAlertSettings.oneDriveSendQueryToAuth,
       `/onedrive/authenticated?code=${code}&calendar=${shouldRedirectOnCalendar ||
-        false}`
+      false}`
     ),
   oneDriveRefreshToken: oldToken =>
     execute(
@@ -803,35 +803,40 @@ const requests = {
       fromAlertSettings.oneDriveGenerateShareLink,
       `onedrive/share`,
       requestTypes.post,
-      model
+      model,
+      true
     ),
   oneDriveGetFolders: model =>
     execute(
       fromAlertSettings.oneDriveGetFolders,
       `onedrive/files`,
       requestTypes.post,
-      model
+      model,
+      true
     ),
   oneDriveCreateFolder: model =>
     execute(
       fromAlertSettings.oneDriveCreateFolder,
       `onedrive/createFolder`,
       requestTypes.post,
-      model
+      model,
+      true
     ),
   oneDriveDeleteFolder: model =>
     execute(
       fromAlertSettings.oneDriveDeleteFolder,
       `onedrive/deleteFolder`,
       requestTypes.post,
-      model
+      model,
+      true
     ),
   oneDriveUpdateFolder: model =>
     execute(
       fromAlertSettings.oneDriveUpdateFolder,
       `onedrive/updateFolder`,
       requestTypes.post,
-      model
+      model,
+      true
     ),
   oneDriveUploadFile: (model, config) =>
     execute(
@@ -839,6 +844,7 @@ const requests = {
       `onedrive/upload`,
       requestTypes.post,
       model,
+      true,
       config
     ),
 
@@ -857,7 +863,8 @@ const requests = {
       fromAlertSettings.generateReport,
       `reports/developers?hyperlinksOnGDrive=${hyperlinksOnGDrive}&hyperlinksOnOneDrive=${hyperlinksOnOneDrive}`,
       requestTypes.post,
-      model
+      model,
+      true
     ),
   generateCv: employeeId =>
     execute(
@@ -972,7 +979,7 @@ const requests = {
 
   //STATS
   getStats: () =>
-    execute(fromAlertSettings.getStats, `stats/basic`, requestTypes.get),
+    execute(fromAlertSettings.getStats, `stats/basic`, requestTypes.post, {}, true),
 
   //ROLES
   getAllRoles: () =>
@@ -997,7 +1004,7 @@ const requests = {
       fromAlertSettings.getManagersSharedProject,
       `shareproject/alreadysharedmanagers/${projectId}`
     ),
-    getDestinationManagers: projectId =>
+  getDestinationManagers: projectId =>
     execute(
       fromAlertSettings.getDestinationManagers,
       `shareproject/destinationmanagers/${projectId}`
@@ -1264,11 +1271,11 @@ const WebApi = {
       byEmployee: employeeId => {
         return WebAround.get(`${API_ENDPOINT}/employees/${employeeId}`);
       },
-      byEducation: educationId => {}
+      byEducation: educationId => { }
     },
-    delete: educationId => {},
-    put: educationId => {},
-    post: () => {}
+    delete: educationId => { },
+    put: educationId => { },
+    post: () => { }
   },
   //   get: {
   //     questions: () => {
@@ -1574,12 +1581,12 @@ const WebApi = {
   // },
   workExperience: {
     get: {
-      byExperience: workExperienceId => {},
-      byEmployee: employeeId => {}
+      byExperience: workExperienceId => { },
+      byEmployee: employeeId => { }
     },
-    post: () => {},
-    delete: () => {},
-    put: () => {}
+    post: () => { },
+    delete: () => { },
+    put: () => { }
   }
 };
 
