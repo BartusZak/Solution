@@ -3,6 +3,32 @@ const translations = {
   TranslationsSwitch: {
     CHANGE_LANGUAGE: 'Language'
   },
+  EmployeeInformations: {
+    LoadEmployeeDetailsProblem: 'There is a problem with loading employee data. Try load employees again by clicking button bellow',
+    Status: 'status',
+    LeadSupervisor: 'lead supervisor',
+    Localization: 'location',
+    Team: 'team',
+    CheckOnboards: 'check onboards',
+    AllSupervisors: 'all supervisors'
+  },
+  EmployeeFeedbacks: {
+    FeedbacksProblem: 'There is a problem with loading employee feedbacks. Try again by clicking button bellow',
+    Feedbacks: 'feedbacks',
+    Project: 'Project',
+    EmptyFeedbacks: 'This employee does not have an opinion yet'
+  },
+  EmployeeProjects: {
+
+  },
+  EmployeeSkills: {
+    Skills: 'skills',
+    EmptySkills: 'No assigned skills',
+    SkillLevel: 'skill level',
+    Experience: 'experience',
+    Years: 'years',
+    Year: 'year'
+  },
   ProjectTeam: {
     ProjectTeam: 'Project team',
     ProjectTeamEmpty: 'Project team list is already empty',
@@ -459,22 +485,6 @@ const translations = {
     Answer: 'Answer',
     InsertAnswer: 'fill answer for question'
   },
-  EmployeeSkills: {
-    Add: 'Add',
-    Skills: 'Skills',
-    NoSkills: 'No skills',
-    ManageSkills: 'Manage skills',
-    Find: 'Find',
-    ShowAdded: 'Show added',
-    ShowAll: 'Show All',
-    NoDataToShow: 'No data to show',
-    NewSkills: 'New skills',
-    ApproveChanges: 'Approve changes',
-    SkillsAddedSuccessfull: 'Skills added successfull',
-    Search: 'Search',
-    SearchInAdded: 'search in added...',
-    SearchInAll: 'search in all...'
-  },
   EmployeeTable: {
     AddedBy: 'Added by',
     Project: 'Project',
@@ -508,13 +518,6 @@ const translations = {
     AddingCertificate: 'Adding certyficate',
     EditingCertificate: 'Editing certyficate',
     Edit: 'Save'
-  },
-  EmployeeFeedbacks: {
-    Feedbacks: 'Feedbacks',
-    Author: 'Author',
-    Content: 'Content',
-    Project: 'Project',
-    Client: 'Client'
   },
   ShareEmployeesModal: {
     ShareEmployees: 'Share employees',

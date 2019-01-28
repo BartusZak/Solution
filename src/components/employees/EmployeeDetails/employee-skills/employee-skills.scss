@@ -1,0 +1,25 @@
+.employees-skills-list {
+  overflow-y: auto;
+  .employee-skill {
+    margin-bottom: 40px;
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+      "header header"
+      "explevel experience";
+    grid-gap: 0 20px;
+    .field-label {
+      margin-bottom: 7.5px;
+    }
+    .skill-head {
+      grid-area: header;
+    }
+    .marker-wrapper {
+      grid-area: explevel;
+    }
+    .experience {
+      grid-area: experience
+    }
+  }
+}

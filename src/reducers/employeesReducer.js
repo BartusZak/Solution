@@ -1,8 +1,10 @@
 import {
+  PUT_EMPLOYEE_DETAILS,
+  PUT_FEEDBACKS,
+  CHANGE_IN_EMPLOYEE_REDUCER,
   LOAD_EMPLOYEES_SUCCESS,
   LOAD_EMPLOYEES_FAILURE,
   LOGOUT,
-  GET_EMPLOYEE,
   CHANGE_EMPLOYEE_OPERATION_STATUS,
   CHANGE_EMPLOYEE_STATE,
   LOAD_ASSIGNMENTS,
@@ -30,9 +32,12 @@ const initialState = {
   currentPage: 1,
   totalPageCount: 1,
 
-  employeeStatus: null,
-  employeeErrors: [],
-  employee: null,
+  loadEmployeeResult: {status: null},
+  employeeFromCache: '',
+  employeesCache: {},
+
+  loadFeedbacksResult: {status: null},
+  isAddingFeedback: false,
 
   employeeOperationStatus: null,
   employeeOperationErrors: [],
@@ -87,6 +92,22 @@ const initialState = {
 
 export const employeesReducer = (state = initialState, action) => {
   switch (action.type) {
+    case CHANGE_IN_EMPLOYEE_REDUCER:
+      return { ...state, [action.key]: action.value };
+    case PUT_FEEDBACKS:
+      const employeesCache = {...state.employeesCache};
+      const employee = employeesCache[action.employeeId];
+      employee.feedbacks = action.feedbacks;
+      return {
+        ...state, loadFeedbacksResult: action.loadFeedbacksResult, employeesCache
+      };
+    case PUT_EMPLOYEE_DETAILS:
+      return {
+        ...state,
+          loadEmployeeResult: action.loadEmployeeResult,
+          employeeFromCache: action.employee.id,
+          employeesCache: {...state.employeesCache, [action.employee.id]: action.employee }
+      };
     case GET_USER_CV:
       return updateObject(state, {
         userDownloadCVLink: action.userDownloadCVLink,
@@ -118,8 +139,6 @@ export const employeesReducer = (state = initialState, action) => {
         currentPage: 1,
         totalPageCount: 1
       };
-    case GET_EMPLOYEE:
-      return updateObject(state, { employee: action.employee });
     case CHANGE_EMPLOYEE_OPERATION_STATUS:
       return updateObject(state, {
         employeeStatus: action.employeeStatus,

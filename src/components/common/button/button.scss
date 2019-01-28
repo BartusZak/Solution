@@ -233,3 +233,21 @@ button.dcmt-btn-light {
 .spinner-new {
   height: 10px; width: 10px;
 }
+.circle-button-35 {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  display: flex;
+  border: none;
+  flex-shrink: 0;
+  align-self: center;
+  position: relative;
+  justify-content: center;
+  .fancy-modal-backdrop {
+    border-radius: 50%;
+  }
+  &:disabled {
+    background: $font-grey;
+    color: $white;
+  }
+}

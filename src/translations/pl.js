@@ -3,6 +3,32 @@ const translations = {
   TranslationsSwitch: {
     CHANGE_LANGUAGE: 'Język'
   },
+  EmployeeInformations: {
+    LoadEmployeeDetailsProblem: 'Wystapił problem podczas ładowania szczegółów pracownika. Spróbuj ponownie klikając w poniższy przycisk',
+    Status: 'status',
+    LeadSupervisor: 'główny przełożony',
+    Localization: 'lokalizacja',
+    Team: 'zespół',
+    CheckOnboards: 'sprawdź onboardy',
+    AllSupervisors: 'wszyscy przełożeni'
+  },
+  EmployeeFeedbacks: {
+    FeedbacksProblem: 'Wystąpił problem podczas wczytywania opini o pracowniku. Spróbuj ponownie klikając w poniższy przycisk',
+    Feedbacks: 'opinie',
+    Project: 'Project',
+    EmptyFeedbacks: 'Ten pracownik nie ma jeszcze opinii'
+  },
+  EmployeeProjects: {
+
+  },
+  EmployeeSkills: {
+    Skills: 'umiejętności',
+    EmptySkills: 'Brak przypisanych umiejętności',
+    SkillLevel: 'poziom umiejętności',
+    Experience: 'doświadczenie',
+    Years: 'lat',
+    Year: 'rok'
+  },
   ProjectTeam: {
     ProjectTeam: 'Uczestnicy projektu',
     ProjectTeamEmpty: 'Ten projekt nie posiada uczestników',
@@ -461,22 +487,6 @@ const translations = {
     Answer: 'Odpowiedź',
     InsertAnswer: 'wprowadź odpowiedź na pytanie'
   },
-  EmployeeSkills: {
-    Add: 'Dodaj',
-    Skills: 'Umiejętności',
-    NoSkills: 'Brak umiejętności',
-    ManageSkills: 'Zarządzaj umiejętnościami',
-    Find: 'Znajdź',
-    ShowAdded: 'Pokaż dodane',
-    ShowAll: 'Pokaż wszystkie',
-    NoDataToShow: 'Brak danych do wyświetlenia',
-    NewSkills: 'Nowe umiejętności',
-    ApproveChanges: 'Zatwierdź zmiany',
-    SkillsAddedSuccessfull: 'Pomyślnie dodano umiejętności',
-    Search: 'Wyszukaj',
-    SearchInAdded: 'szukasz w dodanych...',
-    SearchInAll: 'szukasz we wszystkich...'
-  },
   EmployeeTable: {
     AddedBy: 'Dodany przez',
     Project: 'Projekt',
@@ -510,13 +520,6 @@ const translations = {
     AddingCertificate: 'Dodawanie certyfikatu',
     EditingCertificate: 'Edytowanie certyfikatu',
     Edit: 'Zapisz'
-  },
-  EmployeeFeedbacks: {
-    Feedbacks: 'Opinie',
-    Author: 'Autor',
-    Content: 'Treść',
-    Project: 'Projekt',
-    Client: 'Klient'
   },
   ShareEmployeesModal: {
     ShareEmployees: 'Udostępnij pracowników',

@@ -12,6 +12,7 @@ import ProjectTeam from './project-team/project-team';
 import ProjectPhases from './project-phases/project-phases';
 import ProjectPhaseForm from '../phase-project-form/phase-project-form';
 import EmployeeProjectForm from './employee-project-form/employee-project-form';
+import EmployeeDetails from '../../employees/EmployeeDetails/EmployeeDetails';
 
 import './ProjectDetails.scss';
 const { Provider } = ProjectDetailsContext;
@@ -40,13 +41,13 @@ class ProjectDetails extends React.Component {
 
   toglePhaseForm = () => this.setState({addPhaseForm: !this.state.addPhaseForm});
 
-  componentWillUnmount = () => this.props.putAllSkills();
-
   goToStartPage = () => this.props.history.push(this.props.match.url);
 
   redirectToAddEmployee = () => this.props.history.push(this.props.match.url + '/add/employee');
 
   redirectToSharingProject = () => this.props.history.push(this.props.match.url + '/share');
+
+  componentWillUnmount = () => this.props.putAllSkills();
 
   render() {
     const { projectResult, project, t, history, match } = this.props;
@@ -97,6 +98,8 @@ class ProjectDetails extends React.Component {
               onSubmitSucc={this.toglePhaseForm}
               close={this.toglePhaseForm} />
           }
+
+          <EmployeeDetails />
         </div>
       );
     }

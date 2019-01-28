@@ -351,10 +351,12 @@ export const closeProject = (id, succ, err) => dispatch =>
     .then(() => { dispatch(changeProjectStatus(closed, false)); succ(); })
     .catch(() => err());
 
-export const addOwnerToProject = (projectId, employee, succ, err) => dispatch =>
-   useRequest('addOwnerToProject', projectId, [employee.id])
-    .then(() => { dispatch(addOwner({ id: employee.id, fullName: employee.fullName })); succ(); })
-    .catch(() => err());
+export const addOwnerToProject = (projectId, employee, succ, err) => dispatch => {
+  useRequest('addOwnerToProject', projectId, [employee.id])
+  .then(() => { dispatch(addOwner({ id: employee.id, fullName: employee.fullName })); succ(); })
+  .catch(() => err());
+}
+
 
 export const assignEmployeeIntoProject = (model, succ, err) => dispatch => {
   useRequest('assignEmployeeToProject', model)

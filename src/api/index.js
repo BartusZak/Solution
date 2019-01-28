@@ -208,7 +208,7 @@ const requests = {
       fromAlertSettings.addEmployee,
       `employees/add`,
       requestTypes.post,
-      model
+      model, true
     ),
   addOnBoardEmployee: model =>
     execute(
@@ -347,13 +347,6 @@ const requests = {
       `employees/billenniumemploskills`,
       requestTypes.get,
       params({ employeeId })
-    ),
-  addEmployee: model =>
-    execute(
-      fromAlertSettings.addEmployee,
-      `employees/add`,
-      requestTypes.post,
-      model
     ),
   addOnBoardEmployee: model =>
     execute(
@@ -1784,15 +1777,15 @@ class DCMTWebApi {
     //.catch(response => authValidator(response));
   }
 
-  addEmployee(id, capacity, seniority, skillsArray) {
-    return axios.post(`${API_ENDPOINT}/employees/add`, {
-      id,
-      capacity,
-      seniority,
-      skills: skillsArray
-    });
-    //.catch(response => authValidator(response));
-  }
+  // addEmployee(id, capacity, seniority, skillsArray) {
+  //   return axios.post(`${API_ENDPOINT}/employees/add`, {
+  //     id,
+  //     capacity,
+  //     seniority,
+  //     skills: skillsArray
+  //   });
+  //   //.catch(response => authValidator(response));
+  // }
 
   editEmployee(id, seniority, capacity) {
     return axios.patch(`${API_ENDPOINT}/employees/${id}`, {

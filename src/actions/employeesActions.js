@@ -1,7 +1,8 @@
 import {
+  PUT_EMPLOYEE_DETAILS,
+  PUT_FEEDBACKS,
+  CHANGE_IN_EMPLOYEE_REDUCER,
   LOAD_EMPLOYEES_SUCCESS,
-  ASYNC_STARTED,
-  ASYNC_ENDED,
   LOAD_EMPLOYEES_FAILURE,
   GET_EMPLOYEE,
   CHANGE_EMPLOYEE_OPERATION_STATUS,
@@ -525,7 +526,7 @@ export const activateEmployeeOnList = (
 ) => {
   return dispatch => {
     const model = {
-      id: employeeId,
+      azureAdId: employeeId,
       seniority: seniority,
       capacity: capacity
     };
@@ -706,7 +707,7 @@ export const addCertificate = (certificate, userId) => {
 };
 
 export const deleteCertificate = (certificateId, employeeId) => {
-  return dispatch => {    
+  return dispatch => {
     useRequest('deleteCertificate', certificateId)
       .then(response => {
         dispatch(setActionConfirmationResult(response));
@@ -815,3 +816,35 @@ export const updateEmployeeOnBoardACreator = (onBoardModel, onBoardId) => dispat
   });
 };
 
+
+export const putEmployeeDetails = (employee, loadEmployeeResult) => ({ type: PUT_EMPLOYEE_DETAILS, employee, loadEmployeeResult });
+export const putFeedbacks = (feedbacks, employeeId, loadFeedbacksResult) => ({ type: PUT_FEEDBACKS, feedbacks, employeeId, loadFeedbacksResult});
+export const changeInEmployeeReducer = (key, value) => ({ type: CHANGE_IN_EMPLOYEE_REDUCER, key, value });
+
+export const getEmployeeDetails = employeeId => dispatch =>
+  useRequest('getEmployeeById', employeeId).
+    then(res => {
+      const employee = res.extractData();
+      dispatch(putEmployeeDetails(employee, { status: true }));
+    }).catch(() => dispatch(putEmployeeDetails(null, { status: false})));
+
+export const loadFeedbacks = employeeId => dispatch => {
+  useRequest('getFeedbacksByEmployee', employeeId)
+    .then(res => {
+      const feedbacks = res.extractData();
+      dispatch(putFeedbacks(feedbacks, employeeId, {status: true}));
+    }).catch(() => dispatch(putFeedbacks([], employeeId, {status: false})));
+}
+
+export const addFeedback = model => dispatch => {
+  dispatch(changeInEmployeeReducer('isAddingFeedback', true));
+  useRequest('addFeedback', model)
+  .then(res => {
+    dispatch(changeInEmployeeReducer('isAddingFeedback', false));
+  })
+  .catch(() => dispatch(changeInEmployeeReducer('isAddingFeedback', false)));
+}
+
+export const loadEmployeeSkills = () => dispatch => {
+
+}

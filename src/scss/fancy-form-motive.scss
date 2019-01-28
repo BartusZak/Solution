@@ -140,6 +140,9 @@ div.circle-searcher {
 select.field, input.field, textarea.field {
   font-size: 16px;
 }
+textarea.field {
+  resize: none;
+}
 .field-label {
   color: $dcmt;
   font-size: 14px;

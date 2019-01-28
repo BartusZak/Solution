@@ -80,7 +80,7 @@ class EmployeeProjectForm extends React.PureComponent {
                   <EmployeeSearcher
                     showLabel
                     employeeFilter={{ hasAccount: true, capacity: 0 }}
-                    emitEmployeeClick={employee => putChanges(employee, 'employeeId')}
+                    emitEmployeeClick={employee => putChanges(employee.id, 'employeeId')}
                   />
                   <p className="field-error">{errors.employeeId}</p>
                 </div>

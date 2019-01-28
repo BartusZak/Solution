@@ -1,0 +1,42 @@
+@import '../../../../scss//new-color-schema.scss';
+.feedbacks-list {
+  overflow-y: auto;
+  .feedback {
+    margin-bottom: 20px;
+    .feedback-header {
+      display: grid;
+      grid-template-rows: 1fr 1fr;
+      grid-template-columns: 50px 1fr;
+      grid-gap: 0 15px;
+      margin-bottom: 20px;
+      font-size: 14px;
+      grid-template-areas:
+        "avatar author"
+        "avatar project";
+      .user-avatar-medium {
+        grid-area: avatar;
+      }
+      .author {
+        grid-area: author;
+      }
+      .project-name {
+        grid-area: project;
+        span:first-of-type {
+          color: $dcmt-light;
+        }
+        span:last-of-type {
+          font-weight: 300;
+        }
+      }
+    }
+    article {
+      font-weight: 300;
+      margin-left: 22.5px;
+    }
+  }
+}
+.add-feedback-footer {
+  textarea.field {
+    margin-right: 20px;
+  }
+}

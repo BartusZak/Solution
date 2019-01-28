@@ -495,3 +495,17 @@ a:visited {
     font-size: 14px;
   }
 }
+.skill-name {
+  font-size: 16px;
+  color: $font-grey;
+  max-width: 70%;
+}
+.skill-head {
+  margin-bottom: 15px;
+  .skill-dot {
+    margin-right: 15px;
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+}
