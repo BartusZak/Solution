@@ -169,7 +169,8 @@ const translations = {
     UnUsed: 'UnUsed',
     Used: 'Used',
     Remote: 'REMOTE',
-    Others: 'OTHERS'
+    Others: 'OTHERS',
+    ToFill: 'TO FILL'
   },
   UsersList: {
     Add: 'Add',
