@@ -26,11 +26,11 @@ class GDriveContent extends React.Component{
         folderToDeleteId: "",
         currentOpenedFolderToEditId: "",
         showAddingFolderInput: false,
-        
+
         folderNameError: "",
         editFolderName: "",
         isEditingFolder: false,
-        
+
         newFolderName: "",
         newFolderNameError: "",
         isAddingFolder: false,
@@ -54,33 +54,33 @@ class GDriveContent extends React.Component{
             this.setState({isLoading: false, isDeletingOrEditingFolder: false});
             window.location.href = nextProps.redirectUrl;
         }
-        else if(nextProps.folders !== this.props.folders || 
+        else if(nextProps.folders !== this.props.folders ||
             nextProps.editFolderError !== this.props.editFolderError){
-            this.setState({isLoading: false, currentOpenedFolderToEditId: "", 
+            this.setState({isLoading: false, currentOpenedFolderToEditId: "",
                 editFolderName: "", isAddingFolder: false, isEditingFolder: false,
                 isUploadingFile: false, showAddingFolderInput: false, folderIsLoadingId: ""});
             if(nextProps.deleteFolderStatus)
                 setTimeout(this.closeModal(), 1500);
         }
-        else if(nextProps.createFolderErrors !== this.props.createFolderErrors || 
-            nextProps.deleteFolderErrors !== this.props.deleteFolderErrors || 
-            nextProps.uploadFileErrors !== this.props.uploadFileErrors || 
+        else if(nextProps.createFolderErrors !== this.props.createFolderErrors ||
+            nextProps.deleteFolderErrors !== this.props.deleteFolderErrors ||
+            nextProps.uploadFileErrors !== this.props.uploadFileErrors ||
             nextProps.getFoldersErrors !== this.props.getFoldersErrors){
             this.setState({isAddingFolder: false, isDeletingOrEditingFolder: false, isUploadingFile: false,
                 isLoading: false});
         }
     }
     openFolder = folder => {
-        this.setState({folderIsLoadingId: folder.id, newFolderName: "", 
+        this.setState({folderIsLoadingId: folder.id, newFolderName: "",
             newFolderNameError: "", currentOpenedFolderToEditId: "",
             folderNameError: "", editFolderName: "", showAddingFolderInput: false});
         this.props.getFolders(folder.id, this.props.path + "/" + folder.name);
     }
     goToFolderBefore = () => {
-        this.setState({isLoading: true, newFolderName: "", 
+        this.setState({isLoading: true, newFolderName: "",
         newFolderNameError: "", currentOpenedFolderToEditId: "",
         folderNameError: "", editFolderName: "", showAddingFolderInput: false});
-        
+
         const { path, goBackPath } = this.props;
         const indexOfLastSlash = path.lastIndexOf("/");
         const newPath = path.substring(0, indexOfLastSlash);
@@ -88,7 +88,7 @@ class GDriveContent extends React.Component{
     }
 
     showDeleteFolderModal = folderId => {
-        this.setState({showDeleteModal: true, 
+        this.setState({showDeleteModal: true,
             folderToDeleteId: folderId});
     }
     deleteFolder = () => {
@@ -96,25 +96,25 @@ class GDriveContent extends React.Component{
         this.props.deleteFolder(this.state.folderToDeleteId, path, parentId, choosenFolder);
     }
     closeModal = () => {
-        this.setState({showDeleteModal: !this.state.showDeleteModal, 
+        this.setState({showDeleteModal: !this.state.showDeleteModal,
             folderToDeleteId: ""});
         this.props.deleteFolderClear(null, []);
     }
     enableFolderEdit = (folderId, folderName) => {
-        this.setState({currentOpenedFolderToEditId: folderId, 
+        this.setState({currentOpenedFolderToEditId: folderId,
             editFolderName: folderName});
     }
 
     checkForCorrectInputValue = (value, oldValue) => {
-        const validationResult = validateInput(value, false, 
+        const validationResult = validateInput(value, false,
             3,30, "folderName", "nazwa folderu");
-        
+
         if(oldValue){
             const checkForEqualNames = value === oldValue ? "Nie zmieniono wartości" : "";
             if(checkForEqualNames)
                 return checkForEqualNames
         }
-        
+
         if(validationResult)
             return validationResult;
 
@@ -152,7 +152,7 @@ class GDriveContent extends React.Component{
         if(!validationResult){
             const { parentId, path, createFolder } = this.props;
             this.setState({isAddingFolder: true, newFolderNameError: validationResult});
-            createFolder(newFolderName, parentId, 
+            createFolder(newFolderName, parentId,
                 path, parentId);
         }
         else
@@ -170,9 +170,9 @@ class GDriveContent extends React.Component{
     }
 
     handleAddFile = e => { this.setState({fileToUpload: e.target.files}); }
-    
+
     chooseFolderToCreateShareLink = (file, e) => {
-        e.stopPropagation();        
+        e.stopPropagation();
         this.setState({folderToGenerateShareLink: file});
         this.props.generateGDriveShareLinkACreator(file.id);
     }
@@ -197,11 +197,11 @@ class GDriveContent extends React.Component{
 
     render(){
         const { isLoading, folderIsLoadingId, showDeleteModal,
-            folderToDeleteId, currentOpenedFolderToEditId, editFolderName, isEditingFolder, 
-            showAddingFolderInput, folderNameError, isAddingFolder, newFolderName, 
+            folderToDeleteId, currentOpenedFolderToEditId, editFolderName, isEditingFolder,
+            showAddingFolderInput, folderNameError, isAddingFolder, newFolderName,
             newFolderNameError, isUploadingFile, fileToUpload, editFolderError, folderToGenerateShareLink } = this.state;
-        const { loginStatus, loginErrors, getFoldersStatus, getFoldersErrors, 
-            folders, path, deleteFolderStatus, deleteFolderErrors, loading, 
+        const { loginStatus, loginErrors, getFoldersStatus, getFoldersErrors,
+            folders, path, deleteFolderStatus, deleteFolderErrors, loading,
             updateFolderStatus, updateFolderErrors,
             createFolderStatus, createFolderErrors, uploadFileErrors,
             uploadFileStatus, choosenFolder, extendDetailName, extendId,
@@ -210,17 +210,17 @@ class GDriveContent extends React.Component{
 
         return (
             <div className="drive-content-container">
-                { isLoading ? <Spinner fontSize="7px" 
+                { isLoading ? <Spinner fontSize="7px"
                     message={t("LoadingAccountDataPrompt")} /> :
-                    loginStatus !== null && 
+                    loginStatus !== null &&
 
-                    loginStatus && getFoldersStatus ? 
+                    loginStatus && getFoldersStatus ?
                     <div className="navigation-folders-container">
                         <div className="add-folder-container">
                             <Button onClick={!showAddingFolderInput ? this.openAddingFolderBtn : null} disable={isAddingFolder}
                             title={!showAddingFolderInput ? t("AddFolder") : ""}
                             mainClass={`${showAddingFolderInput ? "" : "not-opened-btn"} generate-raport-btn btn-green`}>
-                                {showAddingFolderInput && 
+                                {showAddingFolderInput &&
                                     <input className={`${newFolderNameError ? "input-error" : null}`}
                                     value={newFolderName}
                                     onKeyPress={e => this.onKeyPress(e)}
@@ -229,37 +229,37 @@ class GDriveContent extends React.Component{
                                 }
                                 <span onClick={this.addFolder}>
                                     <i className="fa fa-folder"/>
-                                    {showAddingFolderInput && t("Create")} 
+                                    {showAddingFolderInput && t("Create")}
                                 </span>
-                                { isAddingFolder && <SmallSpinner /> } 
-                                { showAddingFolderInput && !isAddingFolder && 
+                                { isAddingFolder && <SmallSpinner /> }
+                                { showAddingFolderInput && !isAddingFolder &&
                                 <i onClick={this.closeAddingFolderInput} className="fa fa-times"/> }
                             </Button>
 
-                            {newFolderNameError && !folderNameError && 
+                            {newFolderNameError && !folderNameError &&
                                 <p className="validation-error">
                                 {newFolderNameError}</p>
                             }
                             {folderNameError && !newFolderNameError &&
                                 <p className="validation-error">
-                                {folderNameError}</p> 
+                                {folderNameError}</p>
                             }
                         </div>
                         {path !== startPath && getFoldersStatus &&
-                            <Button 
+                            <Button
                             onClick={(this.goToFolderBefore)}
                             mainClass="generate-raport-btn btn-transparent" title={t("Back")}>
                                 <i className="fa fa-long-arrow-alt-left"></i>
-                            </Button> 
-                        } 
+                            </Button>
+                        }
                         <h3>{t("ActualPath")}: <span>{path}</span></h3>
-                        
-                        {folders.length === 0 && getFoldersStatus ? 
+
+                        {folders.length === 0 && getFoldersStatus ?
                             <p className="empty-files-list">
                                 {t("ThisFolderIsEmpty")}
-                            </p> : 
+                            </p> :
 
-                            <FilesList 
+                            <FilesList
                             chooseFolderToCreateShareLink={this.chooseFolderToCreateShareLink}
                             driveSortType={driveSortType}
                             sortList={() => changeSortBy(folders, driveSortType, path)}
@@ -269,34 +269,34 @@ class GDriveContent extends React.Component{
                             onChangeFolderName={this.onChangeFolderName}
                             isDeletingOrEditingFolder={isEditingFolder}
                             onEditFolder={this.onEditFolder}
-                            closeEditingFolderName={() => this.setState({currentOpenedFolderToEditId: "", 
+                            closeEditingFolderName={() => this.setState({currentOpenedFolderToEditId: "",
                                 folderNameError: ""})}
                             enableFolderEdit={this.enableFolderEdit}
                             editFolderName={editFolderName}
                             currentOpenedFolderToEditId={currentOpenedFolderToEditId}
-                            folders={folders} 
-                            openFolder={this.openFolder} 
-                            folderIsLoadingId={folderIsLoadingId} 
-                            showDeleteFolderModal={this.showDeleteFolderModal} 
+                            folders={folders}
+                            openFolder={this.openFolder}
+                            folderIsLoadingId={folderIsLoadingId}
+                            showDeleteFolderModal={this.showDeleteFolderModal}
                             onFileClick={this.onFileClick}
                             />
                         }
                     </div>
-                    : 
+                    :
                     <p className="one-d-error">{loginErrors[0]}</p>
 
                 }
 
-                {getFoldersStatus === false && 
+                {getFoldersStatus === false &&
                     <p className="one-d-error">{getFoldersErrors[0]}</p>
                 }
 
-                <ConfirmModal 
-                open={showDeleteModal} 
+                <ConfirmModal
+                open={showDeleteModal}
                 content="Delete project modal"
-                onClose={this.closeModal} 
+                onClose={this.closeModal}
                 header={t("AreYouSureToDelete")}
-                operation={this.deleteFolder} 
+                operation={this.deleteFolder}
                 operationName={t("Delete")}
                 denyName={t("Deny")}
                 >
@@ -305,68 +305,70 @@ class GDriveContent extends React.Component{
                             <Spinner fontSize="3px" positionClass="abs-spinner" />
                         }
                     </React.Fragment>
-           
+
                 </ConfirmModal>
-                {updateFolderStatus === false && 
-                    <OperationLoader 
+                {updateFolderStatus === false &&
+                    <OperationLoader
                         key={1}
                         close={() => this.props.updateFolderClear(null, [])}
-                        isLoading={false} 
+                        isLoading={false}
                         operationError={updateFolderErrors[0]}
                     />
                 }
 
                 {(!isLoading && loginStatus && getFoldersStatus) &&
-                    <FilePicker 
-                    fileToUpload={fileToUpload} 
+                    <FilePicker
+                    fileToUpload={fileToUpload}
                     uploadFile={this.uploadFile}
-                    handleAddFile={e => this.handleAddFile(e)} 
+                    handleAddFile={e => this.handleAddFile(e)}
                     isUploadingFile={isUploadingFile}/>
                 }
 
-                {createFolderStatus !== null && 
+                {createFolderStatus !== null &&
                     <OperationStatusPrompt
-                    key={0} 
-                    operationPromptContent={createFolderStatus ? 
+                    key={0}
+                    operationPromptContent={createFolderStatus ?
                         t("SuccCreatedFolder") : createFolderErrors[0]}
                     operationPrompt={createFolderStatus}
                     />
                 }
 
-                {deleteFolderStatus !== null && 
+                {deleteFolderStatus !== null &&
                     <OperationStatusPrompt
-                    key={1} 
-                    operationPromptContent={deleteFolderStatus ? 
+                    key={1}
+                    operationPromptContent={deleteFolderStatus ?
                         t("SuccDeletedFolder") : deleteFolderErrors[0]}
                     operationPrompt={deleteFolderStatus}
                     />
                 }
 
-                {updateFolderStatus !== null && 
-                    <OperationStatusPrompt 
-                    key={2} 
-                    operationPromptContent={updateFolderStatus ? 
+                {updateFolderStatus !== null &&
+                    <OperationStatusPrompt
+                    key={2}
+                    operationPromptContent={updateFolderStatus ?
                         t("SuccEditedFolder") : updateFolderErrors[0]}
                     operationPrompt={updateFolderStatus}
                     />
                 }
-            
-                {uploadFileStatus !== null && 
-                    <OperationStatusPrompt 
-                    key={3} 
-                    operationPromptContent={uploadFileStatus ? 
+
+                {uploadFileStatus !== null &&
+                    <OperationStatusPrompt
+                    key={3}
+                    operationPromptContent={uploadFileStatus ?
                         t("SuccAddedFile") : uploadFileErrors[0]}
                     operationPrompt={uploadFileStatus}
                     />
                 }
 
-                <GenerateLinkModal copyLink={this.copyLink} 
+                {folderToGenerateShareLink &&
+                <GenerateLinkModal copyLink={this.copyLink}
                 path={path}
                 fileToShare={folderToGenerateShareLink}
                 generateShareLinkStatus={generateGDriveShareLinkStatus}
                 generateShareLinkErrors={generateGDriveShareLinkErrors} generatedShareLink={generatedGDriveSharedLink}
                 closeModal={this.closeShareLinkModal}
                 shouldOpenModal={folderToGenerateShareLink !== null} />
+                }
             </div>
         );
     }
@@ -376,7 +378,7 @@ const mapStateToProps = state => {
         loginStatus: state.persistHelpReducer.loginStatus,
         loginErrors: state.persistHelpReducer.loginErrors,
         redirectUrl: state.persistHelpReducer.redirectUrl,
-   
+
         parentId: state.oneDriveReducer.parentId,
         goBackPath: state.oneDriveReducer.goBackPath,
 
@@ -399,7 +401,7 @@ const mapStateToProps = state => {
         generatedGDriveSharedLink: state.gDriveReducer.generatedGDriveSharedLink
     };
   };
-  
+
   const mapDispatchToProps = dispatch => {
     return {
         login: () => dispatch(loginACreator()),
@@ -416,6 +418,5 @@ const mapStateToProps = state => {
         generateGDriveShareLinkClear: (status, errors, link) => dispatch(generateGDriveShareLink(status, errors, link))
     };
   };
-  
+
   export default connect(mapStateToProps, mapDispatchToProps)(translate("ReportsCloudView")(GDriveContent));
-  

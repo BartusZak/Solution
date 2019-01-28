@@ -1,19 +1,20 @@
 .modal-gen-link{
     @media(min-width: 701px){
-        bottom: 0;
-        margin: auto 0;
-        height: 350px;
-        top: 0;
-    }
-    @media(max-width: 700px){
-      width: 96% !important;
-      height: 80vh !important;
+        min-height: 350px;
+        min-width: 500px;
     }
     @media(max-width: 500px){
         height: 96vh !important;
     }
     .whole-page-error{
         font-size: 22px;
+    }
+    h3 .fa-times{
+      position: absolute;
+      right: 20px;
+      top: 20px;
+      cursor: pointer
+
     }
     .gen-link-modal-container{
         width: 100%;
@@ -33,7 +34,7 @@
                 padding: 15px 0;
                 word-break: break-word;
                 font-size: 15px;
-                
+
             }
             & > div{
                 margin-top: 30px;
@@ -58,7 +59,7 @@
                         }
                     }
                 }
-               
+
                 div{
                     margin-left: 15px;
                     display: flex;
@@ -78,16 +79,172 @@
                 color: rgba(69, 69, 209, 0.81);
             }
             button{
-                width: 150px;
-                position: absolute;
-                bottom: 0;
-                left: 0;
-                right: 0;
-                margin: 0 auto;
-                i{
-                    margin-left: 5px;
-                }
+              display: block;
+              width: 150px;
+              bottom: 0;
+              left: 0;
+              right: 0;
+              margin: 10px auto;
+              i{
+                  margin-right: 5px;
+              }
             }
         }
     }
+}
+
+.report-fancy-modal{
+  & > ul {
+    padding:1rem;
+  }
+  h3 .fa-times{
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    cursor: pointer
+  }
+  .reports-items-list {
+    margin: 25px;
+    overflow-y: auto;
+    max-height: 40%;
+
+    .inc-list-item {
+      color: red;
+    }
+    li {
+      position: relative;
+      display: flex;
+      justify-content: space-between;
+      padding: 2.5px 0;
+      align-items: center;
+      label {
+        position: relative;
+        b {
+          position: absolute;
+          right: -50px;
+          top: -1px;
+          i {
+            margin-right: 5px;
+          }
+        }
+      }
+      input {
+        width: 50px;
+        border-radius: 5px;
+        text-align: center;
+        @media (max-width: 450px) {
+          width: 35px;
+        }
+      }
+      & > i {
+        color: red;
+        right: 80px;
+        bottom: 8px;
+        cursor: pointer;
+        position: absolute;
+        @media (max-width: 450px) {
+          right: 50px;
+        }
+      }
+    }
+  }
+  .choosen-folder-content {
+    // display: flex;
+    min-height: 50%;
+    margin: 0 auto;
+    text-align: center;
+    padding: 10px 25px;
+    flex-flow: wrap;
+    button{
+      position: static;
+    }
+    .gen-report-not-able-to-gen-prompt {
+      padding: 15px;
+      line-height: 20px;
+      font-style: italic;
+      color: tomato;
+      font-weight: bold;
+      // margin-top: 20px;
+      @media (max-width: 500px) {
+        margin: 0;
+        padding: 0;
+        line-height: 18px;
+      }
+      a {
+        margin-left: 2.5px;
+      }
+    }
+    & > p {
+      bottom: -50px;
+      font-size: 20px;
+    }
+    .correct-status {
+      color: lightgreen;
+    }
+    @media (max-width: 625px) {
+      .folder-details {
+        width: 100% !important;
+      }
+      .icon-container {
+        display: none;
+      }
+    }
+    @media (max-width: 530px) {
+      .submit-btn {
+        bottom: -15px !important;
+      }
+      .folder-details {
+        p:first-of-type {
+          word-break: break-all;
+        }
+        p {
+          margin: 5px 0 !important;
+          text-align: center;
+        }
+        p,
+        span {
+          font-size: 14px !important;
+        }
+      }
+    }
+    .folder-details {
+      width: 80%;
+      p {
+        margin: 10px 0;
+        span {
+          font-size: 17px;
+        }
+        b {
+          font-weight: bold;
+          font-size: 16px;
+        }
+      }
+    }
+    .icon-container {
+      width: 20%;
+      .fa-folder {
+        font-size: 84px;
+      }
+      span {
+        font-size: 16px;
+        color: rgba(69, 69, 209, 0.81);
+        cursor: pointer;
+        margin-left: 5px;
+        i {
+          margin-left: 5px;
+        }
+      }
+    }
+    .availableUntil{
+      display: flex;
+      align-items: baseline;
+      label{
+        margin-right: 10px;
+      }
+    }
+  }
+  @media(min-width: 1300px){
+    min-width:700px;
+  }
+
 }

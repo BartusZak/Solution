@@ -1064,7 +1064,8 @@ const translations = {
     CreatingLink: 'Link do udostępnienia jest tworzony',
     CreatedLink: 'Stworzony link do udostępnienia',
     OpenIn: 'Otwórz w',
-    Open: 'Otwórz'
+    Open: 'Otwórz',
+    Close: 'Zamknij',
   }
 };
 

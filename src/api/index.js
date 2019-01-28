@@ -73,43 +73,41 @@ const parseSuccess = (response, key) => {
 };
 
 const parseFailure = (response, key) => {
-  if (response instanceof Error && response.request === undefined) {
+  const isInfoComponent = window.location.href.indexOf('info') > -1;
+
+  if (isInfoComponent) {
     throw response;
   }
 
-  const isKeyInBlackList = fromAlertSettings.errorsBlackList.findIndex(
+  const isKeyInBlackList = !fromAlertSettings.errorsBlackList.findIndex(
     item => item === key
   );
 
   let parser = new ResponseParser(response);
 
-  const failMessage =
-    fromAlertSettings.failOperationsWhiteObject['networkError'];
-
-  const isInfoComponent = window.location.href.search('info') === -1;
-  if (isKeyInBlackList === -1 && isInfoComponent) {
-    //400 ERROR NOT HANDLED
-    if (!response.response) {
-      // network error
-      store.dispatch(
-        addAlert({
-          id: 'networkError',
-          content: failMessage[lang],
-          type: 'err',
-          time: 5000
-        })
-      );
-    } else {
-      store.dispatch(
-        addAlert({
-          id: key,
-          content: parser.parse().message,
-          type: 'err',
-          time: 5000
-        })
-      );
-    }
+  if (isKeyInBlackList) {
+    return parser;
   }
+
+  let parserData = parser.parse();
+  let message;
+  const noInternetConnection = !response.response;
+
+  if (noInternetConnection) {
+    message = fromAlertSettings.failOperationsWhiteObject['networkError'][lang];
+  } else if (parserData.status === 500) {
+    message = parserData.diagnosis;
+  } else {
+    message = parserData.message;
+  }
+  store.dispatch(
+    addAlert({
+      id: key,
+      content: message,
+      type: 'err',
+      time: 5000
+    })
+  );
 
   throw parser;
 };
@@ -127,11 +125,11 @@ const execute = (
   payload = {},
   sendAzureToken
 ) => {
-  let fullPath = sendAzureToken
-    ? `${API_ENDPOINT}/${path}azureToken=${
-        store.getState().authReducer.azureData.access_token
-      }`
-    : `${API_ENDPOINT}/${path}`;
+  let fullPath = `${API_ENDPOINT}/${path}`;
+
+  if (sendAzureToken) {
+    payload.azureToken = store.getState().authReducer.azureData.access_token;
+  }
   return axios[type](fullPath, payload)
     .then(response => parseSuccess(response, key))
     .catch(response => authValidator(response))
@@ -147,10 +145,17 @@ const requestTypes = {
 };
 const requests = {
   // ASSIGNMENTS
-  assignEmployeeToProject: model => execute(fromAlertSettings.assignEmployeeToProject, 'Assignments', requestTypes.post, model),
+  assignEmployeeToProject: model =>
+    execute(
+      fromAlertSettings.assignEmployeeToProject,
+      'Assignments',
+      requestTypes.post,
+      model
+    ),
 
   // CLIENTS
-  getClientsSlim: () => execute(fromAlertSettings.getClientsSlim, 'Clients?lessDetailed=true'),
+  getClientsSlim: () =>
+    execute(fromAlertSettings.getClientsSlim, 'Clients?lessDetailed=true'),
 
   // LOGIN
   login: () =>
@@ -165,9 +170,10 @@ const requests = {
   getEmployees: settings =>
     execute(
       fromAlertSettings.getEmployees,
-      'employees?azureToken=eyJ0eXAiOiJKV1QiLCJub25jZSI6IkFRQUJBQUFBQUFDRWZleFh4amFtUWIzT2VHUTRHdWd2OUxlSzBUNkhONU9JMmVGRVN2RklMX3hwVGxDRVdXOGpsR2V0SFdOY0N1eHY2eW5UNHAwV0oxNHU1TnhzZ0xYaVJqZHJSWlZmckl4clpZUkJPNkxnYWlBQSIsImFsZyI6IlJTMjU2IiwieDV0IjoibmJDd1cxMXczWGtCLXhVYVh3S1JTTGpNSEdRIiwia2lkIjoibmJDd1cxMXczWGtCLXhVYVh3S1JTTGpNSEdRIn0.eyJhdWQiOiJodHRwczovL2dyYXBoLm1pY3Jvc29mdC5jb20iLCJpc3MiOiJodHRwczovL3N0cy53aW5kb3dzLm5ldC8zOTEyYWE5NS02ZDc4LTQ0NmQtODU0OC1hNDlmZmQ3M2Y1NTAvIiwiaWF0IjoxNTQ4NjA0NjA4LCJuYmYiOjE1NDg2MDQ2MDgsImV4cCI6MTU0ODYwODUwOCwiYWNjdCI6MCwiYWNyIjoiMSIsImFpbyI6IjQySmdZQkJZMzdzbDhWeHltcXVEOXhUZG0vZTdYcnA0R3RrWVZlbXJWaDJPa0hsY2ZSRUEiLCJhbXIiOlsicHdkIl0sImFwcF9kaXNwbGF5bmFtZSI6IkRDTVQtZGV2IiwiYXBwaWQiOiI5Y2ZlY2MwZi04Mzg4LTQ2MTgtYjUzYS0wZTM0NmIzMDgyNTQiLCJhcHBpZGFjciI6IjEiLCJmYW1pbHlfbmFtZSI6IlBvbHViacWEc2tpIiwiZ2l2ZW5fbmFtZSI6IkFkcmlhbiIsImlwYWRkciI6IjIxMy4xODkuMzcuMjAyIiwibmFtZSI6IkFkcmlhbiBQb2x1YmnFhHNraSIsIm9pZCI6IjkwNWM4NWQxLWIyNTEtNDlhOS05MDMzLTc1ZDNiYjU0MTM1YyIsIm9ucHJlbV9zaWQiOiJTLTEtNS0yMS0zMjU2OTc5MzkwLTI1NTkyNTM1MTctNDE3MzgzMDI4Ni0xNTEzMCIsInBsYXRmIjoiMyIsInB1aWQiOiIxMDAzM0ZGRkFDMEU0RUMyIiwic2NwIjoiRGlyZWN0b3J5LlJlYWQuQWxsIGVtYWlsIG9wZW5pZCBwcm9maWxlIFVzZXIuUmVhZCBVc2VyLlJlYWRCYXNpYy5BbGwiLCJzaWduaW5fc3RhdGUiOlsiaW5rbm93bm50d2siXSwic3ViIjoiNTFlWUJJUWVjcXFrNjM5bzFiNnhsZDNlbXJ2aHVZYnVlQno1eWNaQml5MCIsInRpZCI6IjM5MTJhYTk1LTZkNzgtNDQ2ZC04NTQ4LWE0OWZmZDczZjU1MCIsInVuaXF1ZV9uYW1lIjoiYWRyaWFuLnBvbHViaW5za2lAYmlsbGVubml1bS5jb20iLCJ1cG4iOiJhZHJpYW4ucG9sdWJpbnNraUBiaWxsZW5uaXVtLmNvbSIsInV0aSI6Ims3THd6MmdyMUVPWVpGNXZaYWxYQUEiLCJ2ZXIiOiIxLjAiLCJ4bXNfc3QiOnsic3ViIjoiU0pJUy1MQS0zZW9fQ1R1dDA1c0tzaGZmSElrOGhqZ3hENlUzeFk4MW1zUSJ9LCJ4bXNfdGNkdCI6MTQzNTIxMTg1NH0.iIIJHBkwiur4P_BE6OB8PLfI__vOcf-fBx5WcAtl1XucxTeOmo33YE3-lIDBDZVr8f2zRUVmWeeHRJqTza0eZ0JE9t4K6NpNd4fLC1tHhqMrFQ4r-OXWg9MvxfHZZhBKP4R-8xVTPcaLKxY6cS1w8oXb7DcyRV0n9aPXe_bTe3tkZ9wcqmIYyVLi39FJ275Hv_TniRKnOvEO9WMD0iclBYrdzB6IOJtcfZwH80yDuv-8TKO_-dIwxTdrxVYWZrF1rbLLcavpz6LgWuPmt3i5-9MDa23ZuoOvpebQ14M4NNq8RqcJvRSVb3EjO52W_DjB3mzGIBVW1q-N4iKNb_EWlA',
+      'employees?',
       requestTypes.post,
-      settings
+      settings,
+      true
     ),
   getEmployeeById: id =>
     execute(fromAlertSettings.getEmployeeById, `employees/${id}`),
@@ -1039,12 +1045,13 @@ const requests = {
     ),
 
   //CvImport
-  importCV: files => execute(
-    fromAlertSettings.importCV,
-    `CvImport/ImportCv`,
-    requestTypes.post,
-    files
-    ),
+  importCV: files =>
+    execute(
+      fromAlertSettings.importCV,
+      `CvImport/ImportCv`,
+      requestTypes.post,
+      files
+    )
 };
 
 export const useRequest = (name, ...params) => requests[name](...params);
@@ -1508,13 +1515,13 @@ const WebApi = {
       return WebAround.put(`${API_ENDPOINT}/skills/${skillId}`, skillModel);
     }
   },
-  stats: {
-    get: {
-      basic: () => {
-        return WebAround.get(`${API_ENDPOINT}/stats/basic`);
-      }
-    }
-  },
+  // stats: {
+  //   get: {
+  //     basic: () => {
+  //       return WebAround.get(`${API_ENDPOINT}/stats/basic`);
+  //     }
+  //   }
+  // },
   // users: {
   //   get: {
   //     byUser: userId => {

@@ -5,22 +5,17 @@ import './modal.scss';
 import ServerError from '../../common/serverError/serverError';
 import Button from '../../common/button/button';
 import { translate } from 'react-translate';
+import FancyModal from './../../common/fancy-modal/fancy-modal';
 const generateReportModal = ({shouldOpenModal, closeModal, generateShareLinkStatus, generateShareLinkErrors,
     generatedShareLink, fileToShare, path, copyLink, isOneDrive, t}) => (
-    <Modal
-    key={1}
-    open={shouldOpenModal}
-    classNames={{ modal: "modal-gen-link Modal" }}
-    contentLabel="Generate link modal"
-    onClose={closeModal}
-    >
-    {fileToShare && 
-    <React.Fragment>
+    <FancyModal close={closeModal}>
+    {fileToShare &&
+    <div className="modal-gen-link">
         <header>
-            <h3>{generateShareLinkStatus === null ? t("CreatingLink") : t("CreatedLink")}</h3>    
+            <h3 className={'fancy-modal-header'}>{generateShareLinkStatus === null ? t("CreatingLink") : t("CreatedLink")}<i className={'fas fa-times'} title={t("Close")} onClick={closeModal}/></h3>
         </header>
         {generateShareLinkStatus !== null ?
-            generateShareLinkStatus ? 
+            generateShareLinkStatus ?
             <div className="gen-link-modal-container">
                 <article>
                     <p>{t("CurrentCreatedLink")}: <b>{fileToShare.name}</b></p>
@@ -36,11 +31,11 @@ const generateReportModal = ({shouldOpenModal, closeModal, generateShareLinkStat
                         <div>
                             <p><span>{t("Identity")}: </span><b>{fileToShare.id}</b></p>
                             <p><span>{t("Name")}: </span><b>{fileToShare.name}</b></p>
-                            {fileToShare.size && fileToShare.size > 0 && 
+                            {fileToShare.size && fileToShare.size > 0 &&
                                 <p><span>{t("Size")}: </span><b>{fileToShare.size}</b></p>
                             }
 
-                            {fileToShare.parentPath && 
+                            {fileToShare.parentPath &&
                                 <p><span>{t("Path")}: </span><b>{fileToShare.parentPath}</b></p>
                             }
                         </div>
@@ -50,20 +45,19 @@ const generateReportModal = ({shouldOpenModal, closeModal, generateShareLinkStat
                     <span>
                         {generatedShareLink}
                     </span>
-                    <Button onClick={copyLink}
-                    mainClass="generate-raport-btn btn-green">
-                        <i className="fa fa-copy" /> {t("Open")} 
+                    <Button onClick={copyLink} mainClass="generate-raport-btn btn-green">
+                        <i className="fa fa-copy" /> {t("Open")}
                     </Button>
                 </div>
-            </div> : 
+            </div> :
 
             <ServerError errorClass="whole-page-error"
-            message={generateShareLinkErrors[0]}/> : 
+            message={generateShareLinkErrors[0]}/> :
             <Spinner fontSize="7px" />
         }
-    </React.Fragment>
+    </div>
     }
-  </Modal>
+  </FancyModal>
 
 );
 
