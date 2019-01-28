@@ -17,5 +17,5 @@ steps:
 
 - script: |
     npm install 
-    webpack --mode development --config ./webpack.config.js
+    SET NODE_ENV=production& webpack --mode production --progress --profile --color --config ./webpack.config.js
   displayName: 'npm install, npm start'
