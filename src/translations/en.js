@@ -27,7 +27,8 @@ const translations = {
     SkillLevel: 'skill level',
     Experience: 'experience',
     Years: 'years',
-    Year: 'year'
+    Year: 'year',
+    ManageSkills: 'MANAGE'
   },
   ProjectTeam: {
     ProjectTeam: 'Project team',

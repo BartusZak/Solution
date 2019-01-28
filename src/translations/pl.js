@@ -27,7 +27,8 @@ const translations = {
     SkillLevel: 'poziom umiejętności',
     Experience: 'doświadczenie',
     Years: 'lat',
-    Year: 'rok'
+    Year: 'rok',
+    ManageSkills: 'ZARZĄDZAJ'
   },
   ProjectTeam: {
     ProjectTeam: 'Uczestnicy projektu',

@@ -1,5 +1,7 @@
 import React from 'react';
 import { translate } from 'react-translate';
+import Button from '../../../common/button/button';
+
 import './employee-skills.scss';
 
 class EmployeeSkills extends React.PureComponent {
@@ -22,10 +24,10 @@ class EmployeeSkills extends React.PureComponent {
         <p className="important-par">{t("Skills")} ({skillsCount})</p>
 
         <ul className="employees-skills-list">
-          {skills.map(({id, name, level, yearsOfExperience})=> (
+          {skills.map(({id, name, level, yearsOfExperience, color})=> (
             <li className="employee-skill" key={id}>
               <div className="skill-head flex-row-center">
-                <div className="skill-dot" style={{background: 'red'}} />
+                <div className="skill-dot" style={{background: color}} />
                 <span className="skill-name">{name}</span>
               </div>
 
@@ -45,6 +47,12 @@ class EmployeeSkills extends React.PureComponent {
             </li>
           ))}
         </ul>
+
+        <div className="employee-skills-footer">
+          <Button mainClass="label-btn dcmt-light-color" title={t("ManageSkills")}>
+            <i className='fa fa-chart-bar' />
+          </Button>
+        </div>
 
       </React.Fragment>
     );

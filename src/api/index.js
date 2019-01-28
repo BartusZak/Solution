@@ -272,7 +272,7 @@ const requests = {
     ),
 
   //PROJECTS
-  getProject: id => execute(fromAlertSettings.getProject, `projects/${id}`),
+  getProject: id => execute(fromAlertSettings.getProject, `projects/${id}?onlyActiveAssignments=false`),
   addProject: model => execute(fromAlertSettings.addProject, 'projects/add', requestTypes.post, model),
   editProject: (model, id) => execute(fromAlertSettings.editProject, `projects/${id}`, requestTypes.put, model),
   addProjectPhase: model => execute(fromAlertSettings.addProjectPhase, 'projects/add', requestTypes.post, model),

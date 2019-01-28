@@ -4,6 +4,7 @@ import { InputSettings, runSingleValidation } from '../../../common/fancy-form/i
 import { assignEmployeeIntoProject } from '../../../../actions/projectsActions';
 import { connect } from 'react-redux';
 import { translate } from 'react-translate';
+import { dFormat } from '../../../../constants';
 import EmployeeSearcher from '../../../shared/employee-searcher/employee-searcher';
 import DatePicker from 'react-datepicker';
 import Button from '../../../common/button/button';
@@ -17,7 +18,7 @@ class EmployeeProjectForm extends React.PureComponent {
     super(props);
     const { t } = props;
     this.settings = {
-      employeeId: new InputSettings(t('Employee'), { required: true } ),
+      employee: new InputSettings(t('Employee'), { required: true } ),
       role: new InputSettings(t('Role'), { required: true, minLength: 2, maxLength: 150 } ),
       startDate: new InputSettings(t('StartDate'), { required: true } ),
       endDate: new InputSettings(t('EndDate'), { required: true } ),
@@ -29,7 +30,7 @@ class EmployeeProjectForm extends React.PureComponent {
     }
   }
   roles = ['Developer', 'Human Resources'];
-  initValues = { employeeId: '', role: 'Developer', startDate: moment(), endDate: moment(), assignedCapacity: 50, responsibilities: [] };
+  initValues = { employee: '', role: 'Developer', startDate: moment(), endDate: moment(), assignedCapacity: 50, responsibilities: [] };
   responsibilitiesConfig = { required: true, minLength: 3, maxLength: 100, isInList: [] };
 
   handleResponsibilitiesChange = e => {
@@ -54,10 +55,13 @@ class EmployeeProjectForm extends React.PureComponent {
 
   handleAssigningEmployee = formData => {
     this.setState({isSubmitting: true});
-    const { projectId, assignEmployeeIntoProject } = this.props;
-    const model = {...formData, assignedCapacity: formData.assignedCapacity/100, projectId };
+    const { projectId, assignEmployeeIntoProject, close } = this.props;
+    const model = {...formData, employeeId: formData.employee.id,
+      assignedCapacity: formData.assignedCapacity/100, projectId,
+      startDate: moment(formData.startData).format(dFormat),
+      endDate: moment(formData.endDate).format(dFormat) };
     assignEmployeeIntoProject(model,
-      () => this.setState({isSubmitting: false}),
+      () => close(),
       () => this.setState({isSubmitting: false}));
   }
 
@@ -80,9 +84,9 @@ class EmployeeProjectForm extends React.PureComponent {
                   <EmployeeSearcher
                     showLabel
                     employeeFilter={{ hasAccount: true, capacity: 0 }}
-                    emitEmployeeClick={employee => putChanges(employee.id, 'employeeId')}
+                    emitEmployeeClick={employee => putChanges(employee, 'employee')}
                   />
-                  <p className="field-error">{errors.employeeId}</p>
+                  <p className="field-error">{errors.employee}</p>
                 </div>
 
 

@@ -77,7 +77,7 @@ class ProjectTeam extends React.PureComponent {
                 </li>
                 ))}
               </ul>
-              <Button onClick={redirectToAddEmployee} title={t("AddMemeber")} mainClass="label-btn dcmt-light-color" />
+              <Button onClick={redirectToAddEmployee} title={t("AddMember")} mainClass="label-btn dcmt-light-color" />
             </React.Fragment>
         }
       </div>

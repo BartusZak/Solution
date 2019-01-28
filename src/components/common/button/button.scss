@@ -198,6 +198,9 @@ button.dcmt-btn-light {
   background: transparent;
   border: none;
   text-transform: uppercase;
+  i {
+    margin-right: 10px;
+  }
 }
 .btn-submit-form {
   font-size: 18px;
@@ -243,6 +246,9 @@ button.dcmt-btn-light {
   align-self: center;
   position: relative;
   justify-content: center;
+  i {
+    font-size: 14px;
+  }
   .fancy-modal-backdrop {
     border-radius: 50%;
   }

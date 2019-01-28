@@ -1,6 +1,7 @@
 import {
   PUT_EMPLOYEE_DETAILS,
   PUT_FEEDBACKS,
+  PUT_FEEDBACK,
   CHANGE_IN_EMPLOYEE_REDUCER,
   LOAD_EMPLOYEES_SUCCESS,
   LOAD_EMPLOYEES_FAILURE,
@@ -35,7 +36,7 @@ import {
   setActionConfirmationResult
 } from "./asyncActions";
 import { errorCatcher } from "../services/errorsHandler";
-import { populateSkillArrayWithConstData } from "../services/methods";
+import { populateSkillArrayWithConstData, getRandomColor } from "../services/methods";
 import moment from "moment";
 import { useRequest } from '../api/index';
 
@@ -819,12 +820,14 @@ export const updateEmployeeOnBoardACreator = (onBoardModel, onBoardId) => dispat
 
 export const putEmployeeDetails = (employee, loadEmployeeResult) => ({ type: PUT_EMPLOYEE_DETAILS, employee, loadEmployeeResult });
 export const putFeedbacks = (feedbacks, employeeId, loadFeedbacksResult) => ({ type: PUT_FEEDBACKS, feedbacks, employeeId, loadFeedbacksResult});
+export const putFeedback = (feedback, employeeId) => ({ type: PUT_FEEDBACK, feedback, employeeId });
 export const changeInEmployeeReducer = (key, value) => ({ type: CHANGE_IN_EMPLOYEE_REDUCER, key, value });
 
 export const getEmployeeDetails = employeeId => dispatch =>
   useRequest('getEmployeeById', employeeId).
     then(res => {
       const employee = res.extractData();
+      employee.skills = employee.skills.map(skill => ({...skill, color: getRandomColor()}));
       dispatch(putEmployeeDetails(employee, { status: true }));
     }).catch(() => dispatch(putEmployeeDetails(null, { status: false})));
 
@@ -840,11 +843,8 @@ export const addFeedback = model => dispatch => {
   dispatch(changeInEmployeeReducer('isAddingFeedback', true));
   useRequest('addFeedback', model)
   .then(res => {
+    console.log(res);
     dispatch(changeInEmployeeReducer('isAddingFeedback', false));
   })
   .catch(() => dispatch(changeInEmployeeReducer('isAddingFeedback', false)));
-}
-
-export const loadEmployeeSkills = () => dispatch => {
-
 }

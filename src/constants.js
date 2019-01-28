@@ -73,6 +73,7 @@ export const PUT_SKILLS_INTO_PROJECT = "[Projects] PUT_SKILLS_INTO_PROJECT";
 export const PUT_DESTINATION_MANAGERS = "[Projects] PUT_DESTINATION_MANAGERS";
 export const PUT_ALREADY_SHARED_MANAGERS = "[Projects] PUT_ALREADY_SHARED_MANAGERS";
 export const CHANGE_MANAGERS_LISTS = "[Projects] CHANGE_MANAGERS_LISTS";
+export const PUT_EMPLOYEE_INTO_PROJECT_TEAM = '[Projects] PUT_EMPLOYEE_INTO_PROJECT_TEAM';
 export const closed = 2;
 export const inactive = 1;
 export const active = 0;
@@ -130,6 +131,7 @@ export const GENERATE_G_DRIVE_SHARE_LINK = 'GENERATE_G_DRIVE_SHARE_LINK';
 //EMPLOYEES
 export const PUT_EMPLOYEE_DETAILS = '[Employees] PUT_EMPLOYEE_DETAILS';
 export const PUT_FEEDBACKS = '[Employees] PUT_FEEDBACKS';
+export const PUT_FEEDBACK = '[Employees] PUT_FEEDBACK';
 export const CHANGE_IN_EMPLOYEE_REDUCER = '[Employees] CHANGE_IN_EMPLOYEE_REDUCER';
 export const EDIT_EMPLOYEES_DETAILS = 'EDIT_EMPLOYEES_DETAILS';
 
