@@ -1,38 +1,75 @@
-.result-modal-container {
-  text-align: center;
-  position: relative;
-  height: 100%;
-  .result-about-to {
+@import '../../../new-color-schema.scss';
+.confirmation .fancy-modal{
+  border-radius: 0.4rem;
+  color: $font-grey;
+  @media(max-width: 600px){
+    width: 90%;
   }
-  .result-string {
-    padding: 3em;
-    font-weight: bold;
+  @media(min-width: 1200px){
+    min-width: 400px;
   }
-  .result-confirmation {
+  animation-name: animation;
+  animation-duration: 0.4s;
+  @keyframes animation {
+    from {opacity: 0;}
+    to {opacity: 1;}
   }
-  .result-confirm-button {
-    position: absolute;
-    width: 20%;
-    left: 40%;
-    bottom: 0;
 
-    @media screen and (max-width: 500px) {
-      width: 100%;
-      left: 0;
+
+  .result-modal-container {
+//   text-align: center;
+//   position: relative;
+//   height: 100%;
+//   .result-about-to {
+//   }
+//   .result-string {
+//     padding: 3em;
+//     font-weight: bold;
+//   }
+//   .result-confirmation {
+//   }
+//   .result-confirm-button {
+//     position: absolute;
+//     width: 20%;
+//     left: 40%;
+//     bottom: 0;
+
+//     @media screen and (max-width: 500px) {
+//       width: 100%;
+//       left: 0;
+//     }
+//   }
+//   .result-loader-container {
+//     position: absolute;
+//     bottom: 4em;
+//     width: 100%;
+//   }
+// }
+    padding: 1.5rem;
+    border-radius: 1rem;
+    background-color: $modal-header-bg;
+    .confirmation-result{
+      margin-top: 1.5rem;
+      margin-bottom: 3rem;
+      font-weight: 300;
+
+    }
+    .confirmation-button{
+      background:none;
+      border:none;
+      margin:0;
+      padding:0;
+      cursor: pointer;
+    }
+    .accept-button{
+      margin-right: 2rem;
+      color: $input-error;
+    }
+    .deny-button{
+      color: $font-grey;
     }
   }
-  .result-loader-container {
-    position: absolute;
-    bottom: 4em;
-    width: 100%;
-  }
-}
-.result-block-container {
-  height: 100%;
-  position: relative;
-  & > span {
-    position: absolute;
-    top: 45%;
-    width: 100%;
-  }
+    .result-block-container {
+      padding: 2rem;
+    }
 }

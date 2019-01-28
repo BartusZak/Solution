@@ -1,10 +1,11 @@
 import React from 'react'
 import './confirmModal.scss';
 import Modal from 'react-responsive-modal';
+import FancyModal from './../fancy-modal/fancy-modal';
 
-const confirmModal = ({denyName, open, content, onClose, header, 
+const confirmModal = ({denyName, open, content, onClose, header,
     operation, operationName, children}) => (
-    <Modal
+    <FancyModal
     key={2}
     open={open}
     classNames={{ modal: "Modal Modal-add-owner" }}
@@ -15,12 +16,12 @@ const confirmModal = ({denyName, open, content, onClose, header,
             <h2>{header}</h2>
             <div>
                 <button className="option-btn green-btn" onClick={operation}>{operationName}</button>
-                <button className="option-btn" 
+                <button className="option-btn"
                 onClick={onClose}>{denyName}</button>
             </div>
         </div>
         {children}
-    </Modal>
+    </FancyModal>
 );
 confirmModal.defaultProps = {
     denyName: "Anuluj"

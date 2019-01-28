@@ -5,9 +5,14 @@ import { bindActionCreators } from "redux";
 import * as asyncActions from "./../../../actions/asyncActions";
 import LoaderHorizontal from "./../LoaderHorizontal";
 import ResultBlock from "../ResultBlock";
-import { SET_ACTION_CONFIRMATION_RESULT, SET_ACTION_CONFIRMATION, SET_ACTION_CONFIRMATION_RESULT_WITHOUT_ENDING } from "../../../constants";
-import PropTypes from 'prop-types';
-import { translate } from 'react-translate';
+import {
+  SET_ACTION_CONFIRMATION_RESULT,
+  SET_ACTION_CONFIRMATION,
+  SET_ACTION_CONFIRMATION_RESULT_WITHOUT_ENDING
+} from "../../../constants";
+import PropTypes from "prop-types";
+import { translate } from "react-translate";
+import FancyModal from "./../fancy-modal/fancy-modal";
 
 class Confirmation extends Component {
   constructor(props) {
@@ -23,11 +28,12 @@ class Confirmation extends Component {
     /* eslint-disable react/no-direct-mutation-state */
     if (nextProps.type === SET_ACTION_CONFIRMATION_RESULT) {
       this.state.resultBlock = nextProps.resultBlock;
-      this.hideAfterSuccess();
+      this.hide();
     }
 
     if (nextProps.type === SET_ACTION_CONFIRMATION_RESULT_WITHOUT_ENDING) {
-        this.state.resultBlock = nextProps.resultBlock;
+      this.state.resultBlock = nextProps.resultBlock;
+      this.hide();
     }
 
     if (nextProps.type === SET_ACTION_CONFIRMATION && !this.props.shown) {
@@ -49,57 +55,48 @@ class Confirmation extends Component {
     this.props.async.actionConfirmed(this.props.toConfirm);
   };
 
-  hideAfterSuccess = () => {
+  hide = () => {
     setTimeout(() => {
       this.invalidate();
-    }, 2000);
+    }, 500);
   };
 
   isCompleted = () => {
-    return this.state.resultBlock && this.state.resultBlock.original !== undefined;
+    return (
+      this.state.resultBlock && this.state.resultBlock.original !== undefined
+    );
   };
 
   render() {
     const { t } = this.props;
     return (
-      <div>
-        <Modal
-          open={this.props.shown}
-          classNames={{ modal: "Modal" }}
-          contentLabel="Confirm action"
-          onClose={this.invalidate}
-        >
-          {!this.isCompleted() && (
-            <div className="result-modal-container">
-              <div className="result-about-to">{t("YouAreAboutTo")}:</div>
-              <div className="result-string">{this.state.toConfirm.string}</div>
-              <div className="result-confirmation">
-                {t("AreYouSure")}
+      <div className="confirmation">
+        {this.props.shown && (
+          <FancyModal close={this.invalidate} isLoading={this.props.isWorking}>
+            {!this.isCompleted() && (
+              <div className="result-modal-container">
+                <div className="confirmation-header">
+                  {t("YouAreAboutTo")} {this.state.toConfirm.string}
+                </div>
+                <div className="confirmation-result">
+                  {t("ActionRollbackWarning")}
+                </div>
+                <button
+                  className="confirmation-button accept-button"
+                  onClick={this.confirm}
+                >
+                  {t("Accept")}
+                </button>
+                <button
+                  className="confirmation-button deny-button"
+                  onClick={this.invalidate}
+                >
+                  {t("Deny")}
+                </button>
               </div>
-              <div className="result-confirmation">
-                {t("ActionRollbackWarning")}
-              </div>
-              <button
-                className="result-confirm-button dcmt-button"
-                onClick={this.confirm}
-              >
-                {t("Confirm")}
-              </button>
-              <div className="result-loader-container">
-                {this.props.isWorking && <LoaderHorizontal />}
-              </div>
-            </div>
-          )}
-          {this.isCompleted() && (
-            <div className="result-block-container">
-              <ResultBlock
-                errorBlock={this.state.resultBlock}
-                errorOnly={false}
-                successMessage={this.state.toConfirm.successMessage}
-              />
-            </div>
-          )}
-        </Modal>
+            )}
+          </FancyModal>
+        )}
       </div>
     );
   }
@@ -130,4 +127,7 @@ Confirmation.propTypes = {
   async: PropTypes.object
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(translate("Confirmation")(Confirmation));
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(translate("Confirmation")(Confirmation));
