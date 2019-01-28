@@ -92,7 +92,7 @@ class EmployeeFeedbacks extends React.PureComponent {
           </ul> :
           <div className="empty-list-comunicate">
             <p>{t("EmptyFeedbacks")}</p>
-            <i onClick={this.handleLoadFeedbacks} className="fas fa-comments fa-lg clickable"></i>
+            <i className="fas fa-comments fa-lg"></i>
           </div>
         }
 

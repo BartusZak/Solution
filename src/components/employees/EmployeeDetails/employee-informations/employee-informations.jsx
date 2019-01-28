@@ -62,11 +62,11 @@ const renderEmployeeProfileHeader = ({firstName, lastName, seniority, title}) =>
         <img id="person" src="https://drive.google.com/uc?export=download&id=1No_RfevuUMAQNHGgXWjtzFdT437gatnK" />
     </header>
     <div className="personality">
-        <span className="emp-name">{firstName} {lastName}</span>
-        <div>
-            <span className="emp-role dcmt-light-color">{title} </span>
-            <span className="emp-seniority">({seniority})</span>
-        </div>
+      <span className="emp-name">{firstName} {lastName}</span>
+      <div>
+        <span className="emp-role dcmt-light-color">{title} </span>
+        <span className="emp-seniority">({seniority})</span>
+      </div>
     </div>
   </React.Fragment>
 );
@@ -95,6 +95,9 @@ const renderProfileNavigation = (t, changeComponentInExtender, currentOpenedCart
       </div>
       <div onClick={() => changeComponentInExtender('skills')} className="icon-wrapper skills-icon-wrapper">
         <i className={`fa fa-chart-bar ${currentOpenedCart === 'skills' ? 'rotated-icon' : ''}`}/>
+        <span className="element-counter">
+          {employee.skills.length}
+        </span>
       </div>
       <div className="icon-wrapper">
         <i className="fa fa-graduation-cap"/>
