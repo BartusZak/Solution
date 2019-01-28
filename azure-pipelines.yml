@@ -17,5 +17,5 @@ steps:
 
 - script: |
     npm install 
-    npm start
+    webpack --config ./webpack.config.js
   displayName: 'npm install, npm start'
