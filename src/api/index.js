@@ -687,7 +687,7 @@ const requests = {
   searchRequestsUsers: (settings = {}) =>
     execute(
       fromAlertSettings.searchRequestsUsers,
-      `account/requests?`,
+      `account/requests`,
       requestTypes.post,
       settings,
       true
@@ -699,12 +699,12 @@ const requests = {
   // token: refreshToken => execute(fromAlertSettings.token, `account/login`, requestTypes.post, refreshToken),
   deleteUser: id =>
     execute(fromAlertSettings.deleteUser, `account/${id}`, requestTypes.delete),
-  deleteUserRequest: id =>
+  deleteUserRequest: azureId =>
     execute(
       fromAlertSettings.deleteUserRequest,
       `account/requests`,
       requestTypes.delete,
-      params({ id })
+      params({ azureId })
     ),
   editUserRoles: (id, roles) =>
     execute(fromAlertSettings.editUserRoles, `account`, requestTypes.patch, {
