@@ -1,7 +1,6 @@
 import React from 'react';
 import Button from '../../../common/button/button';
 import SkillsManager from './skills-manager/skills-manager';
-import ProjectSkill from './project-skill/project-skill';
 import { translate } from 'react-translate';
 
 import './project-skills.scss';
@@ -43,14 +42,25 @@ class ProjectSkills extends React.PureComponent {
         {skillsCount === 0 ?
           <div className="empty-list-comunicate">
             <p>{t("SkillsListEmpty")}</p>
-            <i onClick={skillManager ? this.setManagerOpenClass : this.togleManager} className="fas fa-crosshairs fa-lg"></i>
+            <i onClick={skillManager ? this.setManagerOpenClass : this.togleManager} className="fas fa-crosshairs fa-lg clickable"></i>
           </div> :
 
           <React.Fragment>
             <ul>
-              {projectSkills.map(({skillId, skillName: name, skillLevel, color}) => (
-                <ProjectSkill markerWidth={skillsMarkers[skillId]}
-                  key={skillId} name={name} skillLevel={skillLevel} color={color} />
+              {projectSkills.map(({skillId, skillName: name, color}) => (
+                <li className="project-skill" key={skillId}>
+                  <div className="skill-head flex-row-center">
+                    <div className="skill-dot" style={{background: color}} />
+                    <span className="skill-name">{name}</span>
+                  </div>
+
+                  <label className="field-label">{t("SkillLevel")}</label>
+                  <div className="progress-marker">
+                    <div className="progress-value" style={{width: skillsMarkers[skillId]}}>
+                      <span className="progress-number-value">{skillsMarkers[skillId]}</span>
+                    </div>
+                  </div>
+                </li>
               ))}
             </ul>
 

@@ -1,9 +1,8 @@
 import React from 'react';
 
-class ProgressMarker extends React.Component {
-
+class ProgressMarker extends React.PureComponent {
   state = {
-    value: 50
+    value: this.props.initialValue ? this.props.initialValue : 50
   }
 
   changeValue = (e, value, shouldIncrease) => {

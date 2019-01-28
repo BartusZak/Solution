@@ -19,7 +19,7 @@ class ProjectTeam extends React.PureComponent {
 
   render() {
     const { markedMembers } = this.state;
-    const { team, togleAddEmployeeForm, t } = this.props;
+    const { team, t, redirectToAddEmployee } = this.props;
     const teamCount = team.length;
 
     return (
@@ -35,9 +35,9 @@ class ProjectTeam extends React.PureComponent {
         </p>
 
         {teamCount === 0 ?
-          <div onClick={togleAddEmployeeForm} className="empty-list-comunicate ">
+          <div className="empty-list-comunicate ">
             <p>{t("ProjectTeamEmpty")}</p>
-            <i onClick={togleAddEmployeeForm} className="fa fa-user-plus"></i>
+            <i onClick={redirectToAddEmployee} className="fa fa-user-plus clickable"></i>
           </div> :
           <React.Fragment>
             <ul>
@@ -77,7 +77,7 @@ class ProjectTeam extends React.PureComponent {
                 </li>
                 ))}
               </ul>
-              <Button title={t("AddMemeber")} mainClass="label-btn dcmt-light-color" />
+              <Button onClick={redirectToAddEmployee} title={t("AddMemeber")} mainClass="label-btn dcmt-light-color" />
             </React.Fragment>
         }
       </div>

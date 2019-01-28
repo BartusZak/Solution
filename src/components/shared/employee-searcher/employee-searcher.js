@@ -28,18 +28,18 @@ class EmployeeSearcher extends React.PureComponent {
           showLabel={showLabel}
           requestFunction={value => this.getEmployees(value)}
           validators={this.employeeValidators}
-          renderDataList={(dataList, resetAll, isListEmpty) => {
+          renderDataList={(dataList, addValueFromOutside, resetAll, isListEmpty) => {
             if(isListEmpty === false) {
               return (
                 <div className="input-data-list">
                   <ul>
-                    {dataList.map(item => (
+                    {dataList.map(({fullName, id}) => (
                       <li onClick={() => {
-                        resetAll();
-                        emitEmployeeClick(item);
+                        addValueFromOutside(fullName);
+                        emitEmployeeClick(id);
                       }}
-                        key={item.id}>
-                        {item.fullName}
+                        key={id}>
+                        {fullName}
                       </li>
                     ))}
                   </ul>

@@ -273,59 +273,15 @@ const requests = {
 
   //PROJECTS
   getProject: id => execute(fromAlertSettings.getProject, `projects/${id}`),
-  addProject: model =>
-    execute(
-      fromAlertSettings.addProject,
-      'projects/add',
-      requestTypes.post,
-      model
-    ),
-  editProject: (model, id) =>
-    execute(
-      fromAlertSettings.editProject,
-      `projects/${id}`,
-      requestTypes.put,
-      model
-    ),
-  addProjectPhase: model =>
-    execute(
-      fromAlertSettings.addProjectPhase,
-      'projects/add',
-      requestTypes.post,
-      model
-    ),
-  reactivateProject: id =>
-    execute(
-      fromAlertSettings.reactivateProject,
-      `projects/reactivate/${id}`,
-      requestTypes.put
-    ),
-  closeProject: id =>
-    execute(
-      fromAlertSettings.closeProject,
-      `projects/close/${id}`,
-      requestTypes.put
-    ),
-  deleteProject: id =>
-    execute(
-      fromAlertSettings.deleteProject,
-      `projects/delete/${id}`,
-      requestTypes.delete
-    ),
-  addOwnerToProject: (id, usersIds) =>
-    execute(
-      fromAlertSettings.addOwnerToProject,
-      `projects/owner/${id}`,
-      requestTypes.put,
-      { usersIds }
-    ),
-  editSkillsInProject: (id, skills) =>
-    execute(
-      fromAlertSettings.editSkillsInProject,
-      `projects/skills/${id}`,
-      requestTypes.put,
-      skills
-    ),
+  addProject: model => execute(fromAlertSettings.addProject, 'projects/add', requestTypes.post, model),
+  editProject: (model, id) => execute(fromAlertSettings.editProject, `projects/${id}`, requestTypes.put, model),
+  addProjectPhase: model => execute(fromAlertSettings.addProjectPhase, 'projects/add', requestTypes.post, model),
+  reactivateProject: id => execute(fromAlertSettings.reactivateProject, `projects/reactivate/${id}`, requestTypes.put),
+  closeProject: id => execute(fromAlertSettings.closeProject, `projects/close/${id}`, requestTypes.put),
+  deleteProject: id => execute(fromAlertSettings.deleteProject, `projects/delete/${id}`, requestTypes.delete),
+  addOwnerToProject: (id, usersIds) => execute(fromAlertSettings.addOwnerToProject, `projects/owner/${id}`, requestTypes.put, {usersIds}),
+  editSkillsInProject: (id, skills) => execute(fromAlertSettings.editSkillsInProject, `projects/skills/${id}`, requestTypes.put, skills),
+  getAlreadySharedManagers: id => execute(fromAlertSettings.getAlreadySharedManagers, `/shareProject/AlreadySharedManagers/${id}`),
   //RESPINSIBLE PERSON
   createResponsiblePerson: model =>
     execute(
@@ -1046,14 +1002,12 @@ const requests = {
   getManagersSharedProject: projectId =>
     execute(
       fromAlertSettings.getManagersSharedProject,
-      `shareproject/alreadysharedmanagers/${projectId}`,
-      requestTypes.get
+      `shareproject/alreadysharedmanagers/${projectId}`
     ),
-  getAlreadySharedManagers: projectId =>
+    getDestinationManagers: projectId =>
     execute(
-      fromAlertSettings.getAlreadySharedManagers,
-      `shareproject/destinationmanagers/${projectId}`,
-      requestTypes.get
+      fromAlertSettings.getDestinationManagers,
+      `shareproject/destinationmanagers/${projectId}`
     ),
 
   //WORK EXPERIENCE

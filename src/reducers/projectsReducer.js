@@ -2,7 +2,6 @@ import {
   LOAD_PROJECTS_SUCCESS,
   LOGOUT,
   SET_PROJECT_DATA,
-  ADD_EMPLOYEE_TO_PROJECT,
   ADD_FEEDBACK,
   GET_FEEDBACKS,
   EDIT_FEEDBACK,
@@ -15,7 +14,10 @@ import {
   ADD_PHASE,
   ADD_OWNER,
   CHANGE_PROJECT_STATUS,
-  PUT_SKILLS_INTO_PROJECT
+  PUT_SKILLS_INTO_PROJECT,
+  PUT_DESTINATION_MANAGERS,
+  PUT_ALREADY_SHARED_MANAGERS,
+  CHANGE_MANAGERS_LISTS
 } from "../constants";
 import { updateObject } from "../services/methods";
 const initialState = {
@@ -26,9 +28,8 @@ const initialState = {
   resultBlock: null,
 
   project: null, projectResult: {status: null},
-
-  addEmployeeToProjectStatus: null,
-  addEmployeeToProjectErrors: [],
+  destinationManagers: [], dManagersResult: {status: null},
+  alreadySharedManagers: [], sManagersResult: {status: null},
 
   addFeedbackStatus: null,
   addFeedbackErrors: [],
@@ -55,6 +56,14 @@ const initialState = {
 
 export const projectsReducer = (state = initialState, action) => {
   switch (action.type) {
+    case CHANGE_MANAGERS_LISTS:
+      return { ...state, destinationManagers: action.destinationManagers, alreadySharedManagers: action.alreadySharedManagers }
+    case PUT_ALREADY_SHARED_MANAGERS:
+      return { ...state, alreadySharedManagers: action.alreadySharedManagers, sManagersResult: action.sManagersResult }
+    case PUT_DESTINATION_MANAGERS:
+      return {
+        ...state, destinationManagers: action.destinationManagers, dManagersResult: action.dManagersResult
+      };
     case UPDATE_PROJECT:
       const responsiblePerson = {...action.project.responsiblePerson};
       responsiblePerson.client = action.project.client;
@@ -83,7 +92,6 @@ export const projectsReducer = (state = initialState, action) => {
         ...state, project: {...state.project, owners: [action.owner, ...state.project.owners] }
       };
     case PUT_SKILLS_INTO_PROJECT:
-    console.log(action.skills);
       return {
         ...state, project: { ...state.project, skills: action.skills }
       };
@@ -100,12 +108,6 @@ export const projectsReducer = (state = initialState, action) => {
         currentPage: 1,
         totalPageCount: 1
       };
-    case ADD_EMPLOYEE_TO_PROJECT:
-      return updateObject(state, {
-        addEmployeeToProjectStatus: action.addEmployeeToProjectStatus,
-        addEmployeeToProjectErrors: action.addEmployeeToProjectErrors
-      });
-
     case EDIT_EMPLOYEE_ASSIGNMENT:
       return updateObject(state, {
         addEmployeeToProjectStatus: action.addEmployeeToProjectStatus,

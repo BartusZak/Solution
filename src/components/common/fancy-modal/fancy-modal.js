@@ -1,12 +1,12 @@
 import React from 'react';
 import './fancy-modal.scss';
 
-const FancyModal = ({positionClass, isLoading, children, close, backdropClass}) => {
+const FancyModal = ({positionClass, isLoading, children, close, backdropClass, scale}) => {
   return (
     <React.Fragment>
       <div className={`fancy-modal ${positionClass}`}>
 
-        <div className={isLoading ? 'scaled-content' : 'not-scaled-content'}>{children}</div>
+        <div className={(scale && isLoading) ? 'scaled-content' : 'not-scaled-content'}>{children}</div>
 
         {isLoading &&
           <React.Fragment>
@@ -24,6 +24,7 @@ const FancyModal = ({positionClass, isLoading, children, close, backdropClass}) 
 
 FancyModal.defaultProps = {
   positionClass: 'm-w-h-center',
+  scale: true,
   backdropClass: ''
 };
 

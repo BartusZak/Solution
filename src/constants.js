@@ -56,23 +56,7 @@ export const CHANGE_OPERATION_STATE = 'CHANGE_OPERATION_STATE';
 
 // PROJECTS
 export const GET_PROJECT = 'GET_PROJECT';
-export const names = [
-  'FirstName',
-  'Surname',
-  'Client',
-  'Email',
-  'PhoneNumber',
-  'FullName'
-];
-export const overViewNames = [
-  'Client',
-  'StartDate',
-  'EstimatedEndDate',
-  'EndDate',
-  'ParentName'
-];
 export const ADD_PROJECT_OWNER_TO_PROJECT = "ADD_PROJECT_OWNER_TO_PROJECT";
-export const ADD_EMPLOYEE_TO_PROJECT = "ADD_EMPLOYEE_TO_PROJECT";
 export const EDIT_EMPLOYEE_ASSIGNMENT = "EDIT_EMPLOYEE_ASSIGNMENT";
 export const DELETE_EMPLOYEE_ASSIGNMENT = "DELETE_EMPLOYEE_ASSIGNMENT";
 export const ADD_FEEDBACK = "ADD_FEEDBACK";
@@ -86,6 +70,9 @@ export const ADD_PHASE = "[Projects] ADD_PHASE";
 export const CHANGE_PROJECT_STATUS = "[Projects] CHANGE_PROJECT_STATUS";
 export const ADD_OWNER = "[Projects] ADD_OWNER";
 export const PUT_SKILLS_INTO_PROJECT = "[Projects] PUT_SKILLS_INTO_PROJECT";
+export const PUT_DESTINATION_MANAGERS = "[Projects] PUT_DESTINATION_MANAGERS";
+export const PUT_ALREADY_SHARED_MANAGERS = "[Projects] PUT_ALREADY_SHARED_MANAGERS";
+export const CHANGE_MANAGERS_LISTS = "[Projects] CHANGE_MANAGERS_LISTS";
 export const closed = 2;
 export const inactive = 1;
 export const active = 0;

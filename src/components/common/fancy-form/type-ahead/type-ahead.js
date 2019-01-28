@@ -45,6 +45,10 @@ class TypeAhead extends React.PureComponent {
     this.setState({dataList: [], value: '', error: '', isListEmpty: null});
   }
 
+  addValueFromOutside = item => {
+    this.setState({dataList: [], value: item, error: '', isListEmpty: null});
+  }
+
   typeAheadStyles = {
     position: 'relative'
   };
@@ -74,7 +78,7 @@ class TypeAhead extends React.PureComponent {
                 { isLoading ? <div className="spinner-new spinner-new-small field-spinner" />: <i className={`fa ${icon}`} /> }
               </div>
 
-              {renderDataList && renderDataList(dataList, this.resetAll, isListEmpty, isLoading)}
+              {renderDataList && renderDataList(dataList, this.addValueFromOutside, this.resetAll, isListEmpty, isLoading)}
 
               {error && <div onClick={this.resetAll} className="empty-data-list field-error-color">{error}</div>}
             </div>

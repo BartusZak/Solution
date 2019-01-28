@@ -35,6 +35,7 @@ export const closeProject = 'closeProject';
 export const deleteProject = 'deleteProject';
 export const addOwnerToProject = 'addOwnerToProject';
 export const editSkillsInProject = 'editSkillsInProject';
+export const getAlreadySharedManagers = 'getAlreadySharedManagers';
 
 // Skills
 export const loadAllSkills = 'loadAllSkills';
@@ -171,7 +172,7 @@ export const deleteRole = 'deleteRole';
 // Share Project
 export const shareProject = 'shareProject';
 export const getManagersSharedProject = 'getManagersSharedProject';
-export const getAlreadySharedManagers = 'getAlreadySharedManagers';
+export const getDestinationManagers = 'getDestinationManagers';
 export const cancelShareProject = 'cancelShareProject';
 
 // Work experience
@@ -203,6 +204,7 @@ export const succOperationsWhiteObject = {
   deleteProject: {pl: 'Projekt został pomyślnie usunięty', en: 'Project has been succesfully deleted'},
   addOwnerToProject: {pl: 'Dodano noweg właściciela', en: 'New owner has been added'},
   editSkillsInProject: {pl: 'Umiejętności projektu zostały zmienione', en: 'Skills is project has been changed'},
+  shareProject: { pl: 'Projekt został pomyślnie udostępniony', en: 'Project has been succesfully shared'},
 
   // Reponsible person
   createResponsiblePerson: {

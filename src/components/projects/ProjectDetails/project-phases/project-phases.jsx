@@ -12,7 +12,7 @@ const ProjectPhases = ({phases, push, openAddingPhase, t}) => {
     {phasesCount === 0 ?
     <div className="empty-list-comunicate">
       <p>{t("EmptyPhases")}</p>
-      <i onClick={openAddingPhase} className="fas fa-briefcase fa-lg "></i>
+      <i onClick={openAddingPhase} className="fas fa-briefcase fa-lg clickable"></i>
     </div> :
     <ul className="phases carousel element-scroll flex-row-center">
     {phases.map(({id, name, description, startDate, estimatedEndDate, isDeleted, status}) => (

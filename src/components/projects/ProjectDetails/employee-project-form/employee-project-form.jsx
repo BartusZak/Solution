@@ -5,7 +5,6 @@ import { assignEmployeeIntoProject } from '../../../../actions/projectsActions';
 import { connect } from 'react-redux';
 import { translate } from 'react-translate';
 import EmployeeSearcher from '../../../shared/employee-searcher/employee-searcher';
-import TypeAndSelect from '../../../common/fancy-form/fancy-data-list';
 import DatePicker from 'react-datepicker';
 import Button from '../../../common/button/button';
 import ProgressMarker from '../../../shared/progress-marker/progress-marker';
@@ -14,29 +13,33 @@ import moment from 'moment';
 import './employee-project-form.scss';
 
 class EmployeeProjectForm extends React.PureComponent {
-  state = {
-    isSubmitting: false, inputError: '', inputValue: ''
+  constructor(props) {
+    super(props);
+    const { t } = props;
+    this.settings = {
+      employeeId: new InputSettings(t('Employee'), { required: true } ),
+      role: new InputSettings(t('Role'), { required: true, minLength: 2, maxLength: 150 } ),
+      startDate: new InputSettings(t('StartDate'), { required: true } ),
+      endDate: new InputSettings(t('EndDate'), { required: true } ),
+      assignedCapacity: new InputSettings('fte', { required: true } ),
+      responsibilities: new InputSettings(t('ResponsibilitiesInProject'), { isNotEmptyList: true } )
+    }
+    this.state = {
+      isSubmitting: false, inputError: '', inputValue: ''
+    }
   }
-  roles = [{value: 'Developer', displayValue: 'Developer'}, {value: 'Human Resources', displayValue: 'Human Resources'}];
-  initValues = { employee: '', role: '', startDate: moment(), endDate: moment(), fte: 50, responsibilities: [] };
-  settings = {
-    employee: new InputSettings('employee', { required: true } ),
-    role: new InputSettings('role', { required: true, minLength: 2, maxLength: 150 } ),
-    startDate: new InputSettings('start date', { required: true } ),
-    endDate: new InputSettings('end date', { required: true } ),
-    fte: new InputSettings('fte', { required: true } ),
-    responsibilities: new InputSettings('responsibilities', { isNotEmptyList: true } )
-  };
+  roles = ['Developer', 'Human Resources'];
+  initValues = { employeeId: '', role: 'Developer', startDate: moment(), endDate: moment(), assignedCapacity: 50, responsibilities: [] };
   responsibilitiesConfig = { required: true, minLength: 3, maxLength: 100, isInList: [] };
 
   handleResponsibilitiesChange = e => {
-    const inputError = runSingleValidation(e.target.value, this.responsibilitiesConfig, 'responsibilities');
+    const inputError = runSingleValidation(e.target.value, this.responsibilitiesConfig, this.props.t('ResponsibilitiesInProject'));
     this.setState({inputError, inputValue: e.target.value});
   }
   handleKeyPress = (e, func, currentValues) => {
     if (e.key === 'Enter') {
       const { inputValue } = this.state;
-      const inputError = runSingleValidation(inputValue, this.responsibilitiesConfig, 'responsibilities');
+      const inputError = runSingleValidation(inputValue, this.responsibilitiesConfig, this.props.t('ResponsibilitiesInProject'));
       e.preventDefault();
       if (!inputError) {
         const responsibilities = [...currentValues, inputValue];
@@ -51,14 +54,16 @@ class EmployeeProjectForm extends React.PureComponent {
 
   handleAssigningEmployee = formData => {
     this.setState({isSubmitting: true});
-    this.props.assignEmployeeIntoProject(formData,
+    const { projectId, assignEmployeeIntoProject } = this.props;
+    const model = {...formData, assignedCapacity: formData.assignedCapacity/100, projectId };
+    assignEmployeeIntoProject(model,
       () => this.setState({isSubmitting: false}),
       () => this.setState({isSubmitting: false}));
   }
 
   render() {
     const { close, t } = this.props;
-    const { inputError } = this.state;
+    const { inputError, isSubmitting } = this.state;
     return (
       <FancyForm
         initialValues={this.initValues}
@@ -75,17 +80,22 @@ class EmployeeProjectForm extends React.PureComponent {
                   <EmployeeSearcher
                     showLabel
                     employeeFilter={{ hasAccount: true, capacity: 0 }}
-                    emitEmployeeClick={employee => putChanges(employee, 'employee')}
+                    emitEmployeeClick={employee => putChanges(employee, 'employeeId')}
                   />
-                  <p className="field-error">{errors.employee}</p>
+                  <p className="field-error">{errors.employeeId}</p>
                 </div>
 
 
                 <div id="role" className="fields-wrapper-col">
                   <label className="field-label">{t("Role")} *</label>
 
-                  <TypeAndSelect value={values.role} className="field" listName="roles" listData={this.roles}
-                    placeholder={t("RolePlaceholder")} onChange={e => handleChangeFromEvent(e, 'role')} />
+                  <div className="field-block">
+                    <select value={values.role} onChange={e => handleChangeFromEvent(e, 'role')}>
+                      {this.roles.map(role => (
+                        <option key={role}>{role}</option>
+                      ))}
+                    </select>
+                  </div>
 
                   <p className="field-error">{errors.role}</p>
 
@@ -103,15 +113,14 @@ class EmployeeProjectForm extends React.PureComponent {
                   <p className="field-error">{errors.endDate}</p>
                 </div>
 
-                <ProgressMarker emitChange={value => putChanges(value, 'fte')}
-                  label="fte" jump={25} />
+                <ProgressMarker emitChange={value => putChanges(value, 'assignedCapacity')} label="fte" jump={10} />
               </div>
 
               <div id="confirm" className="submit-wrapper">
-                <Button type="submit" title={t("AddEmployee")} mainClass="dcmt-main-btn dcmt-light-btn animated-icon-btn">
+                <Button isLoading={isSubmitting} type="submit" title={t("AddEmployee")} mainClass="dcmt-main-btn dcmt-light-btn animated-icon-btn">
                   <i className="fa fa-plus"></i>
                 </Button>
-                <Button type="button" onClick={close} title={t("CloseAdding")} mainClass="dcmt-main-btn dcmt-grey-btn animated-icon-btn">
+                <Button disable={isSubmitting} type="button" onClick={close} title={t("CloseAdding")} mainClass="dcmt-main-btn dcmt-grey-btn animated-icon-btn">
                   <i className="fa fa-times"></i>
                 </Button>
               </div>
@@ -120,11 +129,9 @@ class EmployeeProjectForm extends React.PureComponent {
                 <p className="important-par">{t("ResponsibilitiesInProject")} *</p>
                 <ul className="responsibilities">
                   {values.responsibilities.map(responsibility => (
-                    <li className="element-toolbox-wrapper" key={responsibility}>
-                      {responsibility}
-                      <div className="element-toolbox">
-                        <i onClick={() => putChanges(values.responsibilities.filter(r => r !== responsibility), 'responsibilities')} className="fa fa-times"></i>
-                      </div>
+                    <li className="list-element flex-between-c" key={responsibility}>
+                      <span>{responsibility}</span>
+                      <i onClick={() => putChanges(values.responsibilities.filter(r => r !== responsibility), 'responsibilities')} className="fa fa-times clickable"></i>
                     </li>
                   ))}
                 </ul>
@@ -153,4 +160,4 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default connect(null, mapDispatchToProps)(translate('EmployeeProjectForm')(EmployeeProjectForm));
+export default translate("EmployeeProjectForm")(connect(null, mapDispatchToProps)(EmployeeProjectForm));

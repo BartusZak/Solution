@@ -1,0 +1,67 @@
+@import '../../../../scss//new-color-schema.scss';
+.project-skills-wrapper {
+  position: relative;
+  grid-area: skills;
+  .empty-list-bg {
+    p.important-par {
+      padding: 15px 0 20px 0;
+    }
+  }
+  &:not(.empty-list-bg) {
+    .important-par {
+      padding: 15px 0 20px 0;
+    }
+  }
+  @media(max-width: 899px) {
+    margin-bottom: 20px;
+  }
+  & > ul {
+    overflow-y: auto;
+    margin-bottom: 20px;
+    height: 100%;
+  }
+  & > button.dcmt-light-btn {
+    margin-top: auto;
+    flex-shrink: 0;
+    width: 100%;
+  }
+}
+
+.project-skill {
+  position: relative;
+  &:not(:last-of-type) {
+    margin-bottom: 40px;
+  }
+  .skill-name {
+    font-size: 16px;
+    color: $font-grey;
+    max-width: 70%;
+  }
+  span.skill-number:first-of-type {
+    margin-right: 10px;
+    margin-bottom: 0;
+  }
+  .skill-head {
+    margin-bottom: 15px;
+    .skill-dot {
+      margin-right: 15px;
+      width: 14px; height: 14px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+  }
+  .progress-marker {
+    width: 220px;
+    margin-top: 7.5px;
+    @media(min-width: 550px) {
+      width: 300px;
+    }
+  }
+  .checkbox-wrapper {
+    position: absolute;
+    right: 20px; height: 18px;
+    top: 0;
+    bottom: 0;
+    margin: auto 0;
+  }
+}

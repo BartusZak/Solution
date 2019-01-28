@@ -1,6 +1,5 @@
 import {
   LOAD_PROJECTS_SUCCESS,
-  ADD_EMPLOYEE_TO_PROJECT,
   ADD_FEEDBACK,
   GET_FEEDBACKS,
   DELETE_FEEDBACK,
@@ -14,7 +13,10 @@ import {
   ADD_PHASE,
   CHANGE_PROJECT_STATUS,
   ADD_OWNER,
-  PUT_SKILLS_INTO_PROJECT
+  PUT_SKILLS_INTO_PROJECT,
+  PUT_DESTINATION_MANAGERS,
+  PUT_ALREADY_SHARED_MANAGERS,
+  CHANGE_MANAGERS_LISTS
 } from "../constants";
 import WebApi from "../api";
 import {
@@ -65,49 +67,6 @@ export const loadProjects = (
         dispatch(asyncEnded());
       });
   };
-};
-
-export const addEmployeeToProject = (
-  addEmployeeToProjectStatus,
-  addEmployeeToProjectErrors
-) => {
-  return {
-    type: ADD_EMPLOYEE_TO_PROJECT,
-    addEmployeeToProjectStatus,
-    addEmployeeToProjectErrors
-  };
-};
-
-export const addEmployeeToProjectACreator = (
-  empId,
-  projectId,
-  strDate,
-  endDate,
-  role,
-  assignedCapacity,
-  responsibilites,
-  onlyActiveAssignments
-) => dispatch => {
-  const assignmentModel = {
-    employeeId: empId,
-    projectId: projectId,
-    startDate: strDate,
-    endDate: endDate,
-    role: role,
-    assignedCapacity: assignedCapacity / 10,
-    responsibilities: responsibilites
-  };
-  useRequest("addAssignment", assignmentModel)
-    .then(response => {
-      dispatch(addEmployeeToProject(true, []));
-      dispatch(getProjectACreator(projectId, onlyActiveAssignments));
-    })
-    .catch(error => {
-      dispatch(addEmployeeToProject(false, errorCatcher(error)));
-    })
-    .then(
-      dispatch(clearAfterTimeByFuncRef(addEmployeeToProject, 5000, null, []))
-    );
 };
 
 export const editEmployeeAssignment = (
@@ -327,6 +286,9 @@ export const addPhase = phase => ({ type: ADD_PHASE, phase });
 export const changeProjectStatus = (status, isDeleted) => ({ type: CHANGE_PROJECT_STATUS, status, isDeleted });
 export const addOwner = owner => ({ type: ADD_OWNER, owner });
 export const putSkillsIntoProject = skills => ({ type: PUT_SKILLS_INTO_PROJECT, skills });
+export const putDestinationManagers = (destinationManagers, dManagersResult) => ({ type: PUT_DESTINATION_MANAGERS, destinationManagers, dManagersResult });
+export const putAlreadySharedManagers = (alreadySharedManagers, sManagersResult) => ({ type: PUT_ALREADY_SHARED_MANAGERS, alreadySharedManagers, sManagersResult});
+export const changeManagersLists = (destinationManagers, alreadySharedManagers) => ({ type: CHANGE_MANAGERS_LISTS, destinationManagers, alreadySharedManagers});
 
 export const getProject = id => dispatch =>
   useRequest('getProject', id)
@@ -377,27 +339,40 @@ export const addProjectPhase = (model, succ, err) => dispatch =>
 export const deleteProject = (id, succ, err) => dispatch =>
   useRequest('deleteProject', id)
     .then(() => { dispatch(changeProjectStatus(null, true)); succ();})
-    .catch(() => err())
+    .catch(() => err());
+
 export const reactivateProject = (id, succ, err) => dispatch =>
   useRequest('reactivateProject', id)
     .then(() => { dispatch(changeProjectStatus(active, false)); succ(); })
     .catch(() => err());
+
 export const closeProject = (id, succ, err) => dispatch =>
    useRequest('closeProject', id)
     .then(() => { dispatch(changeProjectStatus(closed, false)); succ(); })
     .catch(() => err());
+
 export const addOwnerToProject = (projectId, employee, succ, err) => dispatch =>
    useRequest('addOwnerToProject', projectId, [employee.id])
     .then(() => { dispatch(addOwner({ id: employee.id, fullName: employee.fullName })); succ(); })
     .catch(() => err());
+
 export const assignEmployeeIntoProject = (model, succ, err) => dispatch => {
   useRequest('assignEmployeeToProject', model)
-    .then(res => {
-      console.log(res)
-      succ();
-    })
-    .catch(() => {
-      console.log(err)
-      err();
-    })
+    .then(() => succ())
+    .catch(() => err());
 }
+
+export const shareProject = (model, succ, err) =>
+  useRequest('shareProject', model.projectId, model)
+    .then(() => succ())
+    .catch(() => err());
+
+export const getDestinationManagers = projectId => dispatch =>
+  useRequest('getDestinationManagers', projectId)
+    .then(res => dispatch(putDestinationManagers(res.extractData(), {status: true})))
+    .catch(() => dispatch(putDestinationManagers([], {status: false})));
+
+export const getAlreadySharedManagers = projectId => dispatch =>
+  useRequest('getAlreadySharedManagers', projectId)
+    .then(res => dispatch(putAlreadySharedManagers(res.extractData(), { status: true })))
+    .catch(() => dispatch(putAlreadySharedManagers([], { status: false })));

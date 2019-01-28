@@ -6,7 +6,6 @@ import { connect } from 'react-redux';
 import { translate } from 'react-translate';
 import Button from '../../../common/button/button';
 import EmployeeSearcher from '../../../shared/employee-searcher/employee-searcher';
-import ShareProjectForm from './share-project-form/share-project-form';
 import { AheadClassContext } from '../../../common/fancy-form/type-ahead/index';
 
 import './project-informations.scss';
@@ -16,12 +15,10 @@ const { Provider } = AheadClassContext;
 class ProjectInformations extends React.Component {
   state = {
     isAddingOwner: false,
-    currentChangeStatusOperationName: '',
-    shareProjectform: false
+    currentChangeStatusOperationName: ''
   }
 
   clearOperation = () => this.setState({currentChangeStatusOperationName: ''});
-  togleShareProjectForm = () => this.setState({shareProjectform: !this.state.shareProjectform});
 
   deleteProject = id => {
     this.setState({currentChangeStatusOperationName: deleting});
@@ -52,8 +49,8 @@ class ProjectInformations extends React.Component {
   }
 
   render() {
-    const { currentChangeStatusOperationName: operationName, isAddingOwner, shareProjectform } = this.state;
-    const { project, togleEditForm, toglePhaseForm, t } = this.props;
+    const { currentChangeStatusOperationName: operationName, isAddingOwner } = this.state;
+    const { project, togleEditForm, toglePhaseForm, t, redirectToSharingProject } = this.props;
     const { id, name, description, responsiblePerson, owners, status, isDeleted, startDate, estimatedEndDate, client, cloud, parentId } = project;
     const projectState = calculateProjectState(status, isDeleted);
     const disableStatusButtons = operationName !== '';
@@ -82,7 +79,7 @@ class ProjectInformations extends React.Component {
           </div>
           {cloud &&
             <div className="detail-label">
-              <span className="dcmt-light-color">{t("Cloud")}}</span>
+              <span className="dcmt-light-color">{t("Cloud")}</span>
               <span>{cloud}</span>
             </div>
           }
@@ -145,7 +142,7 @@ class ProjectInformations extends React.Component {
             </Button>
           }
 
-          <Button onClick={this.togleShareProjectForm} title={t("ShareProject")} mainClass="dcmt-main-btn dcmt-light-btn animated-icon-btn">
+          <Button onClick={redirectToSharingProject} title={t("ShareProject")} mainClass="dcmt-main-btn dcmt-light-btn animated-icon-btn">
             <i className="fa fa-share-alt-square"></i>
           </Button>
 
@@ -169,9 +166,6 @@ class ProjectInformations extends React.Component {
           }
         </div>
 
-        {shareProjectform &&
-          <ShareProjectForm close={this.togleShareProjectForm}/>
-        }
       </div>
     );
   }
@@ -186,4 +180,4 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default connect(null, mapDispatchToProps)(translate('ProjectInformations')(ProjectInformations));
+export default translate("ProjectInformations")(connect(null, mapDispatchToProps)(ProjectInformations));
