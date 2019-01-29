@@ -2,6 +2,7 @@ import {
   PUT_EMPLOYEE_DETAILS,
   PUT_FEEDBACKS,
   PUT_ONBOARDS,
+  PUT_EMPLOYEE_PROJECTS,
   CLEAR_EMPLOYEE_CACHING,
   CHANGE_IN_EMPLOYEE_REDUCER,
   CHANGE_EMPLOYEE_FROM_CACHE,
@@ -38,6 +39,7 @@ import {
   setActionConfirmationResult
 } from "./asyncActions";
 import { errorCatcher } from "../services/errorsHandler";
+import { removeInformationsFromDate } from '../services/transform-data-service';
 import { populateSkillArrayWithConstData, getRandomColor } from "../services/methods";
 import moment from "moment";
 import { useRequest } from '../api/index';
@@ -826,6 +828,7 @@ export const changeInEmployeeReducer = (key, value) => ({ type: CHANGE_IN_EMPLOY
 export const changeEmployeeFromCache = employeeId => ({ type: CHANGE_EMPLOYEE_FROM_CACHE, employeeId });
 export const clearEmployeeCaching = () => ({ type: CLEAR_EMPLOYEE_CACHING });
 export const putOnboards = (employeeId, onboards) => ({ type: PUT_ONBOARDS, employeeId, onboards })
+export const putEmployeeProjects = (employeeId, projects) => ({ type: PUT_EMPLOYEE_PROJECTS, employeeId, projects });
 
 export const getEmployeeDetails = employeeId => dispatch =>
   useRequest('getEmployeeById', employeeId).
@@ -857,4 +860,18 @@ export const loadOnboards = employeeId => dispatch => {
     .then(res => {
       dispatch(putOnboards(employeeId, res.extractData()));
     }).catch(() => dispatch(putOnboards(employeeId, null)));
+}
+
+export const loadEmployeeProjects = employeeId => dispatch => {
+  useRequest('getAssignmentByEmployee', employeeId)
+    .then(res => {
+      const projects = res.extractData();
+      const mappedProjects = projects.map(project => ({
+        ...project, startDate: removeInformationsFromDate(project.startDate),
+        endDate: removeInformationsFromDate(project.endDate)
+      }));
+      dispatch(putEmployeeProjects(employeeId, mappedProjects));
+    }).catch(err => {
+      dispatch(putEmployeeProjects(employeeId, null));
+    });
 }

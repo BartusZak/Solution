@@ -54,7 +54,6 @@ const authValidator = response => {
       store.dispatch(push('/'));
     }
   }
-
   throw response;
 };
 
@@ -62,13 +61,12 @@ const parseSuccess = (response, key) => {
   let parser = new ResponseParser(response);
   parser.parse();
   const succMessage = fromAlertSettings.succOperationsWhiteObject[key];
-  const isInfoComponent = window.location.href.search('info') === -1;
-  if (succMessage && isInfoComponent) {
+  const isNotInfoComponent = window.location.href.search('info') === -1;
+  if (succMessage && isNotInfoComponent) {
     store.dispatch(
       addAlert({ id: key, content: succMessage[lang], type: 'ok', time: 5000 })
     );
   }
-
   return BluebirdResolve(parser);
 };
 
@@ -88,14 +86,16 @@ const parseFailure = (response, key) => {
   if (isKeyInBlackList) {
     throw parser;
   }
-  let parserData = parser.parse();
+
   let message;
-  const noInternetConnection = !response.response;
+  let parserData = parser.parse();
+  const noInternetConnection = parserData.status === 0;
+  const serverInternalError = parserData.status === 500;
 
   if (noInternetConnection) {
-    message = fromAlertSettings.failOperationsWhiteObject['networkError'][lang];
-  } else if (parser instanceof Error || response instanceof Error) {
-    message = parserData.diagnosis;
+    message = fromAlertSettings.otherErrorsTranslations['networkError'][lang];
+  } else if (serverInternalError) {
+    message = fromAlertSettings.otherErrorsTranslations['internalServerError'][lang];
   } else {
     message = parserData.message;
   }

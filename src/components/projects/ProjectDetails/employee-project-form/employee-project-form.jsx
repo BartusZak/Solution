@@ -51,7 +51,6 @@ class EmployeeProjectForm extends React.PureComponent {
     if (!inputError) {
       let responsibilities = [...currentValues];
       const index = responsibilities.indexOf(inputValue);
-      console.log(responsibilities, index);
       if (index === -1) {
         responsibilities.unshift(inputValue);
       }

@@ -23,7 +23,12 @@ const translations = {
     OnboardsProblem: 'Wystąpił problem podczas ładowania danych. Spróbuj ponownie klikając w poniższy przycisk'
   },
   EmployeeProjects: {
-
+    Projects: 'projekty',
+    EmployeeProjectsProblem: 'Wystąpił problem podczas ładowania listy projektów pracownika. Spróbuj ponownie klikając poniższy przycisk',
+    RoleInProject: 'rola w projekcie',
+    StartDate: 'data rozpoczęcia',
+    EndDate: 'data zakończenia',
+    GoTo: 'SZCZEGÓŁY'
   },
   EmployeeSkills: {
     Skills: 'umiejętności',
@@ -330,6 +335,7 @@ const translations = {
     SelectStatus: 'Wybierz status...',
     DownloadEmployeeCVInWordFormat: 'Pobierz CV.docx',
     DownloadEmployeeCVInPdfFormat: 'Pobierz CV.pdf',
+    CheckUserProfile: 'Przeglądaj profil użytkownika',
     Options: 'Opcje',
     ActivateEmployee: 'Aktywuj pracownika',
     EmployeeHasBeenActivated: 'Pracownik został Aktywowany.',

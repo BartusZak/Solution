@@ -23,7 +23,12 @@ const translations = {
     OnboardsProblem: 'There is a problem with loading onboards. Try again by clicking button bellow'
   },
   EmployeeProjects: {
-
+    Projects: 'projects',
+    EmployeeProjectsProblem: 'There is a problem with loading employee projects. Try again by clicking button bellow',
+    RoleInProject: 'role in project',
+    StartDate: 'start date',
+    EndDate: 'end date',
+    GoTo: 'GO TO'
   },
   EmployeeSkills: {
     Skills: 'skills',
@@ -335,7 +340,8 @@ const translations = {
     DeleteEmployeeInfinitive: 'delete employee',
     EmployeeHasBeenDeleted: 'Employee has been Deleted.',
     DownloadEmployeeCVInWordFormat: 'Download CV.docx',
-    DownloadEmployeeCVInPdfFormat: 'Download CV.pdf'
+    DownloadEmployeeCVInPdfFormat: 'Download CV.pdf',
+    CheckUserProfile: 'Check user profile'
   },
   EmployeeDetails: {
     Close: 'Close',

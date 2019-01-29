@@ -1,7 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { translate } from 'react-translate';
-import { getEmployeeDetails, loadFeedbacks, addFeedback, changeEmployeeFromCache, loadOnboards } from '../../../actions/employeesActions';
+import { getEmployeeDetails, loadFeedbacks, addFeedback, changeEmployeeFromCache, loadOnboards,
+  loadEmployeeProjects } from '../../../actions/employeesActions';
 import FancyModal from '../../common/fancy-modal/fancy-modal';
 import EmployeeInformations from './employee-informations/employee-informations';
 import EmployeeFeedbacks from './employee-feedbacks/employee-feedbacks';
@@ -43,7 +44,11 @@ class EmployeeDetails extends React.Component {
         isAddingFeedback={this.props.isAddingFeedback}
         employeeId={employee.id}
         loadFeedbacks={this.props.loadFeedbacks} />,
-      projects: () => <EmployeeProjects />,
+      projects: employee => <EmployeeProjects
+        employeeId={employee.id}
+        employeeProjectsCache={this.props.employeeProjectsCache}
+        loadEmployeeProjects={this.props.loadEmployeeProjects}
+        />,
       skills: employee => <EmployeeSkills skills={employee.skills} />,
       onboards: employee => <EmployeeOnboards
         employeeId={employee.id}
@@ -55,10 +60,11 @@ class EmployeeDetails extends React.Component {
 
     render() {
         const { isLoadingEmployee, currentExtenderComponentName } = this.state;
-        const { loadEmployeeResult, employeeId, employeesCache, employeeFeedbacksCache } = this.props;
+        const { loadEmployeeResult, employeeId, employeesCache, employeeFeedbacksCache, employeeProjectsCache } = this.props;
         return (
             <FancyModal close={this.closeEmployeeDetail} positionClass="employee-cart m-w-h-center">
               <EmployeeInformations
+                employeeProjectsCount={employeeProjectsCache[employeeId] ? employeeProjectsCache[employeeId].length : null}
                 currentOpenedCart={currentExtenderComponentName}
                 employee={employeesCache[employeeId]}
                 feedbacksCount={employeeFeedbacksCache[employeeId] ? employeeFeedbacksCache[employeeId].length : null}
@@ -87,6 +93,7 @@ const mapStateToProps = state => {
 
     employeeFeedbacksCache: state.employeesReducer.employeeFeedbacksCache,
     onboardsCache: state.employeesReducer.onboardsCache,
+    employeeProjectsCache: state.employeesReducer.employeeProjectsCache,
 
     isAddingFeedback: state.employeesReducer.isAddingFeedback
   };
@@ -98,7 +105,8 @@ const mapDispatchToProps = dispatch => {
     loadFeedbacks: employeeId => dispatch(loadFeedbacks(employeeId)),
     addFeedback: model => dispatch(addFeedback(model)),
     changeEmployeeFromCache: employeeId => dispatch(changeEmployeeFromCache(employeeId)),
-    loadOnboards: employeeId => dispatch(loadOnboards(employeeId))
+    loadOnboards: employeeId => dispatch(loadOnboards(employeeId)),
+    loadEmployeeProjects: employeeId => dispatch(loadEmployeeProjects(employeeId))
   };
 };
 
