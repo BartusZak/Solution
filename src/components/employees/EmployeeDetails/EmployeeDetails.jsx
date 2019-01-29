@@ -1,12 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { translate } from 'react-translate';
-import { getEmployeeDetails, loadFeedbacks, addFeedback, changeEmployeeFromCache } from '../../../actions/employeesActions';
+import { getEmployeeDetails, loadFeedbacks, addFeedback, changeEmployeeFromCache, loadOnboards } from '../../../actions/employeesActions';
 import FancyModal from '../../common/fancy-modal/fancy-modal';
 import EmployeeInformations from './employee-informations/employee-informations';
 import EmployeeFeedbacks from './employee-feedbacks/employee-feedbacks';
 import EmployeeProjects from './employee-projects/employee-projects';
 import EmployeeSkills from './employee-skills/employee-skills';
+import EmployeeOnboards from './employee-onboards/employee-onboards';
 
 import './EmployeeDetails.scss';
 class EmployeeDetails extends React.Component {
@@ -43,7 +44,11 @@ class EmployeeDetails extends React.Component {
         employeeId={employee.id}
         loadFeedbacks={this.props.loadFeedbacks} />,
       projects: () => <EmployeeProjects />,
-      skills: employee => <EmployeeSkills skills={employee.skills} />
+      skills: employee => <EmployeeSkills skills={employee.skills} />,
+      onboards: employee => <EmployeeOnboards
+        employeeId={employee.id}
+        onboardsCache={this.props.onboardsCache}
+        loadOnboards={this.props.loadOnboards} />
     }
 
     closeEmployeeDetail = () => this.props.changeEmployeeFromCache('');
@@ -81,6 +86,7 @@ const mapStateToProps = state => {
     employeesCache: state.employeesReducer.employeesCache,
 
     employeeFeedbacksCache: state.employeesReducer.employeeFeedbacksCache,
+    onboardsCache: state.employeesReducer.onboardsCache,
 
     isAddingFeedback: state.employeesReducer.isAddingFeedback
   };
@@ -91,7 +97,8 @@ const mapDispatchToProps = dispatch => {
     getEmployeeDetails: employeeId => dispatch(getEmployeeDetails(employeeId)),
     loadFeedbacks: employeeId => dispatch(loadFeedbacks(employeeId)),
     addFeedback: model => dispatch(addFeedback(model)),
-    changeEmployeeFromCache: employeeId => dispatch(changeEmployeeFromCache(employeeId))
+    changeEmployeeFromCache: employeeId => dispatch(changeEmployeeFromCache(employeeId)),
+    loadOnboards: employeeId => dispatch(loadOnboards(employeeId))
   };
 };
 

@@ -2,6 +2,7 @@ import {
   PUT_EMPLOYEE_DETAILS,
   PUT_FEEDBACKS,
   CLEAR_EMPLOYEE_CACHING,
+  PUT_ONBOARDS,
   CHANGE_IN_EMPLOYEE_REDUCER,
   CHANGE_EMPLOYEE_FROM_CACHE,
   LOAD_EMPLOYEES_SUCCESS,
@@ -39,6 +40,8 @@ const initialState = {
   employeesCache: {},
 
   employeeFeedbacksCache: {},
+
+  onboardsCache: {},
 
   isAddingFeedback: false,
 
@@ -95,8 +98,10 @@ const initialState = {
 
 export const employeesReducer = (state = initialState, action) => {
   switch (action.type) {
+    case PUT_ONBOARDS:
+      return { ...state, onboardsCache: { ...state.onboardsCache, [action.employeeId]: action.onboards } };
     case CLEAR_EMPLOYEE_CACHING:
-      return { ...state, employeeFeedbacksCache: {}, employeesCache: {}, employeeFromCache: '' };
+      return { ...state, employeeFeedbacksCache: {}, employeesCache: {}, employeeFromCache: '', onboardsCache: {} };
     case CHANGE_IN_EMPLOYEE_REDUCER:
       return { ...state, [action.key]: action.value };
     case PUT_FEEDBACKS:

@@ -1,6 +1,7 @@
 import {
   PUT_EMPLOYEE_DETAILS,
   PUT_FEEDBACKS,
+  PUT_ONBOARDS,
   CLEAR_EMPLOYEE_CACHING,
   CHANGE_IN_EMPLOYEE_REDUCER,
   CHANGE_EMPLOYEE_FROM_CACHE,
@@ -824,6 +825,7 @@ export const putFeedbacks = (feedbacks, employeeId) => ({ type: PUT_FEEDBACKS, f
 export const changeInEmployeeReducer = (key, value) => ({ type: CHANGE_IN_EMPLOYEE_REDUCER, key, value });
 export const changeEmployeeFromCache = employeeId => ({ type: CHANGE_EMPLOYEE_FROM_CACHE, employeeId });
 export const clearEmployeeCaching = () => ({ type: CLEAR_EMPLOYEE_CACHING });
+export const putOnboards = (employeeId, onboards) => ({ type: PUT_ONBOARDS, employeeId, onboards })
 
 export const getEmployeeDetails = employeeId => dispatch =>
   useRequest('getEmployeeById', employeeId).
@@ -848,4 +850,11 @@ export const addFeedback = model => dispatch => {
     dispatch(changeInEmployeeReducer('isAddingFeedback', false));
   })
   .catch(() => dispatch(changeInEmployeeReducer('isAddingFeedback', false)));
+}
+
+export const loadOnboards = employeeId => dispatch => {
+  useRequest('getOnBoardsByEmployeeId', employeeId)
+    .then(res => {
+      dispatch(putOnboards(employeeId, res.extractData()));
+    }).catch(() => dispatch(putOnboards(employeeId, null)));
 }

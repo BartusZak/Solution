@@ -96,6 +96,9 @@
             top: -10px;
           }
       }
+      .active-link-red {
+        color: $input-error;
+      }
       .small-link {
           cursor: pointer;
           justify-self: flex-end;

@@ -82,31 +82,33 @@ const renderFteBar = capacity => (
 
 const renderProfileNavigation = (t, changeComponentInExtender, currentOpenedCart, employee, feedbacksCount) => (
   <div className="profile-navigation">
-      <div onClick={() => changeComponentInExtender('feedbacks')} className="icon-wrapper">
-        <i className={`fa fa-comments ${currentOpenedCart === 'feedbacks' ? 'rotated-icon' : ''}`}/>
-        {feedbacksCount !== null &&
-        <span className="element-counter">
-          {feedbacksCount}
-        </span>
-        }
-      </div>
-      <div onClick={() => changeComponentInExtender('projects')} className="icon-wrapper projects-icon-wrapper">
-        <i className={`fa fa-suitcase ${currentOpenedCart === 'projects' ? 'rotated-icon' : ''}`} />
-      </div>
-      <div onClick={() => changeComponentInExtender('skills')} className="icon-wrapper skills-icon-wrapper">
-        <i className={`fa fa-chart-bar ${currentOpenedCart === 'skills' ? 'rotated-icon' : ''}`}/>
-        <span className="element-counter">
-          {employee.skills.length}
-        </span>
-      </div>
-      <div className="icon-wrapper">
-        <i className="fa fa-graduation-cap"/>
-      </div>
-      <div className="icon-wrapper">
-        <i className="fa fa-chalkboard-teacher"/>
-      </div>
-      <span className="small-link onboards">{t("CheckOnboards")}</span>
-      <span className="small-link supervisors">{t("AllSupervisors")}</span>
+    <div onClick={() => changeComponentInExtender('feedbacks')} className="icon-wrapper">
+      <i className={`fa fa-comments ${currentOpenedCart === 'feedbacks' ? 'rotated-icon' : ''}`}/>
+      {feedbacksCount !== null &&
+      <span className="element-counter">
+        {feedbacksCount}
+      </span>
+      }
+    </div>
+    <div onClick={() => changeComponentInExtender('projects')} className="icon-wrapper projects-icon-wrapper">
+      <i className={`fa fa-suitcase ${currentOpenedCart === 'projects' ? 'rotated-icon' : ''}`} />
+    </div>
+    <div onClick={() => changeComponentInExtender('skills')} className="icon-wrapper skills-icon-wrapper">
+      <i className={`fa fa-chart-bar ${currentOpenedCart === 'skills' ? 'rotated-icon' : ''}`}/>
+      <span className="element-counter">
+        {employee.skills.length}
+      </span>
+    </div>
+    <div className="icon-wrapper">
+      <i className="fa fa-graduation-cap"/>
+    </div>
+    <div className="icon-wrapper">
+      <i className="fa fa-chalkboard-teacher"/>
+    </div>
+
+    <span onClick={() => changeComponentInExtender('onboards')} className={`small-link onboards ${currentOpenedCart ===
+      'onboards' ? 'active-link-red' : ''}`}>{t("CheckOnboards")}</span>
+    <span className="small-link supervisors">{t("AllSupervisors")}</span>
   </div>
 );
 

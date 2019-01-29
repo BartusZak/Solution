@@ -18,6 +18,10 @@ const translations = {
     Project: 'Project',
     EmptyFeedbacks: 'This employee does not have an opinion yet'
   },
+  EmployeeOnboards: {
+    Onboards: 'Onboards',
+    OnboardsProblem: 'There is a problem with loading onboards. Try again by clicking button bellow'
+  },
   EmployeeProjects: {
 
   },
