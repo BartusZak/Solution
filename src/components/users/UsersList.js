@@ -283,6 +283,7 @@ class UsersList extends Component {
             pageChange={this.props.pageChange}
             currentPage={this.props.currentPage}
             settings={this.state.settings}
+            userRequestType={this.props.show}
           />
         </Modal>
       </div>

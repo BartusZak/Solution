@@ -21,7 +21,7 @@ import ProjectDetails from '../../components/projects/ProjectDetails/ProjectDeta
 
 class Content extends React.Component {
   componentDidMount() {
-    this.props.getNotificationACreator().then(() => {});
+    this.props.getNotificationACreator().then(() => { });
   }
 
   showBackdropToChoosePosition = () => {
@@ -66,7 +66,6 @@ class Content extends React.Component {
           <Route path={match.url + '/info'} component={Info} />
           <Route component={NotFound404} />
         </Switch>
-        <div className="content-abs-footer">Billennium 2018</div>
       </div>
     );
   }

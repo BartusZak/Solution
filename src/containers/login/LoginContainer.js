@@ -37,7 +37,7 @@ class LoginContainer extends Component {
   };
 
   render() {
-    const { t, loading, accountRequest, languageChange } = this.props;
+    const { t, loading, accountRequest } = this.props;
     return (
       <React.Fragment>
         {accountRequest ? (
