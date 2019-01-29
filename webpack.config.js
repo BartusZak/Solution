@@ -108,8 +108,8 @@ module.exports = {
           azureAdRedirectUri: 'https://dcmt-billennium.azurewebsites.net/signin-oidc'
         }
         : {
-          serverUrl: 'http://localhost:63383',
-          // serverUrl: 'https://dcmt-billennium-webapi-dev.azurewebsites.net',
+          // serverUrl: 'http://localhost:63383',
+          serverUrl: 'https://dcmt-billennium-webapi-dev.azurewebsites.net',
 
           // azureAdRedirectUri: 'http://localhost:8080/signin-oidc'
           azureAdRedirectUri: 'http://localhost:8080/signin-oidc'
