@@ -2,8 +2,8 @@ import React from 'react';
 import { translate } from 'react-translate';
 import { runSingleValidation } from '../../../common/fancy-form/index';
 import Button from '../../../common/button/button';
-import './employee-feedbacks.scss';
 
+import './employee-feedbacks.scss';
 class EmployeeFeedbacks extends React.PureComponent {
   state = {
     isLoadingFeedbacks: this.props.feedbacksCache[this.props.employeeId] ? false : true,

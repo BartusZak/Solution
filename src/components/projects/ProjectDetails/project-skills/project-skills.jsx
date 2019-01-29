@@ -70,7 +70,9 @@ class ProjectSkills extends React.PureComponent {
         }
 
         { skillManager &&
-          <SkillsManager close={skillManager ? this.setManagerClosedClass : this.togleManager}
+          <SkillsManager
+            skillsInProject={projectSkills}
+            close={skillManager ? this.setManagerClosedClass : this.togleManager}
             skillManagerClass={skillManagerClass} />
         }
       </div>

@@ -201,6 +201,10 @@ button.dcmt-btn-light {
   i {
     margin-right: 10px;
   }
+  &:disabled {
+    color: $font-grey;
+    cursor: not-allowed;
+  }
 }
 .btn-submit-form {
   font-size: 18px;

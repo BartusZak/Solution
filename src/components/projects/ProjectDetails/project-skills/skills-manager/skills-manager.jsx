@@ -11,7 +11,7 @@ import './skills-manager.scss';
 const { Consumer } = ProjectDetailsContext;
 class SkillsManagement extends React.Component {
   state = {
-    isLoadingAllSkills: true, skillsData: null, isAddingSkills: false, countOfMarkedSkills: 0
+    isLoadingAllSkills: true, skillsData: null, isAddingSkills: false
   }
 
   componentDidMount = () => {
@@ -33,12 +33,15 @@ class SkillsManagement extends React.Component {
 
   generateSkillData = () => {
     const skillsData = {};
-    const { allSkills } = this.props;
-    const allSkillsKeys = Object.keys(allSkills);
-    allSkillsKeys.forEach(key => {
+    const { allSkills, skillsInProject } = this.props;
+    skillsInProject.forEach(({skillId, skillName: name, skillLevel, color}) => {
+      skillsData[name] = { skillId: +skillId, name, color, markerWidth: (skillLevel/5)*100, marked: true };
+    });
+    Object.keys(allSkills).forEach(key => {
       const name = allSkills[key].name;
-      const skillData = { skillId: key, name, color: getRandomColor(), markerWidth: 20, marked: false };
-      skillsData[name] = skillData;
+      if (!skillsData[name]) {
+        skillsData[name] = { skillId: +key, name, color: getRandomColor(), markerWidth: 20, marked: false };
+      }
     });
     this.setState({skillsData, isLoadingAllSkills: false});
   }
@@ -51,13 +54,11 @@ class SkillsManagement extends React.Component {
   handleMarking = name => {
     const skillsData = {...this.state.skillsData};
     skillsData[name].marked = !skillsData[name].marked;
-    const countOfMarkedSkills = Object.values(skillsData).filter(item => item.marked).length;
-    this.setState({skillsData, countOfMarkedSkills});
+    this.setState({skillsData});
   }
 
   handleEditSkillsInProject = id => {
     const { skillsData } = this.state;
-
     const skills = Object.keys(skillsData)
       .filter(key => skillsData[key].marked)
       .map(key => ({skillId: skillsData[key].skillId, color: skillsData[key].color,
@@ -76,7 +77,7 @@ class SkillsManagement extends React.Component {
   }
 
   render() {
-    const { isLoadingAllSkills, skillsData, isAddingSkills, countOfMarkedSkills } = this.state;
+    const { isLoadingAllSkills, skillsData, isAddingSkills } = this.state;
     const { close, allSkills, loadAllSkillsResult, skillManagerClass } = this.props;
     const allSkillsCount = allSkills.length;
 
@@ -87,7 +88,6 @@ class SkillsManagement extends React.Component {
             positionClass={`skills-modal m-w-h-center ${skillManagerClass}`} close={close}>
             { isLoadingAllSkills ? <div className="spinner-new spinner-new-big spinner-new-center" /> :
               <ManagerContent
-                countOfMarkedSkills={countOfMarkedSkills}
                 saveSkills={() => this.handleEditSkillsInProject(project.id)}
                 handleChangingSkill={this.handleChangingSkill}
                 reloadSkills={this.getSkills} handleMarking={this.handleMarking}
