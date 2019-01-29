@@ -1,12 +1,9 @@
 import React, { Component } from 'react';
-import Icon from '../common/Icon';
 import SmoothTable from '../common/SmoothTable';
-import { connect } from 'react-redux';
-import Confirmation from '../common/modals/Confirmation';
-import { setActionConfirmation } from '../../actions/asyncActions';
-import Modal from 'react-responsive-modal';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import { translate } from 'react-translate';
+import { changeEmployeeFromCache } from '../../actions/employeesActions';
 import '../../scss/components/employees/employeesList.scss';
 import IntermediateBlock from './../common/IntermediateBlock';
 import binaryPermissioner from './../../api/binaryPermissioner';
@@ -105,6 +102,14 @@ class EmployeesList extends Component {
               comparator: object => !!object.seniority
             },
             {
+              icon: { icon: 'user' },
+              title: t('CheckUserProfile'),
+              click: object => {
+                this.props.changeEmployeeFromCache(object.id)
+              },
+              comparator: object => !!object.seniority
+            },
+            {
               icon: { icon: 'download' },
               title: t('DownloadEmployeeCVInPdfFormat'),
               click: object => {
@@ -174,6 +179,12 @@ function mapStateToProps(state) {
   };
 }
 
+const mapDispatchToProps = dispatch => {
+  return {
+    changeEmployeeFromCache: employeeId => dispatch(changeEmployeeFromCache(employeeId))
+  }
+}
+
 EmployeesList.propTypes = {
   pageChange: PropTypes.func.isRequired,
   currentPage: PropTypes.number.isRequired,
@@ -186,5 +197,5 @@ EmployeesList.propTypes = {
 };
 
 export default translate('EmployeesList')(
-  connect(mapStateToProps)(EmployeesList)
+  connect(mapStateToProps, mapDispatchToProps)(EmployeesList)
 );

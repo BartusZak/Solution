@@ -335,6 +335,7 @@ const translations = {
     SelectStatus: 'Wybierz status...',
     DownloadEmployeeCVInWordFormat: 'Pobierz CV.docx',
     DownloadEmployeeCVInPdfFormat: 'Pobierz CV.pdf',
+    CheckUserProfile: 'Przeglądaj profil użytkownika',
     Options: 'Opcje',
     ActivateEmployee: 'Aktywuj pracownika',
     EmployeeHasBeenActivated: 'Pracownik został Aktywowany.',
