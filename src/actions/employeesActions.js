@@ -83,22 +83,22 @@ export const downloadCV = (format, employeeId) => {
     if (format === "word") {
       WebApi.reports.post.wordcv(employeeId).then(() => {
         WebApi.reports.get.cv("CV_" + employeeId + ".docx")
-        .then(response => {
-          dispatch(
-            getUserCv(response.replyBlock.request.responseURL, true, [])
-          );
-        })
-        .catch(error => dispatch(getUserCv("", false, errorCatcher(error))))
+          .then(response => {
+            dispatch(
+              getUserCv(response.replyBlock.request.responseURL, true, [])
+            );
+          })
+          .catch(error => dispatch(getUserCv("", false, errorCatcher(error))))
       });
     } else {
       WebApi.reports.post.cv(employeeId).then(() => {
         WebApi.reports.get.cv("CV_" + employeeId + ".pdf")
-        .then(response => {
-          dispatch(
-            getUserCv(response.replyBlock.request.responseURL, true, [])
-          );
-        })
-        .catch(error => dispatch(getUserCv("", false, errorCatcher(error))))
+          .then(response => {
+            dispatch(
+              getUserCv(response.replyBlock.request.responseURL, true, [])
+            );
+          })
+          .catch(error => dispatch(getUserCv("", false, errorCatcher(error))))
       });
     }
   };
@@ -387,7 +387,7 @@ export const getEmployeePromise = employeeId => dispatch => {
         const dtoObject = { ...response.replyBlock.data.dtoObject };
         let quarterTalks = [...dtoObject.quarterTalks];
 
-        quarterTalks.forEach(function(part, index) {
+        quarterTalks.forEach(function (part, index) {
           if (part.plannedTalkDate)
             quarterTalks[index].plannedTalkDate = moment(
               part.plannedTalkDate
@@ -517,7 +517,7 @@ export const changeEmployeeState = (
 };
 
 export const activateEmployeeOnList = (
-  employeeId,
+  azureAdId,
   seniority,
   capacity,
   pageChange,
@@ -525,7 +525,7 @@ export const activateEmployeeOnList = (
 ) => {
   return dispatch => {
     const model = {
-      id: employeeId,
+      azureAdId,
       seniority: seniority,
       capacity: capacity
     };
@@ -666,7 +666,7 @@ export const addNewSkillsToEmployeeACreator = (
     }
     model = model.concat(populateSkillArrayWithConstData(newSkills));
 
-    useRequest('editSkills',employeeId, model)
+    useRequest('editSkills', employeeId, model)
       .then(response => {
         dispatch(addNewSkillsToEmployee(true, []));
         dispatch(getEmployeePromise(employeeId));
@@ -706,7 +706,7 @@ export const addCertificate = (certificate, userId) => {
 };
 
 export const deleteCertificate = (certificateId, employeeId) => {
-  return dispatch => {    
+  return dispatch => {
     useRequest('deleteCertificate', certificateId)
       .then(response => {
         dispatch(setActionConfirmationResult(response));
