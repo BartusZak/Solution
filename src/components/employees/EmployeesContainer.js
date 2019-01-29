@@ -28,7 +28,7 @@ class EmployeesContainer extends React.Component {
     if (this.validatePropsForAction(nextProps, "activateEmployee")) {
       this.props.async.setActionConfirmationProgress(true);
       this.props.employeeActions.activateEmployeeOnList(
-        this.props.toConfirm.employee.id,
+        this.props.toConfirm.employee.azureAdId,
         "Junior",
         0.3,
         () => this.pageChange(this.state.currentPage, this.state.settings),
@@ -84,7 +84,7 @@ class EmployeesContainer extends React.Component {
       key: employee.isDeleted ? "reActivateEmployee" : "activateEmployee",
       string: `${t("ActivateEmployeeInfinitive")} ${employee.firstName} ${
         employee.lastName
-      }`,
+        }`,
       employee,
       successMessage: t("EmployeeHasBeenActivated")
     });
@@ -95,7 +95,7 @@ class EmployeesContainer extends React.Component {
       key: "deleteEmployeeOnList",
       string: `${t("DeleteEmployeeInfinitive")} ${employee.firstName} ${
         employee.lastName
-      }`,
+        }`,
       employee,
       successMessage: t("EmployeeHasBeenDeleted")
     });
