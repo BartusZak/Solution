@@ -118,7 +118,4 @@ Confirmation.propTypes = {
   async: PropTypes.object
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(translate("Confirmation")(Confirmation));
+export default translate("Confirmation")(connect(mapStateToProps,mapDispatchToProps)(Confirmation));
