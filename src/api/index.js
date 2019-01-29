@@ -174,8 +174,6 @@ const requests = {
       settings,
       true
     ),
-  getEmployeeById: id =>
-    execute(fromAlertSettings.getEmployeeById, `employees/${id}`),
   getEmployeeCapacity: id =>
     execute(fromAlertSettings.getEmployeeCapacity, `employees/${id}/capacity`),
   getEmployeesAndManagers: () =>

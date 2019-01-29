@@ -831,7 +831,7 @@ export const getEmployeeDetails = employeeId => dispatch =>
       const employee = res.extractData();
       employee.skills = employee.skills.map(skill => ({...skill, color: getRandomColor()}));
       dispatch(putEmployeeDetails(employee, { status: true }));
-    }).catch(() => dispatch(putEmployeeDetails(null, { status: false})));
+    }).catch(() => dispatch(changeInEmployeeReducer('loadEmployeeResult', { status: false})));
 
 export const loadFeedbacks = employeeId => dispatch => {
   useRequest('getFeedbacksByEmployee', employeeId)
