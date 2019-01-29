@@ -86,7 +86,7 @@ const parseFailure = (response, key) => {
   let parser = new ResponseParser(response);
 
   if (isKeyInBlackList) {
-    return parser;
+    throw parser;
   }
   let parserData = parser.parse();
   let message;
