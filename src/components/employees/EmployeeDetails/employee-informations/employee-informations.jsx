@@ -2,7 +2,8 @@ import React from 'react';
 import { translate } from 'react-translate';
 import './employee-informations.scss';
 const EmployeeInformations = ({isLoading, status, employee,
-  reloadEmployeeData, togleExtender, changeComponentInExtender, t, currentOpenedCart, feedbacksCount}) => {
+  reloadEmployeeData, togleExtender, changeComponentInExtender, t, currentOpenedCart, feedbacksCount,
+  employeeProjectsCount}) => {
 
   let content = null;
   if (isLoading) content = <div className="spinner-new spinner-new-big spinner-new-center" />;
@@ -21,7 +22,7 @@ const EmployeeInformations = ({isLoading, status, employee,
         {renderEmployeeProfileHeader(employee)}
         {renderInformationCrumbs(employee, t)}
         {renderFteBar(employee.capacity)}
-        {renderProfileNavigation(t, changeComponentInExtender, currentOpenedCart, employee, feedbacksCount)}
+        {renderProfileNavigation(t, changeComponentInExtender, currentOpenedCart, employee, feedbacksCount, employeeProjectsCount)}
       </div>;
   }
 
@@ -80,7 +81,7 @@ const renderFteBar = capacity => (
   </div>
 );
 
-const renderProfileNavigation = (t, changeComponentInExtender, currentOpenedCart, employee, feedbacksCount) => (
+const renderProfileNavigation = (t, changeComponentInExtender, currentOpenedCart, employee, feedbacksCount, employeeProjectsCount) => (
   <div className="profile-navigation">
     <div onClick={() => changeComponentInExtender('feedbacks')} className="icon-wrapper">
       <i className={`fa fa-comments ${currentOpenedCart === 'feedbacks' ? 'rotated-icon' : ''}`}/>
@@ -92,6 +93,11 @@ const renderProfileNavigation = (t, changeComponentInExtender, currentOpenedCart
     </div>
     <div onClick={() => changeComponentInExtender('projects')} className="icon-wrapper projects-icon-wrapper">
       <i className={`fa fa-suitcase ${currentOpenedCart === 'projects' ? 'rotated-icon' : ''}`} />
+      {employeeProjectsCount !== null &&
+      <span className="element-counter">
+        {employeeProjectsCount}
+      </span>
+      }
     </div>
     <div onClick={() => changeComponentInExtender('skills')} className="icon-wrapper skills-icon-wrapper">
       <i className={`fa fa-chart-bar ${currentOpenedCart === 'skills' ? 'rotated-icon' : ''}`}/>
@@ -106,9 +112,9 @@ const renderProfileNavigation = (t, changeComponentInExtender, currentOpenedCart
       <i className="fa fa-chalkboard-teacher"/>
     </div>
 
-    <span onClick={() => changeComponentInExtender('onboards')} className={`small-link onboards ${currentOpenedCart ===
+    <span onClick={() => changeComponentInExtender('onboards')} className={`small-link onboards dcmt-light-color ${currentOpenedCart ===
       'onboards' ? 'active-link-red' : ''}`}>{t("CheckOnboards")}</span>
-    <span className="small-link supervisors">{t("AllSupervisors")}</span>
+    <span className="small-link dcmt-light-color supervisors">{t("AllSupervisors")}</span>
   </div>
 );
 

@@ -23,7 +23,12 @@ const translations = {
     OnboardsProblem: 'Wystąpił problem podczas ładowania danych. Spróbuj ponownie klikając w poniższy przycisk'
   },
   EmployeeProjects: {
-
+    Projects: 'projekty',
+    EmployeeProjectsProblem: 'Wystąpił problem podczas ładowania listy projektów pracownika. Spróbuj ponownie klikając poniższy przycisk',
+    RoleInProject: 'rola w projekcie',
+    StartDate: 'data rozpoczęcia',
+    EndDate: 'data zakończenia',
+    GoTo: 'SZCZEGÓŁY'
   },
   EmployeeSkills: {
     Skills: 'umiejętności',

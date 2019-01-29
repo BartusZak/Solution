@@ -13,7 +13,6 @@ import ProjectTeam from './project-team/project-team';
 import ProjectPhases from './project-phases/project-phases';
 import ProjectPhaseForm from '../phase-project-form/phase-project-form';
 import EmployeeProjectForm from './employee-project-form/employee-project-form';
-import EmployeeDetails from '../../employees/EmployeeDetails/EmployeeDetails';
 
 import './ProjectDetails.scss';
 const { Provider } = ProjectDetailsContext;
@@ -54,7 +53,7 @@ class ProjectDetails extends React.Component {
   }
 
   render() {
-    const { projectResult, project, t, history, match, employeeFromCache, changeEmployeeFromCache } = this.props;
+    const { projectResult, project, t, history, match, changeEmployeeFromCache } = this.props;
     if (this.state.isLoading)
       return <div style={{position: 'fixed'}} className="spinner-new spinner-new-big spinner-new-center"></div>;
     else if(!projectResult.status) return null;
@@ -105,9 +104,6 @@ class ProjectDetails extends React.Component {
               close={this.toglePhaseForm} />
           }
 
-          {employeeFromCache &&
-            <EmployeeDetails employeeId={employeeFromCache} />
-          }
         </div>
       );
     }
@@ -117,8 +113,7 @@ class ProjectDetails extends React.Component {
 const mapStateToProps = state => {
   return {
     project: state.projectsReducer.project,
-    projectResult: state.projectsReducer.projectResult,
-    employeeFromCache: state.employeesReducer.employeeFromCache
+    projectResult: state.projectsReducer.projectResult
   }
 }
 

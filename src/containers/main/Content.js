@@ -18,6 +18,7 @@ import { getNotificationACreator } from '../../actions/notificationActions';
 import { connect } from 'react-redux';
 import Info from './../../components/info/infoContainer';
 import ProjectDetails from '../../components/projects/ProjectDetails/ProjectDetails';
+import EmployeeDetails from '../../components/employees/EmployeeDetails/EmployeeDetails';
 
 class Content extends React.Component {
   componentDidMount() {
@@ -29,12 +30,17 @@ class Content extends React.Component {
   };
 
   render() {
-    const { match, history } = this.props;
+    const { match, history, employeeFromCache } = this.props;
 
     return (
       <div className="content">
         <Confirmation />
         <PromptsCommander history={history} />
+
+        {employeeFromCache &&
+          <EmployeeDetails employeeId={employeeFromCache} />
+        }
+
         <Switch>
           <Route exact path={match.url} component={StatsContainer} />
           <Route path={match.url + "/projects/:id"} component={ProjectDetails} />
@@ -84,7 +90,8 @@ const mapDispatchToProps = dispatch => {
 
 const mapStateToProps = state => {
   return {
-    login: state.authReducer.login
+    login: state.authReducer.login,
+    employeeFromCache: state.employeesReducer.employeeFromCache
   };
 };
 
