@@ -37,10 +37,9 @@ class SkillsManagement extends React.Component {
     skillsInProject.forEach(({skillId, skillName: name, skillLevel, color}) => {
       skillsData[name] = { skillId: +skillId, name, color, markerWidth: (skillLevel/5)*100, marked: true };
     });
-    Object.keys(allSkills).forEach(key => {
-      const name = allSkills[key].name;
+    Object.values(allSkills).forEach(({name, skillId}) => {
       if (!skillsData[name]) {
-        skillsData[name] = { skillId: +key, name, color: getRandomColor(), markerWidth: 20, marked: false };
+        skillsData[name] = { skillId, name, color: getRandomColor(), markerWidth: 20, marked: false };
       }
     });
     this.setState({skillsData, isLoadingAllSkills: false});

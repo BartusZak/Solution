@@ -25,7 +25,7 @@ export const loadAllSkills = () => dispatch =>
   useRequest('loadAllSkills')
     .then(res => {
       const skills = res.extractData();
-      const newSkills = Object.values(skills).map(skill => skill);
+      const newSkills = Object.keys(skills).map(key => ( { name: skills[key].name, skillId: +key } ));
       dispatch(putAllSkills(newSkills, {status: true}));
     })
     .catch(() => dispatch(putAllSkills([], {status: false})));
