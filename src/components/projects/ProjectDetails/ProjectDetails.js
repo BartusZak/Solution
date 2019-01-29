@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { getProject } from '../../../actions/projectsActions';
 import { putAllSkills } from '../../../actions/skillsActions';
-import { changeEmployeeFromCache } from '../../../actions/employeesActions';
+import { changeEmployeeFromCache, clearEmployeeCaching } from '../../../actions/employeesActions';
 import { ProjectDetailsContext } from './index';
 import { Route } from 'react-router-dom';
 import ProjectInformations from './project-informations/project-informations';
@@ -48,7 +48,10 @@ class ProjectDetails extends React.Component {
 
   redirectToSharingProject = () => this.props.history.push(this.props.match.url + '/share');
 
-  componentWillUnmount = () => this.props.putAllSkills();
+  componentWillUnmount = () => {
+    this.props.clearEmployeeCaching();
+    this.props.putAllSkills();
+  }
 
   render() {
     const { projectResult, project, t, history, match, employeeFromCache, changeEmployeeFromCache } = this.props;
@@ -123,7 +126,8 @@ const mapDispatchToProps = dispatch => {
   return {
     getProject: id => dispatch(getProject(id)),
     putAllSkills: () => dispatch(putAllSkills([], {result: null})),
-    changeEmployeeFromCache: employeeId => dispatch(changeEmployeeFromCache(employeeId))
+    changeEmployeeFromCache: employeeId => dispatch(changeEmployeeFromCache(employeeId)),
+    clearEmployeeCaching: () => dispatch(clearEmployeeCaching())
   };
 };
 

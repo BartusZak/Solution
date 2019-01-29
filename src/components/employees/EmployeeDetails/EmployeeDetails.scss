@@ -1,9 +1,4 @@
 @import '../../../scss/new-color-schema.scss';
-@keyframes animate-extender {
-  from {opacity: 0;}
-  to {opacity: 1;}
-}
-
 @keyframes foldIn {
   0% {
       transform:scaleY(.005) scaleX(0);
@@ -26,10 +21,7 @@
     "content"
     "footer";
   grid-gap: 30px;
-  animation: .1s animate-extender forwards;
-  animation-delay: 1s;
   position: absolute;
-  opacity: 0;
   background: $white;
   padding: 15px 15px 15px 35px;
   height: 100%; width: 100%;

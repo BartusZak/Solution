@@ -1,7 +1,7 @@
 import {
   PUT_EMPLOYEE_DETAILS,
   PUT_FEEDBACKS,
-  PUT_FEEDBACK,
+  CLEAR_EMPLOYEE_CACHING,
   CHANGE_IN_EMPLOYEE_REDUCER,
   CHANGE_EMPLOYEE_FROM_CACHE,
   LOAD_EMPLOYEES_SUCCESS,
@@ -821,9 +821,9 @@ export const updateEmployeeOnBoardACreator = (onBoardModel, onBoardId) => dispat
 
 export const putEmployeeDetails = (employee, loadEmployeeResult) => ({ type: PUT_EMPLOYEE_DETAILS, employee, loadEmployeeResult });
 export const putFeedbacks = (feedbacks, employeeId) => ({ type: PUT_FEEDBACKS, feedbacks, employeeId});
-export const putFeedback = (feedback, employeeId) => ({ type: PUT_FEEDBACK, feedback, employeeId });
 export const changeInEmployeeReducer = (key, value) => ({ type: CHANGE_IN_EMPLOYEE_REDUCER, key, value });
 export const changeEmployeeFromCache = employeeId => ({ type: CHANGE_EMPLOYEE_FROM_CACHE, employeeId });
+export const clearEmployeeCaching = () => ({ type: CLEAR_EMPLOYEE_CACHING });
 
 export const getEmployeeDetails = employeeId => dispatch =>
   useRequest('getEmployeeById', employeeId).

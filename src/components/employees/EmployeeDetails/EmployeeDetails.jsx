@@ -61,13 +61,15 @@ class EmployeeDetails extends React.Component {
                 changeComponentInExtender={this.changeComponentInExtender}
                 isLoading={isLoadingEmployee}
                 status={loadEmployeeResult.status} />
-              <div className={`employee-cart-extender ${currentExtenderComponentName ? 'extender-on' : 'extender-off'}`}>
-                {currentExtenderComponentName &&
-                  this.componentsMap[currentExtenderComponentName](employeesCache[employeeId])
-                }
-              </div>
-            </FancyModal>
 
+              {isLoadingEmployee ||
+                <div className={`employee-cart-extender ${currentExtenderComponentName ? 'extender-on' : 'extender-off'}`}>
+                  {currentExtenderComponentName &&
+                    this.componentsMap[currentExtenderComponentName](employeesCache[employeeId])
+                  }
+                </div>
+              }
+            </FancyModal>
         );
 
     }

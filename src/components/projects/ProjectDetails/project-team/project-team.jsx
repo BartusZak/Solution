@@ -42,7 +42,7 @@ class ProjectTeam extends React.PureComponent {
           <React.Fragment>
             <ul>
               {team.map(({employeeId, firstName, lastName, title, seniority, startDate, endDate}) => (
-                <li key={employeeId} className="element-toolbox-wrapper flex-row-center-wrap">
+                <li key={employeeId + endDate + startDate} className="element-toolbox-wrapper flex-row-center-wrap">
                   <div className="user-avatar-medium">
                     <img src="https://dev.dcmtbillennium.com/ProfilePhotos/bploszynski.jpg" />
                   </div>
