@@ -32,7 +32,7 @@ module.exports = {
   devtool: 'source-map',
   entry: ['react-hot-loader/patch', './src/index.js'],
   output: {
-    path: path.resolve(__dirname, 'dist'),
+    path: path.resolve(__dirname, ''),
     filename: 'app.bundle.js',
     publicPath: '/'
   },
