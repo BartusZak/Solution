@@ -4,7 +4,7 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
 
 trigger:
-- develop
+- develop-azure-CI-testing
 
 pool:
   vmImage: 'Ubuntu-16.04'
@@ -17,5 +17,5 @@ steps:
 
 - script: |
     npm install 
-    webpack --mode production
-  displayName: 'npm install, npm start'
+    npm run build
+  displayName: 'npm install and build'
