@@ -20,13 +20,15 @@ class EditUserDetails extends Component {
   }
   changeUserRoles = () => {
     const { id, roles } = this.props.user;
+    let userReqType = this.props.userRequestType === 'isActivated' ? 'editUserRoles' : 'addUser';
     this.setState(
       {
         loading: true,
         disabledButton: !this.props.disabledButton
       },
       () => {
-        useRequest('editUserRoles', id, roles)
+
+        useRequest(userReqType, id, roles)
           .then(response => {
             this.props.pageChange(this.props.currentPage, this.props.settings),
               this.setState({
@@ -38,36 +40,11 @@ class EditUserDetails extends Component {
             }, 1500);
           })
           .catch(error => {
-            if (
-              'userNotFoundError' in
-                error.replyBlock.data.errorObjects[0].errors ||
-              'userIdRequiredError' in
-                error.replyBlock.data.errorObjects[0].errors
-            ) {
-              useRequest('addUser', id, roles)
-                .then(response => {
-                  this.setState({
-                    responseBlock: response,
-                    addedNewUser: true,
-                    loading: false
-                  });
-
-                  setTimeout(() => {
-                    this.props.closeModal({ afterClose: 'reloadList' });
-                  }, 1500);
-                })
-                .catch(errorResponse => {
-                  this.setState({
-                    responseBlock: errorResponse,
-                    loading: false
-                  });
-                });
-            } else {
+           
               this.setState({
                 responseBlock: error,
                 loading: false
               });
-            }
           });
       }
     );
