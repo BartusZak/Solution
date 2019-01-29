@@ -280,13 +280,13 @@ export const warnOperationsWhiteObject = {
   }
 };
 
-export const failOperationsWhiteObject = {
+export const otherErrorsTranslations = {
   networkError: {
     pl: 'Brak połączenia z serwerem.',
     en: 'Server Error'
   },
-  azureADAuthentication: {
-    pl: 'Wystąpił problem podczas autoryzacji z Azure AD!',
-    en: 'Problem has occured during Azure AD authorization!'
+  internalServerError: {
+    pl: 'Wewnątrzny błąd serwera',
+    en: 'Internal server error',
   }
 };
