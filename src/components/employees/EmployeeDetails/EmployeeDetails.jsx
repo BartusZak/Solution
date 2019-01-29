@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { translate } from 'react-translate';
-import { getEmployeeDetails, loadFeedbacks, addFeedback } from '../../../actions/employeesActions';
+import { getEmployeeDetails, loadFeedbacks, addFeedback, changeEmployeeFromCache } from '../../../actions/employeesActions';
 import FancyModal from '../../common/fancy-modal/fancy-modal';
 import EmployeeInformations from './employee-informations/employee-informations';
 import EmployeeFeedbacks from './employee-feedbacks/employee-feedbacks';
@@ -12,11 +12,12 @@ import './EmployeeDetails.scss';
 class EmployeeDetails extends React.Component {
     state = {
       currentExtenderComponentName: '',
-      isLoadingEmployee: true
+      isLoadingEmployee: this.props.employeesCache[this.props.employeeId] ? false : true
     }
 
     componentDidMount = () => {
-      this.handleLoadEmployee();
+      if (!this.props.employeesCache[this.props.employeeId])
+        this.handleLoadEmployee();
     }
 
     componentDidUpdate = prevProps => {
@@ -27,7 +28,7 @@ class EmployeeDetails extends React.Component {
 
     handleLoadEmployee = () => {
       this.setState({isLoadingEmployee: true});
-      this.props.getEmployeeDetails('bploszynski');
+      this.props.getEmployeeDetails(this.props.employeeId);
     }
 
     changeComponentInExtender = name => {
@@ -45,21 +46,23 @@ class EmployeeDetails extends React.Component {
       skills: employee => <EmployeeSkills skills={employee.skills} />
     }
 
+    closeEmployeeDetail = () => this.props.changeEmployeeFromCache('');
+
     render() {
         const { isLoadingEmployee, currentExtenderComponentName } = this.state;
-        const { loadEmployeeResult, employeeFromCache, employeesCache } = this.props;
+        const { loadEmployeeResult, employeeId, employeesCache } = this.props;
         return (
-            <FancyModal close={() => {}} positionClass="employee-cart m-w-h-center">
+            <FancyModal close={this.closeEmployeeDetail} positionClass="employee-cart m-w-h-center">
               <EmployeeInformations
                 currentOpenedCart={currentExtenderComponentName}
-                employee={employeesCache[employeeFromCache]}
+                employee={employeesCache[employeeId]}
                 reloadEmployeeData={this.handleLoadEmployee}
                 changeComponentInExtender={this.changeComponentInExtender}
                 isLoading={isLoadingEmployee}
                 status={loadEmployeeResult.status} />
               <div className={`employee-cart-extender ${currentExtenderComponentName ? 'extender-on' : 'extender-off'}`}>
                 {currentExtenderComponentName &&
-                  this.componentsMap[currentExtenderComponentName](employeesCache[employeeFromCache])
+                  this.componentsMap[currentExtenderComponentName](employeesCache[employeeId])
                 }
               </div>
             </FancyModal>
@@ -72,7 +75,6 @@ class EmployeeDetails extends React.Component {
 const mapStateToProps = state => {
   return {
     loadEmployeeResult: state.employeesReducer.loadEmployeeResult,
-    employeeFromCache: state.employeesReducer.employeeFromCache,
     employeesCache: state.employeesReducer.employeesCache,
 
     loadFeedbacksResult: state.employeesReducer.loadFeedbacksResult,
@@ -85,7 +87,8 @@ const mapDispatchToProps = dispatch => {
   return {
     getEmployeeDetails: employeeId => dispatch(getEmployeeDetails(employeeId)),
     loadFeedbacks: employeeId => dispatch(loadFeedbacks(employeeId)),
-    addFeedback: model => dispatch(addFeedback(model))
+    addFeedback: model => dispatch(addFeedback(model)),
+    changeEmployeeFromCache: employeeId => dispatch(changeEmployeeFromCache(employeeId))
   };
 };
 

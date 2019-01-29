@@ -12,7 +12,7 @@ class EmployeeFeedbacks extends React.PureComponent {
   }
 
   componentDidMount = () => {
-    if (!this.props.employee.feedbacks || !this.props.result.status) {
+    if (!this.props.employee.feedbacks) {
       this.handleLoadFeedbacks(this.props.employee.id);
     }
   }

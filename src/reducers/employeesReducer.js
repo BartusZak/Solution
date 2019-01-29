@@ -2,6 +2,7 @@ import {
   PUT_EMPLOYEE_DETAILS,
   PUT_FEEDBACKS,
   CHANGE_IN_EMPLOYEE_REDUCER,
+  CHANGE_EMPLOYEE_FROM_CACHE,
   LOAD_EMPLOYEES_SUCCESS,
   LOAD_EMPLOYEES_FAILURE,
   LOGOUT,
@@ -101,11 +102,14 @@ export const employeesReducer = (state = initialState, action) => {
       return {
         ...state, loadFeedbacksResult: action.loadFeedbacksResult, employeesCache
       };
+    case CHANGE_EMPLOYEE_FROM_CACHE:
+      return {
+        ...state, employeeFromCache: action.employeeId
+      };
     case PUT_EMPLOYEE_DETAILS:
       return {
         ...state,
           loadEmployeeResult: action.loadEmployeeResult,
-          employeeFromCache: action.employee.id,
           employeesCache: {...state.employeesCache, [action.employee.id]: action.employee }
       };
     case GET_USER_CV:

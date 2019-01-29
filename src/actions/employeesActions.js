@@ -3,6 +3,7 @@ import {
   PUT_FEEDBACKS,
   PUT_FEEDBACK,
   CHANGE_IN_EMPLOYEE_REDUCER,
+  CHANGE_EMPLOYEE_FROM_CACHE,
   LOAD_EMPLOYEES_SUCCESS,
   LOAD_EMPLOYEES_FAILURE,
   GET_EMPLOYEE,
@@ -822,6 +823,7 @@ export const putEmployeeDetails = (employee, loadEmployeeResult) => ({ type: PUT
 export const putFeedbacks = (feedbacks, employeeId, loadFeedbacksResult) => ({ type: PUT_FEEDBACKS, feedbacks, employeeId, loadFeedbacksResult});
 export const putFeedback = (feedback, employeeId) => ({ type: PUT_FEEDBACK, feedback, employeeId });
 export const changeInEmployeeReducer = (key, value) => ({ type: CHANGE_IN_EMPLOYEE_REDUCER, key, value });
+export const changeEmployeeFromCache = employeeId => ({ type: CHANGE_EMPLOYEE_FROM_CACHE, employeeId });
 
 export const getEmployeeDetails = employeeId => dispatch =>
   useRequest('getEmployeeById', employeeId).

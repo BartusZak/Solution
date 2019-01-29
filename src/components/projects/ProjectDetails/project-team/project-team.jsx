@@ -19,7 +19,7 @@ class ProjectTeam extends React.PureComponent {
 
   render() {
     const { markedMembers } = this.state;
-    const { team, t, redirectToAddEmployee } = this.props;
+    const { team, t, redirectToAddEmployee, changeEmployeeFromCache } = this.props;
     const teamCount = team.length;
 
     return (
@@ -72,7 +72,7 @@ class ProjectTeam extends React.PureComponent {
                   <div className={`element-toolbox ${markedMembers[employeeId] ? 'element-toolbox-expanded' : ''}`}>
                     <Checkbox checked={markedMembers[employeeId] ? true : false} id={employeeId}
                       handleChange={() => this.markMember(employeeId)}/>
-                    <i className="fa fa-info-circle"></i>
+                    <i onClick={() => changeEmployeeFromCache(employeeId)} className="fa fa-info-circle"></i>
                   </div>
                 </li>
                 ))}

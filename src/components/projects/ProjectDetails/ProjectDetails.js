@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { getProject } from '../../../actions/projectsActions';
 import { putAllSkills } from '../../../actions/skillsActions';
+import { changeEmployeeFromCache } from '../../../actions/employeesActions';
 import { ProjectDetailsContext } from './index';
 import { Route } from 'react-router-dom';
 import ProjectInformations from './project-informations/project-informations';
@@ -50,7 +51,7 @@ class ProjectDetails extends React.Component {
   componentWillUnmount = () => this.props.putAllSkills();
 
   render() {
-    const { projectResult, project, t, history, match } = this.props;
+    const { projectResult, project, t, history, match, employeeFromCache, changeEmployeeFromCache } = this.props;
     if (this.state.isLoading)
       return <div style={{position: 'fixed'}} className="spinner-new spinner-new-big spinner-new-center"></div>;
     else if(!projectResult.status) return null;
@@ -75,7 +76,9 @@ class ProjectDetails extends React.Component {
             <Route exact path={`${match.url}`} render={() => (
               <React.Fragment>
                 <ProjectSkills projectSkills={skills} />
-                <ProjectTeam team={team} redirectToAddEmployee={this.redirectToAddEmployee} />
+                <ProjectTeam
+                  changeEmployeeFromCache={changeEmployeeFromCache}
+                  team={team} redirectToAddEmployee={this.redirectToAddEmployee} />
               </React.Fragment>
             )} />
 
@@ -99,7 +102,9 @@ class ProjectDetails extends React.Component {
               close={this.toglePhaseForm} />
           }
 
-          <EmployeeDetails />
+          {employeeFromCache &&
+            <EmployeeDetails employeeId={employeeFromCache} />
+          }
         </div>
       );
     }
@@ -109,14 +114,16 @@ class ProjectDetails extends React.Component {
 const mapStateToProps = state => {
   return {
     project: state.projectsReducer.project,
-    projectResult: state.projectsReducer.projectResult
+    projectResult: state.projectsReducer.projectResult,
+    employeeFromCache: state.employeesReducer.employeeFromCache
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
     getProject: id => dispatch(getProject(id)),
-    putAllSkills: () => dispatch(putAllSkills([], {result: null}))
+    putAllSkills: () => dispatch(putAllSkills([], {result: null})),
+    changeEmployeeFromCache: employeeId => dispatch(changeEmployeeFromCache(employeeId))
   };
 };
 
