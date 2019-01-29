@@ -19,7 +19,7 @@ class ProjectTeam extends React.PureComponent {
 
   render() {
     const { markedMembers } = this.state;
-    const { team, t, redirectToAddEmployee } = this.props;
+    const { team, t, redirectToAddEmployee, changeEmployeeFromCache } = this.props;
     const teamCount = team.length;
 
     return (
@@ -42,7 +42,7 @@ class ProjectTeam extends React.PureComponent {
           <React.Fragment>
             <ul>
               {team.map(({employeeId, firstName, lastName, title, seniority, startDate, endDate}) => (
-                <li key={employeeId} className="element-toolbox-wrapper flex-row-center-wrap">
+                <li key={employeeId + endDate + startDate} className="element-toolbox-wrapper flex-row-center-wrap">
                   <div className="user-avatar-medium">
                     <img src="https://dev.dcmtbillennium.com/ProfilePhotos/bploszynski.jpg" />
                   </div>
@@ -72,12 +72,12 @@ class ProjectTeam extends React.PureComponent {
                   <div className={`element-toolbox ${markedMembers[employeeId] ? 'element-toolbox-expanded' : ''}`}>
                     <Checkbox checked={markedMembers[employeeId] ? true : false} id={employeeId}
                       handleChange={() => this.markMember(employeeId)}/>
-                    <i className="fa fa-info-circle"></i>
+                    <i onClick={() => changeEmployeeFromCache(employeeId)} className="fa fa-info-circle"></i>
                   </div>
                 </li>
                 ))}
               </ul>
-              <Button onClick={redirectToAddEmployee} title={t("AddMemeber")} mainClass="label-btn dcmt-light-color" />
+              <Button onClick={redirectToAddEmployee} title={t("AddMember")} mainClass="label-btn dcmt-light-color" />
             </React.Fragment>
         }
       </div>

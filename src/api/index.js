@@ -174,8 +174,6 @@ const requests = {
       settings,
       true
     ),
-  getEmployeeById: id =>
-    execute(fromAlertSettings.getEmployeeById, `employees/${id}`),
   getEmployeeCapacity: id =>
     execute(fromAlertSettings.getEmployeeCapacity, `employees/${id}/capacity`),
   getEmployeesAndManagers: () =>
@@ -272,7 +270,7 @@ const requests = {
     ),
 
   //PROJECTS
-  getProject: id => execute(fromAlertSettings.getProject, `projects/${id}`),
+  getProject: id => execute(fromAlertSettings.getProject, `projects/${id}?onlyActiveAssignments=false`),
   addProject: model => execute(fromAlertSettings.addProject, 'projects/add', requestTypes.post, model),
   editProject: (model, id) => execute(fromAlertSettings.editProject, `projects/${id}`, requestTypes.put, model),
   addProjectPhase: model => execute(fromAlertSettings.addProjectPhase, 'projects/add', requestTypes.post, model),
@@ -1784,15 +1782,15 @@ class DCMTWebApi {
     //.catch(response => authValidator(response));
   }
 
-  addEmployee(id, capacity, seniority, skillsArray) {
-    return axios.post(`${API_ENDPOINT}/employees/add`, {
-      id,
-      capacity,
-      seniority,
-      skills: skillsArray
-    });
-    //.catch(response => authValidator(response));
-  }
+  // addEmployee(id, capacity, seniority, skillsArray) {
+  //   return axios.post(`${API_ENDPOINT}/employees/add`, {
+  //     id,
+  //     capacity,
+  //     seniority,
+  //     skills: skillsArray
+  //   });
+  //   //.catch(response => authValidator(response));
+  // }
 
   editEmployee(id, seniority, capacity) {
     return axios.patch(`${API_ENDPOINT}/employees/${id}`, {

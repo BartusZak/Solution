@@ -385,6 +385,7 @@ a:visited {
 .user-avatar-medium {
   width: 50px;
   height: 50px;
+  object-fit: cover;
   border-radius: 50px;
   img {
     border-radius: 50px;
@@ -429,7 +430,7 @@ a:visited {
     top: 0;
     right: 0;
     transform: translateX(30px);
-    transition: .3s transform;
+    transition: .3s;
     padding: 10px;
     display: flex;
     align-items: center;
@@ -493,5 +494,19 @@ a:visited {
   .details span {
     color: $font-grey;
     font-size: 14px;
+  }
+}
+.skill-name {
+  font-size: 16px;
+  color: $font-grey;
+  max-width: 70%;
+}
+.skill-head {
+  margin-bottom: 15px;
+  .skill-dot {
+    margin-right: 15px;
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    flex-shrink: 0;
   }
 }

@@ -1,7 +1,11 @@
 import {
+  PUT_EMPLOYEE_DETAILS,
+  PUT_FEEDBACKS,
+  PUT_ONBOARDS,
+  CLEAR_EMPLOYEE_CACHING,
+  CHANGE_IN_EMPLOYEE_REDUCER,
+  CHANGE_EMPLOYEE_FROM_CACHE,
   LOAD_EMPLOYEES_SUCCESS,
-  ASYNC_STARTED,
-  ASYNC_ENDED,
   LOAD_EMPLOYEES_FAILURE,
   GET_EMPLOYEE,
   CHANGE_EMPLOYEE_OPERATION_STATUS,
@@ -34,7 +38,7 @@ import {
   setActionConfirmationResult
 } from "./asyncActions";
 import { errorCatcher } from "../services/errorsHandler";
-import { populateSkillArrayWithConstData } from "../services/methods";
+import { populateSkillArrayWithConstData, getRandomColor } from "../services/methods";
 import moment from "moment";
 import { useRequest } from '../api/index';
 
@@ -815,3 +819,42 @@ export const updateEmployeeOnBoardACreator = (onBoardModel, onBoardId) => dispat
   });
 };
 
+
+export const putEmployeeDetails = (employee, loadEmployeeResult) => ({ type: PUT_EMPLOYEE_DETAILS, employee, loadEmployeeResult });
+export const putFeedbacks = (feedbacks, employeeId) => ({ type: PUT_FEEDBACKS, feedbacks, employeeId});
+export const changeInEmployeeReducer = (key, value) => ({ type: CHANGE_IN_EMPLOYEE_REDUCER, key, value });
+export const changeEmployeeFromCache = employeeId => ({ type: CHANGE_EMPLOYEE_FROM_CACHE, employeeId });
+export const clearEmployeeCaching = () => ({ type: CLEAR_EMPLOYEE_CACHING });
+export const putOnboards = (employeeId, onboards) => ({ type: PUT_ONBOARDS, employeeId, onboards })
+
+export const getEmployeeDetails = employeeId => dispatch =>
+  useRequest('getEmployeeById', employeeId).
+    then(res => {
+      const employee = res.extractData();
+      employee.skills = employee.skills.map(skill => ({...skill, color: getRandomColor()}));
+      dispatch(putEmployeeDetails(employee, { status: true }));
+    }).catch(() => dispatch(changeInEmployeeReducer('loadEmployeeResult', { status: false})));
+
+export const loadFeedbacks = employeeId => dispatch => {
+  useRequest('getFeedbacksByEmployee', employeeId)
+    .then(res => {
+      const feedbacks = res.extractData();
+      dispatch(putFeedbacks(feedbacks, employeeId));
+    }).catch(() => dispatch(putFeedbacks(null, employeeId)));
+}
+
+export const addFeedback = model => dispatch => {
+  dispatch(changeInEmployeeReducer('isAddingFeedback', true));
+  useRequest('addFeedback', model)
+  .then(res => {
+    dispatch(changeInEmployeeReducer('isAddingFeedback', false));
+  })
+  .catch(() => dispatch(changeInEmployeeReducer('isAddingFeedback', false)));
+}
+
+export const loadOnboards = employeeId => dispatch => {
+  useRequest('getOnBoardsByEmployeeId', employeeId)
+    .then(res => {
+      dispatch(putOnboards(employeeId, res.extractData()));
+    }).catch(() => dispatch(putOnboards(employeeId, null)));
+}

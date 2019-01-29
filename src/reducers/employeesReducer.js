@@ -1,8 +1,13 @@
 import {
+  PUT_EMPLOYEE_DETAILS,
+  PUT_FEEDBACKS,
+  CLEAR_EMPLOYEE_CACHING,
+  PUT_ONBOARDS,
+  CHANGE_IN_EMPLOYEE_REDUCER,
+  CHANGE_EMPLOYEE_FROM_CACHE,
   LOAD_EMPLOYEES_SUCCESS,
   LOAD_EMPLOYEES_FAILURE,
   LOGOUT,
-  GET_EMPLOYEE,
   CHANGE_EMPLOYEE_OPERATION_STATUS,
   CHANGE_EMPLOYEE_STATE,
   LOAD_ASSIGNMENTS,
@@ -30,9 +35,15 @@ const initialState = {
   currentPage: 1,
   totalPageCount: 1,
 
-  employeeStatus: null,
-  employeeErrors: [],
-  employee: null,
+  loadEmployeeResult: {status: null},
+  employeeFromCache: '',
+  employeesCache: {},
+
+  employeeFeedbacksCache: {},
+
+  onboardsCache: {},
+
+  isAddingFeedback: false,
 
   employeeOperationStatus: null,
   employeeOperationErrors: [],
@@ -87,6 +98,28 @@ const initialState = {
 
 export const employeesReducer = (state = initialState, action) => {
   switch (action.type) {
+    case PUT_ONBOARDS:
+      return { ...state, onboardsCache: { ...state.onboardsCache, [action.employeeId]: action.onboards } };
+    case CLEAR_EMPLOYEE_CACHING:
+      return { ...state, employeeFeedbacksCache: {}, employeesCache: {}, employeeFromCache: '', onboardsCache: {} };
+    case CHANGE_IN_EMPLOYEE_REDUCER:
+      return { ...state, [action.key]: action.value };
+    case PUT_FEEDBACKS:
+      const employeeFeedbacksCache = {...state.employeeFeedbacksCache};
+      employeeFeedbacksCache[action.employeeId] = action.feedbacks;
+      return {
+        ...state, employeeFeedbacksCache
+      };
+    case CHANGE_EMPLOYEE_FROM_CACHE:
+      return {
+        ...state, employeeFromCache: action.employeeId
+      };
+    case PUT_EMPLOYEE_DETAILS:
+      return {
+        ...state,
+          loadEmployeeResult: action.loadEmployeeResult,
+          employeesCache: {...state.employeesCache, [action.employee.id]: action.employee }
+      };
     case GET_USER_CV:
       return updateObject(state, {
         userDownloadCVLink: action.userDownloadCVLink,
@@ -118,8 +151,6 @@ export const employeesReducer = (state = initialState, action) => {
         currentPage: 1,
         totalPageCount: 1
       };
-    case GET_EMPLOYEE:
-      return updateObject(state, { employee: action.employee });
     case CHANGE_EMPLOYEE_OPERATION_STATUS:
       return updateObject(state, {
         employeeStatus: action.employeeStatus,

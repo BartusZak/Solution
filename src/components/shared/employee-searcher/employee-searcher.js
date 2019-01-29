@@ -33,13 +33,13 @@ class EmployeeSearcher extends React.PureComponent {
               return (
                 <div className="input-data-list">
                   <ul>
-                    {dataList.map(({fullName, id}) => (
+                    {dataList.map(employee => (
                       <li onClick={() => {
-                        addValueFromOutside(fullName);
-                        emitEmployeeClick(id);
+                        addValueFromOutside(employee.fullName);
+                        emitEmployeeClick(employee);
                       }}
-                        key={id}>
-                        {fullName}
+                        key={employee.id}>
+                        {employee.fullName}
                       </li>
                     ))}
                   </ul>

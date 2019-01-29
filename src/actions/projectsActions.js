@@ -16,7 +16,8 @@ import {
   PUT_SKILLS_INTO_PROJECT,
   PUT_DESTINATION_MANAGERS,
   PUT_ALREADY_SHARED_MANAGERS,
-  CHANGE_MANAGERS_LISTS
+  CHANGE_MANAGERS_LISTS,
+  PUT_EMPLOYEE_INTO_PROJECT_TEAM
 } from "../constants";
 import WebApi from "../api";
 import {
@@ -289,6 +290,7 @@ export const putSkillsIntoProject = skills => ({ type: PUT_SKILLS_INTO_PROJECT, 
 export const putDestinationManagers = (destinationManagers, dManagersResult) => ({ type: PUT_DESTINATION_MANAGERS, destinationManagers, dManagersResult });
 export const putAlreadySharedManagers = (alreadySharedManagers, sManagersResult) => ({ type: PUT_ALREADY_SHARED_MANAGERS, alreadySharedManagers, sManagersResult});
 export const changeManagersLists = (destinationManagers, alreadySharedManagers) => ({ type: CHANGE_MANAGERS_LISTS, destinationManagers, alreadySharedManagers});
+export const putEmployeeIntoProjectTeam = employee => ({ type: PUT_EMPLOYEE_INTO_PROJECT_TEAM, employee });
 
 export const getProject = id => dispatch =>
   useRequest('getProject', id)
@@ -351,16 +353,21 @@ export const closeProject = (id, succ, err) => dispatch =>
     .then(() => { dispatch(changeProjectStatus(closed, false)); succ(); })
     .catch(() => err());
 
-export const addOwnerToProject = (projectId, employee, succ, err) => dispatch =>
-   useRequest('addOwnerToProject', projectId, [employee.id])
-    .then(() => { dispatch(addOwner({ id: employee.id, fullName: employee.fullName })); succ(); })
-    .catch(() => err());
-
-export const assignEmployeeIntoProject = (model, succ, err) => dispatch => {
-  useRequest('assignEmployeeToProject', model)
-    .then(() => succ())
-    .catch(() => err());
+export const addOwnerToProject = (projectId, employee, succ, err) => dispatch => {
+  useRequest('addOwnerToProject', projectId, [employee.id])
+  .then(() => { dispatch(addOwner({ id: employee.id, fullName: employee.fullName })); succ(); })
+  .catch(() => err());
 }
+
+export const assignEmployeeIntoProject = (model, succ, err) => dispatch =>
+  useRequest('assignEmployeeToProject', model)
+    .then(() => {
+      const newEmployee = {...model.employee,
+        employeeId: model.employee.id, startDate: model.startDate, endDate: model.endDate };
+      dispatch(putEmployeeIntoProjectTeam(newEmployee));
+      succ();
+    })
+    .catch(() => err());
 
 export const shareProject = (model, succ, err) =>
   useRequest('shareProject', model.projectId, model)

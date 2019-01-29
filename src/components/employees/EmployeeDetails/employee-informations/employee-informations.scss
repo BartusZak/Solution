@@ -1,0 +1,115 @@
+@import '../../../../scss/new-color-schema.scss';
+.employee-profile-in {
+  animation: .4s foldIn;
+}
+.employee-profile {
+  position: relative;
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  background: $white;
+  min-height: 500px;
+  box-shadow: $shadow;
+  color: $font-grey;
+  header {
+      height: 120px;
+      position: relative;
+      #bg {
+          height: 100%;
+          object-fit: cover;
+          width: 100%;
+          border-top-right-radius: 9px;
+          border-top-left-radius: 9px;
+      }
+      #svg-bg {
+          position: absolute;
+          left: 0; bottom: -1px; width: 100%;
+      }
+      #person {
+          position: absolute;
+          right: 0; left: 0; margin: 0 auto;
+          top: 25px;
+          width: 91px;
+          height: 91px;
+          border: 2px solid $dcmt-light;
+          border-radius: 50%;
+          object-fit: cover;
+      }
+  }
+  .personality {
+      display: flex; flex-flow: column;
+      align-items: center;
+      font-size: 14px;
+      .emp-name {
+          margin: 7.5px 0 2.5px 0;
+      }
+      .emp-seniority {
+          font-weight: 300;
+      }
+  }
+  .informations-crumbs {
+      display: flex; flex-flow: wrap;
+      margin: 30px 0;
+      padding: 0 20px;
+      & > * {
+          margin: 0 20px 15px 0;
+      }
+  }
+  .progress-marker {
+    margin: 0 20px;
+  }
+  .profile-navigation {
+      display: grid;
+      grid-template-rows: 30px 30px;
+      grid-template-columns: 30px 30px 30px auto;
+      grid-template-areas:
+          "opinions projects skills onboards"
+          "certs quarters blank supervisors";
+      grid-gap: 15px;
+      align-items: center;
+      margin-top: auto;
+      padding: 40px 20px 20px 20px;
+      .projects-icon-wrapper {
+        color: $dcmt-light;
+      }
+      .skills-icon-wrapper {
+        color: $light-orange;
+      }
+      .icon-wrapper {
+          font-size: 20px;
+          position: relative;
+          i {
+              transform: rotate(0);
+              transition: .4s;
+              cursor: pointer;
+              &:not(.rotated-icon):hover {
+                  transform: rotate(45deg);
+              }
+          }
+          .rotated-icon {
+            transform: rotate(45deg);
+          }
+          .element-counter {
+            position: absolute;
+            font-size: 14px;
+            top: -10px;
+          }
+      }
+      .active-link-red {
+        color: $input-error;
+      }
+      .small-link {
+          cursor: pointer;
+          justify-self: flex-end;
+      }
+      .onboards {
+          align-self: flex-end;
+          grid-area: onboards;
+      }
+      .supervisors {
+          align-self: flex-start;
+          grid-area: supervisors;
+      }
+  }
+}
