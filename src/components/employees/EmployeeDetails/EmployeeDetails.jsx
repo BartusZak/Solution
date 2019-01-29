@@ -37,10 +37,10 @@ class EmployeeDetails extends React.Component {
 
     componentsMap = {
       feedbacks: employee => <EmployeeFeedbacks
+        feedbacksCache={this.props.employeeFeedbacksCache}
         addFeedback={this.props.addFeedback}
         isAddingFeedback={this.props.isAddingFeedback}
-        employee={employee}
-        result={this.props.loadFeedbacksResult}
+        employeeId={employee.id}
         loadFeedbacks={this.props.loadFeedbacks} />,
       projects: () => <EmployeeProjects />,
       skills: employee => <EmployeeSkills skills={employee.skills} />
@@ -50,12 +50,13 @@ class EmployeeDetails extends React.Component {
 
     render() {
         const { isLoadingEmployee, currentExtenderComponentName } = this.state;
-        const { loadEmployeeResult, employeeId, employeesCache } = this.props;
+        const { loadEmployeeResult, employeeId, employeesCache, employeeFeedbacksCache } = this.props;
         return (
             <FancyModal close={this.closeEmployeeDetail} positionClass="employee-cart m-w-h-center">
               <EmployeeInformations
                 currentOpenedCart={currentExtenderComponentName}
                 employee={employeesCache[employeeId]}
+                feedbacksCount={employeeFeedbacksCache[employeeId] ? employeeFeedbacksCache[employeeId].length : null}
                 reloadEmployeeData={this.handleLoadEmployee}
                 changeComponentInExtender={this.changeComponentInExtender}
                 isLoading={isLoadingEmployee}
@@ -77,7 +78,7 @@ const mapStateToProps = state => {
     loadEmployeeResult: state.employeesReducer.loadEmployeeResult,
     employeesCache: state.employeesReducer.employeesCache,
 
-    loadFeedbacksResult: state.employeesReducer.loadFeedbacksResult,
+    employeeFeedbacksCache: state.employeesReducer.employeeFeedbacksCache,
 
     isAddingFeedback: state.employeesReducer.isAddingFeedback
   };

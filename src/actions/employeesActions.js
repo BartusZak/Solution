@@ -820,7 +820,7 @@ export const updateEmployeeOnBoardACreator = (onBoardModel, onBoardId) => dispat
 
 
 export const putEmployeeDetails = (employee, loadEmployeeResult) => ({ type: PUT_EMPLOYEE_DETAILS, employee, loadEmployeeResult });
-export const putFeedbacks = (feedbacks, employeeId, loadFeedbacksResult) => ({ type: PUT_FEEDBACKS, feedbacks, employeeId, loadFeedbacksResult});
+export const putFeedbacks = (feedbacks, employeeId) => ({ type: PUT_FEEDBACKS, feedbacks, employeeId});
 export const putFeedback = (feedback, employeeId) => ({ type: PUT_FEEDBACK, feedback, employeeId });
 export const changeInEmployeeReducer = (key, value) => ({ type: CHANGE_IN_EMPLOYEE_REDUCER, key, value });
 export const changeEmployeeFromCache = employeeId => ({ type: CHANGE_EMPLOYEE_FROM_CACHE, employeeId });
@@ -837,15 +837,14 @@ export const loadFeedbacks = employeeId => dispatch => {
   useRequest('getFeedbacksByEmployee', employeeId)
     .then(res => {
       const feedbacks = res.extractData();
-      dispatch(putFeedbacks(feedbacks, employeeId, {status: true}));
-    }).catch(() => dispatch(putFeedbacks([], employeeId, {status: false})));
+      dispatch(putFeedbacks(feedbacks, employeeId));
+    }).catch(() => dispatch(putFeedbacks(null, employeeId)));
 }
 
 export const addFeedback = model => dispatch => {
   dispatch(changeInEmployeeReducer('isAddingFeedback', true));
   useRequest('addFeedback', model)
   .then(res => {
-    console.log(res);
     dispatch(changeInEmployeeReducer('isAddingFeedback', false));
   })
   .catch(() => dispatch(changeInEmployeeReducer('isAddingFeedback', false)));

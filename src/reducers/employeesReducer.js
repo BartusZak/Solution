@@ -37,7 +37,8 @@ const initialState = {
   employeeFromCache: '',
   employeesCache: {},
 
-  loadFeedbacksResult: {status: null},
+  employeeFeedbacksCache: {},
+
   isAddingFeedback: false,
 
   employeeOperationStatus: null,
@@ -96,11 +97,10 @@ export const employeesReducer = (state = initialState, action) => {
     case CHANGE_IN_EMPLOYEE_REDUCER:
       return { ...state, [action.key]: action.value };
     case PUT_FEEDBACKS:
-      const employeesCache = {...state.employeesCache};
-      const employee = employeesCache[action.employeeId];
-      employee.feedbacks = action.feedbacks;
+      const employeeFeedbacksCache = {...state.employeeFeedbacksCache};
+      employeeFeedbacksCache[action.employeeId] = action.feedbacks;
       return {
-        ...state, loadFeedbacksResult: action.loadFeedbacksResult, employeesCache
+        ...state, employeeFeedbacksCache
       };
     case CHANGE_EMPLOYEE_FROM_CACHE:
       return {

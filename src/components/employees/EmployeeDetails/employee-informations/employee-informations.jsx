@@ -2,7 +2,7 @@ import React from 'react';
 import { translate } from 'react-translate';
 import './employee-informations.scss';
 const EmployeeInformations = ({isLoading, status, employee,
-  reloadEmployeeData, togleExtender, changeComponentInExtender, t, currentOpenedCart}) => {
+  reloadEmployeeData, togleExtender, changeComponentInExtender, t, currentOpenedCart, feedbacksCount}) => {
 
   let content = null;
   if (isLoading) content = <div className="spinner-new spinner-new-big spinner-new-center" />;
@@ -21,7 +21,7 @@ const EmployeeInformations = ({isLoading, status, employee,
         {renderEmployeeProfileHeader(employee)}
         {renderInformationCrumbs(employee, t)}
         {renderFteBar(employee.capacity)}
-        {renderProfileNavigation(t, changeComponentInExtender, currentOpenedCart, employee)}
+        {renderProfileNavigation(t, changeComponentInExtender, currentOpenedCart, employee, feedbacksCount)}
       </div>;
   }
 
@@ -80,13 +80,13 @@ const renderFteBar = capacity => (
   </div>
 );
 
-const renderProfileNavigation = (t, changeComponentInExtender, currentOpenedCart, employee) => (
+const renderProfileNavigation = (t, changeComponentInExtender, currentOpenedCart, employee, feedbacksCount) => (
   <div className="profile-navigation">
       <div onClick={() => changeComponentInExtender('feedbacks')} className="icon-wrapper">
         <i className={`fa fa-comments ${currentOpenedCart === 'feedbacks' ? 'rotated-icon' : ''}`}/>
-        {employee.feedbacks &&
+        {feedbacksCount !== null &&
         <span className="element-counter">
-          {employee.feedbacks.length}
+          {feedbacksCount}
         </span>
         }
       </div>
